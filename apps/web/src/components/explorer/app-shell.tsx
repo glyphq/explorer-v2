@@ -40,11 +40,11 @@ function formatPerBillion(value: number | null): string {
   return value === null ? "$—/B" : `$${perBillionFormatter.format(value)}/B`;
 }
 
-function Brand({ onClick }: { onClick?: () => void }) {
+function Brand({ flush = false, onClick }: { flush?: boolean; onClick?: () => void }) {
   return (
     <Link
       aria-label="Glyph explorer home"
-      className="flex shrink-0 items-center gap-2.5 pl-1.5"
+      className={classNames("flex shrink-0 items-center gap-2.5", !flush && "pl-1.5")}
       href="/"
       onClick={onClick}
     >
@@ -431,7 +431,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <header className="z-40 shrink-0 bg-background/85 backdrop-blur-xl">
             <div className="page-width flex h-16 items-center px-4 lg:px-8">
               <div className="xl:hidden">
-                <Brand />
+                <Brand flush />
               </div>
 
               <div className="hidden min-w-0 flex-1 pr-4 xl:block">
