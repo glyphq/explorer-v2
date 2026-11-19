@@ -1,6 +1,21 @@
 import { defineConfig } from "vite-plus";
 
 export default defineConfig({
+  fmt: {
+    ignorePatterns: [
+      "node_modules/**",
+      "**/node_modules/**",
+      "apps/web/.next/**",
+      "apps/web/out/**",
+      ".alchemy/**",
+      ".wrangler/**",
+      "**/.wrangler/**",
+      "apps/web/.open-next/**",
+    ],
+    semi: true,
+    singleQuote: false,
+    sortPackageJson: true,
+  },
   lint: {
     ignorePatterns: [
       "node_modules/**",
@@ -16,21 +31,6 @@ export default defineConfig({
       typeAware: false,
       typeCheck: false,
     },
-  },
-  fmt: {
-    ignorePatterns: [
-      "node_modules/**",
-      "**/node_modules/**",
-      "apps/web/.next/**",
-      "apps/web/out/**",
-      ".alchemy/**",
-      ".wrangler/**",
-      "**/.wrangler/**",
-      "apps/web/.open-next/**",
-    ],
-    singleQuote: false,
-    semi: true,
-    sortPackageJson: true,
   },
   staged: {
     "*.{js,ts,jsx,tsx,vue,svelte,json,jsonc,css,md}": "vp check --fix",
