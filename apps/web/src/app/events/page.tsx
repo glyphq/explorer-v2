@@ -10,9 +10,9 @@ export default function EventsPage() {
   const rows = pageRows(events.data?.pages);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Decoded logs with their participants, transaction, tick, and body. Each event belongs to a transfer or contract call."
+        description="Decoded events from transfers and contract calls, with the accounts involved."
         title="Events"
       />
 

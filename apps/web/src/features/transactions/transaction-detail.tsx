@@ -13,7 +13,7 @@ import { SectionCard } from "@/components/explorer/section-card";
 import { ErrorState } from "@/components/explorer/state";
 import type { TransactionEffect } from "@/lib/api/generated/types.gen";
 import { useTransaction, useTransactionEffects, useTransactionStatus } from "@/lib/api/hooks";
-import { formatInteger, formatQu, formatTimestamp, shorten } from "@/lib/format";
+import { countLabel, formatInteger, formatQu, formatTimestamp, shorten } from "@/lib/format";
 
 type StatusBody = {
   hash?: string;
@@ -99,7 +99,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
   const failed = data?.status !== undefined && data.status !== "success";
 
   return (
-    <div className="mx-auto w-full max-w-[1100px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       {transaction.isError ? (
         <ErrorState message={transaction.error.message} onRetry={() => transaction.refetch()} />
       ) : (
@@ -116,7 +116,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 </span>
                 <span>epoch {formatInteger(data?.epoch)}</span>
                 <span>
-                  {formatInteger(effectCount)} effects · {formatInteger(eventCount)} events
+                  {countLabel(effectCount, "effect")} · {countLabel(eventCount, "event")}
                 </span>
                 <span title={formatTimestamp(data?.timestamp)}>
                   {formatTimestamp(data?.timestamp)}
@@ -179,8 +179,8 @@ export function TransactionDetail({ hash }: { hash: string }) {
           <SectionCard
             description={
               effectCount === 0
-                ? "No effects were decoded for this transaction."
-                : `${formatInteger(effectCount)} decoded effects`
+                ? "No effects."
+                : `${formatInteger(effectCount)} ${effectCount === 1 ? "effect" : "effects"}`
             }
             title="Effects"
           >
@@ -200,8 +200,8 @@ export function TransactionDetail({ hash }: { hash: string }) {
           <SectionCard
             description={
               eventCount === 0
-                ? "No decoded logs were attached."
-                : `${formatInteger(eventCount)} decoded logs`
+                ? "No events."
+                : `${formatInteger(eventCount)} ${eventCount === 1 ? "event" : "events"}`
             }
             title="Events"
           >

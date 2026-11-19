@@ -11,9 +11,9 @@ export default function EpochsPage() {
   const rows = pageRows(epochs.data?.pages);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Epoch summaries with tick ranges, activity counts, and the elected computor set for each epoch."
+        description="Every epoch, with its tick range, activity, and elected computors."
         title="Epochs"
       />
 
@@ -30,7 +30,7 @@ export default function EpochsPage() {
             {epochs.isLoading ? (
               <RecordSkeleton rows={8} />
             ) : rows.length === 0 ? (
-              <RecordEmpty>No epochs indexed yet.</RecordEmpty>
+              <RecordEmpty>No epochs yet.</RecordEmpty>
             ) : (
               <RecordList>
                 {rows.map((epoch) => (

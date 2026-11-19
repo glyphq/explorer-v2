@@ -1,6 +1,18 @@
 @import "@explorer-v2/ui/globals.css";
 @import "sileo/styles.css";
 
+:root {
+  --page-max-width: 1440px;
+}
+
+@layer utilities {
+  .page-width {
+    margin-inline: auto;
+    width: 100%;
+    max-width: var(--page-max-width);
+  }
+}
+
 [data-sileo-viewport] [data-sileo-title],
 [data-sileo-viewport] [data-sileo-badge] {
   color: var(--background) !important;

@@ -6,7 +6,13 @@ import { ArrowUpIcon } from "@solar-icons/react/linear/arrow-up";
 import type { ReactNode } from "react";
 
 import type { Asset, Epoch, Identity, Tick, Transaction } from "@/lib/api/generated/types.gen";
-import { formatInteger, formatQu, formatRelativeTime, formatTimestamp } from "@/lib/format";
+import {
+  countLabel,
+  formatInteger,
+  formatQu,
+  formatRelativeTime,
+  formatTimestamp,
+} from "@/lib/format";
 import type { EventLike } from "./event-summary";
 import { EventSummary } from "./event-summary";
 import { IdentityAvatar } from "./identity-avatar";
@@ -159,7 +165,7 @@ export function AccountRow({ identity }: { identity: Identity }) {
         <div className="min-w-0 flex-1">
           <IdentityLink identity={value} />
           <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted">
-            <span>{formatInteger(identity.transfer_count)} transfers</span>
+            <span>{countLabel(identity.transfer_count, "transfer")}</span>
             <span className="inline-flex items-center gap-1">
               last seen <TickLink tick={identity.last_seen_tick} />
             </span>
@@ -192,8 +198,8 @@ export function TickRow({ tick }: { tick: Tick }) {
             ) : null}
           </div>
           <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted">
-            <span>{formatInteger(tick.transaction_count)} transactions</span>
-            <span>{formatInteger(tick.event_count)} events</span>
+            <span>{countLabel(tick.transaction_count, "transaction")}</span>
+            <span>{countLabel(tick.event_count, "event")}</span>
             <span>computor {formatInteger(tick.computor_index)}</span>
           </div>
         </div>
@@ -218,9 +224,9 @@ export function EpochRow({ epoch }: { epoch: Epoch }) {
             <span>
               <TickLink tick={epoch.first_tick} /> to <TickLink tick={epoch.last_tick} />
             </span>
-            <span>{formatInteger(epoch.tick_count)} ticks</span>
-            <span>{formatInteger(epoch.transaction_count)} transactions</span>
-            <span>{formatInteger(epoch.event_count)} events</span>
+            <span>{countLabel(epoch.tick_count, "tick")}</span>
+            <span>{countLabel(epoch.transaction_count, "transaction")}</span>
+            <span>{countLabel(epoch.event_count, "event")}</span>
           </div>
         </div>
         <span className="shrink-0 text-[10px] text-muted">{relative(epoch.last_timestamp)}</span>
@@ -240,7 +246,7 @@ export function AssetRow({ asset }: { asset: Asset }) {
               issuer <IdentityLink identity={asset.issuer ?? ""} />
             </span>
             {asset.unit ? <span>{asset.unit}</span> : null}
-            <span>{formatInteger(asset.decimals)} decimals</span>
+            <span>{countLabel(asset.decimals, "decimal")}</span>
           </div>
         </div>
         <div className="shrink-0 text-right">

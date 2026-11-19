@@ -25,7 +25,7 @@ export function AssetDetail({ issuer, name }: { issuer: string; name: string }) 
   const transferRows = pageRows(transfers.data?.pages);
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
         actions={<CopyButton label="Copy asset identifier" value={`${issuer}/${name}`} />}
         description={
@@ -113,10 +113,7 @@ export function AssetDetail({ issuer, name }: { issuer: string; name: string }) 
               </dl>
             </SectionCard>
 
-            <SectionCard
-              description="Ownership snapshot queried from a peer. The list can be unavailable when no peer answers."
-              title="Holders"
-            >
+            <SectionCard description="Who holds this asset, according to a peer." title="Holders">
               {holders.isError ? (
                 <ErrorState
                   message="No peer answered the asset holder lookup. The transfer history below is still local and authoritative."
@@ -136,10 +133,7 @@ export function AssetDetail({ issuer, name }: { issuer: string; name: string }) 
           </section>
 
           <section className="mt-4">
-            <SectionCard
-              description="Ownership and possession changes from the local indexed history."
-              title="Transfers"
-            >
+            <SectionCard description="Ownership changes recorded in the index." title="Transfers">
               <DataTable
                 columns={transferColumns}
                 data={transferRows}

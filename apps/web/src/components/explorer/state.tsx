@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, Spinner } from "@heroui/react";
+import { Button, Spinner } from "@heroui/react";
 import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
 import { InboxIcon } from "@solar-icons/react/linear/inbox";
 import { RefreshIcon } from "@solar-icons/react/linear/refresh";
@@ -34,26 +34,26 @@ export function EmptyState({
 }
 
 export function ErrorState({
-  message = "The index did not answer this request.",
+  message = "The index didn't answer. Try again in a moment.",
   onRetry,
 }: {
   message?: string;
   onRetry?: () => void;
 }) {
   return (
-    <Card className="items-center border border-danger/30 text-center" variant="secondary">
-      <div className="flex size-11 items-center justify-center rounded-xl bg-danger-soft text-danger">
+    <div className="flex flex-col items-center justify-center px-6 py-16 text-center" role="alert">
+      <div className="mb-4 flex size-11 items-center justify-center rounded-full bg-danger-soft text-danger">
         <DangerTriangleIcon className="size-5" />
       </div>
-      <p className="font-medium text-foreground text-sm">Request failed</p>
-      <p className="max-w-md text-muted text-sm leading-6">{message}</p>
+      <p className="font-medium text-foreground text-sm">Couldn't load this</p>
+      <p className="mt-2 max-w-md text-muted text-sm leading-6">{message}</p>
       {onRetry ? (
-        <Button onPress={onRetry} size="sm" variant="secondary">
+        <Button className="mt-6" onPress={onRetry} size="sm" variant="secondary">
           <RefreshIcon className="size-4" />
           Try again
         </Button>
       ) : null}
-    </Card>
+    </div>
   );
 }
 

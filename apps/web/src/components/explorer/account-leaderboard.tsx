@@ -2,7 +2,7 @@
 
 import { AsciiSkeleton } from "ascii-reveal";
 
-import { formatInteger, formatQu } from "@/lib/format";
+import { countLabel, formatQu } from "@/lib/format";
 
 import type { IdentityRow } from "./columns";
 import { IdentityLink, TickLink } from "./links";
@@ -19,7 +19,7 @@ export function AccountLeaderboard({
   }
 
   if (accounts.length === 0) {
-    return <p className="py-12 text-center text-muted text-sm">No accounts indexed yet.</p>;
+    return <p className="py-12 text-center text-muted text-sm">No accounts yet.</p>;
   }
 
   const maxTransfers = Math.max(1, ...accounts.map((account) => account.transfer_count ?? 0));
@@ -36,9 +36,9 @@ export function AccountLeaderboard({
           >
             <div className="min-w-0 flex-1">
               <div className="flex items-baseline justify-between gap-4">
-                <IdentityLink avatar identity={account.identity ?? ""} />
+                <IdentityLink identity={account.identity ?? ""} />
                 <span className="shrink-0 text-[10px] text-muted">
-                  {formatInteger(transfers)} transfers
+                  {countLabel(transfers, "transfer")}
                 </span>
               </div>
               <div className="mt-1 flex items-baseline justify-between gap-4 text-[11px] text-muted">

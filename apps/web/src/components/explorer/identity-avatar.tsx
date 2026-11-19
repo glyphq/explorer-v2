@@ -2,7 +2,7 @@
 
 import Avatar from "boring-avatars";
 
-const COLORS = ["#f5f5f5", "#d4d4d4", "#a3a3a3", "#525252", "#171717"];
+const COLORS = ["#f3b8c6", "#f6c9a8", "#f3e3a3", "#bfe3bd", "#a9dbe8", "#c4c7ee", "#e5c3e3"];
 
 export function IdentityAvatar({
   size = 18,
@@ -15,10 +15,10 @@ export function IdentityAvatar({
 }) {
   return (
     <span
-      className="inline-flex shrink-0 overflow-hidden rounded-[4px] ring-1 ring-foreground/10"
+      className="inline-flex shrink-0 overflow-hidden rounded-full ring-1 ring-foreground/10"
       style={{ height: size, width: size }}
     >
-      <Avatar colors={COLORS} name={value || "unknown"} size={size} square variant={variant} />
+      <Avatar colors={COLORS} name={value || "unknown"} size={size} variant={variant} />
     </span>
   );
 }

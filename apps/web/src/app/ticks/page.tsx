@@ -11,11 +11,8 @@ export default function TicksPage() {
   const rows = pageRows(ticks.data?.pages);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
-      <PageHeader
-        description="Every tick Glyph fetched from a Qubic peer, with its quorum evidence and the activity it carried."
-        title="Ticks"
-      />
+    <div className="page-width px-4 py-8 lg:px-8">
+      <PageHeader description="Every verified tick, newest first." title="Ticks" />
 
       {ticks.isError ? (
         <ErrorState
@@ -30,7 +27,7 @@ export default function TicksPage() {
             {ticks.isLoading ? (
               <RecordSkeleton rows={10} />
             ) : rows.length === 0 ? (
-              <RecordEmpty>No ticks indexed yet.</RecordEmpty>
+              <RecordEmpty>No ticks yet.</RecordEmpty>
             ) : (
               <RecordList>
                 {rows.map((tick) => (

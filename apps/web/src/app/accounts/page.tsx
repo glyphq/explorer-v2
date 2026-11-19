@@ -12,9 +12,9 @@ export default function AccountsPage() {
   const rows = pageRows(identities.data?.pages) as IdentityRow[];
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Accounts ranked by their latest indexed activity. Balance reflects the QU flow observed in the indexed range."
+        description="Accounts ranked by recent activity, with balances from the index."
         title="Accounts"
       />
 
@@ -31,7 +31,7 @@ export default function AccountsPage() {
             {identities.isLoading ? (
               <RecordSkeleton rows={10} />
             ) : rows.length === 0 ? (
-              <RecordEmpty>No accounts indexed yet.</RecordEmpty>
+              <RecordEmpty>No accounts yet.</RecordEmpty>
             ) : (
               <RecordList>
                 {rows.map((identity) => (

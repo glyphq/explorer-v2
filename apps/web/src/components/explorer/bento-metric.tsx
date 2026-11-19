@@ -42,7 +42,13 @@ export function BentoMetric({
         )}
         icon={icon}
       />
-      <AsciiReveal className="relative h-full" duration="fast" loading={loading} preset="decode">
+      <AsciiReveal
+        className="relative h-full"
+        duration="fast"
+        loading={loading}
+        origin="top-left"
+        preset="dither"
+      >
         {loading ? (
           <div className="flex h-full flex-col justify-between gap-8">
             <AsciiSkeleton
@@ -52,7 +58,10 @@ export function BentoMetric({
               widths={["40%"]}
             />
             <AsciiSkeleton
-              className={classNames("my-1", valueClassName ?? "text-4xl sm:text-5xl")}
+              className={classNames(
+                "my-1",
+                valueClassName ?? "text-2xl min-[380px]:text-3xl sm:text-5xl",
+              )}
               lines={1}
               variant="dither"
               widths={[valueWidth]}
@@ -67,7 +76,7 @@ export function BentoMetric({
               <div
                 className={classNames(
                   "font-semibold tabular-nums tracking-tight",
-                  valueClassName ?? "text-4xl sm:text-5xl",
+                  valueClassName ?? "text-2xl min-[380px]:text-3xl sm:text-5xl",
                 )}
               >
                 {value}

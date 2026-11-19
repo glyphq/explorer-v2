@@ -27,7 +27,7 @@ export const metadata: Metadata = {
 
 export default function Bpp9000Page() {
   return (
-    <div className="mx-auto w-full max-w-5xl px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <Bpp9000Terminal />
     </div>
   );

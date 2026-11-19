@@ -11,9 +11,9 @@ export default function AssetsPage() {
   const rows = pageRows(assets.data?.pages);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Assets discovered from issuance events in the indexed range."
+        description="Assets issued in the index, with their holders and transfers."
         title="Assets"
       />
 
@@ -30,7 +30,7 @@ export default function AssetsPage() {
             {assets.isLoading ? (
               <RecordSkeleton rows={8} />
             ) : rows.length === 0 ? (
-              <RecordEmpty>No assets have been issued in the indexed range.</RecordEmpty>
+              <RecordEmpty>No assets have been issued yet.</RecordEmpty>
             ) : (
               <RecordList>
                 {rows.map((asset) => (

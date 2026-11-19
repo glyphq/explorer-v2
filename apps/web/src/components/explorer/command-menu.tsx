@@ -2,6 +2,7 @@
 
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { Command } from "cmdk";
 import { AnimatePresence, motion } from "motion/react";
 import type { Route } from "next";
@@ -15,6 +16,7 @@ import { shorten } from "@/lib/format";
 import { activeFor, navigation } from "./navigation";
 
 const HISTORY_KEY = "glyph:command-history";
+const IDENTITY_PATTERN = /^[A-Z]{60}$/;
 
 const typeLabels: Record<string, string> = {
   asset: "Asset",
@@ -97,6 +99,11 @@ function labelForPath(path: string): string {
   }
 }
 
+function directIdentity(query: string): string | null {
+  const value = query.replace(/\s/g, "").toUpperCase();
+  return IDENTITY_PATTERN.test(value) ? value : null;
+}
+
 function isTypingTarget(target: EventTarget | null): boolean {
   if (!(target instanceof HTMLElement)) {
     return false;
@@ -148,6 +155,7 @@ export function CommandMenu({
   const [history, setHistory] = useState<string[]>([]);
   const { data, isFetching } = useSearch(query.trim());
   const results = data?.data ?? [];
+  const identity = directIdentity(query);
 
   useEffect(() => {
     try {
@@ -261,6 +269,31 @@ export function CommandMenu({
                   No results for “{query}”.
                 </Command.Empty>
 
+                {identity ? (
+                  <Command.Group
+                    className="mb-1"
+                    heading={
+                      <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
+                        Open account
+                      </span>
+                    }
+                  >
+                    <Command.Item
+                      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
+                      onSelect={() => run(`/accounts/${identity}` as Route)}
+                      value={`account ${identity} ${query}`}
+                    >
+                      <UsersGroupRoundedIcon className="size-4 shrink-0" />
+                      <span className="min-w-0 flex-1 truncate font-mono text-xs" title={identity}>
+                        {identity}
+                      </span>
+                      <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
+                        Account
+                      </span>
+                    </Command.Item>
+                  </Command.Group>
+                ) : null}
+
                 {history.length > 0 ? (
                   <Command.Group
                     className="mb-1"
@@ -328,6 +361,12 @@ export function CommandMenu({
                       </Command.Loading>
                     ) : null}
                     {results.map((result, index) => {
+                      if (identity && result.type === "identity") {
+                        const value = result.value as Record<string, unknown>;
+                        if (String(value.identity ?? "").toUpperCase() === identity) {
+                          return null;
+                        }
+                      }
                       const route = routeForResult(result);
                       if (!route) {
                         return null;

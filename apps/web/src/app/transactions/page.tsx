@@ -16,9 +16,9 @@ export default function TransactionsPage() {
   const rows = pageRows(transactions.data?.pages);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Transfers observed inside verified ticks. Each row links to its tick, transaction, and participants."
+        description="Transfers and contract calls inside verified ticks, newest first."
         title="Transactions"
       />
 
@@ -35,7 +35,7 @@ export default function TransactionsPage() {
             {transactions.isLoading ? (
               <RecordSkeleton rows={10} />
             ) : rows.length === 0 ? (
-              <RecordEmpty>No transactions indexed yet.</RecordEmpty>
+              <RecordEmpty>No transactions yet.</RecordEmpty>
             ) : (
               <RecordList>
                 {rows.map((transaction) => (

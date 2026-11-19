@@ -188,7 +188,7 @@ function AlignmentSkeleton() {
 function TerminalSkeleton() {
   return (
     <div aria-busy="true" className="space-y-10 overflow-hidden">
-      <section className="border-foreground/10 border-b pb-8">
+      <section className="pb-8">
         <AsciiSkeleton
           as="div"
           className="text-3xl"

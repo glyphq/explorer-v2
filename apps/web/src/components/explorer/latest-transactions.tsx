@@ -69,7 +69,7 @@ export function LatestTransactions({
   }
 
   if (transactions.length === 0) {
-    return <p className="py-12 text-center text-muted text-sm">No transactions indexed yet.</p>;
+    return <p className="py-12 text-center text-muted text-sm">No transactions yet.</p>;
   }
 
   return (

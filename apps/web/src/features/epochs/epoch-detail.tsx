@@ -28,14 +28,14 @@ export function EpochDetail({ epoch }: { epoch: number }) {
 
   if (!valid) {
     return (
-      <div className="mx-auto w-full max-w-[1440px] px-4 py-8 lg:px-8">
+      <div className="page-width px-4 py-8 lg:px-8">
         <ErrorState message="An epoch must be a non-negative integer." />
       </div>
     );
   }
 
   return (
-    <div className="mx-auto w-full max-w-[1440px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
         actions={<CopyButton label="Copy epoch number" value={String(epoch)} />}
         description={
@@ -136,10 +136,7 @@ export function EpochDetail({ epoch }: { epoch: number }) {
               </dl>
             </SectionCard>
 
-            <SectionCard
-              description="Elected computors for this epoch, ordered by index."
-              title="Computor set"
-            >
+            <SectionCard description="The computors elected for this epoch." title="Computor set">
               {computors.isError ? (
                 <ErrorState
                   message={computors.error.message}
@@ -159,7 +156,7 @@ export function EpochDetail({ epoch }: { epoch: number }) {
           </section>
 
           <section className="mt-4">
-            <SectionCard description="Newest ticks in this epoch." title="Ticks">
+            <SectionCard description="Ticks verified in this epoch." title="Ticks">
               <DataTable
                 columns={tickColumns}
                 data={tickRows}

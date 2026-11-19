@@ -6,7 +6,7 @@ import { useRef } from "react";
 
 import { EventSummary } from "@/components/explorer/event-summary";
 import type { Event } from "@/lib/api/generated/types.gen";
-import { formatInteger } from "@/lib/format";
+import { countLabel } from "@/lib/format";
 
 export function EventFeed({
   events,
@@ -92,7 +92,7 @@ export function EventFeed({
         </div>
       </div>
       <div className="px-4 py-2 text-[10px] text-muted">
-        {formatInteger(events.length)} events loaded
+        {countLabel(events.length, "event")} loaded
       </div>
     </div>
   );

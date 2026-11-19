@@ -5,8 +5,6 @@ import { PulseIcon } from "@solar-icons/react/linear/pulse";
 import { RadioIcon } from "@solar-icons/react/linear/radio";
 import { TransferHorizontalIcon } from "@solar-icons/react/linear/transfer-horizontal";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
-import type { Route } from "next";
-import Link from "next/link";
 import { useMemo } from "react";
 
 import { ActivityChart } from "@/components/explorer/activity-chart";
@@ -15,7 +13,7 @@ import { BentoMetric } from "@/components/explorer/bento-metric";
 import { EventTypeMosaic } from "@/components/explorer/event-type-mosaic";
 import { LatestTransactions } from "@/components/explorer/latest-transactions";
 import { MarketCard } from "@/components/explorer/market-card";
-import { SectionCard } from "@/components/explorer/section-card";
+import { SectionCard, SectionLink } from "@/components/explorer/section-card";
 import { TickPulse } from "@/components/explorer/tick-pulse";
 import type { EventTypeCount } from "@/lib/api/generated/types.gen";
 import {
@@ -72,7 +70,7 @@ export default function HomePage() {
   }, [latestTransactions, liveTransactions]);
   return (
     <div className="pb-8">
-      <div className="mx-auto w-full max-w-[1440px] px-4 lg:px-8">
+      <div className="page-width px-4 lg:px-8">
         <section className="grid grid-cols-2 gap-3 py-8 lg:grid-cols-4">
           <BentoMetric
             className="col-span-2 row-span-2"
@@ -81,7 +79,7 @@ export default function HomePage() {
             label="Head tick"
             loading={status.isLoading && !liveHead}
             value={<AnimatedNumber format={{ maximumFractionDigits: 0 }} value={liveHead?.tick} />}
-            valueClassName="text-5xl sm:text-7xl"
+            valueClassName="text-4xl min-[380px]:text-5xl sm:text-7xl"
             valueWidth="6ch"
           />
           <BentoMetric
@@ -141,12 +139,8 @@ export default function HomePage() {
 
         <section>
           <SectionCard
-            action={
-              <span className="font-mono text-[10px] text-muted uppercase tracking-[0.14em]">
-                24 hourly buckets
-              </span>
-            }
-            description="Deduplicated transaction and event counts from indexed ticks."
+            action={<span className="text-muted text-xs">Last 24 hours</span>}
+            description="How busy the network was, hour by hour."
             title="Network activity"
           >
             <ActivityChart buckets={activity.data?.data} isLoading={activity.isLoading} />
@@ -156,11 +150,11 @@ export default function HomePage() {
         <section className="mt-4 grid gap-4 xl:grid-cols-2">
           <SectionCard
             action={
-              <Link className="text-muted text-xs hover:text-foreground" href={"/ticks" as Route}>
-                All ticks
-              </Link>
+              <SectionLink href="/ticks" label="See all ticks">
+                See all
+              </SectionLink>
             }
-            description="Newest verified ticks in the index."
+            description="The newest ticks confirmed by the network."
             title="Latest ticks"
           >
             <TickPulse />
@@ -168,14 +162,11 @@ export default function HomePage() {
 
           <SectionCard
             action={
-              <Link
-                className="text-muted text-xs hover:text-foreground"
-                href={"/transactions" as Route}
-              >
-                All transactions
-              </Link>
+              <SectionLink href="/transactions" label="See all transactions">
+                See all
+              </SectionLink>
             }
-            description="Most recent transfers observed in verified ticks."
+            description="Transfers and contract calls, as they are verified."
             title="Latest transactions"
           >
             <LatestTransactions isLoading={transactions.isLoading} transactions={transactionFeed} />
@@ -183,10 +174,7 @@ export default function HomePage() {
         </section>
 
         <section className="mt-4">
-          <SectionCard
-            description="Decoded event types across the indexed range."
-            title="Event types"
-          >
+          <SectionCard description="The kinds of events the index has decoded." title="Event types">
             <EventTypeMosaic events={latestEventTypes} isLoading={eventTypes.isLoading} />
           </SectionCard>
         </section>

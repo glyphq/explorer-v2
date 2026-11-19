@@ -70,7 +70,7 @@ export function TickDetail({ tick }: { tick: number }) {
 
   if (!valid) {
     return (
-      <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+      <div className="page-width px-4 py-8 lg:px-8">
         <ErrorState message="A tick must be a positive integer." />
       </div>
     );
@@ -79,7 +79,7 @@ export function TickDetail({ tick }: { tick: number }) {
   const hasMore = Boolean(transactions.hasNextPage || events.hasNextPage);
 
   return (
-    <div className="mx-auto w-full max-w-[1200px] px-4 py-8 lg:px-8">
+    <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
         description={
           <span className="flex flex-wrap items-center gap-x-2 gap-y-1">
@@ -207,10 +207,7 @@ export function TickDetail({ tick }: { tick: number }) {
             </SectionCard>
           </div>
 
-          <SectionCard
-            description="Transactions in this tick, with their decoded events attached."
-            title="Activity"
-          >
+          <SectionCard description="Transfers and contract calls in this tick." title="Activity">
             <ActivityFeed
               groups={groups}
               isLoading={transactions.isLoading || events.isLoading}

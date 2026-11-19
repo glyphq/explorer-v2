@@ -42,6 +42,16 @@ export function formatCompact(value: number | null | undefined): string {
   return compactFormatter.format(value);
 }
 
+export function countLabel(
+  value: number | null | undefined,
+  singular: string,
+  plural = `${singular}s`,
+): string {
+  const count =
+    value === null || value === undefined || !Number.isFinite(value) ? undefined : value;
+  return `${formatInteger(count)} ${count === 1 ? singular : plural}`;
+}
+
 export function formatQu(value: number | null | undefined): string {
   if (value === null || value === undefined || !Number.isFinite(value)) {
     return "—";
@@ -73,21 +83,33 @@ export function formatPercent(value: number | null | undefined, digits = 2): str
 }
 
 export function formatTimestamp(value: string | null | undefined): string {
+  if (!value) {
+    return "—";
+  }
   const date = moment.utc(value);
   return date.isValid() ? date.format("DD MMM YYYY, HH:mm:ss [UTC]") : "—";
 }
 
 export function formatDate(value: string | null | undefined): string {
+  if (!value) {
+    return "—";
+  }
   const date = moment.utc(value);
   return date.isValid() ? date.format("DD MMM YYYY") : "—";
 }
 
 export function formatHour(value: string | null | undefined): string {
+  if (!value) {
+    return "—";
+  }
   const date = moment.utc(value);
   return date.isValid() ? date.format("HH:mm") : "—";
 }
 
 export function formatRelativeTime(value: string | null | undefined): string {
+  if (!value) {
+    return "—";
+  }
   const date = moment.utc(value);
   return date.isValid() ? date.fromNow() : "—";
 }

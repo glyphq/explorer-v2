@@ -74,7 +74,7 @@ export function CurrentCall({
 }) {
   if (!(colony && hour)) {
     return (
-      <section className="border-foreground/10 border-b pb-8">
+      <section className="pb-8">
         <h2 className="font-medium text-2xl text-foreground">No call has been recorded yet.</h2>
         <p className="mt-2 text-muted text-sm leading-6">This page checks again every minute.</p>
       </section>
@@ -89,7 +89,7 @@ export function CurrentCall({
     hour.said === "up" ? "success" : hour.said === "down" ? "danger" : "default";
 
   return (
-    <section className="border-foreground/10 border-b pb-8">
+    <section className="pb-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <h2 className="max-w-3xl font-medium text-3xl text-foreground leading-[1.08] tracking-tight sm:text-4xl">
           {callHeadline(hour, colony.minimum, colony.agreement)}
