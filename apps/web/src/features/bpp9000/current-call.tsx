@@ -8,7 +8,7 @@ import { ArrowUpIcon } from "@solar-icons/react/linear/arrow-up";
 import { QuestionCircleIcon } from "@solar-icons/react/linear/question-circle";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 
-import { formatInteger } from "@/lib/format";
+import { classNames, formatInteger } from "@/lib/format";
 
 import { formatClock, formatCountdown } from "./format-time";
 import { callHeadline, hasConsensus, hourCloseAt, majorityShare } from "./model";
@@ -87,6 +87,8 @@ export function CurrentCall({
   const isOpen = closesIn > 0;
   const tone: "success" | "danger" | "default" =
     hour.said === "up" ? "success" : hour.said === "down" ? "danger" : "default";
+  const fillClass =
+    tone === "success" ? "bg-success" : tone === "danger" ? "bg-danger" : "bg-foreground";
 
   return (
     <section className="pb-8">
@@ -170,19 +172,29 @@ export function CurrentCall({
         ) : null}
       </div>
 
-      <div aria-hidden="true" className="mt-5 flex items-center gap-3">
-        <div className="relative h-1 flex-1 rounded-full bg-surface-secondary">
+      <div className="mt-5 flex items-center gap-3">
+        <div
+          aria-label={`Agreement ${share.toFixed(0)} percent, ${colony.agreement} percent required`}
+          aria-valuemax={100}
+          aria-valuemin={0}
+          aria-valuenow={Math.round(share)}
+          aria-valuetext={`${share.toFixed(0)} percent agreed, ${colony.agreement} percent required`}
+          className="relative h-1.5 flex-1 rounded-full bg-surface-secondary"
+          role="progressbar"
+        >
           <div
-            className="h-full rounded-full bg-foreground"
+            aria-hidden="true"
+            className={classNames("h-full rounded-full", fillClass)}
             style={{ width: `${Math.min(share, 100)}%` }}
           />
           <span
-            className="absolute top-1/2 h-2.5 w-px -translate-y-1/2 bg-background"
+            aria-hidden="true"
+            className="absolute top-1/2 h-3 w-0.5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-foreground ring-2 ring-background"
             style={{ left: `${colony.agreement}%` }}
           />
         </div>
         <span className="text-muted text-xs tabular-nums">
-          {share.toFixed(0)}% / {colony.agreement}%
+          {share.toFixed(0)}% / {colony.agreement}% needed
         </span>
       </div>
 

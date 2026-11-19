@@ -10,6 +10,9 @@ import { callLabel, directionLabel, majorityShare, orderHours, statusLabel } fro
 import type { BppColony, BppHour, BppHourStatus } from "./types";
 
 const DAY_SECONDS = 86_400;
+const CHART_RIGHT_GUTTER = 36;
+const HOUR_MIN_WIDTH = 12;
+const LABEL_INTERVAL = HOUR_MIN_WIDTH * 3;
 const MAIN_HEIGHT = 220;
 const VOLUME_HEIGHT = 54;
 
@@ -77,18 +80,38 @@ function dayGroups(hours: BppHour[]) {
   return groups;
 }
 
-function Readout({ hour }: { hour: BppHour | null }) {
+function Readout({
+  currentHour,
+  hour,
+  onClearSelection,
+  pinned,
+}: {
+  currentHour: number | null;
+  hour: BppHour | null;
+  onClearSelection: () => void;
+  pinned: boolean;
+}) {
   if (!hour) {
     return null;
   }
 
   const share = majorityShare(hour) ?? 0;
+  const isCurrent = hour.hour === currentHour;
 
   return (
-    <div className="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-sm">
+    <div
+      aria-atomic="true"
+      aria-live="polite"
+      className="mt-4 flex min-h-5 flex-wrap items-baseline gap-x-3 gap-y-1 text-sm"
+    >
       <span className="font-medium text-foreground">Hour {hour.hour}</span>
+      {isCurrent ? (
+        <span className="rounded-full bg-surface-secondary px-2 py-0.5 font-medium text-[10px] text-foreground">
+          Now
+        </span>
+      ) : null}
       <span className="text-muted text-xs tabular-nums">
-        {formatClock(hour.at)}–{formatClock(hour.at + 3600)} UTC
+        {formatDayLabel(hour.at)} {formatClock(hour.at)}–{formatClock(hour.at + 3600)} UTC
       </span>
       <span
         className={classNames(
@@ -104,7 +127,7 @@ function Readout({ hour }: { hour: BppHour | null }) {
         <>
           <span className="text-muted text-xs">{share.toFixed(0)}% agreed</span>
           <span className="text-muted text-xs tabular-nums">
-            {formatInteger(hour.voters)} votes · {formatInteger(hour.up)} up /{" "}
+            {formatInteger(hour.voters)} votes, {formatInteger(hour.up)} up /{" "}
             {formatInteger(hour.down)} down
           </span>
           <span className="text-muted text-xs">BTC {directionLabel(hour.went).toLowerCase()}</span>
@@ -115,12 +138,22 @@ function Readout({ hour }: { hour: BppHour | null }) {
       ) : (
         <span className="text-muted text-xs">No votes yet</span>
       )}
+      {pinned ? (
+        <button
+          className="text-[11px] text-muted underline-offset-2 transition-colors hover:text-foreground hover:underline"
+          onClick={onClearSelection}
+          type="button"
+        >
+          Back to now
+        </button>
+      ) : null}
     </div>
   );
 }
 
 export function CallTape({ colony, now }: { colony: BppColony | null; now: number }) {
-  const [selected, setSelected] = useState<number | null>(null);
+  const [hovered, setHovered] = useState<number | null>(null);
+  const [pinned, setPinned] = useState<number | null>(null);
   const scroller = useRef<HTMLDivElement>(null);
   const hours = useMemo(
     () => (colony ? orderHours(colony.hours).filter((hour) => hour.at <= now) : []),
@@ -131,9 +164,16 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
   useEffect(() => {
     const element = scroller.current;
     if (element) {
-      element.scrollLeft = element.scrollWidth;
+      const maxScroll = element.scrollWidth - element.clientWidth;
+      element.scrollLeft =
+        maxScroll > 0 ? Math.floor(maxScroll / LABEL_INTERVAL) * LABEL_INTERVAL : 0;
     }
   }, [hours.length]);
+
+  useEffect(() => {
+    setHovered(null);
+    setPinned(null);
+  }, [colony?.epoch]);
 
   if (!colony || hours.length === 0) {
     return null;
@@ -141,7 +181,11 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
 
   const current =
     hours.find((hour) => hour.at <= now && now < hour.at + 3600) ?? hours.at(-1) ?? null;
-  const active = hours.find((hour) => hour.hour === selected) ?? current ?? hours[0];
+  const active =
+    hours.find((hour) => hour.hour === hovered) ??
+    hours.find((hour) => hour.hour === pinned) ??
+    current ??
+    hours[0];
   const counted = hours.filter((hour) => hour.voters >= colony.minimum && hour.said !== "split");
   const scaleHours = counted.length > 0 ? counted : hours;
   const maxShare = Math.max(55, ...scaleHours.map((hour) => majorityShare(hour) ?? 50));
@@ -149,7 +193,6 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
   const range = yMax - 50;
   const ticks = Array.from({ length: Math.floor(range / 5) + 1 }, (_, index) => 50 + index * 5);
   const maxVoters = Math.max(100, ...hours.map((hour) => hour.voters));
-  const currentIndex = current ? hours.findIndex((hour) => hour.hour === current.hour) : -1;
   const activeIndex = active ? hours.findIndex((hour) => hour.hour === active.hour) : -1;
 
   const percentFromBase = (value: number) => ((value - 50) / range) * 100;
@@ -173,7 +216,12 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
         </div>
       </div>
 
-      <Readout hour={active} />
+      <Readout
+        currentHour={current?.hour ?? null}
+        hour={active}
+        onClearSelection={() => setPinned(null)}
+        pinned={pinned !== null}
+      />
 
       <div className="mt-4 flex gap-2">
         <div
@@ -193,7 +241,12 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
         </div>
 
         <div className="min-w-0 flex-1 overflow-x-auto pb-1" ref={scroller}>
-          <div style={{ minWidth: Math.max(240, hours.length * 8) }}>
+          <div
+            className="pr-9"
+            style={{
+              minWidth: Math.max(240, hours.length * HOUR_MIN_WIDTH) + CHART_RIGHT_GUTTER,
+            }}
+          >
             <div className="relative border-foreground/10 border-b" style={{ height: MAIN_HEIGHT }}>
               {ticks.map((tick) => (
                 <span
@@ -209,17 +262,6 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
                 className="pointer-events-none absolute right-0 left-0 border-foreground/30 border-t border-dashed"
                 style={{ bottom: `${thresholdTop}%` }}
               />
-
-              {currentIndex >= 0 ? (
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none absolute inset-y-0 bg-foreground/[0.025]"
-                  style={{
-                    left: `${(currentIndex / hours.length) * 100}%`,
-                    width: `${100 / hours.length}%`,
-                  }}
-                />
-              ) : null}
 
               <div className="absolute inset-0 flex">
                 {hours.map((hour) => {
@@ -267,11 +309,17 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
                 {hours.map((hour) => (
                   <button
                     aria-label={hourSummary(hour)}
-                    className="h-full flex-1 focus-visible:bg-foreground/5 focus-visible:outline-none"
+                    aria-pressed={pinned === hour.hour}
+                    className="h-full flex-1 cursor-pointer focus-visible:bg-foreground/5 focus-visible:outline-none"
                     key={hour.hour}
-                    onClick={() => setSelected(hour.hour)}
-                    onFocus={() => setSelected(hour.hour)}
-                    onMouseEnter={() => setSelected(hour.hour)}
+                    onBlur={() => setHovered(null)}
+                    onClick={() => {
+                      setHovered(null);
+                      setPinned((value) => (value === hour.hour ? null : hour.hour));
+                    }}
+                    onFocus={() => setHovered(hour.hour)}
+                    onMouseEnter={() => setHovered(hour.hour)}
+                    onMouseLeave={() => setHovered(null)}
                     title={hourSummary(hour)}
                     type="button"
                   />
@@ -375,7 +423,7 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
           <span className="size-2 rounded-[1px] bg-foreground/20" />
           <span>no consensus</span>
         </span>
-        <span>Volume = voters · dashed 100 min</span>
+        <span>Volume is voters, dashed line marks the 100-vote minimum.</span>
       </div>
     </section>
   );
