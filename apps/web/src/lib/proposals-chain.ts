@@ -179,8 +179,10 @@ async function readTitle(url: string, proposalIndex: number): Promise<string> {
       return fallback;
     }
     const markdown = await response.text();
-    const heading = markdown.match(/^\s*#\s+(.+)$/m)?.[1];
-    const title = heading ? cleanTitle(heading) : fallback;
+    const title =
+      [...markdown.matchAll(/^\s*#\s+(.+)$/gm)]
+        .map((match) => cleanTitle(match[1] ?? ""))
+        .find(Boolean) ?? fallback;
     titleCache.set(rawUrl, title);
     return title;
   } catch {
@@ -258,24 +260,42 @@ async function readProposal(
   };
 }
 
+async function readProposalIndices(
+  contract: GovernanceContract,
+  activeProposals: boolean,
+): Promise<number[]> {
+  const indices: number[] = [];
+  let previousIndex = -1;
+
+  for (let page = 0; page < 32; page += 1) {
+    const response = await queryContract<ContractIndexResponse>(
+      contract.definition,
+      "GetProposalIndices",
+      { activeProposals, prevProposalIndex: previousIndex },
+    );
+    const pageIndices = response.indices.slice(0, response.numOfIndices);
+    indices.push(...pageIndices);
+    const lastIndex = pageIndices.at(-1);
+    if (pageIndices.length < 64 || lastIndex === undefined || lastIndex <= previousIndex) {
+      break;
+    }
+    previousIndex = lastIndex;
+  }
+
+  return [...new Set(indices)];
+}
+
 async function readContractProposals(
   contract: GovernanceContract,
   existingIds: Set<string>,
   openIds: Set<string>,
 ): Promise<Proposal[]> {
-  const [activeResponse, inactiveResponse] = await Promise.all([
-    queryContract<ContractIndexResponse>(contract.definition, "GetProposalIndices", {
-      activeProposals: true,
-      prevProposalIndex: -1,
-    }),
-    queryContract<ContractIndexResponse>(contract.definition, "GetProposalIndices", {
-      activeProposals: false,
-      prevProposalIndex: -1,
-    }),
+  const [activeIndices, inactiveIndices] = await Promise.all([
+    readProposalIndices(contract, true),
+    readProposalIndices(contract, false),
   ]);
-  const activeIndex = new Set(activeResponse.indices.slice(0, activeResponse.numOfIndices));
-  const inactiveIndex = new Set(inactiveResponse.indices.slice(0, inactiveResponse.numOfIndices));
-  const indices = [...new Set([...activeIndex, ...inactiveIndex])];
+  const activeIndex = new Set(activeIndices);
+  const indices = [...new Set([...activeIndices, ...inactiveIndices])];
 
   const required = indices.filter((proposalIndex) => {
     const id = proposalId(contract.definition.index, proposalIndex);

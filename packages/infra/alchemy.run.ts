@@ -11,11 +11,6 @@ export default Alchemy.Stack(
   },
   Effect.gen(function* () {
     const cache = yield* Cloudflare.KV.Namespace("Cache");
-    const proposals = yield* Cloudflare.D1.Database("Proposals", {
-      migrations: "./migrations",
-      name: "explorer-v2-proposals",
-      primaryLocationHint: "weur",
-    });
 
     const webWorker = yield* Cloudflare.Website.StaticSite("web", {
       assets: {
@@ -39,7 +34,7 @@ export default Alchemy.Stack(
         IMAGES: Cloudflare.Images.Images(),
         NEXT_INC_CACHE_KV: cache,
         NEXT_TAG_CACHE_KV: cache,
-        PROPOSALS_DB: proposals,
+        PROPOSALS_KV: cache,
       },
       main: "../../apps/web/.open-next/worker.js",
       // Rebuild shared workspace dependencies until Alchemy has a workspace-aware default memo.

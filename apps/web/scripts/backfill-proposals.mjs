@@ -109,8 +109,10 @@ async function readTitle(url, proposalIndex) {
       return fallback;
     }
     const markdown = await response.text();
-    const heading = markdown.match(/^\s*#\s+(.+)$/m)?.[1];
-    const title = heading ? cleanTitle(heading) : fallback;
+    const title =
+      [...markdown.matchAll(/^\s*#\s+(.+)$/gm)]
+        .map((match) => cleanTitle(match[1] ?? ""))
+        .find(Boolean) ?? fallback;
     titleCache.set(rawUrl, title);
     return title;
   } catch {
@@ -121,6 +123,27 @@ async function readTitle(url, proposalIndex) {
 function optionCounts(response) {
   const counts = response.results?.optionVoteCount ?? [];
   return [Number(counts[1] ?? 0), Number(counts[2] ?? 0)];
+}
+
+async function readProposalIndices(contractName, activeProposals) {
+  const indices = [];
+  let previousIndex = -1;
+
+  for (let page = 0; page < 32; page += 1) {
+    const response = await query(contractName, "GetProposalIndices", {
+      activeProposals,
+      prevProposalIndex: previousIndex,
+    });
+    const pageIndices = response.indices.slice(0, response.numOfIndices);
+    indices.push(...pageIndices);
+    const lastIndex = pageIndices.at(-1);
+    if (pageIndices.length < 64 || lastIndex === undefined || lastIndex <= previousIndex) {
+      break;
+    }
+    previousIndex = lastIndex;
+  }
+
+  return [...new Set(indices)];
 }
 
 async function readProposal(contract, proposalIndex, active) {
@@ -199,18 +222,10 @@ async function mapConcurrent(items, limit, mapper) {
 async function main() {
   const jobs = [];
   for (const contract of CONTRACTS) {
-    const [active, inactive] = await Promise.all([
-      query(contract.name, "GetProposalIndices", {
-        activeProposals: true,
-        prevProposalIndex: -1,
-      }),
-      query(contract.name, "GetProposalIndices", {
-        activeProposals: false,
-        prevProposalIndex: -1,
-      }),
+    const [activeIndices, inactiveIndices] = await Promise.all([
+      readProposalIndices(contract.name, true),
+      readProposalIndices(contract.name, false),
     ]);
-    const activeIndices = active.indices.slice(0, active.numOfIndices);
-    const inactiveIndices = inactive.indices.slice(0, inactive.numOfIndices);
     const activeSet = new Set(activeIndices);
     const indices = [...new Set([...activeIndices, ...inactiveIndices])];
     for (const proposalIndex of indices) {

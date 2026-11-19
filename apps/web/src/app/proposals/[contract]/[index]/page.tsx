@@ -30,7 +30,11 @@ function parseIndex(value: string): number | null {
 }
 
 function stripLeadingHeading(content: string): string {
-  const stripped = content.replace(/^\uFEFF?\s*#\s+[^\n]+\n+/, "").trim();
+  let rest = content;
+  while (/^\uFEFF?\s*#\s*(?:\n|$)/.test(rest)) {
+    rest = rest.replace(/^\uFEFF?\s*#\s*\n+/, "");
+  }
+  const stripped = rest.replace(/^\uFEFF?\s*#\s+[^\n]+\n+/, "").trim();
   return stripped || content.trim();
 }
 

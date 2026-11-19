@@ -3,16 +3,59 @@ import type { Route } from "next";
 import { formatInteger } from "@/lib/format";
 import type { Proposal } from "@/lib/proposals";
 
-const STATUS_STYLES: Record<number, { className: string; label: string }> = {
-  0: { className: "bg-surface-secondary text-muted", label: "Draft" },
-  1: { className: "bg-surface-secondary text-muted", label: "Publishing" },
-  2: { className: "bg-accent/12 text-accent", label: "Voting" },
-  3: { className: "bg-success/12 text-success", label: "Passed" },
-  4: { className: "bg-danger/12 text-danger", label: "Failed" },
-  5: { className: "bg-surface-secondary text-muted", label: "Cancelled" },
-  6: { className: "bg-danger/12 text-danger", label: "Rejected" },
-  7: { className: "bg-surface-secondary text-muted", label: "Inconclusive" },
-};
+const STATUS_META: Record<number, { barClassName: string; chipClassName: string; label: string }> =
+  {
+    0: {
+      barClassName: "bg-foreground/20",
+      chipClassName: "bg-surface-secondary text-muted",
+      label: "Draft",
+    },
+    1: {
+      barClassName: "bg-foreground/20",
+      chipClassName: "bg-surface-secondary text-muted",
+      label: "Publishing",
+    },
+    2: {
+      barClassName: "bg-foreground/20",
+      chipClassName: "bg-accent/12 text-accent",
+      label: "Voting",
+    },
+    3: {
+      barClassName: "bg-success",
+      chipClassName: "bg-success/12 text-success",
+      label: "Passed",
+    },
+    4: {
+      barClassName: "bg-danger",
+      chipClassName: "bg-danger/12 text-danger",
+      label: "Failed",
+    },
+    5: {
+      barClassName: "bg-foreground/20",
+      chipClassName: "bg-surface-secondary text-muted",
+      label: "Cancelled",
+    },
+    6: {
+      barClassName: "bg-danger",
+      chipClassName: "bg-danger/12 text-danger",
+      label: "Rejected",
+    },
+    7: {
+      barClassName: "bg-foreground/20",
+      chipClassName: "bg-surface-secondary text-muted",
+      label: "Inconclusive",
+    },
+  };
+
+export function statusMeta(status: number) {
+  return (
+    STATUS_META[status] ?? {
+      barClassName: "bg-foreground/20",
+      chipClassName: "bg-surface-secondary text-muted",
+      label: "Unknown",
+    }
+  );
+}
 
 export function contractTicker(proposal: Proposal): string {
   if (proposal.contractIndex === 6) {
@@ -29,12 +72,9 @@ export function proposalHref(proposal: Proposal): Route {
 }
 
 export function StatusChip({ status }: { status: number }) {
-  const meta = STATUS_STYLES[status] ?? {
-    className: "bg-surface-secondary text-muted",
-    label: "Unknown",
-  };
+  const meta = statusMeta(status);
   return (
-    <span className={`rounded-full px-2.5 py-1 font-medium text-[10px] ${meta.className}`}>
+    <span className={`rounded-full px-2.5 py-1 font-medium text-[10px] ${meta.chipClassName}`}>
       {meta.label}
     </span>
   );
