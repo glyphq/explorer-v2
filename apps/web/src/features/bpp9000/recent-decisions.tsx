@@ -1,6 +1,6 @@
 "use client";
 
-import { Card } from "@heroui/react";
+import { Card, Chip } from "@heroui/react";
 import { ArrowDownIcon } from "@solar-icons/react/linear/arrow-down";
 import { ArrowUpIcon } from "@solar-icons/react/linear/arrow-up";
 
@@ -32,38 +32,77 @@ function statusClass(status: BppHour["status"]): string {
 
 function RecentRow({ hour }: { hour: BppHour }) {
   const share = majorityShare(hour) ?? 0;
-  const votes = Math.max(hour.up, hour.down);
 
   return (
-    <li className="flex items-start justify-between gap-3 rounded-md bg-surface-secondary/55 px-3 py-2">
-      <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-x-1.5 text-sm">
+    <tr>
+      <td className="whitespace-nowrap py-3 pr-4 align-top text-muted text-xs tabular-nums">
+        {formatDayClock(hour.at)}
+      </td>
+      <td className="py-3 pr-4 align-top">
+        <span className="flex items-center gap-1.5 font-medium text-foreground text-sm">
           <CallIcon direction={hour.said} />
-          <span className="font-medium text-foreground">{callLabel(hour.said)}</span>
-          <span className="text-muted text-xs">{formatDayClock(hour.at)}</span>
-        </div>
-        <p className="mt-0.5 text-muted text-xs tabular-nums">
-          {formatInteger(votes)} of {formatInteger(hour.voters)} agreed · {share.toFixed(0)}%
-        </p>
-      </div>
-      <div className="shrink-0 text-right">
-        <p className="text-muted text-xs">BTC {directionLabel(hour.went).toLowerCase()}</p>
-        <p className={classNames("mt-0.5 font-medium text-xs", statusClass(hour.status))}>
+          {callLabel(hour.said)}
+        </span>
+      </td>
+      <td className="hidden py-3 pr-4 text-right align-top text-sm tabular-nums sm:table-cell">
+        {formatInteger(hour.up)}
+      </td>
+      <td className="hidden py-3 pr-4 text-right align-top text-sm tabular-nums sm:table-cell">
+        {formatInteger(hour.down)}
+      </td>
+      <td className="hidden py-3 pr-4 text-right align-top text-muted text-sm tabular-nums sm:table-cell">
+        {share.toFixed(0)}%
+      </td>
+      <td className="py-3 pr-4 align-top text-sm">{directionLabel(hour.went).toLowerCase()}</td>
+      <td
+        className={classNames(
+          "whitespace-nowrap py-3 text-right align-top font-medium text-xs",
+          statusClass(hour.status),
+        )}
+      >
+        {statusLabel(hour.status)}
+      </td>
+    </tr>
+  );
+}
+
+function RecentItem({ hour }: { hour: BppHour }) {
+  const share = majorityShare(hour) ?? 0;
+
+  return (
+    <li className="py-3">
+      <div className="flex items-baseline justify-between gap-3">
+        <span className="text-muted text-xs tabular-nums">{formatDayClock(hour.at)}</span>
+        <span className={classNames("font-medium text-xs", statusClass(hour.status))}>
           {statusLabel(hour.status)}
-        </p>
+        </span>
       </div>
+      <div className="mt-1 flex flex-wrap items-baseline gap-x-2 gap-y-1">
+        <span className="flex items-center gap-1.5 font-medium text-foreground text-sm">
+          <CallIcon direction={hour.said} />
+          {callLabel(hour.said)}
+        </span>
+        <span className="text-muted text-xs tabular-nums">
+          {formatInteger(hour.up)} up · {formatInteger(hour.down)} down · {share.toFixed(0)}% agreed
+        </span>
+      </div>
+      <p className="mt-0.5 text-muted text-xs">BTC {directionLabel(hour.went).toLowerCase()}</p>
     </li>
   );
 }
 
 export function RecentCalls({ colony, now }: { colony: BppColony | null; now: number }) {
-  const decisions = colony ? recentDecisions(colony.hours, now, 5) : [];
+  const decisions = colony ? recentDecisions(colony.hours, now, 8) : [];
 
   return (
     <Card className="gap-0 bg-surface p-5 sm:p-6" variant="transparent">
-      <div className="flex items-end justify-between gap-3">
-        <h2 className="font-medium text-foreground text-lg">Recent calls</h2>
-        <p className="text-muted text-xs">Last five closed hours</p>
+      <div className="flex flex-wrap items-baseline justify-between gap-3">
+        <h2 className="font-medium text-foreground text-xl">Recent calls</h2>
+        {decisions.length > 0 ? (
+          <Chip size="sm" variant="soft">
+            Last {decisions.length} closed hours
+          </Chip>
+        ) : null}
       </div>
 
       {decisions.length === 0 ? (
@@ -71,11 +110,33 @@ export function RecentCalls({ colony, now }: { colony: BppColony | null; now: nu
           No hour has closed with a call yet in this epoch.
         </p>
       ) : (
-        <ul className="mt-3 grid gap-1.5">
-          {decisions.map((hour) => (
-            <RecentRow hour={hour} key={hour.at} />
-          ))}
-        </ul>
+        <>
+          <ul className="mt-2 sm:hidden">
+            {decisions.map((hour) => (
+              <RecentItem hour={hour} key={hour.at} />
+            ))}
+          </ul>
+          <div className="mt-4 hidden sm:block">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="text-muted text-xs">
+                  <th className="py-2 pr-4 font-normal">Time</th>
+                  <th className="py-2 pr-4 font-normal">Call</th>
+                  <th className="py-2 pr-4 text-right font-normal">Up</th>
+                  <th className="py-2 pr-4 text-right font-normal">Down</th>
+                  <th className="py-2 pr-4 text-right font-normal">Agreement</th>
+                  <th className="py-2 pr-4 font-normal">Bitcoin</th>
+                  <th className="py-2 text-right font-normal">Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                {decisions.map((hour) => (
+                  <RecentRow hour={hour} key={hour.at} />
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </Card>
   );

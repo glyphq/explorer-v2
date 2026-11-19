@@ -1,11 +1,14 @@
-"use client";
-
-import { Accordion } from "@heroui/react";
 import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 
 import { formatInteger } from "@/lib/format";
 
 import type { BppColony, BppRace } from "./types";
+
+interface QaItem {
+  answer: string;
+  id: string;
+  question: string;
+}
 
 export function QaAccordion({ colony, race }: { colony: BppColony | null; race: BppRace | null }) {
   const minimum = colony?.minimum ?? 100;
@@ -13,7 +16,7 @@ export function QaAccordion({ colony, race }: { colony: BppColony | null; race: 
   const quorum = race?.quorum ?? 451;
   const bar = race?.bar ?? 3504;
 
-  const items = [
+  const items: QaItem[] = [
     {
       answer:
         "A Qubic experiment where computors' trained networks predict whether Bitcoin will close the next hour higher or lower. This page shows their calls and what actually happened.",
@@ -32,7 +35,7 @@ export function QaAccordion({ colony, race }: { colony: BppColony | null; race: 
       question: "What does a call mean?",
     },
     {
-      answer: `A computor is aligned when its network's error score is at or below this epoch's bar of ${formatInteger(bar)} errors. ${formatInteger(quorum)} aligned computors form the quorum the network needs. Open the alignment stat to inspect the full board.`,
+      answer: `A computor is aligned when its network's error score is at or below this epoch's bar of ${formatInteger(bar)} errors. ${formatInteger(quorum)} computors form the quorum the network needs. Open the alignment board to inspect every computor.`,
       id: "aligned",
       question: "What does aligned mean?",
     },
@@ -43,7 +46,7 @@ export function QaAccordion({ colony, race }: { colony: BppColony | null; race: 
     },
     {
       answer:
-        "When the hour closes, the call is right if the network's side matches Bitcoin's move. Wrong means Bitcoin went the other way. No consensus is neither right nor wrong.",
+        "When the hour closes, the call is right if the network's side matches Bitcoin's move. Wrong means Bitcoin went the other way. No consensus is neither right nor wrong, so it does not affect factual accuracy.",
       id: "right-wrong",
       question: "What do right and wrong mean?",
     },
@@ -53,43 +56,31 @@ export function QaAccordion({ colony, race }: { colony: BppColony | null; race: 
       question: "How often does this page refresh?",
     },
     {
-      answer:
-        "The public Jetski ANN Explorer BPP feed. This is a read-only view and does not connect to a wallet.",
+      answer: "The public Jetski ANN Explorer BPP feed.",
       id: "source",
       question: "Where does the data come from?",
     },
     {
-      answer:
-        "No. This is a read-only view of a prediction experiment, not a trading signal or financial advice.",
+      answer: "No. This is a prediction experiment, not a trading signal or financial advice.",
       id: "advice",
       question: "Is this financial advice?",
     },
   ];
 
   return (
-    <section className="pt-2">
-      <h2 className="font-medium text-foreground text-lg">Questions</h2>
-      <p className="mt-1 text-muted text-sm">Plain answers to the things people ask most.</p>
-
-      <Accordion allowsMultipleExpanded className="mt-2" hideSeparator variant="default">
+    <section>
+      <h2 className="font-medium text-foreground text-xl">Questions</h2>
+      <div className="mt-3">
         {items.map((item) => (
-          <Accordion.Item id={item.id} key={item.id}>
-            <Accordion.Heading>
-              <Accordion.Trigger className="flex w-full items-center justify-between gap-4 rounded-md px-0 py-3 text-left font-medium text-foreground text-sm hover:bg-transparent">
-                {item.question}
-                <Accordion.Indicator className="size-4 shrink-0 text-muted">
-                  <AltArrowDownIcon />
-                </Accordion.Indicator>
-              </Accordion.Trigger>
-            </Accordion.Heading>
-            <Accordion.Panel>
-              <Accordion.Body className="px-0 pb-3 text-muted text-sm leading-6">
-                {item.answer}
-              </Accordion.Body>
-            </Accordion.Panel>
-          </Accordion.Item>
+          <details className="group" key={item.id}>
+            <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-3 font-medium text-foreground text-sm [&::-webkit-details-marker]:hidden">
+              {item.question}
+              <AltArrowDownIcon className="size-4 shrink-0 text-muted transition-transform group-open:rotate-180" />
+            </summary>
+            <p className="max-w-3xl pb-3 text-muted text-sm leading-6">{item.answer}</p>
+          </details>
         ))}
-      </Accordion>
+      </div>
     </section>
   );
 }

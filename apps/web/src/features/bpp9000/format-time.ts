@@ -11,6 +11,16 @@ const dayFormatter = new Intl.DateTimeFormat("en-GB", {
   timeZone: "UTC",
 });
 
+const dayOfMonthFormatter = new Intl.DateTimeFormat("en-GB", {
+  day: "numeric",
+  timeZone: "UTC",
+});
+
+const weekdayFormatter = new Intl.DateTimeFormat("en-GB", {
+  timeZone: "UTC",
+  weekday: "short",
+});
+
 export function formatClock(unixSeconds: number): string {
   return clockFormatter.format(new Date(unixSeconds * 1000));
 }
@@ -18,6 +28,11 @@ export function formatClock(unixSeconds: number): string {
 export function formatDayClock(unixSeconds: number): string {
   const date = new Date(unixSeconds * 1000);
   return `${dayFormatter.format(date)} ${clockFormatter.format(date)}`;
+}
+
+export function formatDayLabel(unixSeconds: number): string {
+  const date = new Date(unixSeconds * 1000);
+  return `${weekdayFormatter.format(date)} ${dayOfMonthFormatter.format(date)}`;
 }
 
 export function formatHourRange(unixSeconds: number): string {

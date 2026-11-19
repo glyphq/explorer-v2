@@ -1,6 +1,8 @@
 import type { BppColony, BppDirection, BppHour, BppHourStatus } from "./types";
+import { formatDayLabel } from "./format-time";
 
 export const REFRESH_MS = 60_000;
+const DAY_SECONDS = 86_400;
 
 export function hourCloseAt(hour: BppHour): number {
   return hour.at + 3600;
@@ -26,38 +28,37 @@ export function orderHours(hours: BppHour[]): BppHour[] {
   return [...hours].sort((a, b) => a.at - b.at);
 }
 
-export function epochHours(colony: BppColony, nowSeconds: number): BppHour[] {
-  const ordered = orderHours(colony.hours);
-  const firstAt = ordered[0]?.at ?? nowSeconds - Math.max(0, colony.hoursKnown - 1) * 3600;
-  const byHour = new Map(ordered.map((hour) => [hour.hour, hour]));
+export interface BppDay {
+  at: number;
+  cells: (BppHour | null)[];
+  label: string;
+}
 
-  return Array.from({ length: colony.totalHours }, (_, index) => {
-    const hourNumber = index + 1;
-    const existing = byHour.get(hourNumber);
-    if (existing) {
-      return existing;
-    }
-    return {
-      at: firstAt + index * 3600,
-      down: 0,
-      epoch: colony.epoch,
-      hour: hourNumber,
-      said: null,
-      status: hourNumber > colony.hoursKnown ? "waiting" : "not_scored",
-      up: 0,
-      voters: 0,
-      went: null,
-    } satisfies BppHour;
-  });
+export function epochDays(colony: BppColony, nowSeconds: number): BppDay[] {
+  const started = orderHours(colony.hours).filter((hour) => hour.at <= nowSeconds);
+  const first = started[0];
+  const last = started.at(-1);
+  if (!(first && last)) {
+    return [];
+  }
+
+  const byAt = new Map(started.map((hour) => [hour.at, hour]));
+  const firstDay = Math.floor(first.at / DAY_SECONDS) * DAY_SECONDS;
+  const lastDay = Math.floor(last.at / DAY_SECONDS) * DAY_SECONDS;
+  const days: BppDay[] = [];
+
+  for (let day = firstDay; day <= lastDay; day += DAY_SECONDS) {
+    const cells = Array.from({ length: 24 }, (_, index) => byAt.get(day + index * 3600) ?? null);
+    days.push({ at: day, cells, label: formatDayLabel(day) });
+  }
+
+  return days;
 }
 
 export function accuracyPercent(colony: BppColony): number | null {
   const scored = colony.scored.correct + colony.scored.incorrect;
   if (scored <= 0) {
     return null;
-  }
-  if (colony.scored.accuracy !== null) {
-    return colony.scored.accuracy * 100;
   }
   return (colony.scored.correct / scored) * 100;
 }
