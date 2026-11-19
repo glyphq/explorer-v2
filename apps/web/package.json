@@ -10,11 +10,13 @@
     "dev:bare": "bun run og:generate && next dev --port 3001",
     "env:generate": "varlock codegen",
     "og:generate": "bun run scripts/generate-og.tsx",
+    "proposals:backfill": "node scripts/backfill-proposals.mjs",
     "start": "next start"
   },
   "dependencies": {
     "@explorer-v2/ui": "workspace:*",
     "@glyph-oss/connect": "^4.1.0",
+    "@glyph-oss/contracts": "0.1.0",
     "@heroui/react": "3.2.7",
     "@heroui/styles": "3.2.7",
     "@internationalized/date": "3.12.4",
@@ -41,6 +43,10 @@
     "react-aria": "3.53.1",
     "react-aria-components": "1.22.1",
     "react-dom": "catalog:",
+    "react-markdown": "^10.1.0",
+    "rehype-raw": "^7.0.0",
+    "rehype-sanitize": "^6.0.0",
+    "remark-gfm": "^4.0.1",
     "sileo": "^0.1.6",
     "varlock": "catalog:",
     "zod": "catalog:"

@@ -3,6 +3,7 @@
 import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 import { type ReactNode, useId, useState } from "react";
 
+import { useTransactionContract } from "@/components/explorer/contract-provider";
 import { EventSummary, type EventLike } from "@/components/explorer/event-summary";
 import { IdentityLink, TickLink, TransactionLink } from "@/components/explorer/links";
 import { RecordEmpty, RecordList } from "@/components/explorer/records";
@@ -198,6 +199,7 @@ function ActivityRow({
   transaction: Transaction;
 }) {
   const [open, setOpen] = useState(false);
+  const call = useTransactionContract(transaction);
   const detailsId = useId();
   const isTransfer = (transaction.input_type ?? 0) === 0;
   const outgoing = isTransfer && currentIdentity && transaction.source === currentIdentity;
@@ -249,7 +251,9 @@ function ActivityRow({
   } else if (currentIdentity && destination) {
     sentence = (
       <>
-        Called contract <IdentityLink className="whitespace-nowrap" identity={destination} />
+        Called{" "}
+        <span className="font-medium text-foreground">{call.procedure?.name ?? "contract"}</span> on{" "}
+        <IdentityLink className="whitespace-nowrap" identity={destination} />
         {hasAmount ? (
           <>
             {" "}
@@ -261,7 +265,8 @@ function ActivityRow({
   } else if (source && destination) {
     sentence = (
       <>
-        <IdentityLink className="whitespace-nowrap" identity={source} /> called contract{" "}
+        <IdentityLink className="whitespace-nowrap" identity={source} /> called{" "}
+        <span className="font-medium text-foreground">{call.procedure?.name ?? "contract"}</span> on{" "}
         <IdentityLink className="whitespace-nowrap" identity={destination} />
         {hasAmount ? (
           <>

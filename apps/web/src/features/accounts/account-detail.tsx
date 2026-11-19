@@ -3,6 +3,8 @@
 import { AsciiSkeleton } from "ascii-reveal";
 import { type ReactNode, useCallback } from "react";
 
+import { useContract } from "@/components/explorer/contract-provider";
+import { ContractMark } from "@/components/explorer/contract-mark";
 import { IdentityActions } from "@/components/explorer/identity-actions";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
 import { TickLink } from "@/components/explorer/links";
@@ -30,6 +32,7 @@ function MetricChip({ children, label }: { children: ReactNode; label: string })
 }
 
 export function AccountDetail({ identity }: { identity: string }) {
+  const contract = useContract(identity);
   const identityQuery = useIdentity(identity);
   const liveIdentity = useLiveIdentity(identity);
   const market = useMarket();
@@ -79,15 +82,41 @@ export function AccountDetail({ identity }: { identity: string }) {
   return (
     <div className="page-width px-4 py-8 lg:px-8">
       <section className="pb-8 sm:pb-10">
-        <div className="flex min-w-0 flex-col items-start gap-3">
-          <IdentityAvatar size={56} value={identity} />
-          <p
-            className="select-all break-all font-mono text-sm text-foreground tracking-tight sm:text-base"
-            title={identity}
-          >
-            {identity}
-          </p>
-        </div>
+        {contract ? (
+          <div className="flex min-w-0 flex-col items-start gap-3">
+            <ContractMark name={contract.name} size={56} />
+            <div className="min-w-0">
+              <p className="font-semibold text-xl tracking-tight">{contract.name}</p>
+              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] text-muted">
+                <span className="rounded-full bg-surface-secondary px-2.5 py-1">
+                  Smart contract
+                </span>
+                <span className="rounded-full bg-surface-secondary px-2.5 py-1">
+                  Index {contract.index}
+                </span>
+                <span className="rounded-full bg-surface-secondary px-2.5 py-1">
+                  {contract.assetName}
+                </span>
+              </div>
+              <p
+                className="mt-2 select-all break-all font-mono text-[11px] text-muted"
+                title={identity}
+              >
+                {identity}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="flex min-w-0 flex-col items-start gap-3">
+            <IdentityAvatar size={56} value={identity} />
+            <p
+              className="select-all break-all font-mono text-sm text-foreground tracking-tight sm:text-base"
+              title={identity}
+            >
+              {identity}
+            </p>
+          </div>
+        )}
         <div className="mt-5 font-semibold text-4xl tabular-nums tracking-tight sm:text-5xl">
           {loading ? (
             <AsciiSkeleton className="text-4xl sm:text-5xl" lines={1} widths={["8ch"]} />

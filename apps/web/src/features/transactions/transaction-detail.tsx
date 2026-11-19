@@ -4,16 +4,19 @@ import { ArrowRightIcon } from "@solar-icons/react/linear/arrow-right";
 import { AsciiSkeleton } from "ascii-reveal";
 import type { ReactNode } from "react";
 
+import { useContractByIndex } from "@/components/explorer/contract-provider";
+import { DetailSection } from "@/components/explorer/detail-section";
 import { EventSummary } from "@/components/explorer/event-summary";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
 import { CopyableId, CopyButton, IdentityLink, TickLink } from "@/components/explorer/links";
 import { ProfileHero } from "@/components/explorer/profile-hero";
 import { RecordEmpty, RecordList, RecordRow } from "@/components/explorer/records";
-import { SectionCard } from "@/components/explorer/section-card";
 import { ErrorState } from "@/components/explorer/state";
 import type { TransactionEffect } from "@/lib/api/generated/types.gen";
 import { useTransaction, useTransactionEffects, useTransactionStatus } from "@/lib/api/hooks";
 import { countLabel, formatInteger, formatQu, formatTimestamp, shorten } from "@/lib/format";
+
+import { ContractCallPanel } from "./contract-call";
 
 type StatusBody = {
   hash?: string;
@@ -40,10 +43,13 @@ function Field({ children, label, mono }: { children: ReactNode; label: string; 
 }
 
 function EffectRow({ effect }: { effect: TransactionEffect }) {
+  const contract = useContractByIndex(effect.contract_index);
   const kind = effect.kind.replaceAll("_", " ");
   const hasParticipants = effect.from || effect.to;
   const facts = [
-    effect.contract_index === undefined ? null : `contract ${effect.contract_index}`,
+    effect.contract_index === undefined
+      ? null
+      : (contract?.name ?? `contract ${effect.contract_index}`),
     effect.op_code ? `op ${effect.op_code}` : null,
     effect.message_type === undefined ? null : `message ${effect.message_type}`,
     effect.name,
@@ -103,7 +109,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
       {transaction.isError ? (
         <ErrorState message={transaction.error.message} onRetry={() => transaction.refetch()} />
       ) : (
-        <div className="space-y-4">
+        <div>
           <ProfileHero
             avatar={<IdentityAvatar size={56} value={hash} variant="pixel" />}
             meta={
@@ -134,7 +140,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
             }
           >
             <div className="grid gap-2 sm:grid-cols-[1fr_auto_1fr] sm:items-center">
-              <div className="min-w-0 rounded-xl bg-surface-secondary p-3">
+              <div className="min-w-0">
                 <p className="text-[11px] text-muted">From</p>
                 <div className="mt-1.5 flex min-w-0 items-center gap-1">
                   <IdentityLink avatar identity={data?.source ?? ""} />
@@ -142,7 +148,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 </div>
               </div>
               <ArrowRightIcon className="mx-auto hidden size-4 text-muted sm:block" />
-              <div className="min-w-0 rounded-xl bg-surface-secondary p-3">
+              <div className="min-w-0">
                 <p className="text-[11px] text-muted">To</p>
                 <div className="mt-1.5 flex min-w-0 items-center gap-1">
                   <IdentityLink avatar identity={data?.destination ?? ""} />
@@ -152,7 +158,9 @@ export function TransactionDetail({ hash }: { hash: string }) {
             </div>
           </ProfileHero>
 
-          <SectionCard title="Details">
+          <ContractCallPanel transaction={data} />
+
+          <DetailSection title="Details">
             <dl className="grid grid-cols-2 gap-x-6 gap-y-5 lg:grid-cols-4">
               <Field label="Input type" mono>
                 {data?.input_type ?? "—"}
@@ -165,7 +173,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
             </dl>
 
             {data?.input_data ? (
-              <details className="mt-6 rounded-xl bg-surface-secondary p-3">
+              <details className="mt-6">
                 <summary className="cursor-pointer font-medium text-foreground text-xs">
                   Raw input data
                 </summary>
@@ -174,9 +182,9 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 </pre>
               </details>
             ) : null}
-          </SectionCard>
+          </DetailSection>
 
-          <SectionCard
+          <DetailSection
             description={
               effectCount === 0
                 ? "No effects."
@@ -195,9 +203,9 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 ))}
               </RecordList>
             )}
-          </SectionCard>
+          </DetailSection>
 
-          <SectionCard
+          <DetailSection
             description={
               eventCount === 0
                 ? "No events."
@@ -223,7 +231,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 ))}
               </RecordList>
             )}
-          </SectionCard>
+          </DetailSection>
         </div>
       )}
     </div>

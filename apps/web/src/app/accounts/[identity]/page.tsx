@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { AccountDetail } from "@/features/accounts/account-detail";
+import { findContractSummary } from "@/lib/contracts/registry";
 import { shorten } from "@/lib/format";
 
 export async function generateMetadata({
@@ -9,9 +10,14 @@ export async function generateMetadata({
   params: Promise<{ identity: string }>;
 }): Promise<Metadata> {
   const { identity } = await params;
-  const title = `Account ${shorten(identity, 10, 8)}`;
+  const contract = findContractSummary(identity);
+  const title = contract
+    ? `${contract.name} smart contract`
+    : `Account ${shorten(identity, 10, 8)}`;
   return {
-    description: "Account balance, activity and counterparties.",
+    description: contract
+      ? `${contract.name} contract address, balance and activity on Qubic.`
+      : "Account balance, activity and counterparties.",
     openGraph: {
       images: [
         {

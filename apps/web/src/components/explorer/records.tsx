@@ -16,6 +16,7 @@ import {
 import type { EventLike } from "./event-summary";
 import { EventSummary } from "./event-summary";
 import { IdentityAvatar } from "./identity-avatar";
+import { useTransactionContract } from "./contract-provider";
 import { IdentityLink, TickLink, TransactionLink } from "./links";
 
 export function RecordList({ children }: { children: ReactNode }) {
@@ -70,6 +71,7 @@ export function TransactionRow({
   transaction: Transaction;
 }) {
   const isTransfer = (transaction.input_type ?? 0) === 0;
+  const call = useTransactionContract(transaction);
   const outgoing = isTransfer && currentIdentity && transaction.source === currentIdentity;
   const incoming = isTransfer && currentIdentity && transaction.destination === currentIdentity;
   const DirectionIcon = outgoing ? ArrowUpIcon : incoming ? ArrowDownIcon : ArrowRightIcon;
@@ -104,7 +106,9 @@ export function TransactionRow({
                   {formatQu(transaction.amount)}
                 </span>
               ) : (
-                <span className="font-medium text-foreground text-sm">Contract call</span>
+                <span className="font-medium text-foreground text-sm">
+                  {call.procedure?.name ?? "Contract call"}
+                </span>
               )}
               {directionLabel && counterparty ? (
                 <>

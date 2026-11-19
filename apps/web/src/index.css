@@ -25,3 +25,200 @@
 [data-sileo-viewport] [data-sileo-description] {
   color: color-mix(in oklab, var(--background) 68%, transparent) !important;
 }
+
+.proposal-document {
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.proposal-document > :first-child {
+  margin-top: 0;
+}
+
+.proposal-document h1,
+.proposal-document h2,
+.proposal-document h3,
+.proposal-document h4 {
+  color: var(--foreground);
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.3;
+  margin: 2.25rem 0 0.85rem;
+  scroll-margin-top: 6rem;
+}
+
+.proposal-document h1 {
+  font-size: 1.7rem;
+}
+
+.proposal-document h2 {
+  font-size: 1.3rem;
+}
+
+.proposal-document h3 {
+  font-size: 1.05rem;
+}
+
+.proposal-document h4 {
+  font-size: 0.95rem;
+}
+
+.proposal-document p,
+.proposal-document ul,
+.proposal-document ol,
+.proposal-document blockquote,
+.proposal-document pre,
+.proposal-document table {
+  margin: 1rem 0;
+}
+
+.proposal-document ul,
+.proposal-document ol {
+  padding-left: 1.4rem;
+}
+
+.proposal-document ul {
+  list-style: disc;
+}
+
+.proposal-document ol {
+  list-style: decimal;
+}
+
+.proposal-document li {
+  margin: 0.35rem 0;
+  padding-left: 0.2rem;
+}
+
+.proposal-document li > ul,
+.proposal-document li > ol {
+  margin: 0.35rem 0;
+}
+
+.proposal-document a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: color-mix(in oklch, var(--foreground) 30%, transparent);
+  text-underline-offset: 0.2em;
+  transition: text-decoration-color 150ms ease;
+}
+
+.proposal-document a:hover {
+  text-decoration-color: var(--foreground);
+}
+
+.proposal-document strong {
+  font-weight: 600;
+}
+
+.proposal-document blockquote {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  color: var(--muted);
+  padding: 0.9rem 1.1rem;
+}
+
+.proposal-document blockquote > :first-child {
+  margin-top: 0;
+}
+
+.proposal-document blockquote > :last-child {
+  margin-bottom: 0;
+}
+
+.proposal-document code {
+  background: var(--surface-secondary);
+  border-radius: 0.35rem;
+  font-family: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
+  font-size: 0.85em;
+  padding: 0.15rem 0.35rem;
+}
+
+.proposal-document pre {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  padding: 1rem 1.1rem;
+}
+
+.proposal-document pre code {
+  background: transparent;
+  border-radius: 0;
+  font-size: 0.82rem;
+  padding: 0;
+}
+
+.proposal-document table {
+  border-collapse: collapse;
+  font-size: 0.85rem;
+  width: 100%;
+}
+
+.proposal-document thead {
+  background: var(--surface-secondary);
+}
+
+.proposal-document tbody tr:nth-child(even) {
+  background: color-mix(in oklch, var(--surface) 55%, transparent);
+}
+
+.proposal-document th,
+.proposal-document td {
+  padding: 0.6rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+}
+
+.proposal-document th {
+  font-weight: 600;
+}
+
+.proposal-document img {
+  border-radius: 0.75rem;
+  height: auto;
+  max-width: 100%;
+}
+
+.proposal-document hr {
+  display: none;
+}
+
+.proposal-document input[type="checkbox"] {
+  margin-right: 0.4rem;
+  vertical-align: baseline;
+}
+
+.proposal-text {
+  color: var(--foreground);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+  white-space: pre-wrap;
+}
+
+@media (max-width: 640px) {
+  .proposal-document table {
+    display: block;
+    overflow-x: auto;
+  }
+}
+
+.proposal-document details {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  padding: 0.9rem 1.1rem;
+}
+
+.proposal-document summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.proposal-document details[open] summary {
+  margin-bottom: 0.6rem;
+}

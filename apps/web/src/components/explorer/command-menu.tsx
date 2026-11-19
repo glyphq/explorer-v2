@@ -13,6 +13,8 @@ import type { SearchResult } from "@/lib/api/generated/types.gen";
 import { useSearch } from "@/lib/api/hooks";
 import { shorten } from "@/lib/format";
 
+import { useContract } from "./contract-provider";
+import { ContractMark } from "./contract-mark";
 import { activeFor, navigation } from "./navigation";
 
 const HISTORY_KEY = "glyph:command-history";
@@ -80,7 +82,7 @@ function labelForPath(path: string): string {
   if (exact) {
     return exact.label;
   }
-  const [root, segment] = path.split("/").filter(Boolean);
+  const [root, segment, third] = path.split("/").filter(Boolean);
   switch (root) {
     case "ticks":
       return `Tick ${segment ?? ""}`;
@@ -92,6 +94,12 @@ function labelForPath(path: string): string {
       return `Epoch ${segment ?? ""}`;
     case "assets":
       return `Asset ${segment ?? ""}`;
+    case "contracts":
+      return segment ? `Contract ${segment.toUpperCase()}` : "Contracts";
+    case "proposals":
+      return segment
+        ? `Proposal ${segment.toUpperCase()}${third ? ` #${third}` : ""}`
+        : "Proposals";
     case "events":
       return "Events";
     default:
@@ -102,6 +110,57 @@ function labelForPath(path: string): string {
 function directIdentity(query: string): string | null {
   const value = query.replace(/\s/g, "").toUpperCase();
   return IDENTITY_PATTERN.test(value) ? value : null;
+}
+
+function SearchResultRow({
+  onSelect,
+  result,
+  skipIdentity,
+}: {
+  onSelect: (path: string) => void;
+  result: SearchResult;
+  skipIdentity: string | null;
+}) {
+  const value = result.value as Record<string, unknown>;
+  const rawIdentity =
+    result.type === "identity" && typeof value.identity === "string" ? value.identity : null;
+  const contract = useContract(rawIdentity);
+
+  if (rawIdentity && skipIdentity && rawIdentity.toUpperCase() === skipIdentity) {
+    return null;
+  }
+
+  const route = contract
+    ? (`/contracts/${contract.name.toLowerCase()}` as Route)
+    : routeForResult(result);
+  if (!route) {
+    return null;
+  }
+
+  return (
+    <Command.Item
+      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
+      onSelect={() => onSelect(route)}
+      value={`${result.type} ${contract?.name ?? labelForResult(result)} ${route}`}
+    >
+      {contract ? (
+        <ContractMark name={contract.name} size={18} />
+      ) : (
+        <MagnifierIcon className="size-4 shrink-0" />
+      )}
+      <span
+        className={
+          contract ? "min-w-0 flex-1 truncate text-xs" : "min-w-0 flex-1 truncate font-mono text-xs"
+        }
+        title={rawIdentity ?? undefined}
+      >
+        {contract?.name ?? labelForResult(result)}
+      </span>
+      <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
+        {contract ? "Contract" : (typeLabels[result.type] ?? result.type)}
+      </span>
+    </Command.Item>
+  );
 }
 
 function isTypingTarget(target: EventTarget | null): boolean {
@@ -156,6 +215,7 @@ export function CommandMenu({
   const { data, isFetching } = useSearch(query.trim());
   const results = data?.data ?? [];
   const identity = directIdentity(query);
+  const directContract = useContract(identity);
 
   useEffect(() => {
     try {
@@ -280,15 +340,32 @@ export function CommandMenu({
                   >
                     <Command.Item
                       className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
-                      onSelect={() => run(`/accounts/${identity}` as Route)}
-                      value={`account ${identity} ${query}`}
+                      onSelect={() =>
+                        run(
+                          directContract
+                            ? (`/contracts/${directContract.name.toLowerCase()}` as Route)
+                            : (`/accounts/${identity}` as Route),
+                        )
+                      }
+                      value={`${directContract ? "contract" : "account"} ${directContract?.name ?? identity} ${query}`}
                     >
-                      <UsersGroupRoundedIcon className="size-4 shrink-0" />
-                      <span className="min-w-0 flex-1 truncate font-mono text-xs" title={identity}>
-                        {identity}
+                      {directContract ? (
+                        <ContractMark name={directContract.name} size={18} />
+                      ) : (
+                        <UsersGroupRoundedIcon className="size-4 shrink-0" />
+                      )}
+                      <span
+                        className={
+                          directContract
+                            ? "min-w-0 flex-1 truncate text-xs"
+                            : "min-w-0 flex-1 truncate font-mono text-xs"
+                        }
+                        title={identity}
+                      >
+                        {directContract?.name ?? identity}
                       </span>
                       <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
-                        Account
+                        {directContract ? "Contract" : "Account"}
                       </span>
                     </Command.Item>
                   </Command.Group>
@@ -360,34 +437,14 @@ export function CommandMenu({
                         Searching the index…
                       </Command.Loading>
                     ) : null}
-                    {results.map((result, index) => {
-                      if (identity && result.type === "identity") {
-                        const value = result.value as Record<string, unknown>;
-                        if (String(value.identity ?? "").toUpperCase() === identity) {
-                          return null;
-                        }
-                      }
-                      const route = routeForResult(result);
-                      if (!route) {
-                        return null;
-                      }
-                      return (
-                        <Command.Item
-                          className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
-                          key={`${result.type}-${index}`}
-                          onSelect={() => run(route)}
-                          value={`${result.type} ${labelForResult(result)} ${route}`}
-                        >
-                          <MagnifierIcon className="size-4 shrink-0" />
-                          <span className="min-w-0 flex-1 truncate font-mono text-xs">
-                            {labelForResult(result)}
-                          </span>
-                          <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
-                            {typeLabels[result.type] ?? result.type}
-                          </span>
-                        </Command.Item>
-                      );
-                    })}
+                    {results.map((result, index) => (
+                      <SearchResultRow
+                        key={`${result.type}-${index}`}
+                        onSelect={run}
+                        result={result}
+                        skipIdentity={identity}
+                      />
+                    ))}
                   </Command.Group>
                 ) : null}
               </Command.List>

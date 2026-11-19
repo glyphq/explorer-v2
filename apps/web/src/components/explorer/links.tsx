@@ -8,12 +8,19 @@ import Link from "next/link";
 import { useState } from "react";
 import { sileo } from "sileo";
 
+import { isBurnIdentity } from "@/lib/contracts/constants";
 import { classNames, shorten } from "@/lib/format";
 
+import { useContract } from "./contract-provider";
+import { BurnMark, ContractMark } from "./contract-mark";
 import { IdentityAvatar } from "./identity-avatar";
 
 const idClass =
   "font-mono text-xs text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
+const contractClass =
+  "font-sans text-xs font-medium text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
+const burnClass =
+  "inline-flex items-center gap-1.5 font-sans text-xs font-medium text-danger underline-offset-4 transition-colors hover:underline";
 
 export function IdentityLink({
   avatar = false,
@@ -26,6 +33,40 @@ export function IdentityLink({
   className?: string;
   full?: boolean;
 }) {
+  const contract = useContract(identity);
+
+  if (isBurnIdentity(identity)) {
+    return (
+      <Link className={classNames(burnClass, className)} href={`/accounts/${identity}` as Route}>
+        <BurnMark size={16} />
+        Burn
+      </Link>
+    );
+  }
+
+  if (contract) {
+    const name = (
+      <Link
+        className={classNames(contractClass, className)}
+        href={`/contracts/${contract.name.toLowerCase()}` as Route}
+        title={`${contract.name} · ${identity}`}
+      >
+        {contract.name}
+      </Link>
+    );
+
+    if (!avatar) {
+      return name;
+    }
+
+    return (
+      <span className="inline-flex min-w-0 items-center gap-1.5">
+        <ContractMark name={contract.name} size={18} />
+        {name}
+      </span>
+    );
+  }
+
   const link = (
     <Link
       className={classNames(idClass, className)}

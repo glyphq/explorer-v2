@@ -7,6 +7,7 @@ import { LayersIcon } from "@solar-icons/react/linear/layers";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 
 import { holderColumns, transferColumns } from "@/components/explorer/columns";
+import { useContractByIndex } from "@/components/explorer/contract-provider";
 import { DataTable } from "@/components/explorer/data-table";
 import { CopyButton, IdentityLink, TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
@@ -22,6 +23,7 @@ export function AssetDetail({ issuer, name }: { issuer: string; name: string }) 
   const holders = useAssetHolders(issuer, name, 200);
   const transfers = useAssetTransfers(issuer, name, "all", 50);
   const data = asset.data?.data;
+  const managingContract = useContractByIndex(data?.managing_contract);
   const transferRows = pageRows(transfers.data?.pages);
 
   return (
@@ -106,8 +108,14 @@ export function AssetDetail({ issuer, name }: { issuer: string; name: string }) 
                 <KeyValue label="Issued tick" value={<TickLink tick={data?.issued_tick} />} />
                 <KeyValue
                   label="Managing contract"
-                  mono
-                  value={formatInteger(data?.managing_contract)}
+                  mono={!managingContract}
+                  value={
+                    managingContract ? (
+                      <IdentityLink identity={managingContract.address} />
+                    ) : (
+                      formatInteger(data?.managing_contract)
+                    )
+                  }
                 />
                 <KeyValue label="Observed" mono value={formatTimestamp(data?.timestamp)} />
               </dl>

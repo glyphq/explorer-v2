@@ -50,6 +50,10 @@ function detailLabel(pathname: string, item: NavigationItem): string | null {
       return first ? shorten(first, 8, 6) : null;
     case "/assets":
       return segment.length > 1 ? `Asset ${decodeSegment(segment[1] ?? "")}` : first || null;
+    case "/contracts":
+      return first ? first.toUpperCase() : null;
+    case "/proposals":
+      return first ? `${first.toUpperCase()}${segment[1] ? ` #${segment[1]}` : ""}` : null;
     default:
       return first ? first.replaceAll("-", " ") : null;
   }

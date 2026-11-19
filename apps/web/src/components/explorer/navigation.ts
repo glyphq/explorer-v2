@@ -1,5 +1,6 @@
 import { BrainIcon } from "@solar-icons/react/linear/brain";
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
 import { DollarMinimalisticIcon } from "@solar-icons/react/linear/dollar-minimalistic";
 import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { Home2Icon } from "@solar-icons/react/linear/home-2";
@@ -61,6 +62,18 @@ const assets = {
   label: "Assets",
 } satisfies NavigationItem;
 
+const contracts = {
+  href: "/contracts",
+  icon: CodeSquareIcon,
+  label: "Contracts",
+} satisfies NavigationItem;
+
+const proposals = {
+  href: "/proposals",
+  icon: DocumentTextIcon,
+  label: "Proposals",
+} satisfies NavigationItem;
+
 const bpp = {
   href: "/bpp9000",
   icon: BrainIcon,
@@ -75,12 +88,23 @@ export const navigation = [
   events,
   accounts,
   assets,
+  contracts,
+  proposals,
   bpp,
 ] as const;
 
 export const primaryNavigation = [overview, bpp] as const;
 
-export const dataNavigation = [ticks, epochs, transactions, events, accounts, assets] as const;
+export const dataNavigation = [
+  ticks,
+  epochs,
+  transactions,
+  events,
+  accounts,
+  assets,
+  contracts,
+  proposals,
+] as const;
 
 export const resourceNavigation: ResourceItem[] = [
   {

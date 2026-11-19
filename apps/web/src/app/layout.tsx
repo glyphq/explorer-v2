@@ -3,8 +3,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 
 import "../index.css";
 import { AppShell } from "@/components/explorer/app-shell";
+import { ContractProvider } from "@/components/explorer/contract-provider";
 import Providers from "@/components/providers";
 import PwaRegistration from "@/components/pwa-registration";
+import { contractSummaries } from "@/lib/contracts/registry";
 
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://explorer.glyphq.org";
 const siteDescription =
@@ -91,9 +93,11 @@ export default function RootLayout({
     <html data-scroll-behavior="smooth" lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <PwaRegistration />
-        <Providers>
-          <AppShell>{children}</AppShell>
-        </Providers>
+        <ContractProvider contracts={contractSummaries}>
+          <Providers>
+            <AppShell>{children}</AppShell>
+          </Providers>
+        </ContractProvider>
       </body>
     </html>
   );

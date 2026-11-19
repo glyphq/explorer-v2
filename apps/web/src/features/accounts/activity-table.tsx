@@ -27,6 +27,7 @@ import { TagIcon } from "@solar-icons/react/linear/tag";
 import { WalletMoneyIcon } from "@solar-icons/react/linear/wallet-money";
 import { useMemo, useState } from "react";
 
+import { useTransactionContract } from "@/components/explorer/contract-provider";
 import { IdentityLink, TickLink, TransactionLink } from "@/components/explorer/links";
 import { classNames, formatQu, formatTimestamp } from "@/lib/format";
 
@@ -285,12 +286,21 @@ function ActivityKindChip({ kind }: { kind: ActivityKind }) {
   );
 }
 
-function InputType({ value }: { value: number | null | undefined }) {
-  const inputType = value ?? 0;
+function InputType({ transaction }: { transaction: ActivityGroup["transaction"] }) {
+  const call = useTransactionContract(transaction);
+  const inputType = call.inputType;
+  const label = call.kind === "call" ? (call.procedure?.name ?? `Call ${inputType}`) : "Transfer";
 
   return (
-    <span className="tabular text-muted text-xs" title={`Input type ${inputType}`}>
-      {inputType}
+    <span
+      className="block max-w-36 truncate text-muted text-xs"
+      title={
+        call.procedure
+          ? `${call.contract?.name}.${call.procedure.name} · input type ${inputType}`
+          : `Input type ${inputType}`
+      }
+    >
+      {label}
     </span>
   );
 }
@@ -662,7 +672,7 @@ export function ActivityTable({
                       <ActivityCell events={group.events} kind={meta.kind} />
                     </Table.Cell>
                     <Table.Cell className={cellClass("inputType")}>
-                      <InputType value={transaction.input_type} />
+                      <InputType transaction={transaction} />
                     </Table.Cell>
                     <Table.Cell className={cellClass("counterparty")}>
                       <IdentityLink avatar identity={meta.counterparty} />

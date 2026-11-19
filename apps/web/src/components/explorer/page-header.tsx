@@ -33,7 +33,7 @@ export function SectionHeading({
   title,
 }: {
   action?: ReactNode;
-  description?: string;
+  description?: ReactNode;
   title: string;
 }) {
   return (
