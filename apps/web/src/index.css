@@ -13,6 +13,11 @@
   }
 }
 
+.call-tape-scroll {
+  -webkit-mask-image: linear-gradient(to right, transparent 0, transparent 8px, #000 20px);
+  mask-image: linear-gradient(to right, transparent 0, transparent 8px, #000 20px);
+}
+
 [data-sileo-viewport] [data-sileo-title],
 [data-sileo-viewport] [data-sileo-badge] {
   color: var(--background) !important;

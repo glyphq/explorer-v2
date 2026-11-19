@@ -10,9 +10,7 @@ import { callLabel, directionLabel, majorityShare, orderHours, statusLabel } fro
 import type { BppColony, BppHour, BppHourStatus } from "./types";
 
 const DAY_SECONDS = 86_400;
-const CHART_RIGHT_GUTTER = 36;
 const HOUR_MIN_WIDTH = 12;
-const LABEL_INTERVAL = HOUR_MIN_WIDTH * 3;
 const MAIN_HEIGHT = 220;
 const VOLUME_HEIGHT = 54;
 
@@ -154,6 +152,7 @@ function Readout({
 export function CallTape({ colony, now }: { colony: BppColony | null; now: number }) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [pinned, setPinned] = useState<number | null>(null);
+  const [scrollable, setScrollable] = useState(false);
   const scroller = useRef<HTMLDivElement>(null);
   const hours = useMemo(
     () => (colony ? orderHours(colony.hours).filter((hour) => hour.at <= now) : []),
@@ -163,11 +162,20 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
 
   useEffect(() => {
     const element = scroller.current;
-    if (element) {
-      const maxScroll = element.scrollWidth - element.clientWidth;
-      element.scrollLeft =
-        maxScroll > 0 ? Math.floor(maxScroll / LABEL_INTERVAL) * LABEL_INTERVAL : 0;
+    if (!element) {
+      return;
     }
+
+    const update = () => {
+      const maxScroll = element.scrollWidth - element.clientWidth;
+      setScrollable(maxScroll > 0);
+      element.scrollLeft = maxScroll;
+    };
+
+    update();
+    const observer = new ResizeObserver(update);
+    observer.observe(element);
+    return () => observer.disconnect();
   }, [hours.length]);
 
   useEffect(() => {
@@ -240,13 +248,14 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
           ))}
         </div>
 
-        <div className="min-w-0 flex-1 overflow-x-auto pb-1" ref={scroller}>
-          <div
-            className="pr-9"
-            style={{
-              minWidth: Math.max(240, hours.length * HOUR_MIN_WIDTH) + CHART_RIGHT_GUTTER,
-            }}
-          >
+        <div
+          className={classNames(
+            "min-w-0 flex-1 overflow-x-auto pb-1",
+            scrollable && "call-tape-scroll",
+          )}
+          ref={scroller}
+        >
+          <div style={{ minWidth: Math.max(240, hours.length * HOUR_MIN_WIDTH) }}>
             <div className="relative border-foreground/10 border-b" style={{ height: MAIN_HEIGHT }}>
               {ticks.map((tick) => (
                 <span
