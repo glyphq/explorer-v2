@@ -1,5 +1,4 @@
 const actions = [
-  "add",
   "build",
   "chore",
   "ci",
@@ -8,11 +7,9 @@ const actions = [
   "fix",
   "perf",
   "refactor",
-  "remove",
   "revert",
   "style",
   "test",
-  "update",
 ];
 
 /** @type {import("@commitlint/types").UserConfig} */
