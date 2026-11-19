@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, Chip } from "@heroui/react";
+import { Chip } from "@heroui/react";
+import { AsciiSkeleton } from "ascii-reveal";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import { ArrowDownIcon } from "@solar-icons/react/linear/arrow-down";
 import { ArrowUpIcon } from "@solar-icons/react/linear/arrow-up";
@@ -62,19 +63,21 @@ export function CurrentCall({
   now,
   onOpenAlignment,
   race,
+  raceLoading = false,
 }: {
   colony: BppColony | null;
   hour: BppHour | null;
   now: number;
   onOpenAlignment: () => void;
   race: BppRace | null;
+  raceLoading?: boolean;
 }) {
   if (!(colony && hour)) {
     return (
-      <Card className="gap-0 bg-surface p-5 sm:p-6" variant="transparent">
+      <section className="border-foreground/10 border-b pb-8">
         <h2 className="font-medium text-2xl text-foreground">No call has been recorded yet.</h2>
         <p className="mt-2 text-muted text-sm leading-6">This page checks again every minute.</p>
-      </Card>
+      </section>
     );
   }
 
@@ -86,7 +89,7 @@ export function CurrentCall({
     hour.said === "up" ? "success" : hour.said === "down" ? "danger" : "default";
 
   return (
-    <Card className="gap-0 bg-surface p-5 sm:p-6" variant="transparent">
+    <section className="border-foreground/10 border-b pb-8">
       <div className="flex flex-wrap items-start justify-between gap-4">
         <h2 className="max-w-3xl font-medium text-3xl text-foreground leading-[1.08] tracking-tight sm:text-4xl">
           {callHeadline(hour, colony.minimum, colony.agreement)}
@@ -154,6 +157,16 @@ export function CurrentCall({
               </span>
             </Chip>
           </button>
+        ) : raceLoading ? (
+          <Chip aria-hidden className="h-auto overflow-hidden px-3 py-2" size="md" variant="soft">
+            <AsciiSkeleton
+              as="span"
+              className="overflow-hidden"
+              lines={1}
+              variant="dither"
+              widths={["11.5rem"]}
+            />
+          </Chip>
         ) : null}
       </div>
 
@@ -176,6 +189,6 @@ export function CurrentCall({
       <p className="mt-5 max-w-2xl text-muted text-sm leading-6">
         {nextSentence(hour, colony, now, consensus)}
       </p>
-    </Card>
+    </section>
   );
 }

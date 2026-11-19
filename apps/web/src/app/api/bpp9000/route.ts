@@ -4,6 +4,7 @@ import type {
   BppHour,
   BppHourStatus,
   BppRace,
+  BppRaceSnapshot,
   BppSnapshot,
 } from "@/features/bpp9000/types";
 
@@ -118,60 +119,29 @@ function normalizeHours(epoch: number, hours: OverviewHour[]): BppHour[] {
   });
 }
 
-export const dynamic = "force-dynamic";
-
-export async function GET() {
+async function currentEpoch(): Promise<number | null> {
   const tick = await read<TickResponse>("/live/tick-info");
-  const epoch = tick?.tickInfo?.epoch;
-  if (!epoch) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
-  }
+  return tick?.tickInfo?.epoch ?? null;
+}
 
-  const [epochInfo, overview] = await Promise.all([
-    read<EpochResponse>(`/epochs/${epoch}`),
-    read<OverviewResponse>(`/epochs/${epoch}/ant-colony-overview?limit=${PAGE_SIZE}&offset=0`),
-  ]);
-
-  const accuracy = overview?.hypotheticalAccuracy;
-  if (!(accuracy && overview?.ranking)) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
-  }
-
-  const items = [...overview.ranking.items];
-  const pageCount = Math.ceil(overview.ranking.total / PAGE_SIZE);
-  const offsets = Array.from(
-    { length: Math.max(0, pageCount - 1) },
-    (_, index) => (index + 1) * PAGE_SIZE,
-  ).filter((offset) => offset <= 4000);
-  const pages = await Promise.all(
-    offsets.map((offset) =>
-      read<OverviewResponse>(
-        `/epochs/${epoch}/ant-colony-overview?limit=${PAGE_SIZE}&offset=${offset}`,
-      ),
-    ),
+async function overviewPage(epoch: number, offset = 0): Promise<OverviewResponse | null> {
+  return read<OverviewResponse>(
+    `/epochs/${epoch}/ant-colony-overview?limit=${PAGE_SIZE}&offset=${offset}`,
   );
-  for (const page of pages) {
-    if (page?.ranking) {
-      items.push(...page.ranking.items);
-    }
+}
+
+function buildColony(epoch: number, overview: OverviewResponse): BppColony | null {
+  const accuracy = overview.hypotheticalAccuracy;
+  if (!accuracy) {
+    return null;
   }
 
-  const unique = new Map<string, RankingItem>();
-  for (const item of items) {
-    unique.set(item.computorId, item);
-  }
-
-  const board = [...unique.values()].map((item) => ({
-    errors: item.bestScore,
-    frame: item.bestShift,
-    id: item.computorId,
-  }));
   const hours = normalizeHours(epoch, accuracy.hours);
   const hoursKnown = hours
     .filter((hour) => hour.status !== "waiting")
     .reduce((latest, hour) => Math.max(latest, hour.hour), 0);
 
-  const colony: BppColony = {
+  return {
     agreement: accuracy.agreementPercent,
     bar: accuracy.trainingErrorsMax,
     epoch,
@@ -185,18 +155,71 @@ export async function GET() {
     },
     totalHours: accuracy.totalHours,
   };
+}
 
-  const race: BppRace = {
+async function buildBoard(epoch: number, overview: OverviewResponse): Promise<RankingItem[]> {
+  const items = [...(overview.ranking?.items ?? [])];
+  const total = overview.ranking?.total ?? items.length;
+  const pageCount = Math.ceil(total / PAGE_SIZE);
+  const offsets = Array.from(
+    { length: Math.max(0, pageCount - 1) },
+    (_, index) => (index + 1) * PAGE_SIZE,
+  ).filter((offset) => offset <= 4000);
+  const pages = await Promise.all(offsets.map((offset) => overviewPage(epoch, offset)));
+  for (const page of pages) {
+    if (page?.ranking) {
+      items.push(...page.ranking.items);
+    }
+  }
+
+  const unique = new Map<string, RankingItem>();
+  for (const item of items) {
+    unique.set(item.computorId, item);
+  }
+  return [...unique.values()];
+}
+
+function buildRace(
+  overview: OverviewResponse,
+  accuracy: NonNullable<OverviewResponse["hypotheticalAccuracy"]>,
+  board: RankingItem[],
+): BppRace {
+  return {
     at: overview.generatedAt ?? new Date().toISOString(),
     bar: accuracy.trainingErrorsMax,
     best:
       overview.summary?.globalBestScore ??
-      board.reduce((best, entry) => Math.min(best, entry.errors), Number.POSITIVE_INFINITY),
-    board,
-    computors: overview.ranking.total,
-    quorum: overview.ranking.cutoff,
-    ready: board.filter((entry) => entry.errors <= accuracy.trainingErrorsMax).length,
+      board.reduce((best, entry) => Math.min(best, entry.bestScore), Number.POSITIVE_INFINITY),
+    board: board.map((item) => ({
+      errors: item.bestScore,
+      frame: item.bestShift,
+      id: item.computorId,
+    })),
+    computors: overview.ranking?.total ?? board.length,
+    quorum: overview.ranking?.cutoff ?? 0,
+    ready: board.filter((entry) => entry.bestScore <= accuracy.trainingErrorsMax).length,
   };
+}
+
+async function coreSnapshot(): Promise<Response> {
+  const epoch = await currentEpoch();
+  if (!epoch) {
+    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+  }
+
+  const [epochInfo, overview] = await Promise.all([
+    read<EpochResponse>(`/epochs/${epoch}`),
+    overviewPage(epoch),
+  ]);
+
+  if (!overview) {
+    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+  }
+
+  const colony = buildColony(epoch, overview);
+  if (!colony) {
+    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+  }
 
   const meta: BppEpochMeta | null = epochInfo
     ? {
@@ -210,10 +233,46 @@ export async function GET() {
     colony,
     fetchedAt: new Date().toISOString(),
     meta,
-    race,
+    race: null,
   };
 
   return Response.json(snapshot, {
     headers: { "Cache-Control": "no-store" },
   });
+}
+
+async function raceSnapshot(): Promise<Response> {
+  const epoch = await currentEpoch();
+  if (!epoch) {
+    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+  }
+
+  const overview = await overviewPage(epoch);
+  const accuracy = overview?.hypotheticalAccuracy;
+  if (!(accuracy && overview?.ranking)) {
+    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+  }
+
+  const board = await buildBoard(epoch, overview);
+  const snapshot: BppRaceSnapshot = {
+    fetchedAt: new Date().toISOString(),
+    race: buildRace(overview, accuracy, board),
+  };
+
+  return Response.json(snapshot, {
+    headers: { "Cache-Control": "no-store" },
+  });
+}
+
+export const dynamic = "force-dynamic";
+
+export async function GET(request: Request) {
+  const part = new URL(request.url).searchParams.get("part") ?? "core";
+  if (part === "core") {
+    return coreSnapshot();
+  }
+  if (part === "race") {
+    return raceSnapshot();
+  }
+  return Response.json({ error: "Unknown BPP-9000 part." }, { status: 400 });
 }

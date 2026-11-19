@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Card, Chip } from "@heroui/react";
+import { Button, Chip } from "@heroui/react";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 
 import { formatInteger } from "@/lib/format";
@@ -27,7 +27,7 @@ export function AlignmentSummary({ onOpen, race }: { onOpen: () => void; race: B
   const share = total > 0 ? (aligned / total) * 100 : 0;
 
   return (
-    <Card className="gap-0 bg-surface p-5 sm:p-6" variant="transparent">
+    <section>
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <h2 className="font-medium text-foreground text-xl">Computor alignment</h2>
@@ -66,6 +66,6 @@ export function AlignmentSummary({ onOpen, race }: { onOpen: () => void; race: B
         View all computors
         <AltArrowRightIcon className="size-3.5" />
       </Button>
-    </Card>
+    </section>
   );
 }

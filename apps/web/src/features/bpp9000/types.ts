@@ -57,3 +57,8 @@ export interface BppSnapshot {
   meta: BppEpochMeta | null;
   race: BppRace | null;
 }
+
+export interface BppRaceSnapshot {
+  fetchedAt: string;
+  race: BppRace | null;
+}

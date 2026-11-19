@@ -4,27 +4,38 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
 import { REFRESH_MS } from "./model";
-import type { BppSnapshot } from "./types";
+import type { BppRaceSnapshot, BppSnapshot } from "./types";
+
+async function readSnapshot<T>(part: "core" | "race", signal: AbortSignal): Promise<T> {
+  const response = await fetch(`/api/bpp9000?part=${part}`, { signal });
+  if (!response.ok) {
+    let message = "BPP-9000 data is not answering right now.";
+    try {
+      const body = (await response.json()) as { error?: string };
+      if (body.error) {
+        message = body.error;
+      }
+    } catch {
+      // Keep the fallback message when the response is not JSON.
+    }
+    throw new Error(message);
+  }
+  return (await response.json()) as T;
+}
 
 export function useBpp9000() {
   return useQuery({
-    queryFn: async ({ signal }) => {
-      const response = await fetch("/api/bpp9000", { signal });
-      if (!response.ok) {
-        let message = "BPP-9000 data is not answering right now.";
-        try {
-          const body = (await response.json()) as { error?: string };
-          if (body.error) {
-            message = body.error;
-          }
-        } catch {
-          // Keep the fallback message when the response is not JSON.
-        }
-        throw new Error(message);
-      }
-      return (await response.json()) as BppSnapshot;
-    },
-    queryKey: ["bpp9000", "snapshot"],
+    queryFn: ({ signal }) => readSnapshot<BppSnapshot>("core", signal),
+    queryKey: ["bpp9000", "core"],
+    refetchInterval: REFRESH_MS,
+    staleTime: REFRESH_MS / 2,
+  });
+}
+
+export function useBppRace() {
+  return useQuery({
+    queryFn: ({ signal }) => readSnapshot<BppRaceSnapshot>("race", signal),
+    queryKey: ["bpp9000", "race"],
     refetchInterval: REFRESH_MS,
     staleTime: REFRESH_MS / 2,
   });
