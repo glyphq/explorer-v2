@@ -152,7 +152,7 @@ function Readout({
 export function CallTape({ colony, now }: { colony: BppColony | null; now: number }) {
   const [hovered, setHovered] = useState<number | null>(null);
   const [pinned, setPinned] = useState<number | null>(null);
-  const [scrollable, setScrollable] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const scroller = useRef<HTMLDivElement>(null);
   const hours = useMemo(
     () => (colony ? orderHours(colony.hours).filter((hour) => hour.at <= now) : []),
@@ -168,8 +168,8 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
 
     const update = () => {
       const maxScroll = element.scrollWidth - element.clientWidth;
-      setScrollable(maxScroll > 0);
       element.scrollLeft = maxScroll;
+      setScrolled(maxScroll > 0);
     };
 
     update();
@@ -251,8 +251,9 @@ export function CallTape({ colony, now }: { colony: BppColony | null; now: numbe
         <div
           className={classNames(
             "min-w-0 flex-1 overflow-x-auto pb-1",
-            scrollable && "call-tape-scroll",
+            scrolled && "call-tape-scroll",
           )}
+          onScroll={(event) => setScrolled(event.currentTarget.scrollLeft > 1)}
           ref={scroller}
         >
           <div style={{ minWidth: Math.max(240, hours.length * HOUR_MIN_WIDTH) }}>
