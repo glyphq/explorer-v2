@@ -1,4 +1,4 @@
-import { writeFile } from "node:fs/promises";
+import { readFile, writeFile } from "node:fs/promises";
 
 import {
   bytesToHex,
@@ -11,6 +11,7 @@ import {
 
 const GLYPH_API = process.env.GLYPH_API_URL ?? "https://api.glyphq.org";
 const BURN_IDENTITY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB";
+const QUORUM = 451;
 const CONTRACTS = [
   { name: "GQMPROP", label: "General Quorum Proposal", type: "General options" },
   { name: "CCF", label: "Computor Controlled Fund", type: "Transfer" },
@@ -94,7 +95,10 @@ function fallbackTitle(url, proposalIndex) {
 
 const titleCache = new Map();
 
-async function readTitle(url, proposalIndex) {
+async function readTitle(url, proposalIndex, preferredTitle) {
+  if (preferredTitle) {
+    return preferredTitle;
+  }
   const fallback = fallbackTitle(url, proposalIndex);
   const rawUrl = githubRawUrl(url);
   if (!rawUrl) {
@@ -120,9 +124,99 @@ async function readTitle(url, proposalIndex) {
   }
 }
 
-function optionCounts(response) {
-  const counts = response.results?.optionVoteCount ?? [];
-  return [Number(counts[1] ?? 0), Number(counts[2] ?? 0)];
+function optionCountForType(type) {
+  return type & 0x00ff;
+}
+
+function proposalClass(type) {
+  return type & 0xff00;
+}
+
+function transferDetails(type, data) {
+  const bytes = Buffer.from(data ?? []);
+  const optionCount = optionCountForType(type);
+  if (proposalClass(type) === 0x400) {
+    if (bytes.length < 42) {
+      return {};
+    }
+    return {
+      transferAmount: Number(bytes.readBigInt64LE(32)).toString(),
+      transferDestinationIdentity: publicKeyToIdentity(bytes.subarray(0, 32)),
+      transferTargetEpoch: bytes.readUInt16LE(40),
+    };
+  }
+  if (proposalClass(type) !== 0x100 || bytes.length < 32) {
+    return {};
+  }
+  const amounts = [];
+  for (let index = 0; index < Math.max(0, optionCount - 1); index += 1) {
+    const offset = 32 + index * 8;
+    if (offset + 8 > bytes.length) {
+      break;
+    }
+    amounts.push(Number(bytes.readBigInt64LE(offset)));
+  }
+  return {
+    transferAmount: amounts[0] === undefined ? undefined : String(amounts[0]),
+    transferAmounts: amounts,
+    transferDestinationIdentity: publicKeyToIdentity(bytes.subarray(0, 32)),
+  };
+}
+
+function optionLabels(type, details) {
+  const optionCount = optionCountForType(type);
+  const labels = [];
+  const cls = proposalClass(type);
+  if (cls === 0x100) {
+    labels.push("No transfer");
+    for (const amount of details.transferAmounts ?? []) {
+      labels.push(`Send ${amount.toLocaleString("en-US")} QU`);
+    }
+  } else if (cls === 0x400) {
+    labels.push("No transfer");
+    labels.push(
+      `Send ${Number(details.transferAmount).toLocaleString("en-US")} QU in epoch ${
+        details.transferTargetEpoch
+      }`,
+    );
+  } else if (optionCount === 2) {
+    labels.push("No", "Yes");
+  } else {
+    labels.push("No change");
+    for (let index = 1; index < optionCount; index += 1) {
+      labels.push(`Option ${index}`);
+    }
+  }
+  return labels;
+}
+
+function proposalStatus(active, totalVotes, counts) {
+  if (active) {
+    return STATUS.VOTING;
+  }
+  if (totalVotes < QUORUM) {
+    return STATUS.INCONCLUSIVE;
+  }
+  let winnerIndex = -1;
+  let winnerVotes = -1;
+  for (let index = 0; index < counts.length; index += 1) {
+    if ((counts[index] ?? 0) > winnerVotes) {
+      winnerVotes = counts[index] ?? 0;
+      winnerIndex = index;
+    }
+  }
+  if (winnerIndex <= 0 || winnerVotes <= Math.floor(QUORUM / 2)) {
+    return STATUS.REJECTED;
+  }
+  return STATUS.PASSED;
+}
+
+function votingResults(response) {
+  // The generated decoder misaligns this struct after the leading bit field.
+  // The first entry of optionVoteCount is the total number of votes cast.
+  const raw = response.results?.optionVoteCount ?? [];
+  const totalVotes = Number(raw[0] ?? 0);
+  return { counts: raw.slice(1).map(Number), totalVotes };
 }
 
 async function readProposalIndices(contractName, activeProposals) {
@@ -156,52 +250,35 @@ async function readProposal(contract, proposalIndex, active) {
     query(contract.name, "GetVotingResults", { proposalIndex }),
   ]);
   const url = bytesToString(proposal.url);
-  const counts = optionCounts(results);
-  const totalVotes = counts.reduce((sum, count) => sum + count, 0);
-  const passed = counts[1] > counts[0];
-  const tie = counts[0] === counts[1];
-  const status = active
-    ? STATUS.VOTING
-    : totalVotes === 0 || tie
-      ? STATUS.INCONCLUSIVE
-      : passed
-        ? STATUS.PASSED
-        : STATUS.REJECTED;
-
-  let transferDestinationIdentity;
-  let transferAmount;
-  if (contract.name === "CCF" && proposal.data) {
-    const data = Buffer.from(proposal.data);
-    if (data.length >= 40) {
-      transferDestinationIdentity = publicKeyToIdentity(data.subarray(0, 32));
-      transferAmount = data.readBigUInt64LE(32).toString();
-    }
-  }
-
-  const optionLabels =
-    contract.name === "CCF" && transferAmount
-      ? ["No transfer", `Send ${Number(transferAmount).toLocaleString("en-US")} QU`]
-      : ["No", "Yes"];
+  const { counts, totalVotes } = votingResults(results);
+  const type = proposal.type ?? (contract.name === "CCF" ? 258 : 2);
+  const details = transferDetails(type, proposal.data);
+  const labels = optionLabels(type, details);
+  const options = labels.map((label, index) => ({
+    index,
+    label,
+    numberOfVotes: counts[index] ?? 0,
+  }));
 
   return {
     contractIndex: getContractDefinition(contract.name).index,
     contractName: contract.label,
     epoch: proposal.epoch,
     id: `${getContractDefinition(contract.name).index}:${proposalIndex}`,
-    options: optionLabels.map((label, index) => ({
-      index,
-      label,
-      numberOfVotes: counts[index],
-    })),
+    options,
     proposalIndex,
     proposalType: contract.type,
     proposerIdentity: proposal.proposerPubicKey,
     publishedTick: proposal.tick,
-    status,
+    status: proposalStatus(
+      active,
+      totalVotes,
+      options.map((option) => option.numberOfVotes),
+    ),
     title: await readTitle(url, proposalIndex),
     totalVotes,
-    transferAmount,
-    transferDestinationIdentity,
+    transferAmount: details.transferAmount,
+    transferDestinationIdentity: details.transferDestinationIdentity,
     url,
   };
 }
@@ -219,7 +296,18 @@ async function mapConcurrent(items, limit, mapper) {
   return output;
 }
 
+function archivedCopy(proposal) {
+  const publishedTick = proposal.publishedTick ?? 0;
+  return {
+    ...proposal,
+    archived: true,
+    id: `${proposal.contractIndex}:${proposal.proposalIndex}:${publishedTick}`,
+    slug: String(publishedTick),
+  };
+}
+
 async function main() {
+  const previous = JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
   const jobs = [];
   for (const contract of CONTRACTS) {
     const [activeIndices, inactiveIndices] = await Promise.all([
@@ -233,18 +321,43 @@ async function main() {
     }
   }
 
-  console.error(`Reading ${jobs.length} proposals from ${GLYPH_API}.`);
-  const proposals = await mapConcurrent(jobs, 6, async (job, index) => {
+  console.error(`Reading ${jobs.length} current proposals from ${GLYPH_API}.`);
+  const current = await mapConcurrent(jobs, 6, async (job, index) => {
     if (index > 0 && index % 20 === 0) {
       console.error(`  ${index}/${jobs.length}`);
     }
     return readProposal(job.contract, job.proposalIndex, job.active);
   });
+
+  const currentById = new Map(current.map((proposal) => [proposal.id, proposal]));
+  const currentByTick = new Set(
+    current.map((proposal) => `${proposal.contractIndex}:${proposal.publishedTick}`),
+  );
+  const archived = new Map();
+
+  for (const proposal of previous) {
+    if (proposal.archived) {
+      archived.set(`${proposal.contractIndex}:${proposal.publishedTick}`, proposal);
+      continue;
+    }
+    const replacement = currentById.get(proposal.id);
+    if (!replacement || replacement.publishedTick !== proposal.publishedTick) {
+      const copy = archivedCopy(proposal);
+      archived.set(`${copy.contractIndex}:${copy.publishedTick}`, copy);
+    }
+  }
+
+  const proposals = [...current];
+  for (const [key, proposal] of archived) {
+    if (!currentByTick.has(key)) {
+      proposals.push(proposal);
+    }
+  }
   proposals.sort(
     (left, right) =>
       right.epoch - left.epoch ||
       left.contractIndex - right.contractIndex ||
-      right.proposalIndex - left.proposalIndex,
+      (right.publishedTick ?? 0) - (left.publishedTick ?? 0),
   );
   await writeFile(OUTPUT_PATH, `${JSON.stringify(proposals, null, 2)}\n`);
   console.error(`Wrote ${proposals.length} proposals to ${OUTPUT_PATH.pathname}.`);

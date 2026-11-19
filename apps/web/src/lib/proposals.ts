@@ -9,6 +9,7 @@ export type ProposalOption = {
 };
 
 export type Proposal = {
+  archived?: boolean;
   contractIndex: number;
   contractName: string;
   epoch: number;
@@ -18,6 +19,7 @@ export type Proposal = {
   proposalType: string;
   proposerIdentity?: string;
   publishedTick?: number;
+  slug?: string;
   status: number;
   title: string;
   totalVotes: number;
@@ -32,7 +34,7 @@ type SeedProposal = Omit<Proposal, "proposerIdentity" | "publishedTick" | "url">
   url?: string;
 };
 
-const STORAGE_KEY = "proposals:v1";
+const STORAGE_KEY = "proposals:v2";
 const seedProposals = seed as SeedProposal[];
 
 let kvPromise: Promise<KVNamespace | null> | null = null;
@@ -86,22 +88,23 @@ async function syncSnapshot(kv: KVNamespace, existing: Proposal[]): Promise<Prop
 }
 
 function byNewest(left: Proposal, right: Proposal): number {
-  return right.epoch - left.epoch || right.proposalIndex - left.proposalIndex;
+  return right.epoch - left.epoch || (right.publishedTick ?? 0) - (left.publishedTick ?? 0);
 }
 
 export async function getProposalByRoute(
   contract: string,
-  proposalIndex: number,
+  route: string,
 ): Promise<Proposal | undefined> {
   const contractIndex =
     contract.toLowerCase() === "gqmprop" ? 6 : contract.toLowerCase() === "ccf" ? 8 : undefined;
-  if (!contractIndex || !Number.isInteger(proposalIndex)) {
+  if (!contractIndex) {
     return undefined;
   }
   const proposals = await getProposals();
   return [...proposals.active, ...proposals.ended].find(
     (proposal) =>
-      proposal.contractIndex === contractIndex && proposal.proposalIndex === proposalIndex,
+      proposal.contractIndex === contractIndex &&
+      (proposal.slug ? proposal.slug === route : String(proposal.proposalIndex) === route),
   );
 }
 

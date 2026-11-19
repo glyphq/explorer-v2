@@ -20,14 +20,9 @@ type ProposalPageProps = {
   params: Promise<{ contract: string; index: string }>;
 };
 
-const loadProposal = cache(async (contract: string, index: number) =>
-  getProposalByRoute(contract, index),
+const loadProposal = cache(async (contract: string, route: string) =>
+  getProposalByRoute(contract, route),
 );
-
-function parseIndex(value: string): number | null {
-  const index = Number.parseInt(value, 10);
-  return Number.isInteger(index) && index >= 0 ? index : null;
-}
 
 function stripLeadingHeading(content: string): string {
   let rest = content;
@@ -40,8 +35,7 @@ function stripLeadingHeading(content: string): string {
 
 export async function generateMetadata({ params }: ProposalPageProps): Promise<Metadata> {
   const { contract, index: rawIndex } = await params;
-  const index = parseIndex(rawIndex);
-  const proposal = index === null ? undefined : await loadProposal(contract, index);
+  const proposal = await loadProposal(contract, rawIndex);
   if (!proposal) {
     return { title: "Proposal not found" };
   }
@@ -53,8 +47,7 @@ export async function generateMetadata({ params }: ProposalPageProps): Promise<M
 
 export default async function ProposalPage({ params }: ProposalPageProps) {
   const { contract, index: rawIndex } = await params;
-  const index = parseIndex(rawIndex);
-  const proposal = index === null ? undefined : await loadProposal(contract, index);
+  const proposal = await loadProposal(contract, rawIndex);
   if (!proposal) {
     notFound();
   }
@@ -160,7 +153,10 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
               <h2 className="font-medium text-foreground text-sm">Votes</h2>
               <StatusChip status={proposal.status} />
             </div>
-            <p className="mt-1 text-[11px] text-muted">{countLabel(proposal.totalVotes, "vote")}</p>
+            <p className="mt-1 flex flex-wrap gap-x-2 text-[11px] text-muted">
+              <span>{countLabel(proposal.totalVotes, "vote")}</span>
+              <span className="text-muted/70">Quorum 451</span>
+            </p>
             <div className="mt-5">
               <OptionBars proposal={proposal} size="md" />
             </div>

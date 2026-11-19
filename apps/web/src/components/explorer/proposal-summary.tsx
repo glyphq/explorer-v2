@@ -43,7 +43,7 @@ const STATUS_META: Record<number, { barClassName: string; chipClassName: string;
     7: {
       barClassName: "bg-foreground/20",
       chipClassName: "bg-surface-secondary text-muted",
-      label: "Inconclusive",
+      label: "No quorum",
     },
   };
 
@@ -68,7 +68,9 @@ export function contractTicker(proposal: Proposal): string {
 }
 
 export function proposalHref(proposal: Proposal): Route {
-  return `/proposals/${contractTicker(proposal).toLowerCase()}/${proposal.proposalIndex}` as Route;
+  return `/proposals/${contractTicker(proposal).toLowerCase()}/${
+    proposal.slug ?? proposal.proposalIndex
+  }` as Route;
 }
 
 export function StatusChip({ status }: { status: number }) {

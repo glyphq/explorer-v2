@@ -19,7 +19,7 @@
     "proposalIndex": 77,
     "proposalType": "Transfer",
     "publishedTick": 91788304,
-    "status": 3,
+    "status": 7,
     "title": "Proposal to Fund Qubic Church: BPP-9000 Public Tools and the Qubic Church App",
     "totalVotes": 316,
     "transferAmount": "16800000000",
@@ -129,6 +129,36 @@
     "url": "https://github.com/yqqyf8vmwk-glitch/QLoan-s-proposal/blob/main/README.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 234,
+    "id": "8:76:84098905",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 557
+      },
+      {
+        "index": 1,
+        "label": "Send 8,950,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 76,
+    "proposalType": "Transfer",
+    "proposerIdentity": "AAMJNDZIAGURZEFMBDYMMAHFVFUCECRNKVSTUQIDPEWNDUBFUHDCTMZFOXZD",
+    "publishedTick": 84098905,
+    "slug": "84098905",
+    "status": 6,
+    "title": "AI-technology-and-innovation-forum",
+    "totalVotes": 557,
+    "transferAmount": "8950000000",
+    "transferDestinationIdentity": "ETTLBACYUCMPCCGGLPFPGROOIYJBRQSRVOITYIYWFFSFMISJOZZUQFRBUGUG",
+    "url": "https://github.com/QubicRU/AI-technology-and-innovation-forum/blob/afcec61/README.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 232,
@@ -179,6 +209,62 @@
     "transferAmount": "450000000000",
     "transferDestinationIdentity": "XQCLNHCEHTKQZDBAHJFVVTRMWFACMAZOBAEDQHEITGGEWZDIBRAIYWPGEONG",
     "url": "https://github.com/qubic/qct/blob/c5ef6165ae5815497fa3e9b5a2807a6b2394a0d4/funding/2026-09-15-Q4-2026-proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 231,
+    "id": "6:43:80842443",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 43,
+    "proposalType": "General options",
+    "proposerIdentity": "ABEBXWUASMTIZCJYADFRCZLICZRDHFSVUCHDGCUASGCCFSPYSGZLQVXDGIBM",
+    "publishedTick": 80842443,
+    "slug": "80842443",
+    "status": 7,
+    "title": "Qubic Proposal: Qusino Upgrade — Coin Flip + RANDOM Result Bank",
+    "totalVotes": 0,
+    "url": "https://github.com/nineisten/qusino/blob/e4c58ee193358a34e93f581a19b00b7686e5d8f9/docs/Upgrade.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 231,
+    "id": "6:42:80707969",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 41
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 522
+      }
+    ],
+    "proposalIndex": 42,
+    "proposalType": "General options",
+    "proposerIdentity": "YVMZJRFEJENFNBJBVHQNUDUOYKBCSRGJHWNEIIBOOEUTJLAUHTIAOHFDOMSN",
+    "publishedTick": 80707969,
+    "slug": "80707969",
+    "status": 3,
+    "title": "Smart Contract - QDOGE Treasury (QTREAT)",
+    "totalVotes": 563,
+    "url": "https://github.com/qubic/proposal/blob/4ee54d8aef2f3e4adeb3ad6f4974d50f58641dd1/SmartContracts/2026-09-18-qtreat_sc_proposal.md"
   },
   {
     "contractIndex": 8,
@@ -233,6 +319,34 @@
     "transferAmount": "45370000000",
     "transferDestinationIdentity": "MJMDEADFEZVJMCJMKEEHFNFJRSWBEMHLNPWRZWQOXBYZZNLTNPRMHHBFOFPD",
     "url": "https://github.com/jgvks/Community-Management-CCF-Proposal/blob/c013641/Community-Management-CCF-Proposal-for-October-November.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 229,
+    "id": "6:40:77994817",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 49
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 603
+      }
+    ],
+    "proposalIndex": 40,
+    "proposalType": "General options",
+    "proposerIdentity": "AAMJNDZIAGURZEFMBDYMMAHFVFUCECRNKVSTUQIDPEWNDUBFUHDCTMZFOXZD",
+    "publishedTick": 77994817,
+    "slug": "77994817",
+    "status": 3,
+    "title": "Smart Contract - Qubic Payment Hub (QPAY)",
+    "totalVotes": 652,
+    "url": "https://github.com/qubic/proposal/blob/6338fa6cbd09f8c94ab792e1eb5d08afe66d1a97/SmartContracts/2026-08-29-QPayhub.md"
   },
   {
     "contractIndex": 8,
@@ -314,6 +428,34 @@
     "url": "https://github.com/jtskxx/proposal/blob/a89a9083ba4e6076ed1e5266bbadc42ace1b2ab7/GeneralComputorProposals/Qubic-Fair-Separation-and-Equal-Access-Proposal.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 227,
+    "id": "6:40:75850816",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 40,
+    "proposalType": "General options",
+    "proposerIdentity": "ZIRTPAKYBOOYLEAPTQOXLADKJTICELXRAKTPTZXGLFYVDARFMVUWBZLAZYBI",
+    "publishedTick": 75850816,
+    "slug": "75850816",
+    "status": 7,
+    "title": "Proposal: Upgrade Qraffle Smart Contract",
+    "totalVotes": 0,
+    "url": "https://github.com/profitphil/proposal/blob/main/SmartContracts/2026-08-21-qraffle_upgrade_proposal.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 227,
@@ -339,6 +481,152 @@
     "url": "https://github.com/profitphil/proposal/blob/main/SmartContracts/2026-08-21-qraffle_upgrade_proposal.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 227,
+    "id": "6:39:75850248",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 39,
+    "proposalType": "General options",
+    "proposerIdentity": "ZPPUEXUYEYGZCHLBOPLAZBUJIDUBDPSAHZCJYQXGEDZYIJSOUXRTOLPAZSVO",
+    "publishedTick": 75850248,
+    "slug": "75850248",
+    "status": 7,
+    "title": "Proposal: Upgrade Qraffle Smart Contract",
+    "totalVotes": 0,
+    "url": "https://github.com/profitphil/proposal/blob/main/SmartContracts/2026-08-21-qraffle_upgrade_proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 227,
+    "id": "6:43:75850053",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 43,
+    "proposalType": "General options",
+    "proposerIdentity": "ZPPUEXUYEYGZCHLBOPLAZBUJIDUBDPSAHZCJYQXGEDZYIJSOUXRTOLPAZSVO",
+    "publishedTick": 75850053,
+    "slug": "75850053",
+    "status": 7,
+    "title": "Qtreat Sc Proposal",
+    "totalVotes": 0,
+    "url": "https://github.com/profitphil/proposal/blob/main/SmartContracts/2026-08-21-qtreat_sc_proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 227,
+    "id": "8:2:75781440",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 307
+      },
+      {
+        "index": 1,
+        "label": "Send 59,366,666,667 QU",
+        "numberOfVotes": 366
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 75781440,
+    "slug": "75781440",
+    "status": 3,
+    "title": "🌐 QUBIC MARKETING PROPOSAL — Qubic Marketing Team",
+    "totalVotes": 673,
+    "transferAmount": "59366666667",
+    "transferDestinationIdentity": "YSRDNFSGUYXOVGOYDODFQHMFQEFBZUVIDGLUQHIKVEWPTLNRGZPMPHMBDLAG",
+    "url": "https://github.com/MrRoseQubic/Marketing-proposal-for-interim-period-AUG-SEPT-26-/blob/f912c04/Qubic_Marketing_Proposal_Aug_Oct_2026.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 227,
+    "id": "8:67:75781356",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 360
+      },
+      {
+        "index": 1,
+        "label": "Send 13,333,333,333 QU",
+        "numberOfVotes": 316
+      }
+    ],
+    "proposalIndex": 67,
+    "proposalType": "Transfer",
+    "proposerIdentity": "KGLUEQQRUOVFJCVIVNUXHPOXEOZBIWJPNHOQLCGOCANUYMXXCUBCGOUFNDXM",
+    "publishedTick": 75781356,
+    "slug": "75781356",
+    "status": 6,
+    "title": "🌐 QUBIC MARKETING PROPOSAL — Agency Value-Added Marketing Services",
+    "totalVotes": 676,
+    "transferAmount": "13333333333",
+    "transferDestinationIdentity": "YSRDNFSGUYXOVGOYDODFQHMFQEFBZUVIDGLUQHIKVEWPTLNRGZPMPHMBDLAG",
+    "url": "https://github.com/MrRoseQubic/Marketing-proposal-for-interim-period-AUG-SEPT-26-/blob/f912c04/Qubic_Agency_Value_Added_Services_Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 226,
+    "id": "8:67:74619829",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 277
+      },
+      {
+        "index": 1,
+        "label": "Send 21,440,000,000 QU",
+        "numberOfVotes": 305
+      }
+    ],
+    "proposalIndex": 67,
+    "proposalType": "Transfer",
+    "proposerIdentity": "KGLUEQQRUOVFJCVIVNUXHPOXEOZBIWJPNHOQLCGOCANUYMXXCUBCGOUFNDXM",
+    "publishedTick": 74619829,
+    "slug": "74619829",
+    "status": 3,
+    "title": "Glyph: Qubic desktop wallet and application stack",
+    "totalVotes": 582,
+    "transferAmount": "21440000000",
+    "transferDestinationIdentity": "PJWENKHXJMPMPFNHFVJADDUWJHTADMHKMVKCIRHJXEBARJOFZXUHATGELXDJ",
+    "url": "https://github.com/glyphq/proposals/blob/a841594ab562710c2fb8f1e55acb9d69c1245d78/ccf_proposal_august_2026.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 224,
@@ -358,7 +646,7 @@
     "proposalIndex": 72,
     "proposalType": "Transfer",
     "publishedTick": 71250215,
-    "status": 6,
+    "status": 7,
     "title": "QUBIC MARKETING PROPOSAL",
     "totalVotes": 430,
     "transferAmount": "65512886523",
@@ -440,6 +728,36 @@
     "status": 3,
     "title": "Qubic Ann Explorer",
     "totalVotes": 603,
+    "transferAmount": "25580000000",
+    "transferDestinationIdentity": "JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG",
+    "url": "https://github.com/jtskxx/proposal/blob/ea6dab07dac6fd0f71176175cea6c44df7766bb4/CCF-Funding-Requests/2026-07-19-qubic-ann-explorer.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 222,
+    "id": "8:70:67311520",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 25,580,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 70,
+    "proposalType": "Transfer",
+    "proposerIdentity": "GSBQNPHPOLVFYCZHRIBQWLBYVAMDJBXWLCJLRBVFODWBORNWOQDTRKIDVNFL",
+    "publishedTick": 67311520,
+    "slug": "67311520",
+    "status": 7,
+    "title": "Qubic ANN Explorer: Make Useful Proof of Work Visible",
+    "totalVotes": 0,
     "transferAmount": "25580000000",
     "transferDestinationIdentity": "JETSKIYUBUPFUCODLCBAJNFVCINABCOQIEXEZWNWMAFGBKPBOFTUCECCCSXG",
     "url": "https://github.com/jtskxx/proposal/blob/ea6dab07dac6fd0f71176175cea6c44df7766bb4/CCF-Funding-Requests/2026-07-19-qubic-ann-explorer.md"
@@ -651,6 +969,34 @@
     "url": "https://github.com/Popeye-909/CCF-Marketing-Proposal-July/blob/27d062c/Qubic_Marketing_Proposal_July_2026_FINAL.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 218,
+    "id": "6:1:60299859",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 505
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 60299859,
+    "slug": "60299859",
+    "status": 3,
+    "title": "Proposal: Upgrade Qbay Smart Contract — Burn Collection Creation CFB Fees",
+    "totalVotes": 505,
+    "url": "https://github.com/qubic/proposal/blob/main/SmartContracts/2026-06-18-Qbay-Upgrade.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 218,
@@ -678,6 +1024,34 @@
     "url": "https://github.com/QubicFrance/Proposals/blob/0f56419/QUBIC%20COMMUNITY%20DELEGATION%20%E2%80%94%20MACHINA%20%C3%97%20RAISE%20SUMMIT%202026.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 217,
+    "id": "6:1:58288952",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 4
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 601
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 58288952,
+    "slug": "58288952",
+    "status": 3,
+    "title": "Proposal-Qraffle-Smart-Contract-Revisions Proposal: Qraffle Smart Contract Revisions",
+    "totalVotes": 605,
+    "url": "https://github.com/profitphil/Proposal-Qraffle-Smart-Contract-Revisions/blob/main/README.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 217,
@@ -701,6 +1075,66 @@
     "title": "Proposal: Temporary Burn Replenishment for QVAULT and QBOND",
     "totalVotes": 598,
     "url": "https://github.com/idk123-a/QCAP-proposals-/blob/main/QVAULT_QBOND_reserve.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 217,
+    "id": "8:57:58317554",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 257
+      },
+      {
+        "index": 1,
+        "label": "Send 34,173,809,524 QU",
+        "numberOfVotes": 351
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 58317554,
+    "slug": "58317554",
+    "status": 3,
+    "title": "🌐 QUBIC MARKETING REIMBURSEMENT PROPOSAL",
+    "totalVotes": 608,
+    "transferAmount": "34173809524",
+    "transferDestinationIdentity": "ZYAGKBKGHGAFUCWYDLMTWIGQAYODVDJTCACSHSBYTERJQLPHEVXGJRNAIGNK",
+    "url": "https://github.com/DeFiMomma/CCF-Marketing-Proposal/blob/7bcdba3e7529ce3b30974fcaf02c6e3bc9d44a70/June2026-Reimbursement.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 217,
+    "id": "8:67:57881196",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 293
+      },
+      {
+        "index": 1,
+        "label": "Send 66,600,000,000 QU",
+        "numberOfVotes": 275
+      }
+    ],
+    "proposalIndex": 67,
+    "proposalType": "Transfer",
+    "proposerIdentity": "KGLUEQQRUOVFJCVIVNUXHPOXEOZBIWJPNHOQLCGOCANUYMXXCUBCGOUFNDXM",
+    "publishedTick": 57881196,
+    "slug": "57881196",
+    "status": 6,
+    "title": "1. CCF Proposal",
+    "totalVotes": 568,
+    "transferAmount": "66600000000",
+    "transferDestinationIdentity": "OWBRLIJTXFMJGBOOPPTRDPYRVBWAHNBILRYFLYMMGDPCWDSDTMCTARUCFLLO",
+    "url": "https://github.com/kimz-Q/CCF-Proposal-Project_Gateway-Fiat-On-Ramp-Merchant-Payment-Integration/blob/355637f/CCF_Proposal_Project_Gateway.md"
   },
   {
     "contractIndex": 6,
@@ -728,31 +1162,174 @@
     "url": "https://github.com/KavataK/proposal/blob/proposal-upgrade-Qbond/SmartContracts/2026-06-06-Qbond-Upgrade.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 216,
+    "id": "6:33:56393978",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 3
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 590
+      }
+    ],
+    "proposalIndex": 33,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 56393978,
+    "slug": "56393978",
+    "status": 3,
+    "title": "qubic-community-lead-proposal",
+    "totalVotes": 593,
+    "url": "https://github.com/jgvks/qubic-community-lead-proposal/tree/155b442ba74089dec4625572cbb1416dc23e82c1"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 216,
+    "id": "6:1:56378867",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 568
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 56378867,
+    "slug": "56378867",
+    "status": 3,
+    "title": "Smart Contract - GGWP (WolfPack)",
+    "totalVotes": 568,
+    "url": "https://github.com/MZoxx/proposal/blob/ggwp-develop/SmartContracts/2026-06-03-GGWP.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 216,
+    "id": "6:1:56378233",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 56378233,
+    "slug": "56378233",
+    "status": 7,
+    "title": "Smart Contract - GGWP (WolfPack)",
+    "totalVotes": 0,
+    "url": "https://github.com/MZoxx/proposal/blob/ggwp-develop/SmartContracts/2026-06-03-GGWP.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 216,
+    "id": "6:1:55964252",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 55964252,
+    "slug": "55964252",
+    "status": 7,
+    "title": "qubic-community-lead-proposal",
+    "totalVotes": 0,
+    "url": "https://github.com/jgvks/qubic-community-lead-proposal/tree/155b442ba74089dec4625572cbb1416dc23e82c1"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 216,
+    "id": "6:1:55959940",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 55959940,
+    "slug": "55959940",
+    "status": 7,
+    "title": "Smart Contract - GGWP (WolfPack)",
+    "totalVotes": 0,
+    "url": "https://github.com/MZoxx/proposal/blob/ggwp-develop/SmartContracts/2026-06-03-GGWP.md"
+  },
+  {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 216,
-    "id": "8:66",
+    "id": "8:67:56396307",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 20
+        "numberOfVotes": 267
       },
       {
         "index": 1,
-        "label": "Send 49,260,000,000 QU",
-        "numberOfVotes": 572
+        "label": "Send 17,100,000,000 QU",
+        "numberOfVotes": 310
       }
     ],
-    "proposalIndex": 66,
+    "proposalIndex": 67,
     "proposalType": "Transfer",
-    "publishedTick": 56369042,
+    "proposerIdentity": "KGLUEQQRUOVFJCVIVNUXHPOXEOZBIWJPNHOQLCGOCANUYMXXCUBCGOUFNDXM",
+    "publishedTick": 56396307,
+    "slug": "56396307",
     "status": 3,
-    "title": "Community Management CCF Proposal for June & July",
-    "totalVotes": 592,
-    "transferAmount": "49260000000",
-    "transferDestinationIdentity": "QUVMATJHXVSGSAIAMACGMGQZBMXBALEIXFLAAOHHTBNCSZVESJAQEYQGGVHN",
-    "url": "https://github.com/salar796/Community-Management-Team-Proposals/blob/90b3193/Community-Management-CCF-Proposal-for-June-and-July.md"
+    "title": "QUBIC SCIENCE MULTI NEURAXON - AGI 2026 - 中文翻译见下方",
+    "totalVotes": 577,
+    "transferAmount": "17100000000",
+    "transferDestinationIdentity": "MLPJCFNCQIZHGDRSCQIINRYVFQHDDFLDWJGNRRUBZDWSGCRDOJZNDZIHXBEA",
+    "url": "https://github.com/qubicsci/Proposals/blob/359a5fa/QubicSciencePaperAtAGI2026.md"
   },
   {
     "contractIndex": 8,
@@ -782,6 +1359,33 @@
     "url": "https://github.com/qubicsci/Proposals/blob/35341e4/QubicScience2026-ThirdTrimester.md"
   },
   {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 216,
+    "id": "8:66",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 20
+      },
+      {
+        "index": 1,
+        "label": "Send 49,260,000,000 QU",
+        "numberOfVotes": 572
+      }
+    ],
+    "proposalIndex": 66,
+    "proposalType": "Transfer",
+    "publishedTick": 56369042,
+    "status": 3,
+    "title": "Community Management CCF Proposal for June & July",
+    "totalVotes": 592,
+    "transferAmount": "49260000000",
+    "transferDestinationIdentity": "QUVMATJHXVSGSAIAMACGMGQZBMXBALEIXFLAAOHHTBNCSZVESJAQEYQGGVHN",
+    "url": "https://github.com/salar796/Community-Management-Team-Proposals/blob/90b3193/Community-Management-CCF-Proposal-for-June-and-July.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 215,
@@ -805,6 +1409,34 @@
     "title": "Smart Contract - GGWP (WolfPack)",
     "totalVotes": 579,
     "url": "https://github.com/MZoxx/proposal/blob/ggwp-clean/SmartContracts/2026-05-28-GGWP.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 215,
+    "id": "6:1:54568393",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 173
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 402
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 54568393,
+    "slug": "54568393",
+    "status": 3,
+    "title": "Reallocate 77.5% of Weekly Emissions to the SupplyWatcher (Burn) starting from Epoch 227",
+    "totalVotes": 575,
+    "url": "https://github.com/qubic/proposal/blob/a9b43ca82ce7275ec0651e3b4ef8dfec622d2667/ComputorDonations/2026-05-27-Adjust-SupplyWatch-Burn-Halving.md"
   },
   {
     "contractIndex": 6,
@@ -882,6 +1514,64 @@
     "url": "https://github.com/metafisicista/Proposal-Optimize-QVAULT-Smart-Contract/tree/main"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 213,
+    "id": "8:57:52414975",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 20
+      },
+      {
+        "index": 1,
+        "label": "Send 3,500,000,000 QU",
+        "numberOfVotes": 512
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 52414975,
+    "slug": "52414975",
+    "status": 3,
+    "title": "Extension of Protection for the QSWAP Contract against Procedure Spamming",
+    "totalVotes": 532,
+    "transferAmount": "3500000000",
+    "transferDestinationIdentity": "IQUGNVFDQSLTXFJSIOPPNPZINSCDQTJVJWGRPWRTFFXMXSJIAASXOBFFBERK",
+    "url": "https://github.com/javathon/Proposals/blob/d323fff406cdf0b760d341b378b5d88f5eff34e7/qswap-hardening.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 212,
+    "id": "6:1:51807634",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 525
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 51807634,
+    "slug": "51807634",
+    "status": 3,
+    "title": "QIP Upgrade Proposal",
+    "totalVotes": 525,
+    "url": "https://github.com/nineisten/QIP-Upgrades/blob/1302be22c8d1c10abe31ff20188384a0d5c3dbdf/README.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 212,
@@ -905,6 +1595,118 @@
     "title": "Proposal #0",
     "totalVotes": 568,
     "url": "https://privatebin.net/?00e1ea2177393c60#5Y67gZS9iTiwQSwBR3zUBH1tMhTo5qR5seB7wwXhmxSj"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 211,
+    "id": "6:0:51386505",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "XVEOTRCTCCZQUFVXNABJDGIMOBDBJSUIVDUFGZSSFFSZCQFUPNYDBWMAEFNO",
+    "publishedTick": 51386505,
+    "slug": "51386505",
+    "status": 7,
+    "title": "PrivateBin",
+    "totalVotes": 0,
+    "url": "https://privatebin.net/?ef2734c77701db20#3CS7U3uw4v1E6A4YFRGQ9pppfXFDoTRNJCfYXrMt2QSh"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 210,
+    "id": "6:22:50213376",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 92
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 447
+      }
+    ],
+    "proposalIndex": 22,
+    "proposalType": "General options",
+    "proposerIdentity": "XYZLYOUCYTFXHDGASZPTIIURRJJCMPFPWZGZQFZKCBBZIBAWEPEAIQCCQAPO",
+    "publishedTick": 50213376,
+    "slug": "50213376",
+    "status": 3,
+    "title": "Proposal: Upgrade qRWA Smart Contract",
+    "totalVotes": 539,
+    "url": "https://github.com/qubic/proposal/blob/main/SmartContracts/2026-04-24-qRWA-Upgrade.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 210,
+    "id": "6:0:50213370",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 46
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 101
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 50213370,
+    "slug": "50213370",
+    "status": 7,
+    "title": "CCF-Audit-Proposal/05-01 - 07-31 AUDIT PROPOSAL.md at main · dxpsito/CCF-Audit-Proposal · GitHub",
+    "totalVotes": 147,
+    "url": "https://github.com/dxpsito/CCF-Audit-Proposal/blob/main/05-01 - 07-31 AUDIT PROPOSAL.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 210,
+    "id": "6:1:50213314",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 28
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 133
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 50213314,
+    "slug": "50213314",
+    "status": 7,
+    "title": "Community Management CCF Proposal for April and May",
+    "totalVotes": 161,
+    "url": "https://github.com/salar796/Community-Management-CCF-Proposal-for-April-and-May/blob/main/Community-Management-CCF-Proposal-for-April-and-May.md#"
   },
   {
     "contractIndex": 8,
@@ -932,6 +1734,36 @@
     "transferAmount": "11499999998",
     "transferDestinationIdentity": "LZJKWBPPKWNZECBNKUZPMHMFKAVBKOHVHNNRTEIVLAHGOAIOGYSBSQGETNED",
     "url": "https://github.com/dxpsito/CCF-Audit-Proposal/blob/main/05-01%20-%2007-31%20AUDIT%20PROPOSAL.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 210,
+    "id": "8:57:50665470",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 49
+      },
+      {
+        "index": 1,
+        "label": "Send 14,439,999,999 QU",
+        "numberOfVotes": 491
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 50665470,
+    "slug": "50665470",
+    "status": 3,
+    "title": "Community Management CCF Proposal for April and May",
+    "totalVotes": 540,
+    "transferAmount": "14439999999",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/salar796/Community-Management-CCF-Proposal-for-April-and-May/blob/main/Community-Management-CCF-Proposal-for-April-and-May.md"
   },
   {
     "contractIndex": 6,
@@ -984,6 +1816,36 @@
     "url": " https://github.com/KavataK/proposal/blob/abd089e8f109571520809df9bde56f36a6b157a1/SmartContracts/2026-04-09-Escrow.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 208,
+    "id": "8:57:49142645",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 303
+      },
+      {
+        "index": 1,
+        "label": "Send 51,600,000,000 QU",
+        "numberOfVotes": 234
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 49142645,
+    "slug": "49142645",
+    "status": 6,
+    "title": "CCF Proposal — AGI-26 Conference Sponsorship",
+    "totalVotes": 537,
+    "transferAmount": "51600000000",
+    "transferDestinationIdentity": "JWURNBTXPDUKBCQAZUUIDBGZYZPDBXTQNDZMWJNOWCTRNPUQWBHBTFODZMEI",
+    "url": "https://github.com/DeFiMomma/AGI-26-Conference/tree/2afb05793843d894d765aabcd4018eb4347e4ac0"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 206,
@@ -1003,7 +1865,7 @@
     "proposalIndex": 28,
     "proposalType": "General options",
     "publishedTick": 47943296,
-    "status": 6,
+    "status": 7,
     "title": "Zgirt \\- Qubic Strategic board member",
     "totalVotes": 414,
     "url": "https://github.com/qubic/proposal/blob/448383b34ec58595fad27be6130da472fd99f193/Qubic%20Strategic%20Board/2026-Q2-Zgirt.md"
@@ -1084,6 +1946,64 @@
     "url": "https://github.com/qubic/proposal/blob/448383b34ec58595fad27be6130da472fd99f193/Qubic%20Strategic%20Board/2026-Q2-Andrew-X.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 206,
+    "id": "6:1:47404236",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 173
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 398
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 47404236,
+    "slug": "47404236",
+    "status": 3,
+    "title": "Proposal to Include Qusino Smart Contract",
+    "totalVotes": 571,
+    "url": "https://github.com/nineisten/qusino/blob/9caac13214316fae432b470d75bb1c44c71f9455/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 206,
+    "id": "8:57:47404573",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 93
+      },
+      {
+        "index": 1,
+        "label": "Send 98,000,000,000 QU",
+        "numberOfVotes": 415
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 47404573,
+    "slug": "47404573",
+    "status": 3,
+    "title": "🌐 QUBIC MARKETING CCF FUNDING PROPOSAL",
+    "totalVotes": 508,
+    "transferAmount": "98000000000",
+    "transferDestinationIdentity": "ZYAGKBKGHGAFUCWYDLMTWIGQAYODVDJTCACSHSBYTERJQLPHEVXGJRNAIGNK",
+    "url": "https://github.com/DeFiMomma/CCF-Marketing-Proposal/blob/b56d955eb076bd8ccd2c0a5bc89ebcee67d890b3/04-01 - 06-30 MARKETING PROPOSAL.MD"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 206,
@@ -1106,6 +2026,36 @@
     "status": 3,
     "title": "CCF Proposal HK Web3 Festival 2026",
     "totalVotes": 566,
+    "transferAmount": "19600000000",
+    "transferDestinationIdentity": "CDDEDLNJNRDROEHDSRDQUBIQWZDBXBTQEYPSYXYVREAKYMKUUOUNYMIELACG",
+    "url": "https://github.com/zhangxingyuan-nj/Proposals/blob/main/CCF-proposal-HK-Web3-Festival-2026.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 205,
+    "id": "6:28:46766357",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 19,600,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 28,
+    "proposalType": "General options",
+    "proposerIdentity": "CLKYJXJABWWIHGDEAUYRUVFXYIOCGHXWUYZNLUTOCDKLGGYIZREGDFIGLJOL",
+    "publishedTick": 46766357,
+    "slug": "46766357",
+    "status": 7,
+    "title": "CCF Proposal HK Web3 Festival 2026",
+    "totalVotes": 0,
     "transferAmount": "19600000000",
     "transferDestinationIdentity": "CDDEDLNJNRDROEHDSRDQUBIQWZDBXBTQEYPSYXYVREAKYMKUUOUNYMIELACG",
     "url": "https://github.com/zhangxingyuan-nj/Proposals/blob/main/CCF-proposal-HK-Web3-Festival-2026.md"
@@ -1136,6 +2086,36 @@
     "url": " https://github.com/IanLaFlair/proposal/blob/2e0c612/SmartContracts/2026-03-20-QSurv.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 205,
+    "id": "8:65:46767120",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 46
+      },
+      {
+        "index": 1,
+        "label": "Send 19,600,000,000 QU",
+        "numberOfVotes": 113
+      }
+    ],
+    "proposalIndex": 65,
+    "proposalType": "Transfer",
+    "proposerIdentity": "CLKYJXJABWWIHGDEAUYRUVFXYIOCGHXWUYZNLUTOCDKLGGYIZREGDFIGLJOL",
+    "publishedTick": 46767120,
+    "slug": "46767120",
+    "status": 7,
+    "title": "CCF proposal Hong Kong Web3 Festival 2026 and Preliminary Study on Qubic Computing Power Leasing in",
+    "totalVotes": 159,
+    "transferAmount": "19600000000",
+    "transferDestinationIdentity": "CDDEDLNJNRDROEHDSRDQUBIQWZDBXBTQEYPSYXYVREAKYMKUUOUNYMIELACG",
+    "url": "https://github.com/zhangxingyuan-nj/Proposals/blob/main/CCF-proposal-HK-Web3-Festival-2026.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 205,
@@ -1161,6 +2141,94 @@
     "transferAmount": "8500000000",
     "transferDestinationIdentity": "MLPJCFNCQIZHGDRSCQIINRYVFQHDDFLDWJGNRRUBZDWSGCRDOJZNDZIHXBEA",
     "url": "https://github.com/qubicsci/Proposals/blob/beb3be3/QubicScienceICMLT2026.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 204,
+    "id": "6:5:45900451",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 217
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 357
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 45900451,
+    "slug": "45900451",
+    "status": 3,
+    "title": "Proposal to include QBridge Smart Contract (v2 - Multisig)",
+    "totalVotes": 574,
+    "url": "https://github.com/qubic/proposal/blob/e54987c19d95b6f4bbb54c9b1413e6092dc1d452/SmartContracts/2026-03-13-QBridge.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 204,
+    "id": "8:63:46036327",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 225
+      },
+      {
+        "index": 1,
+        "label": "Send 25,142,857,143 QU",
+        "numberOfVotes": 396
+      }
+    ],
+    "proposalIndex": 63,
+    "proposalType": "Transfer",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 46036327,
+    "slug": "46036327",
+    "status": 3,
+    "title": "QUBIC DOGE LAUNCH MARKETING",
+    "totalVotes": 621,
+    "transferAmount": "25142857143",
+    "transferDestinationIdentity": "ZYAGKBKGHGAFUCWYDLMTWIGQAYODVDJTCACSHSBYTERJQLPHEVXGJRNAIGNK",
+    "url": "https://github.com/DeFiMomma/CCF-Marketing-Proposal/blob/ae2d251c545a96ab2c29a91ae540992b03ad2e9e/DOGE AD HOCK BUDGET.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 204,
+    "id": "8:57:45991877",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 181
+      },
+      {
+        "index": 1,
+        "label": "Send 572,000,000,000 QU",
+        "numberOfVotes": 439
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 45991877,
+    "slug": "45991877",
+    "status": 3,
+    "title": "Fund Qubic Core Development",
+    "totalVotes": 620,
+    "transferAmount": "572000000000",
+    "transferDestinationIdentity": "XQCLNHCEHTKQZDBAHJFVVTRMWFACMAZOBAEDQHEITGGEWZDIBRAIYWPGEONG",
+    "url": "https://github.com/qubic/qct/blob/6ef6eabc17018236b34a135e4437d03a1e47e92c/funding/2026-03-Q2-proposal.md"
   },
   {
     "contractIndex": 8,
@@ -1217,6 +2285,62 @@
     "url": "https://github.com/qubicsci/Proposals/blob/0472abf/QubicScience2026-SecondTrimester.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 203,
+    "id": "6:24:45509155",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 32
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 520
+      }
+    ],
+    "proposalIndex": 24,
+    "proposalType": "General options",
+    "proposerIdentity": "CCNCYCDWBXFSTAKYJHRMEMWDBOTBBNHWWJDBKZJIPBACFDUZFSUKYJIBTSKN",
+    "publishedTick": 45509155,
+    "slug": "45509155",
+    "status": 3,
+    "title": "Proposal: Upgrade SC QVault to Version 2.0",
+    "totalVotes": 552,
+    "url": "https://github.com/KavataK/proposal/blob/9be8718ba005b2941b0792258e13c763a1d8e2eb/SmartContracts/2026-03-07-Upgrade-QVault.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 202,
+    "id": "6:5:44755145",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 12
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 544
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 44755145,
+    "slug": "44755145",
+    "status": 3,
+    "title": "Pulse",
+    "totalVotes": 556,
+    "url": "https://github.com/qubic/proposal/blob/73863b85ed39ffcb22bbd976cbbeca58db734af8/SmartContracts/2026-01-12-Pulse.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 202,
@@ -1242,6 +2366,120 @@
     "transferAmount": "15100000000",
     "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
     "url": "https://github.com/31clip/Community-Management-Team-Proposals/blob/fa75857/Community%20Team%20CCF%20Funding%20Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 202,
+    "id": "8:61:44879828",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 15,500,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 61,
+    "proposalType": "Transfer",
+    "proposerIdentity": "BBQLVDOUAZUDIGPTAZIXJJAZTKEANSRUYWJWFWVZGCSMSTSRDKEVBVYEUYME",
+    "publishedTick": 44879828,
+    "slug": "44879828",
+    "status": 7,
+    "title": "Community Management CCF Proposal for March",
+    "totalVotes": 0,
+    "transferAmount": "15500000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Community-Management-Team-Proposals/blob/63399fb/Community Team CCF Funding Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 200,
+    "id": "6:1:44082692",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 335
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 286
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 44082692,
+    "slug": "44082692",
+    "status": 6,
+    "title": "Pulse",
+    "totalVotes": 621,
+    "url": "https://github.com/qubic/proposal/blob/e9e04a49d9df935ab6fc9e491e327f5c13505793/SmartContracts/2026-01-12-Pulse.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 200,
+    "id": "6:5:44075711",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 614
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 44075711,
+    "slug": "44075711",
+    "status": 3,
+    "title": "Qubic Governance & Funding Framework",
+    "totalVotes": 614,
+    "url": "https://github.com/qubic/proposal/blob/ab7aa3196c30d53d6ee5f2124ca684b2331770fa/GeneralComputorProposals/2026-02-12-Governance-Framework.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 200,
+    "id": "6:5:44075619",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 44075619,
+    "slug": "44075619",
+    "status": 7,
+    "title": "Qubic Governance & Funding Framework",
+    "totalVotes": 0,
+    "url": "https://github.com/qubic/proposal/blob/ab7aa3196c30d53d6ee5f2124ca684b2331770fa/GeneralComputorProposals/2026-02-12-Governance-Framework.md"
   },
   {
     "contractIndex": 6,
@@ -1350,6 +2588,206 @@
     "url": "https://github.com/QubicFrance/Proposals/blob/558569c/Paris%20Blockchain%20Week%202026%20-%20Qubic%20Community%20Delegation.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 198,
+    "id": "8:57:43220101",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 134
+      },
+      {
+        "index": 1,
+        "label": "Send 113,442,622,950 QU",
+        "numberOfVotes": 456
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 43220101,
+    "slug": "43220101",
+    "status": 3,
+    "title": "CCF-Marketing-Proposal/02-01-26-04-01-26.md at b7bf8984203d00d87a8cec412e42a2eddafc882c · DeFiMomma/",
+    "totalVotes": 590,
+    "transferAmount": "113442622950",
+    "transferDestinationIdentity": "ZYAGKBKGHGAFUCWYDLMTWIGQAYODVDJTCACSHSBYTERJQLPHEVXGJRNAIGNK",
+    "url": "https://github.com/DeFiMomma/CCF-Marketing-Proposal/blob/b7bf8984203d00d87a8cec412e42a2eddafc882c/02-01-26-04-01-26.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 197,
+    "id": "6:5:42829184",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 196
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 424
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 42829184,
+    "slug": "42829184",
+    "status": 3,
+    "title": "QDuel Contract Proposal",
+    "totalVotes": 620,
+    "url": "https://github.com/qubic/proposal/blob/80f1ca68c5c00ae77b59439ec5526b7dcf10ebca/SmartContracts/2025-12-25-QDuel.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 197,
+    "id": "6:22:42829182",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 188
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 417
+      }
+    ],
+    "proposalIndex": 22,
+    "proposalType": "General options",
+    "proposerIdentity": "XYZLYOUCYTFXHDGASZPTIIURRJJCMPFPWZGZQFZKCBBZIBAWEPEAIQCCQAPO",
+    "publishedTick": 42829182,
+    "slug": "42829182",
+    "status": 3,
+    "title": "QThirtyFour (QTF)",
+    "totalVotes": 605,
+    "url": "https://github.com/qubic/proposal/blob/80f1ca68c5c00ae77b59439ec5526b7dcf10ebca/SmartContracts/2025-11-04-QThirtyFour.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 197,
+    "id": "6:0:42829181",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 199
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 425
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 42829181,
+    "slug": "42829181",
+    "status": 3,
+    "title": "QReservePool (QRP)",
+    "totalVotes": 624,
+    "url": "https://github.com/qubic/proposal/blob/80f1ca68c5c00ae77b59439ec5526b7dcf10ebca/SmartContracts/2025-11-04-QReservePool.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 197,
+    "id": "6:1:42829178",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 130
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 493
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 42829178,
+    "slug": "42829178",
+    "status": 3,
+    "title": "Upgrade Supply Watcher (SWATCH) – Distribute Burn Across Infrastructure SCs",
+    "totalVotes": 623,
+    "url": "https://github.com/qubic/proposal/blob/80f1ca68c5c00ae77b59439ec5526b7dcf10ebca/SmartContracts/2026-01-23-SWATCH-upgrade.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 196,
+    "id": "8:57:42445321",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 142
+      },
+      {
+        "index": 1,
+        "label": "Send 32,140,000,000 QU",
+        "numberOfVotes": 487
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 42445321,
+    "slug": "42445321",
+    "status": 3,
+    "title": "Community Management CCF Proposal for January and February",
+    "totalVotes": 629,
+    "transferAmount": "32140000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Community-Management-Team-Proposals/blob/4e28a900731bf2ef09ee1944001c0556654dd7ca/Community Team CCF Proposal for January and February.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 195,
+    "id": "6:5:41870087",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 111
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 498
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 41870087,
+    "slug": "41870087",
+    "status": 3,
+    "title": "Smart Contract - Qubic Real World Asset (qRWA)",
+    "totalVotes": 609,
+    "url": "https://github.com/qubic/proposal/blob/53605a5fea8abc340d116331750b6158039fbd37/SmartContracts/2026-01-10-qRWA.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 192,
@@ -1402,6 +2840,270 @@
     "transferAmount": "52000000000",
     "transferDestinationIdentity": "FAVIWZQYSLUQTGOQYJNQFTJNXPKDYMAOOZOHUNEOBAUXUFTEZYXPPUZCYIHE",
     "url": "https://github.com/kimz-Q/CCF-Proposal_Qubic_Ambassador-Program/blob/35d9faf/CCF_Proposal_Ambassador_Program_S5_Revised.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 192,
+    "id": "8:58:40113305",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 21,960,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 58,
+    "proposalType": "Transfer",
+    "proposerIdentity": "DCUIGXHWKQQJEBQMRACJKQANCQLCKNMWOKHDSEQNLFSCKYWVPWPBLXEDXIHM",
+    "publishedTick": 40113305,
+    "slug": "40113305",
+    "status": 7,
+    "title": "Proposal To Run Grants & Incubation Program.Md:",
+    "totalVotes": 0,
+    "transferAmount": "21960000000",
+    "transferDestinationIdentity": "XMVITNYABDHNJHCWLTJBVRFJWXRCYWKIKJVIBUGHVBRJXESLVSWIKGUBNAWM",
+    "url": "https://github.com/MrRoseQubic/Proposal-to-run-incubation-for-6mo-Jan-Jun-/blob/4c386ba/Proposal%20to%20run%20Grants%20&%20Incubation%20Program.md: "
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 192,
+    "id": "8:58:40112149",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 21,960,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 58,
+    "proposalType": "Transfer",
+    "proposerIdentity": "DCUIGXHWKQQJEBQMRACJKQANCQLCKNMWOKHDSEQNLFSCKYWVPWPBLXEDXIHM",
+    "publishedTick": 40112149,
+    "slug": "40112149",
+    "status": 7,
+    "title": "Proposal To Run Grants & Incubation Program.Md:",
+    "totalVotes": 0,
+    "transferAmount": "21960000000",
+    "transferDestinationIdentity": "XMVITNYABDHNJHCWLTJBVRFJWXRCYWKIKJVIBUGHVBRJXESLVSWIKGUBNAWM",
+    "url": "https://github.com/MrRoseQubic/Proposal-to-run-incubation-for-6mo-Jan-Jun-/blob/4c386ba/Proposal%20to%20run%20Grants%20&%20Incubation%20Program.md: "
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 192,
+    "id": "8:57:40111805",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 52,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "MBSFJXTUYTSNEAXSVRFHFHLXOBOCDVZBEQXFWNGJDCHTWHBLCSNNJPAAQBOH",
+    "publishedTick": 40111805,
+    "slug": "40111805",
+    "status": 7,
+    "title": "CCF Proposal - Ambassador Program Season 5 (Revised)",
+    "totalVotes": 0,
+    "transferAmount": "52000000000",
+    "transferDestinationIdentity": "FAVIWZQYSLUQTGOQYJNQFTJNXPKDYMAOOZOHUNEOBAUXUFTEZYXPPUZCYIHE",
+    "url": "https://github.com/kimz-Q/CCF-Proposal_Qubic_Ambassador-Program/blob/35d9faf/CCF_Proposal_Ambassador_Program_S5_Revised.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 192,
+    "id": "8:57:40111331",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 52,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 57,
+    "proposalType": "Transfer",
+    "proposerIdentity": "MBSFJXTUYTSNEAXSVRFHFHLXOBOCDVZBEQXFWNGJDCHTWHBLCSNNJPAAQBOH",
+    "publishedTick": 40111331,
+    "slug": "40111331",
+    "status": 7,
+    "title": "CCF Proposal - Ambassador Program Season 5 (Revised)",
+    "totalVotes": 0,
+    "transferAmount": "52000000000",
+    "transferDestinationIdentity": "FAVIWZQYSLUQTGOQYJNQFTJNXPKDYMAOOZOHUNEOBAUXUFTEZYXPPUZCYIHE",
+    "url": "https://github.com/kimz-Q/CCF-Proposal_Qubic_Ambassador-Program/blob/35d9faf/CCF_Proposal_Ambassador_Program_S5_Revised.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 191,
+    "id": "6:1:39203978",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 93
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 546
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 39203978,
+    "slug": "39203978",
+    "status": 3,
+    "title": "Upgrade Computor Controlled Fund (CCF) - Intervall Payments",
+    "totalVotes": 639,
+    "url": "https://github.com/qubic/proposal/blob/f73afd874bf81f0c0ab8165d2d15110a5bbcb97a/SmartContracts/2025-12-09-CCF-Upgrade.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 191,
+    "id": "8:54:39579697",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 163
+      },
+      {
+        "index": 1,
+        "label": "Send 85,000,000,000 QU",
+        "numberOfVotes": 478
+      }
+    ],
+    "proposalIndex": 54,
+    "proposalType": "Transfer",
+    "proposerIdentity": "RWTRPMXRVGHGLDWURVXJUAHQTJUAOECFTBZLVWCPYANOQRPGUHKJPLCANQPJ",
+    "publishedTick": 39579697,
+    "slug": "39579697",
+    "status": 3,
+    "title": "QUBIC AGI (True AI) Research 2026 First Trimester",
+    "totalVotes": 641,
+    "transferAmount": "85000000000",
+    "transferDestinationIdentity": "MLPJCFNCQIZHGDRSCQIINRYVFQHDDFLDWJGNRRUBZDWSGCRDOJZNDZIHXBEA",
+    "url": "https://github.com/qubicsci/Proposals/blob/6fd19f0/QubicScience2026-FirstTrimester.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 190,
+    "id": "6:1:38796899",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 639
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 38796899,
+    "slug": "38796899",
+    "status": 3,
+    "title": "Proposal: Upgrade QSwap with new fee distribution",
+    "totalVotes": 639,
+    "url": "https://github.com/qubic/proposal/blob/7d3f919ae67eee386acdc3661948fbc818681fd6/SmartContracts/2025-12-05-QSwap-Upgrade.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 190,
+    "id": "6:5:38779139",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 637
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 38779139,
+    "slug": "38779139",
+    "status": 3,
+    "title": "Proposal to include Qraffle Smart Contract",
+    "totalVotes": 637,
+    "url": "https://github.com/qubic/proposal/blob/6b049f7fcf855d18a16b248486dd8d9b458548d6/SmartContracts/2025-12-01-QRaffle.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 190,
+    "id": "8:54:38884530",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 401
+      },
+      {
+        "index": 1,
+        "label": "Send 126,000,000,000 QU",
+        "numberOfVotes": 244
+      }
+    ],
+    "proposalIndex": 54,
+    "proposalType": "Transfer",
+    "proposerIdentity": "RWTRPMXRVGHGLDWURVXJUAHQTJUAOECFTBZLVWCPYANOQRPGUHKJPLCANQPJ",
+    "publishedTick": 38884530,
+    "slug": "38884530",
+    "status": 6,
+    "title": "QUBIC AGI (True AI) Research 2026 (1)",
+    "totalVotes": 645,
+    "transferAmount": "126000000000",
+    "transferDestinationIdentity": "MLPJCFNCQIZHGDRSCQIINRYVFQHDDFLDWJGNRRUBZDWSGCRDOJZNDZIHXBEA",
+    "url": "https://github.com/qubicsci/Proposals/blob/52ae886/QubicScience2026-1.md"
   },
   {
     "contractIndex": 8,
@@ -1535,6 +3237,34 @@
     "url": "https://github.com/nineisten/qubicICOportal/blob/f6d09a05761f04af3556816c628fae66482889cb/README.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 187,
+    "id": "6:23:37217469",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 23,
+    "proposalType": "General options",
+    "proposerIdentity": "QTTMHKZFRUYFNCFRZUMMFOETWVSAVGICTYVXAAASDFMCBKNVCLZXACWEEHDM",
+    "publishedTick": 37217469,
+    "slug": "37217469",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 0,
+    "url": "https://github.com/nineisten/qubicICOportal/blob/f6d09a05761f04af3556816c628fae66482889cb/README.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 187,
@@ -1560,6 +3290,64 @@
     "transferAmount": "78431372549",
     "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
     "url": "https://github.com/Qubic-Core-Services/Proposals/blob/498863d15638febe752cdfdf8a9d4b696ebbfe35/Ecosystem%20Services%20proposal%20-%20AI%20transition%20phase.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 186,
+    "id": "8:35:36619029",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 4,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 35,
+    "proposalType": "Transfer",
+    "proposerIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "publishedTick": 36619029,
+    "slug": "36619029",
+    "status": 7,
+    "title": "Qubic Video Media Campaign – Follow-Up Proposal (The Great Crypto Escape)",
+    "totalVotes": 0,
+    "transferAmount": "4000000000",
+    "transferDestinationIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "url": "https://github.com/Masterbarry/Qubic_Media_Proposal_Part__Deux/blob/3ce94e788068ab5c33ad136ef6f25b90820ff439/Qubic_Followup_Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 185,
+    "id": "6:22:36008192",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 22,
+    "proposalType": "General options",
+    "proposerIdentity": "BJTVCPCAPWMSFENDKIMCAMTIIPVCBDWQCFBCLDYOWEAQWZXGMCSOZKNDXNNA",
+    "publishedTick": 36008192,
+    "slug": "36008192",
+    "status": 7,
+    "title": "General Quorum Proposal",
+    "totalVotes": 0,
+    "url": "https://github.com/TheLawyerOfTransparency/General-Quorum-Proposal/blob/3f67b4bae1ae69dfac373fceff9576ae78509cdb/Talentnodes%20Questions.md"
   },
   {
     "contractIndex": 6,
@@ -1615,6 +3403,33 @@
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 185,
+    "id": "8:38",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 201
+      },
+      {
+        "index": 1,
+        "label": "Send 646,000,000,000 QU",
+        "numberOfVotes": 428
+      }
+    ],
+    "proposalIndex": 38,
+    "proposalType": "Transfer",
+    "publishedTick": 36114161,
+    "status": 3,
+    "title": "Proposal to Fund the Development of the Qubic Core",
+    "totalVotes": 629,
+    "transferAmount": "646000000000",
+    "transferDestinationIdentity": "XQCLNHCEHTKQZDBAHJFVVTRMWFACMAZOBAEDQHEITGGEWZDIBRAIYWPGEONG",
+    "url": "https://github.com/qubic/qct/blob/060ef618e8434cd3772d663a461a85e14e7a706d/funding/2025-10-Q4-proposal.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 185,
     "id": "8:50",
     "options": [
       {
@@ -1664,33 +3479,6 @@
     "transferAmount": "1200000000",
     "transferDestinationIdentity": "MPMCGKLUCFGZLEESCEXEBSAJTVKDVYXYDAHOEAEFVCCZTHDEKVJBNDREJAWI",
     "url": "https://github.com/soundtick/Requesting-CCF-funds-for-QUBIC-s-participation-Title-Sponsorship-in-India-s-Crypto-Event-SoundTick/blob/92d7b2937f0f840c290168cb07588c66d6f8b82b/Send_Mai_Proposal_Formatted.md"
-  },
-  {
-    "contractIndex": 8,
-    "contractName": "Computor Controlled Fund",
-    "epoch": 185,
-    "id": "8:38",
-    "options": [
-      {
-        "index": 0,
-        "label": "No transfer",
-        "numberOfVotes": 201
-      },
-      {
-        "index": 1,
-        "label": "Send 646,000,000,000 QU",
-        "numberOfVotes": 428
-      }
-    ],
-    "proposalIndex": 38,
-    "proposalType": "Transfer",
-    "publishedTick": 36114161,
-    "status": 3,
-    "title": "Proposal to Fund the Development of the Qubic Core",
-    "totalVotes": 629,
-    "transferAmount": "646000000000",
-    "transferDestinationIdentity": "XQCLNHCEHTKQZDBAHJFVVTRMWFACMAZOBAEDQHEITGGEWZDIBRAIYWPGEONG",
-    "url": "https://github.com/qubic/qct/blob/060ef618e8434cd3772d663a461a85e14e7a706d/funding/2025-10-Q4-proposal.md"
   },
   {
     "contractIndex": 8,
@@ -1750,6 +3538,33 @@
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 181,
+    "id": "8:44",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 166
+      },
+      {
+        "index": 1,
+        "label": "Send 33,200,000,000 QU",
+        "numberOfVotes": 423
+      }
+    ],
+    "proposalIndex": 44,
+    "proposalType": "Transfer",
+    "publishedTick": 33904045,
+    "status": 3,
+    "title": "25.10.01 Qubic Marketing Proposal Team",
+    "totalVotes": 589,
+    "transferAmount": "33200000000",
+    "transferDestinationIdentity": "QLJHEKJJYBWAAFLSBTUFOGOCJPSAAXKAPFVVZNWLBBQRMLDYKBOQUVSAUJRI",
+    "url": "https://github.com/retrodrive1/25.10.01_qubic_marketing_proposal_team/blob/8e50c504182b5d5c52362a6260ef07a287c6fd3d/25.10.01_qubic_marketing_proposal_team.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 181,
     "id": "8:46",
     "options": [
       {
@@ -1774,31 +3589,122 @@
     "url": "https://github.com/QubicFrance/Proposals/blob/main/CryptoXR%202026%20x%20Qubic%20France%20%3B%20minimum%20requirement.md"
   },
   {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 181,
-    "id": "8:44",
+    "id": "8:48:33883664",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 166
+        "numberOfVotes": 0
       },
       {
         "index": 1,
-        "label": "Send 33,200,000,000 QU",
-        "numberOfVotes": 423
+        "label": "Send 9,200,000,000 QU",
+        "numberOfVotes": 0
       }
     ],
-    "proposalIndex": 44,
+    "proposalIndex": 48,
     "proposalType": "Transfer",
-    "publishedTick": 33904045,
+    "proposerIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "publishedTick": 33883664,
+    "slug": "33883664",
+    "status": 7,
+    "title": "CryptoXR 2026 X Qubic France ; Minimum Requirement",
+    "totalVotes": 0,
+    "transferAmount": "9200000000",
+    "transferDestinationIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "url": "https://github.com/QubicFrance/Proposals/blob/main/https://github.com/QubicFrance/Proposals/blob/main/CryptoXR%202026%20x%20Qubic%20France%20;%20minimum%20requirement.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 181,
+    "id": "8:48:33875654",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 9,200,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 48,
+    "proposalType": "Transfer",
+    "proposerIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "publishedTick": 33875654,
+    "slug": "33875654",
+    "status": 7,
+    "title": "CryptoXR 2026 X Qubic France ; Minimum Requirement",
+    "totalVotes": 0,
+    "transferAmount": "9200000000",
+    "transferDestinationIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "url": "https://github.com/QubicFrance/Proposals/blob/main/https://github.com/QubicFrance/Proposals/blob/main/CryptoXR%202026%20x%20Qubic%20France%20;%20minimum%20requirement.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 181,
+    "id": "8:48:33875164",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 9,200,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 48,
+    "proposalType": "Transfer",
+    "proposerIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "publishedTick": 33875164,
+    "slug": "33875164",
+    "status": 7,
+    "title": "CryptoXR 2026 X Qubic France ; Minimum Requirement",
+    "totalVotes": 0,
+    "transferAmount": "9200000000",
+    "transferDestinationIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "url": "https://github.com/QubicFrance/Proposals/blob/main/https://github.com/QubicFrance/Proposals/blob/main/CryptoXR%202026%20x%20Qubic%20France%20;%20minimum%20requirement.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 180,
+    "id": "6:5:33473175",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 46
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 558
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 33473175,
+    "slug": "33473175",
     "status": 3,
-    "title": "25.10.01 Qubic Marketing Proposal Team",
-    "totalVotes": 589,
-    "transferAmount": "33200000000",
-    "transferDestinationIdentity": "QLJHEKJJYBWAAFLSBTUFOGOCJPSAAXKAPFVVZNWLBBQRMLDYKBOQUVSAUJRI",
-    "url": "https://github.com/retrodrive1/25.10.01_qubic_marketing_proposal_team/blob/8e50c504182b5d5c52362a6260ef07a287c6fd3d/25.10.01_qubic_marketing_proposal_team.md"
+    "title": "Proposal: Upgrade Multi-Sign-Vault (MSVault) to version 2.0 with Multi-Asset Support",
+    "totalVotes": 604,
+    "url": "https://github.com/qubic/proposal/blob/605da6f57f17505b2d5b9b271b2351a90268f4c8/SmartContracts/2025-09-22-MSVAULT.md"
   },
   {
     "contractIndex": 6,
@@ -1824,6 +3730,212 @@
     "title": "Proposal to include Random Lottery Smart Contract",
     "totalVotes": 590,
     "url": "https://github.com/N-010/proposal/blob/a8e8a80/SmartContracts/2025-09-13-RandomLottery.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 180,
+    "id": "6:17:33393762",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 77
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 512
+      }
+    ],
+    "proposalIndex": 17,
+    "proposalType": "General options",
+    "proposerIdentity": "MZHFWDSJLHMYYAARQJXMXIQRNSLCFIJVWQSOMDOUWCMNAATOOEZPMDWEAHYE",
+    "publishedTick": 33393762,
+    "slug": "33393762",
+    "status": 3,
+    "title": "Proposal to include QBond Smart Contract",
+    "totalVotes": 589,
+    "url": "https://github.com/qubic/proposal/blob/605da6f57f17505b2d5b9b271b2351a90268f4c8/SmartContracts/2025-09-26-QBond.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 180,
+    "id": "8:46:33392966",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 447
+      },
+      {
+        "index": 1,
+        "label": "Send 14,300,000,000 QU",
+        "numberOfVotes": 157
+      }
+    ],
+    "proposalIndex": 46,
+    "proposalType": "Transfer",
+    "proposerIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "publishedTick": 33392966,
+    "slug": "33392966",
+    "status": 6,
+    "title": "Qubic France   Community CCF Proposal   Crypto XR 2026",
+    "totalVotes": 604,
+    "transferAmount": "14300000000",
+    "transferDestinationIdentity": "PQXFNXBUHNSLEDQNALBCSTQKJNHBPWOQLGSDXQPIMAQQJAZSWEHLOWKAYIFB",
+    "url": "https://github.com/QubicFrance/Proposals/blob/main/Qubic%20France%20-%20Community%20CCF%20Proposal%20_%20Crypto%20XR%202026.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 179,
+    "id": "6:17:32932111",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 335
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 24
+      }
+    ],
+    "proposalIndex": 17,
+    "proposalType": "General options",
+    "proposerIdentity": "MZHFWDSJLHMYYAARQJXMXIQRNSLCFIJVWQSOMDOUWCMNAATOOEZPMDWEAHYE",
+    "publishedTick": 32932111,
+    "slug": "32932111",
+    "status": 7,
+    "title": "Proposal to include Random Lottery Smart Contract",
+    "totalVotes": 359,
+    "url": "https://github.com/N-010/proposal/blob/b07e483/SmartContracts/2025-09-13-RandomLottery.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 179,
+    "id": "8:45:32931389",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 279
+      },
+      {
+        "index": 1,
+        "label": "Send 18,300,000,000 QU",
+        "numberOfVotes": 357
+      }
+    ],
+    "proposalIndex": 45,
+    "proposalType": "Transfer",
+    "proposerIdentity": "AUHFHHNWLWPXEEXRCAKDWUCYRDRAZNRDNISHEDZYAFYJOUZZKYFMMWFAAFXM",
+    "publishedTick": 32931389,
+    "slug": "32931389",
+    "status": 3,
+    "title": "CCF Proposal Shanghai Global Blockchain Week Event",
+    "totalVotes": 636,
+    "transferAmount": "18300000000",
+    "transferDestinationIdentity": "KMGCJOYUBVLRJCQYYFNMJBZUAYSCRQZXZEFJTZDNGAQLBJOSCGGXSHGHKEYM",
+    "url": "https://github.com/zhangxingyuan-nj/Proposals/blob/d2a8382/CCF%20proposal%20Shanghai%20Global%20Blockchain%20Week%20event.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 179,
+    "id": "8:47:32931073",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 16,400,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 47,
+    "proposalType": "Transfer",
+    "proposerIdentity": "AUHFHHNWLWPXEEXRCAKDWUCYRDRAZNRDNISHEDZYAFYJOUZZKYFMMWFAAFXM",
+    "publishedTick": 32931073,
+    "slug": "32931073",
+    "status": 7,
+    "title": "CCF Proposal Shanghai Global Blockchain Week Event",
+    "totalVotes": 0,
+    "transferAmount": "16400000000",
+    "transferDestinationIdentity": "KMGCJOYUBVLRJCQYYFNMJBZUAYSCRQZXZEFJTZDNGAQLBJOSCGGXSHGHKEYM",
+    "url": "https://github.com/zhangxingyuan-nj/Proposals/blob/a7ce34d/CCF%20proposal%20Shanghai%20Global%20Blockchain%20Week%20event.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 179,
+    "id": "8:44:32835004",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 509
+      },
+      {
+        "index": 1,
+        "label": "Send 6,900,000,000 QU",
+        "numberOfVotes": 139
+      }
+    ],
+    "proposalIndex": 44,
+    "proposalType": "Transfer",
+    "proposerIdentity": "JWXFEOENGWQTOCEAHUINODBYOHNAOYBKAQPDDNEMEFKEYFHXLBPIJLJDACYH",
+    "publishedTick": 32835004,
+    "slug": "32835004",
+    "status": 6,
+    "title": "Creation of AI artist aNNa (Aigarth) to attract a new Gen Z audience to the Qubic project. Strengthening the Qubic ecosystems.",
+    "totalVotes": 648,
+    "transferAmount": "6900000000",
+    "transferDestinationIdentity": "YLHUWPRCLZDXHEXHSJUOURTIHOLCVZOMRJXKTFRODDHJTCPDPHMAQPIBMXTG",
+    "url": "https://github.com/QubicRU/Creation-of-AI-artist-aNNa-Aigarth-to-attract-a-new-Gen-Z-audience/blob/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 179,
+    "id": "8:46:32833130",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 69,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 46,
+    "proposalType": "Transfer",
+    "proposerIdentity": "JWXFEOENGWQTOCEAHUINODBYOHNAOYBKAQPDDNEMEFKEYFHXLBPIJLJDACYH",
+    "publishedTick": 32833130,
+    "slug": "32833130",
+    "status": 7,
+    "title": "Creation of AI artist aNNa (Aigarth) to attract a new Gen Z audience to the Qubic project. Strengthening the Qubic ecosystems.",
+    "totalVotes": 0,
+    "transferAmount": "69000000000",
+    "transferDestinationIdentity": "YLHUWPRCLZDXHEXHSJUOURTIHOLCVZOMRJXKTFRODDHJTCPDPHMAQPIBMXTG",
+    "url": "https://github.com/QubicRU/Creation-of-AI-artist-aNNa-Aigarth-to-attract-a-new-Gen-Z-audience/blob/main/README.md"
   },
   {
     "contractIndex": 8,
@@ -1908,33 +4020,6 @@
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 177,
-    "id": "8:41",
-    "options": [
-      {
-        "index": 0,
-        "label": "No transfer",
-        "numberOfVotes": 120
-      },
-      {
-        "index": 1,
-        "label": "Send 1,000,000,000 QU",
-        "numberOfVotes": 522
-      }
-    ],
-    "proposalIndex": 41,
-    "proposalType": "Transfer",
-    "publishedTick": 32116406,
-    "status": 3,
-    "title": "Completion of QSWAP SC functions to enable integration into qubictrade.com and other user interfaces.",
-    "totalVotes": 642,
-    "transferAmount": "1000000000",
-    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
-    "url": "https://github.com/javathon/Proposals/blob/48df058e9530d07eb103459c011d1ae4b5bd6d16/qswap-integration.md"
-  },
-  {
-    "contractIndex": 8,
-    "contractName": "Computor Controlled Fund",
-    "epoch": 177,
     "id": "8:39",
     "options": [
       {
@@ -1986,6 +4071,63 @@
     "url": "https://github.com/Qubic-Core-Services/Proposals/blob/9b22ee2/CCF%20Proposal%20%20-%20Ambassador%20Program%20S04%20(Revised).md"
   },
   {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 177,
+    "id": "8:41",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 120
+      },
+      {
+        "index": 1,
+        "label": "Send 1,000,000,000 QU",
+        "numberOfVotes": 522
+      }
+    ],
+    "proposalIndex": 41,
+    "proposalType": "Transfer",
+    "publishedTick": 32116406,
+    "status": 3,
+    "title": "Completion of QSWAP SC functions to enable integration into qubictrade.com and other user interfaces.",
+    "totalVotes": 642,
+    "transferAmount": "1000000000",
+    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "url": "https://github.com/javathon/Proposals/blob/48df058e9530d07eb103459c011d1ae4b5bd6d16/qswap-integration.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 177,
+    "id": "8:42:32116251",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 1,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 42,
+    "proposalType": "Transfer",
+    "proposerIdentity": "VJNHIONQUBXCBGPRZVCNSUIVDYEBNWBWQAHAFZENDFBABMYQRFLYLWSFIKCI",
+    "publishedTick": 32116251,
+    "slug": "32116251",
+    "status": 7,
+    "title": "Completion of QSWAP SC functions to enable integration into qubictrade.com and other user interfaces.",
+    "totalVotes": 0,
+    "transferAmount": "1000000000",
+    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "url": "https://github.com/javathon/Proposals/blob/48df058e9530d07eb103459c011d1ae4b5bd6d16/qswap-integration.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 176,
@@ -2011,31 +4153,61 @@
     "url": "https://github.com/sergimima/qubic-proposal/blob/2a4a0a9/2025-08-19-VottunBridge.md"
   },
   {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 176,
-    "id": "8:40",
+    "id": "8:1:31982524",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 231
+        "numberOfVotes": 367
       },
       {
         "index": 1,
-        "label": "Send 4,500,000,000 QU",
-        "numberOfVotes": 413
+        "label": "Send 32,600,000,000 QU",
+        "numberOfVotes": 273
       }
     ],
-    "proposalIndex": 40,
+    "proposalIndex": 1,
     "proposalType": "Transfer",
-    "publishedTick": 31961816,
-    "status": 3,
-    "title": "Q-Stream Proposal",
-    "totalVotes": 644,
-    "transferAmount": "4500000000",
-    "transferDestinationIdentity": "UODDDKOYGJMVRFWXZVUWYETLSYTAAXPFQDPNCBKRJHAXHPEWPZUDZMOFJWCI",
-    "url": "https://github.com/REVO-CAT/Q-Stream-Proposal/blob/main/proposal.md"
+    "proposerIdentity": "ACWNEGHPRAEPCFXNDEZDRQXLOPSCYDIFBUPRUIULSEZWHDHBFUMOLDVGNAZA",
+    "publishedTick": 31982524,
+    "slug": "31982524",
+    "status": 6,
+    "title": "CCF proposal TOKEN2049",
+    "totalVotes": 640,
+    "transferAmount": "32600000000",
+    "transferDestinationIdentity": "CNHVGAEQJUATZBGAUYEENKFJNUJDYISBPDQQGXNYQDYVXTMOWMLVSHKAVNOD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/6b20093/CCF%20Proposal%20Token2049%20Singapore.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 176,
+    "id": "8:13",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 392
+      },
+      {
+        "index": 1,
+        "label": "Send 41,300,000,000 QU",
+        "numberOfVotes": 251
+      }
+    ],
+    "proposalIndex": 13,
+    "proposalType": "Transfer",
+    "publishedTick": 31982521,
+    "status": 6,
+    "title": "CCF Proposal - Ambassador Program SO4",
+    "totalVotes": 643,
+    "transferAmount": "41300000000",
+    "transferDestinationIdentity": "LVRGSAJQRAFELGGAHVAGJLKCGUDDOAEVSDEJAAEGNEVJWQRWDPHOBYHFCJCK",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/a10eb42/CCF%20Proposal%20-%20Ambassador%20Program%20SO4%20%20.md"
   },
   {
     "contractIndex": 8,
@@ -2068,82 +4240,205 @@
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 176,
-    "id": "8:13",
+    "id": "8:40",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 392
+        "numberOfVotes": 231
       },
       {
         "index": 1,
-        "label": "Send 41,300,000,000 QU",
-        "numberOfVotes": 251
+        "label": "Send 4,500,000,000 QU",
+        "numberOfVotes": 413
       }
     ],
-    "proposalIndex": 13,
+    "proposalIndex": 40,
     "proposalType": "Transfer",
-    "publishedTick": 31982521,
-    "status": 6,
-    "title": "CCF Proposal - Ambassador Program SO4",
-    "totalVotes": 643,
-    "transferAmount": "41300000000",
-    "transferDestinationIdentity": "LVRGSAJQRAFELGGAHVAGJLKCGUDDOAEVSDEJAAEGNEVJWQRWDPHOBYHFCJCK",
-    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/a10eb42/CCF%20Proposal%20-%20Ambassador%20Program%20SO4%20%20.md"
-  },
-  {
-    "contractIndex": 8,
-    "contractName": "Computor Controlled Fund",
-    "epoch": 174,
-    "id": "8:34",
-    "options": [
-      {
-        "index": 0,
-        "label": "No transfer",
-        "numberOfVotes": 103
-      },
-      {
-        "index": 1,
-        "label": "Send 2,000,000,000 QU",
-        "numberOfVotes": 481
-      }
-    ],
-    "proposalIndex": 34,
-    "proposalType": "Transfer",
-    "publishedTick": 31296616,
+    "publishedTick": 31961816,
     "status": 3,
-    "title": "Qubic Video Media Campaign Proposal (The Great Crypto Escape)",
-    "totalVotes": 584,
-    "transferAmount": "2000000000",
-    "transferDestinationIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
-    "url": "https://github.com/CryptoEscape/Qubic-60-min-Documentary-and-25-Videos-Proposal/blob/d1be29e2426ee261f1a573425be4f4e341defd33/Qubic_Proposal.md"
+    "title": "Q-Stream Proposal",
+    "totalVotes": 644,
+    "transferAmount": "4500000000",
+    "transferDestinationIdentity": "UODDDKOYGJMVRFWXZVUWYETLSYTAAXPFQDPNCBKRJHAXHPEWPZUDZMOFJWCI",
+    "url": "https://github.com/REVO-CAT/Q-Stream-Proposal/blob/main/proposal.md"
   },
   {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
-    "epoch": 174,
-    "id": "8:33",
+    "epoch": 176,
+    "id": "8:41:31931814",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 410
+        "numberOfVotes": 0
       },
       {
         "index": 1,
-        "label": "Send 60,000,000,000 QU",
-        "numberOfVotes": 211
+        "label": "Send 59,000,000,000 QU",
+        "numberOfVotes": 0
       }
     ],
-    "proposalIndex": 33,
+    "proposalIndex": 41,
     "proposalType": "Transfer",
-    "publishedTick": 31234874,
+    "proposerIdentity": "VVKJPLTDVLUSLFADVASZNCHZUULBXBMCNFVXJMZELELZUUGBRSAQPKVFQGRO",
+    "publishedTick": 31931814,
+    "slug": "31931814",
+    "status": 7,
+    "title": "CCF Proposal for LFG-Crew-Compensation (Community Vote 80 USD/H)",
+    "totalVotes": 0,
+    "transferAmount": "59000000000",
+    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "url": "https://github.com/LFG-Qubic/Proposals/blob/02375ec/proposal-1-ccf-compensation-august-2025/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 175,
+    "id": "8:40:31656868",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 437
+      },
+      {
+        "index": 1,
+        "label": "Send 59,000,000,000 QU",
+        "numberOfVotes": 188
+      }
+    ],
+    "proposalIndex": 40,
+    "proposalType": "Transfer",
+    "proposerIdentity": "VVKJPLTDVLUSLFADVASZNCHZUULBXBMCNFVXJMZELELZUUGBRSAQPKVFQGRO",
+    "publishedTick": 31656868,
+    "slug": "31656868",
     "status": 6,
     "title": "CCF Proposal for LFG-Crew-Compensation (Community Vote 80 USD/H)",
-    "totalVotes": 621,
-    "transferAmount": "60000000000",
+    "totalVotes": 625,
+    "transferAmount": "59000000000",
     "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
-    "url": "https://github.com/LFG-Qubic/Proposals/blob/main/proposal-1-ccf-compensation-august-2025/README.md"
+    "url": "https://github.com/LFG-Qubic/Proposals/blob/02375ec/proposal-1-ccf-compensation-august-2025/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:1:31347623",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 144
+      },
+      {
+        "index": 1,
+        "label": "Send 123,330,000,000 QU",
+        "numberOfVotes": 501
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ACWNEGHPRAEPCFXNDEZDRQXLOPSCYDIFBUPRUIULSEZWHDHBFUMOLDVGNAZA",
+    "publishedTick": 31347623,
+    "slug": "31347623",
+    "status": 3,
+    "title": "Qubic Exchange Spot Listing Proposal for Top-5 Tier 1 Exchange",
+    "totalVotes": 645,
+    "transferAmount": "123330000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/ac6eabbfcf1520a070a1df11f8fb9d4b7689acc7/Top%205%20T1%20Exchange%20listing%20proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:39:31347451",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 176
+      },
+      {
+        "index": 1,
+        "label": "Send 110,000,000,000 QU",
+        "numberOfVotes": 445
+      }
+    ],
+    "proposalIndex": 39,
+    "proposalType": "Transfer",
+    "proposerIdentity": "SKMETUPWGBYHNCQBTZWQBRXNAZKAIIFVCNMOBZMSREIENXVNDFPBGILGRGPL",
+    "publishedTick": 31347451,
+    "slug": "31347451",
+    "status": 3,
+    "title": "Qubic Exchange Spot Listing Proposal for Top-10 Exchange",
+    "totalVotes": 621,
+    "transferAmount": "110000000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/24cbc9f4a869f06b05910684bc164cdb763b4d5c/Top%2010%20Exchange%20listing%20proposal.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:26",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 355
+      },
+      {
+        "index": 1,
+        "label": "Send 6,000,000,000 QU",
+        "numberOfVotes": 191
+      }
+    ],
+    "proposalIndex": 26,
+    "proposalType": "Transfer",
+    "publishedTick": 31340664,
+    "status": 6,
+    "title": "QXMR Staking Smart Contract Proposal (Revised)",
+    "totalVotes": 546,
+    "transferAmount": "6000000000",
+    "transferDestinationIdentity": "GBBDPCKSUDPTAFOIROJCFPRLEPXBJSTMKFONPDVBHBWTPUDVFEKRYPSBLLIA",
+    "url": "https://github.com/profitphil/QXMR-Staking-Smart-Contract-Proposal/blob/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:27:31340435",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 6,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 27,
+    "proposalType": "Transfer",
+    "proposerIdentity": "GBBDPCKSUDPTAFOIROJCFPRLEPXBJSTMKFONPDVBHBWTPUDVFEKRYPSBLLIA",
+    "publishedTick": 31340435,
+    "slug": "31340435",
+    "status": 7,
+    "title": "QXMR Staking Smart Contract Proposal (Revised)",
+    "totalVotes": 0,
+    "transferAmount": "6000000000",
+    "transferDestinationIdentity": "GBBDPCKSUDPTAFOIROJCFPRLEPXBJSTMKFONPDVBHBWTPUDVFEKRYPSBLLIA",
+    "url": "https://github.com/profitphil/QXMR-Staking-Smart-Contract-Proposal/blob/main/README.md"
   },
   {
     "contractIndex": 8,
@@ -2173,31 +4468,268 @@
     "url": "https://github.com/Qubic-Core-Services/Proposals/blob/0dcc8645aa203c63466be5b0637ca8a9f7b37c25/US%20availability%20for%20one%20of%20the%20exchanges%20Qubic%20is%20already%20listed.md"
   },
   {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 174,
-    "id": "8:26",
+    "id": "8:33:31309400",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 355
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 123,330,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 33,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ALBCDFMLQFAPKEITHURAIXVBBNSDBRKQWDIOYVGHWFKRPJJYBRWOARAGHSLB",
+    "publishedTick": 31309400,
+    "slug": "31309400",
+    "status": 7,
+    "title": "Qubic Exchange Spot Listing Proposal for Top-5 Tier 1 Exchange",
+    "totalVotes": 0,
+    "transferAmount": "123330000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/ac6eabbfcf1520a070a1df11f8fb9d4b7689acc7/Top%205%20T1%20Exchange%20listing%20proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:33:31309284",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 110,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 33,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ALBCDFMLQFAPKEITHURAIXVBBNSDBRKQWDIOYVGHWFKRPJJYBRWOARAGHSLB",
+    "publishedTick": 31309284,
+    "slug": "31309284",
+    "status": 7,
+    "title": "Qubic Exchange Spot Listing Proposal for Top-10 Exchange",
+    "totalVotes": 0,
+    "transferAmount": "110000000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/24cbc9f4a869f06b05910684bc164cdb763b4d5c/Top%2010%20Exchange%20listing%20proposal.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:34",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 103
+      },
+      {
+        "index": 1,
+        "label": "Send 2,000,000,000 QU",
+        "numberOfVotes": 481
+      }
+    ],
+    "proposalIndex": 34,
+    "proposalType": "Transfer",
+    "publishedTick": 31296616,
+    "status": 3,
+    "title": "Qubic Video Media Campaign Proposal (The Great Crypto Escape)",
+    "totalVotes": 584,
+    "transferAmount": "2000000000",
+    "transferDestinationIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "url": "https://github.com/CryptoEscape/Qubic-60-min-Documentary-and-25-Videos-Proposal/blob/d1be29e2426ee261f1a573425be4f4e341defd33/Qubic_Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:37:31284812",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 449
+      },
+      {
+        "index": 1,
+        "label": "Send 1,920,000,000 QU",
+        "numberOfVotes": 162
+      }
+    ],
+    "proposalIndex": 37,
+    "proposalType": "Transfer",
+    "proposerIdentity": "SVIZJFCFZHPLQCXHVNBACXEJGGVBPDDVAZFEEWGRUGYYZWRTGCCZEZMDPNSI",
+    "publishedTick": 31284812,
+    "slug": "31284812",
+    "status": 6,
+    "title": "Qubic Lightsec Bitcoin ETHIstanbul",
+    "totalVotes": 611,
+    "transferAmount": "1920000000",
+    "transferDestinationIdentity": "SVIZJFCFZHPLQCXHVNBACXEJGGVBPDDVAZFEEWGRUGYYZWRTGCCZEZMDPNSI",
+    "url": "https://github.com/kriptolojik/Qubic-LightSec-Bitcoin-plus-plus-Eth-st/blob/e54b93a4ec439bad141bbe300df54a590e32d002/Qubic_Lightsec_Bitcoin_ETHIstanbul.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 174,
+    "id": "8:33",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 410
+      },
+      {
+        "index": 1,
+        "label": "Send 60,000,000,000 QU",
+        "numberOfVotes": 211
+      }
+    ],
+    "proposalIndex": 33,
+    "proposalType": "Transfer",
+    "publishedTick": 31234874,
+    "status": 6,
+    "title": "CCF Proposal for LFG-Crew-Compensation (Community Vote 80 USD/H)",
+    "totalVotes": 621,
+    "transferAmount": "60000000000",
+    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "url": "https://github.com/LFG-Qubic/Proposals/blob/main/proposal-1-ccf-compensation-august-2025/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 173,
+    "id": "8:38:31067333",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 109
+      },
+      {
+        "index": 1,
+        "label": "Send 7,200,000,000 QU",
+        "numberOfVotes": 476
+      }
+    ],
+    "proposalIndex": 38,
+    "proposalType": "Transfer",
+    "proposerIdentity": "WEWDPTCXKABYFFPDXYHTQCJCBJADFTGTVVMINUBWNEFAGQFDPTUGVGRFKQBK",
+    "publishedTick": 31067333,
+    "slug": "31067333",
+    "status": 3,
+    "title": "Proposal to Fund the Penetration Test of the iOS and Android Wallet applications",
+    "totalVotes": 585,
+    "transferAmount": "7200000000",
+    "transferDestinationIdentity": "WKNUEDTSRAQETCUYEACBRQHUYMXBMHHVREVNFEPVGHDQRIKGUFKBTJKGEGJE",
+    "url": "https://github.com/qubic/proposal/blob/4caafc219c938a7b2120c2c1790d50eb895d48e6/CCF-Funding-Requests/2025_08-09-mobile-wallets-pentest.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 173,
+    "id": "8:33:31046385",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 470
+      },
+      {
+        "index": 1,
+        "label": "Send 83,000,000,000 QU",
+        "numberOfVotes": 116
+      }
+    ],
+    "proposalIndex": 33,
+    "proposalType": "Transfer",
+    "proposerIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "publishedTick": 31046385,
+    "slug": "31046385",
+    "status": 6,
+    "title": "CCF Proposal for LFG-Crew-Compensation (Community Vote 80 USD/H)",
+    "totalVotes": 586,
+    "transferAmount": "83000000000",
+    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "url": "https://github.com/LFG-Qubic/Proposals/blob/main/proposal-1-ccf-compensation-august-2025/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 173,
+    "id": "8:34:31004753",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 580
       },
       {
         "index": 1,
         "label": "Send 6,000,000,000 QU",
-        "numberOfVotes": 191
+        "numberOfVotes": 3
       }
     ],
-    "proposalIndex": 26,
+    "proposalIndex": 34,
     "proposalType": "Transfer",
-    "publishedTick": 31340664,
+    "proposerIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "publishedTick": 31004753,
+    "slug": "31004753",
     "status": 6,
-    "title": "QXMR Staking Smart Contract Proposal (Revised)",
-    "totalVotes": 546,
+    "title": "Qubic Media Proposal The Great Crypto Escape",
+    "totalVotes": 583,
     "transferAmount": "6000000000",
-    "transferDestinationIdentity": "GBBDPCKSUDPTAFOIROJCFPRLEPXBJSTMKFONPDVBHBWTPUDVFEKRYPSBLLIA",
-    "url": "https://github.com/profitphil/QXMR-Staking-Smart-Contract-Proposal/blob/main/README.md"
+    "transferDestinationIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "url": "https://github.com/CryptoEscape/Qubic_Video_Media_Proposal/blob/main/Qubic_Media_Proposal_The_Great_Crypto_Escape.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 173,
+    "id": "8:37:30993115",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 460
+      },
+      {
+        "index": 1,
+        "label": "Send 10,600,000,000 QU",
+        "numberOfVotes": 114
+      }
+    ],
+    "proposalIndex": 37,
+    "proposalType": "Transfer",
+    "proposerIdentity": "SVIZJFCFZHPLQCXHVNBACXEJGGVBPDDVAZFEEWGRUGYYZWRTGCCZEZMDPNSI",
+    "publishedTick": 30993115,
+    "slug": "30993115",
+    "status": 6,
+    "title": "Qubic X Odtu Blockchain",
+    "totalVotes": 574,
+    "transferAmount": "10600000000",
+    "transferDestinationIdentity": "SVIZJFCFZHPLQCXHVNBACXEJGGVBPDDVAZFEEWGRUGYYZWRTGCCZEZMDPNSI",
+    "url": "https://github.com/kriptolojik/Qubic-X-ODT-blockchain-Side-event-LightSEC-Bitcoin-plus-plus-ETH-st/blob/9f7a3873d901b51cd490245927c981f5060a383d/Qubic_X_Odtu_Blockchain.md"
   },
   {
     "contractIndex": 8,
@@ -2327,12 +4859,219 @@
     "proposalIndex": 35,
     "proposalType": "Transfer",
     "publishedTick": 30860236,
-    "status": 6,
+    "status": 7,
     "title": "Proposal: Hard Times, Soft Wallets – A Modest Proposal for the Broken Few",
     "totalVotes": 36,
     "transferAmount": "1000000000",
     "transferDestinationIdentity": "MTQFDAXGPAEAEGPYAICCZDQKECBDYSPPYTJGPJKCTASIDYZJJPWWRNKEOHMF",
     "url": " https://github.com/5some/CCF-Funding-proposal-Hard-Times-Soft-Wallets-A-Modest-Proposal-for-the-Broken-Few/blob/bc360e618e46e57f7bd0fea86501067fead0c3f1/hard_times_soft_wallets_proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 172,
+    "id": "8:34:30849302",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 305
+      },
+      {
+        "index": 1,
+        "label": "Send 4,500,000,000 QU",
+        "numberOfVotes": 19
+      }
+    ],
+    "proposalIndex": 34,
+    "proposalType": "Transfer",
+    "proposerIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "publishedTick": 30849302,
+    "slug": "30849302",
+    "status": 7,
+    "title": "Qubic Educational Media Campaign",
+    "totalVotes": 324,
+    "transferAmount": "4500000000",
+    "transferDestinationIdentity": "GYTCYNOZNWBHACYZYCZVVNRSLNRDBCNXPXDLQMVYDBPSDACHCYAVOCKAGACM",
+    "url": "https://github.com/CryptoEscape/Qubic_Media_Proposal/blob/main/GreatCryptoEscapeQubic_Educational_Media_Proposal%20(1).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 172,
+    "id": "8:33:30801034",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 333
+      },
+      {
+        "index": 1,
+        "label": "Send 175,000,000,000 QU",
+        "numberOfVotes": 1
+      }
+    ],
+    "proposalIndex": 33,
+    "proposalType": "Transfer",
+    "proposerIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "publishedTick": 30801034,
+    "slug": "30801034",
+    "status": 7,
+    "title": "CCF Proposal for LFG-Crew-Compensation (Community Vote 80 USD/H)",
+    "totalVotes": 334,
+    "transferAmount": "175000000000",
+    "transferDestinationIdentity": "LFGCREWZGFRGGCYEWHGZWFOMAUVCDRWVAPWMLCJMPDFDTPKYKBDHFLBFRKMO",
+    "url": "https://github.com/LFG-Qubic/Proposals/blob/main/proposal-1-ccf-compensation-august-2025/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 172,
+    "id": "8:32:30800753",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 303
+      },
+      {
+        "index": 1,
+        "label": "Send 9,700,000,000 QU",
+        "numberOfVotes": 1
+      }
+    ],
+    "proposalIndex": 32,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ALBCDFMLQFAPKEITHURAIXVBBNSDBRKQWDIOYVGHWFKRPJJYBRWOARAGHSLB",
+    "publishedTick": 30800753,
+    "slug": "30800753",
+    "status": 7,
+    "title": "CCF Proposal - Qubic Marketing: CCF Funding Proposal",
+    "totalVotes": 304,
+    "transferAmount": "9700000000",
+    "transferDestinationIdentity": "PUFZSFKIPJCUOACGETEMFHBVCALAZJSSQFIDYTMHZBZQDRAJXHXIKPVFRBZE",
+    "url": "https://github.com/kriptolojik/Qubic-ODTU-Blockchain/blob/e51a34229e807d9b181f56851880b3e2a385befd/CCF%20Proposal%20-%20Qubic%20Marketing%3A%20CCF%20Funding%20Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 172,
+    "id": "8:31:30798243",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 10
+      },
+      {
+        "index": 1,
+        "label": "Send 6,450,000,000 QU",
+        "numberOfVotes": 295
+      }
+    ],
+    "proposalIndex": 31,
+    "proposalType": "Transfer",
+    "proposerIdentity": "SRMKRNVHHQZAYAEKIAVSMGSRNMUCUECOFKREOBTZTETMWVWSQAQALBNFGUZH",
+    "publishedTick": 30798243,
+    "slug": "30798243",
+    "status": 7,
+    "title": "Community Tech Contributors CCF Proposal",
+    "totalVotes": 305,
+    "transferAmount": "6450000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Proposal-Community-Contribution/blob/1ca24c785429ef6f9887f44275cf8ced075af9c6/Tech.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 172,
+    "id": "8:30:30798241",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 45
+      },
+      {
+        "index": 1,
+        "label": "Send 9,800,000,000 QU",
+        "numberOfVotes": 260
+      }
+    ],
+    "proposalIndex": 30,
+    "proposalType": "Transfer",
+    "proposerIdentity": "HYMJQNLEYIMGWDPCEBAGWDVXDGTBRCANBNUKTLGXJGCIHLZKWNAEPIRGGNMF",
+    "publishedTick": 30798241,
+    "slug": "30798241",
+    "status": 7,
+    "title": "Community Marketing Contributors CCF Proposal",
+    "totalVotes": 305,
+    "transferAmount": "9800000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Proposal-Community-Contribution/blob/1ca24c785429ef6f9887f44275cf8ced075af9c6/Marketing.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 172,
+    "id": "8:29:30798238",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 93
+      },
+      {
+        "index": 1,
+        "label": "Send 5,250,000,000 QU",
+        "numberOfVotes": 54
+      }
+    ],
+    "proposalIndex": 29,
+    "proposalType": "Transfer",
+    "proposerIdentity": "WPJXSLZLWXDOWBQYJCCLXLCOYFJAMEOFBPTRQZRHMERSNHORWRVGNYZDMLRD",
+    "publishedTick": 30798238,
+    "slug": "30798238",
+    "status": 7,
+    "title": "Community Contributors CCF Proposal",
+    "totalVotes": 147,
+    "transferAmount": "5250000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Proposal-Community-Contribution/blob/1ca24c785429ef6f9887f44275cf8ced075af9c6/Community.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 171,
+    "id": "8:22",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 467
+      },
+      {
+        "index": 1,
+        "label": "Send 4,900,000,000 QU",
+        "numberOfVotes": 169
+      }
+    ],
+    "proposalIndex": 22,
+    "proposalType": "Transfer",
+    "publishedTick": 30415759,
+    "status": 6,
+    "title": "CFF Qubic Ryan Babel Phase 2",
+    "totalVotes": 636,
+    "transferAmount": "4900000000",
+    "transferDestinationIdentity": "BIALNVSDAWDXUCOVZALXDHDTONNBLVVSPVMWGKUTLCAPNUQMCKJANYFCLMZM",
+    "url": "https://github.com/OfficialRBweb3/CCF-Proposal/blob/main/CFF-Qubic-Ryan%20Babel-Phase-2.md"
   },
   {
     "contractIndex": 8,
@@ -2389,10 +5128,129 @@
     "url": "https://github.com/MillyCrypto9/Proposal-Milly-x-Qubic-Amplification/blob/main/Proposal%20Milly%E2%80%AF%C3%97%E2%80%AFQubic%20Ecosystem%20Amplification.md"
   },
   {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 171,
-    "id": "8:22",
+    "id": "8:28:30335997",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 4,500,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 28,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TRYZTGFUNNUBLERYWTCWLFEIYCTCKFYCPOMIUOPKOCJBBPZNQVHQTQWCUAGH",
+    "publishedTick": 30335997,
+    "slug": "30335997",
+    "status": 7,
+    "title": "Proposal Milly × Qubic Ecosystem Amplification",
+    "totalVotes": 0,
+    "transferAmount": "4500000000",
+    "transferDestinationIdentity": "TRYZTGFUNNUBLERYWTCWLFEIYCTCKFYCPOMIUOPKOCJBBPZNQVHQTQWCUAGH",
+    "url": "https://github.com/MillyCrypto9/Proposal-Milly-x-Qubic-Amplification/blob/main/Proposal%20Milly%E2%80%AF%C3%97%E2%80%AFQubic%20Ecosystem%20Amplification.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 171,
+    "id": "8:28:30335721",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 4,500,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 28,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TRYZTGFUNNUBLERYWTCWLFEIYCTCKFYCPOMIUOPKOCJBBPZNQVHQTQWCUAGH",
+    "publishedTick": 30335721,
+    "slug": "30335721",
+    "status": 7,
+    "title": "Proposal Milly × Qubic Ecosystem Amplification",
+    "totalVotes": 0,
+    "transferAmount": "4500000",
+    "transferDestinationIdentity": "TRYZTGFUNNUBLERYWTCWLFEIYCTCKFYCPOMIUOPKOCJBBPZNQVHQTQWCUAGH",
+    "url": "https://github.com/MillyCrypto9/Proposal-Milly-x-Qubic-Amplification/blob/main/Proposal%20Milly%E2%80%AF%C3%97%E2%80%AFQubic%20Ecosystem%20Amplification.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 171,
+    "id": "8:26:30308489",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 400
+      },
+      {
+        "index": 1,
+        "label": "Send 10,000,000,000 QU",
+        "numberOfVotes": 244
+      }
+    ],
+    "proposalIndex": 26,
+    "proposalType": "Transfer",
+    "proposerIdentity": "GBBDPCKSUDPTAFOIROJCFPRLEPXBJSTMKFONPDVBHBWTPUDVFEKRYPSBLLIA",
+    "publishedTick": 30308489,
+    "slug": "30308489",
+    "status": 6,
+    "title": "QXMR Staking Smart Contract Proposal (Revised)",
+    "totalVotes": 644,
+    "transferAmount": "10000000000",
+    "transferDestinationIdentity": "GBBDPCKSUDPTAFOIROJCFPRLEPXBJSTMKFONPDVBHBWTPUDVFEKRYPSBLLIA",
+    "url": "https://github.com/profitphil/QXMR-Staking-Smart-Contract-Proposal/blob/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 170,
+    "id": "6:15:29823465",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 40
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 595
+      }
+    ],
+    "proposalIndex": 15,
+    "proposalType": "General options",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 29823465,
+    "slug": "29823465",
+    "status": 3,
+    "title": "Proposal to include Nostromo Smart Contract",
+    "totalVotes": 635,
+    "url": "https://github.com/qubic/proposal/blob/d6addfa/SmartContracts/2025-07-19-Nostromo.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 170,
+    "id": "8:22:29862523",
     "options": [
       {
         "index": 0,
@@ -2401,19 +5259,21 @@
       },
       {
         "index": 1,
-        "label": "Send 4,900,000,000 QU",
-        "numberOfVotes": 169
+        "label": "Send 15,200,000,000 QU",
+        "numberOfVotes": 166
       }
     ],
     "proposalIndex": 22,
     "proposalType": "Transfer",
-    "publishedTick": 30415759,
+    "proposerIdentity": "MVUCJYICVTZUXAISLYEYBPNVOQWANSLOKNKZVHSAQFJIVALBLOSEBVDHUARK",
+    "publishedTick": 29862523,
+    "slug": "29862523",
     "status": 6,
-    "title": "CFF Qubic Ryan Babel Phase 2",
-    "totalVotes": 636,
-    "transferAmount": "4900000000",
+    "title": "Qubic X Ryan Babel Month 2&3",
+    "totalVotes": 633,
+    "transferAmount": "15200000000",
     "transferDestinationIdentity": "BIALNVSDAWDXUCOVZALXDHDTONNBLVVSPVMWGKUTLCAPNUQMCKJANYFCLMZM",
-    "url": "https://github.com/OfficialRBweb3/CCF-Proposal/blob/main/CFF-Qubic-Ryan%20Babel-Phase-2.md"
+    "url": "https://github.com/OfficialRBweb3/CCF-Proposal/blob/main/Qubic%20x%20Ryan%20Babel%20Month%202%263.md"
   },
   {
     "contractIndex": 8,
@@ -2441,6 +5301,33 @@
     "transferAmount": "72500000000",
     "transferDestinationIdentity": "STRATGYZMPOAFDMOYMFPFIPWAVGCBPFODBKUCELDQANLSDOHTZYRZDEBGALE",
     "url": "https://github.com/Qubic-Core-Services/Proposals/blob/main/Core%20Services%20CCF%20Proposal%20-%20Strategy%20&%20Operations.md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 170,
+    "id": "8:3",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 115
+      },
+      {
+        "index": 1,
+        "label": "Send 125,000,000,000 QU",
+        "numberOfVotes": 514
+      }
+    ],
+    "proposalIndex": 3,
+    "proposalType": "Transfer",
+    "publishedTick": 29823690,
+    "status": 3,
+    "title": "Ecosystem Services CCF Proposal (August - October 2025)",
+    "totalVotes": 629,
+    "transferAmount": "125000000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/497c86af99ff242ffa7279585f23e69b06f570cf/Ecosystem%20Services%20CCF%20Proposal%20(August%20-%20October%202025).md"
   },
   {
     "contractIndex": 8,
@@ -2497,31 +5384,89 @@
     "url": "https://github.com/nineisten/QubicRareEvo/blob/8a1265f62f4702daceeb00e598128efd121c62ea/README.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 169,
+    "id": "6:15:29205603",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 167
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 453
+      }
+    ],
+    "proposalIndex": 15,
+    "proposalType": "General options",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 29205603,
+    "slug": "29205603",
+    "status": 3,
+    "title": "Proposal to include QSwap Smart Contract",
+    "totalVotes": 620,
+    "url": "https://github.com/qubic/proposal/blob/4c2bf93d8eeaebcfdc7b5723a01149b559a52ac5/SmartContracts/2025-07-11-QSwap.md"
+  },
+  {
+    "archived": true,
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
-    "epoch": 170,
-    "id": "8:3",
+    "epoch": 169,
+    "id": "8:23:29417874",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 115
+        "numberOfVotes": 0
       },
       {
         "index": 1,
-        "label": "Send 125,000,000,000 QU",
-        "numberOfVotes": 514
+        "label": "Send 15,200,000,000 QU",
+        "numberOfVotes": 0
       }
     ],
-    "proposalIndex": 3,
+    "proposalIndex": 23,
     "proposalType": "Transfer",
-    "publishedTick": 29823690,
-    "status": 3,
-    "title": "Ecosystem Services CCF Proposal (August - October 2025)",
-    "totalVotes": 629,
-    "transferAmount": "125000000000",
-    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
-    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/497c86af99ff242ffa7279585f23e69b06f570cf/Ecosystem%20Services%20CCF%20Proposal%20(August%20-%20October%202025).md"
+    "proposerIdentity": "MVUCJYICVTZUXAISLYEYBPNVOQWANSLOKNKZVHSAQFJIVALBLOSEBVDHUARK",
+    "publishedTick": 29417874,
+    "slug": "29417874",
+    "status": 7,
+    "title": "CCF Proposal  Qubic X Ryan Babel (Partnership 2.0)",
+    "totalVotes": 0,
+    "transferAmount": "15200000000",
+    "transferDestinationIdentity": "BIALNVSDAWDXUCOVZALXDHDTONNBLVVSPVMWGKUTLCAPNUQMCKJANYFCLMZM",
+    "url": "https://github.com/OfficialRBweb3/CCF-Proposal-Qubic-x-Ryan-Babel-Partnership-/blob/main/CCF%20Proposal_%20Qubic%20x%20Ryan%20Babel%20(Partnership%202.0).md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 169,
+    "id": "8:20",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 448
+      },
+      {
+        "index": 1,
+        "label": "Send 1,000,000,000 QU",
+        "numberOfVotes": 167
+      }
+    ],
+    "proposalIndex": 20,
+    "proposalType": "Transfer",
+    "publishedTick": 29206053,
+    "status": 6,
+    "title": "Satoshi's Cat ($MATILDA) Website Revamp (REDUCED COST)",
+    "totalVotes": 615,
+    "transferAmount": "1000000000",
+    "transferDestinationIdentity": "JICUNOMUXDPNPGBVDQAQVEKVNBRCKZMDCPHMXZSWTGOVATZLCZSMVXMBZPCM",
+    "url": "https://github.com/lolKovuh/matilda-website-funding-request/blob/main/matilda_website_proposal.md"
   },
   {
     "contractIndex": 8,
@@ -2551,29 +5496,60 @@
     "url": "https://github.com/Pickle-Pixel/Qubic-Alert-System-QAS/blob/83f7efb88a48f64ab495678fd0b2dce1833ddae4/CCF-Funding-Requests/2025-07-02-Qubic-Alert-System-QDAS.md"
   },
   {
-    "contractIndex": 8,
-    "contractName": "Computor Controlled Fund",
-    "epoch": 169,
-    "id": "8:20",
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 168,
+    "id": "6:1:28657216",
     "options": [
       {
         "index": 0,
         "label": "No transfer",
-        "numberOfVotes": 448
+        "numberOfVotes": 56
       },
       {
         "index": 1,
-        "label": "Send 1,000,000,000 QU",
-        "numberOfVotes": 167
+        "label": "Send NaN QU in epoch undefined",
+        "numberOfVotes": 567
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 28657216,
+    "slug": "28657216",
+    "status": 3,
+    "title": "Reallocate 55% of Weekly Emissions to the SupplyWatcher (Burn) starting from Epoch 175",
+    "totalVotes": 623,
+    "url": "https://github.com/qubic/proposal/blob/563ee56b05f2337ff30097abbdae5197ed750282/ComputorDonations/2025-07-05-Adjust-SupplyWatch-Burn-Halving.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 168,
+    "id": "8:20:28563002",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 436
+      },
+      {
+        "index": 1,
+        "label": "Send 2,000,000,000 QU",
+        "numberOfVotes": 145
       }
     ],
     "proposalIndex": 20,
     "proposalType": "Transfer",
-    "publishedTick": 29206053,
+    "proposerIdentity": "HJOMRWLFMFOPHAVXXZOXNGCSNTPABQKSYQTRTFSCGCPLLYQWGGRTCISAXHQA",
+    "publishedTick": 28563002,
+    "slug": "28563002",
     "status": 6,
     "title": "Satoshi's Cat ($MATILDA) Website Revamp (REDUCED COST)",
-    "totalVotes": 615,
-    "transferAmount": "1000000000",
+    "totalVotes": 581,
+    "transferAmount": "2000000000",
     "transferDestinationIdentity": "JICUNOMUXDPNPGBVDQAQVEKVNBRCKZMDCPHMXZSWTGOVATZLCZSMVXMBZPCM",
     "url": "https://github.com/lolKovuh/matilda-website-funding-request/blob/main/matilda_website_proposal.md"
   },
@@ -2657,6 +5633,154 @@
     "url": "https://github.com/MatthewDarnell/RubicProposal/blob/ecab82dbda7912b28484e77058548c2cc6fb5a72/Rubic%E9%92%B1%E5%8C%85%E6%8F%90%E6%A1%88.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 166,
+    "id": "8:13:27783295",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 447
+      },
+      {
+        "index": 1,
+        "label": "Send 49,382,716,494 QU",
+        "numberOfVotes": 70
+      }
+    ],
+    "proposalIndex": 13,
+    "proposalType": "Transfer",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 27783295,
+    "slug": "27783295",
+    "status": 6,
+    "title": "451Card Proposal",
+    "totalVotes": 517,
+    "transferAmount": "49382716494",
+    "transferDestinationIdentity": "XQTDKLDPZPGWTBFCYONEKPYSPDWAYGBDITPOPDKXXEXWHZYQPCMFNBTBFGIA",
+    "url": "https://github.com/marcmonf/451Card-Proposal-for-Qubic/blob/f83e9c480986e3978488628baee7a86d2591df4e/451Card_Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 165,
+    "id": "6:5:27271546",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 182
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 474
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 27271546,
+    "slug": "27271546",
+    "status": 3,
+    "title": "Strategic Qubic - Monero Quorum Decision",
+    "totalVotes": 656,
+    "url": "https://github.com/qubic/proposal/blob/4c1251a8d8916ac9c3a0e330bdd04dc4925aac9f/GeneralComputorProposals/2025-06-11-strategic-qubic-monero-quorum-decision.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 165,
+    "id": "8:13:27424172",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 64
+      },
+      {
+        "index": 1,
+        "label": "Send 20,000,000,000 QU",
+        "numberOfVotes": 466
+      }
+    ],
+    "proposalIndex": 13,
+    "proposalType": "Transfer",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 27424172,
+    "slug": "27424172",
+    "status": 3,
+    "title": "Community Management CCF Proposal",
+    "totalVotes": 530,
+    "transferAmount": "20000000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Community-Management-Team-Proposals/blob/687b6fc/Community-Management-CCF-Proposal-June-July.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 165,
+    "id": "8:14:27423824",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 20,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 14,
+    "proposalType": "Transfer",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 27423824,
+    "slug": "27423824",
+    "status": 7,
+    "title": "社区管理 CCF 提案",
+    "totalVotes": 0,
+    "transferAmount": "20000000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/31clip/Community-Management-Team-Proposals/blob/8ccfdce/Community-Management-CCF-Proposal-June-July.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 165,
+    "id": "8:18:27366410",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 442
+      },
+      {
+        "index": 1,
+        "label": "Send 80,000,000,000 QU",
+        "numberOfVotes": 84
+      }
+    ],
+    "proposalIndex": 18,
+    "proposalType": "Transfer",
+    "proposerIdentity": "UEYRTPZMKQHFFGWSXBTLHJLLKCBBPBVTGHWYUYVMXAWCRWIWAQMQFRIHQBOD",
+    "publishedTick": 27366410,
+    "slug": "27366410",
+    "status": 6,
+    "title": "Rubic钱包提案",
+    "totalVotes": 526,
+    "transferAmount": "80000000000",
+    "transferDestinationIdentity": "RUBICDEVRDOILARXMHZCUOGLEEKBKUBOEIKCIHDJVAPAWSTDASIZMRGFIVBL",
+    "url": "https://github.com/MatthewDarnell/RubicProposal/blob/f1e1de790d0529b1c1ca65cb1e179351ea44e39d/Rubic%E9%92%B1%E5%8C%85%E6%8F%90%E6%A1%88.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 165,
@@ -2682,6 +5806,36 @@
     "transferAmount": "18000000000",
     "transferDestinationIdentity": "TQLNOTPKDPLINBPALQHAOJVWHXSBFXTNGEVOVDSNNBGAULUVYGIDYDLFBDDG",
     "url": "https://github.com/retrodrive1/qubic-ccf-marketing-proposal/blob/1d7058f2881e4af1a20e8b155c341d2aaa2e28a9/Qubic%20Socials%20Content%20and%20Coordination%20Proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 165,
+    "id": "8:14:27358670",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 18,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 14,
+    "proposalType": "Transfer",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 27358670,
+    "slug": "27358670",
+    "status": 7,
+    "title": "Qubic Socials Content And Coordination Proposal.MdTQLNOTPKDPLINBPALQHAOJVWHXSBFXTNGEVOVDSNNBGAULUVYGIDYDLFBDDG18b",
+    "totalVotes": 0,
+    "transferAmount": "18000000000",
+    "transferDestinationIdentity": "TQLNOTPKDPLINBPALQHAOJVWHXSBFXTNGEVOVDSNNBGAULUVYGIDYDLFBDDG",
+    "url": "https://github.com/retrodrive1/qubic-ccf-marketing-proposal/blob/1d7058f/Qubic%20Socials%20Content%20and%20Coordination%20Proposal.mdTQLNOTPKDPLINBPALQHAOJVWHXSBFXTNGEVOVDSNNBGAULUVYGIDYDLFBDDG18b"
   },
   {
     "contractIndex": 8,
@@ -2711,6 +5865,154 @@
     "url": "https://github.com/OfficialRBweb3/CCF-Funding-Requests/blob/5859cb6efed45fb78dd22b07ab04fb33d4fddf68/Proposal%20Ryan%20Babel%20x%20Qubic.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 164,
+    "id": "8:2:27030567",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 337
+      },
+      {
+        "index": 1,
+        "label": "Send 100,000,000,000 QU",
+        "numberOfVotes": 193
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 27030567,
+    "slug": "27030567",
+    "status": 6,
+    "title": "Rubic钱包提案",
+    "totalVotes": 530,
+    "transferAmount": "100000000000",
+    "transferDestinationIdentity": "RUBICDEVRDOILARXMHZCUOGLEEKBKUBOEIKCIHDJVAPAWSTDASIZMRGFIVBL",
+    "url": "https://github.com/MatthewDarnell/RubicProposal/blob/396c558faf45b11eefe044c90a60e814393d4ee4/Rubic钱包提案.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 164,
+    "id": "8:2:27029519",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 100,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 27029519,
+    "slug": "27029519",
+    "status": 7,
+    "title": "Proposal #2",
+    "totalVotes": 0,
+    "transferAmount": "100000000000",
+    "transferDestinationIdentity": "RUBICDEVRDOILARXMHZCUOGLEEKBKUBOEIKCIHDJVAPAWSTDASIZMRGFIVBL",
+    "url": "RUBICWALLET:https://github.com/MatthewDarnell/RubicProposal/blob/396c558faf45b11eefe044c90a60e814393d4ee4/Rubic钱包提案.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 164,
+    "id": "8:2:27029512",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 100,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 27029512,
+    "slug": "27029512",
+    "status": 7,
+    "title": "Rubic钱包提案.Md}2",
+    "totalVotes": 0,
+    "transferAmount": "100000000000",
+    "transferDestinationIdentity": "RUBICDEVRDOILARXMHZCUOGLEEKBKUBOEIKCIHDJVAPAWSTDASIZMRGFIVBL",
+    "url": "RUBICWALLEThttps://github.com/MatthewDarnell/RubicProposal/blob/396c558faf45b11eefe044c90a60e814393d4ee4/Rubic钱包提案.md}2"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 164,
+    "id": "8:2:27029296",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 100,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 27029296,
+    "slug": "27029296",
+    "status": 7,
+    "title": "Proposal #2",
+    "totalVotes": 0,
+    "transferAmount": "100000000000",
+    "transferDestinationIdentity": "RUBICDEVRDOILARXMHZCUOGLEEKBKUBOEIKCIHDJVAPAWSTDASIZMRGFIVBL",
+    "url": "RUBICWALLET:https://github.com/MatthewDarnell/RubicProposal/blob/396c558faf45b11eefe044c90a60e814393d4ee4/Rubic钱包提案.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 163,
+    "id": "6:0:26633253",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 93
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 425
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 26633253,
+    "slug": "26633253",
+    "status": 3,
+    "title": "QVAULT-V2",
+    "totalVotes": 518,
+    "url": "https://github.com/Wolf8333/QVAULT-V2/blob/fbcc8e85fd1a6a45996dadfdc9b1831b7f5c9b47/README.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 163,
@@ -2734,6 +6036,36 @@
     "title": "Ecosystem Services \\- Grants & Incubation New Governance Model Proposal",
     "totalVotes": 522,
     "url": "https://github.com/Qubic-Core-Services/Proposals/blob/692306f3940696b676fd1150d012e2e1517fd213/Grants%20and%20Incubation%20new%20governance%20model%20proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 163,
+    "id": "8:2:26522238",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 68
+      },
+      {
+        "index": 1,
+        "label": "Send 27,580,000,000 QU",
+        "numberOfVotes": 453
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 26522238,
+    "slug": "26522238",
+    "status": 3,
+    "title": "Qubic Exchange Listing Proposal for Top-15 Global Exchange",
+    "totalVotes": 521,
+    "transferAmount": "27580000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/6f2d79348a00f0c661dd1928e658b34fc3fa6ab1/Exchange%20listing%20proposal.md"
   },
   {
     "contractIndex": 8,
@@ -2790,6 +6122,66 @@
     "url": "https://github.com/QubicFrance/Proposals/blob/8ae0411/Qubic%20x%20RAISE%20Summit%20Hackathon%202025%20Proposal.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 163,
+    "id": "8:13:26521688",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 74
+      },
+      {
+        "index": 1,
+        "label": "Send 39,300,000,000 QU",
+        "numberOfVotes": 442
+      }
+    ],
+    "proposalIndex": 13,
+    "proposalType": "Transfer",
+    "proposerIdentity": "UUYCKITUMCDEFGITXISXFCDYWWXACCVLHVWTYVLYVCUUKUOCLMWVGFLESKSH",
+    "publishedTick": 26521688,
+    "slug": "26521688",
+    "status": 3,
+    "title": "CCF Proposal – Ambassador Program Season 3 (SO3)",
+    "totalVotes": 516,
+    "transferAmount": "39300000000",
+    "transferDestinationIdentity": "LVRGSAJQRAFELGGAHVAGJLKCGUDDOAEVSDEJAAEGNEVJWQRWDPHOBYHFCJCK",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/ca3e67b/Qubican%20Ambassador%20Program%20S03.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 163,
+    "id": "8:12:26521684",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 136
+      },
+      {
+        "index": 1,
+        "label": "Send 20,800,000,000 QU",
+        "numberOfVotes": 369
+      }
+    ],
+    "proposalIndex": 12,
+    "proposalType": "Transfer",
+    "proposerIdentity": "RDHJXSLOOTYGSBMLVJPCNDFNYVFAXWCNDEEFIKKKVASXTNNYXSPMQNJBIIMN",
+    "publishedTick": 26521684,
+    "slug": "26521684",
+    "status": 3,
+    "title": "Qubic France – Community CCF Proposal: Cointribune",
+    "totalVotes": 505,
+    "transferAmount": "20800000000",
+    "transferDestinationIdentity": "VIOXIFANHGOUACKMYWNBCZQCQMZCLNMDRPTYIAVQZFFEAKNGYFIHDCWCYWMF",
+    "url": "https://github.com/QubicFrance/Proposals/blob/bb9baf5/Qubic%20France%20-%20Community%20CCF%20Proposal%20_%20Cointribune.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 162,
@@ -2842,6 +6234,66 @@
     "url": "https://github.com/DavidVivancos/QubicScience/blob/f554abd/QubicAIForGood2025RFP.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 161,
+    "id": "8:10:25967588",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 73,700,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 10,
+    "proposalType": "Transfer",
+    "proposerIdentity": "RGGNEEZYXQYTYFNFTLQYZKNNFMSCTBRSNZJIQGCXKAVVELCXQQQRMAKDDGOA",
+    "publishedTick": 25967588,
+    "slug": "25967588",
+    "status": 7,
+    "title": "QubicAIForGood2025RFP",
+    "totalVotes": 0,
+    "transferAmount": "73700000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/DavidVivancos/QubicScience/blob/18ed9f1/QubicAIForGood2025RFP.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 161,
+    "id": "8:10:25926170",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 31
+      },
+      {
+        "index": 1,
+        "label": "Send 37,800,000,000 QU",
+        "numberOfVotes": 124
+      }
+    ],
+    "proposalIndex": 10,
+    "proposalType": "Transfer",
+    "proposerIdentity": "HDPWVFRQBPZREDVBVHYJLMLDACFDLPCLKGJOMFETCGEHMPVNTXVOVVHCNATJ",
+    "publishedTick": 25926170,
+    "slug": "25926170",
+    "status": 7,
+    "title": "Awareness Paid Media Sprint Proposal",
+    "totalVotes": 155,
+    "transferAmount": "37800000000",
+    "transferDestinationIdentity": "MARKETVWSHMHFFNKEUSIPLIDAYYAWDYJXYQTIBPVOCEZYLYXHBPYYKQAKLJD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/88421dd/Awareness%20Paid%20Media%20Sprint%20Proposal.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 160,
@@ -2869,6 +6321,186 @@
     "url": "https://github.com/qubic/proposal/tree/main/CCF-Funding-Requests/QDS/2025-04-26-qds-group.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 158,
+    "id": "8:2:24409428",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 270
+      },
+      {
+        "index": 1,
+        "label": "Send 97,000,000,000 QU",
+        "numberOfVotes": 332
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 24409428,
+    "slug": "24409428",
+    "status": 3,
+    "title": "Ecosystem Services CCF Proposal (May - June 2025)",
+    "totalVotes": 602,
+    "transferAmount": "97000000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/0609a7e/Qubic%20Ecosystem%20Services%20CCF%20proposal%20(May-%20June2025).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 158,
+    "id": "8:2:24409421",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 97,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 24409421,
+    "slug": "24409421",
+    "status": 7,
+    "title": "Ecosystem Services CCF Proposal (May - June 2025)",
+    "totalVotes": 0,
+    "transferAmount": "97000000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/0609a7e/Qubic%20Ecosystem%20Services%20CCF%20proposal%20(May-%20June2025).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 157,
+    "id": "8:10:24135606",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 65
+      },
+      {
+        "index": 1,
+        "label": "Send 69,100,000,000 QU",
+        "numberOfVotes": 455
+      }
+    ],
+    "proposalIndex": 10,
+    "proposalType": "Transfer",
+    "proposerIdentity": "HDPWVFRQBPZREDVBVHYJLMLDACFDLPCLKGJOMFETCGEHMPVNTXVOVVHCNATJ",
+    "publishedTick": 24135606,
+    "slug": "24135606",
+    "status": 3,
+    "title": "QCS Marketing Budget Proposal May June V2",
+    "totalVotes": 520,
+    "transferAmount": "69100000000",
+    "transferDestinationIdentity": "MARKETVWSHMHFFNKEUSIPLIDAYYAWDYJXYQTIBPVOCEZYLYXHBPYYKQAKLJD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/c35b02e/QCS%20Marketing%20Budget%20Proposal%20May-June%20V2.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 157,
+    "id": "8:2:24135462",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 47
+      },
+      {
+        "index": 1,
+        "label": "Send 39,200,000,000 QU",
+        "numberOfVotes": 487
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 24135462,
+    "slug": "24135462",
+    "status": 3,
+    "title": "QCS Marketing CCF Proposal April V2",
+    "totalVotes": 534,
+    "transferAmount": "39200000000",
+    "transferDestinationIdentity": "MARKETVWSHMHFFNKEUSIPLIDAYYAWDYJXYQTIBPVOCEZYLYXHBPYYKQAKLJD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/728a57c/QCS%20Marketing%20CCF%20Proposal%20April%20V2.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 157,
+    "id": "8:11:24128298",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 63,730,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 11,
+    "proposalType": "Transfer",
+    "proposerIdentity": "HDPWVFRQBPZREDVBVHYJLMLDACFDLPCLKGJOMFETCGEHMPVNTXVOVVHCNATJ",
+    "publishedTick": 24128298,
+    "slug": "24128298",
+    "status": 7,
+    "title": "Qubic Core Services (QCS)",
+    "totalVotes": 0,
+    "transferAmount": "63730000000",
+    "transferDestinationIdentity": "MARKETVWSHMHFFNKEUSIPLIDAYYAWDYJXYQTIBPVOCEZYLYXHBPYYKQAKLJD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/04b5fc4/QCS%20Marketing%20Budget%20Proposal%20May-June%20V2.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 157,
+    "id": "8:2:24127966",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 36,300,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 24127966,
+    "slug": "24127966",
+    "status": 7,
+    "title": "QCS Marketing CCF Proposal April V2",
+    "totalVotes": 0,
+    "transferAmount": "36300000000",
+    "transferDestinationIdentity": "MARKETVWSHMHFFNKEUSIPLIDAYYAWDYJXYQTIBPVOCEZYLYXHBPYYKQAKLJD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/a13ccdc/QCS%20Marketing%20CCF%20Proposal%20April%20V2.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 156,
@@ -2888,10 +6520,127 @@
     "proposalIndex": 11,
     "proposalType": "General options",
     "publishedTick": 23200525,
-    "status": 3,
+    "status": 7,
     "title": "Proposal to establish an independent moderation team",
     "totalVotes": 162,
     "url": "https://github.com/Qubic-Moderation/proposals/blob/2278651c76286081967c8a787e0710b853b21482/proposal-independent-mod-team.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 156,
+    "id": "8:2:23505199",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 115
+      },
+      {
+        "index": 1,
+        "label": "Send 22,700,000,000 QU",
+        "numberOfVotes": 416
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 23505199,
+    "slug": "23505199",
+    "status": 3,
+    "title": "Community Management CCF Proposal",
+    "totalVotes": 531,
+    "transferAmount": "22700000000",
+    "transferDestinationIdentity": "COMMUNJOHCBSTFQKYBCZQGXIPQADSJRODNZKKWBAEGVMZFATRTROETTCRVAI",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/71ef74e/Community%20Management%20CCF%20Proposal%20(April-May).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 156,
+    "id": "8:10:23505190",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 133
+      },
+      {
+        "index": 1,
+        "label": "Send 80,300,000,000 QU",
+        "numberOfVotes": 424
+      }
+    ],
+    "proposalIndex": 10,
+    "proposalType": "Transfer",
+    "proposerIdentity": "HDPWVFRQBPZREDVBVHYJLMLDACFDLPCLKGJOMFETCGEHMPVNTXVOVVHCNATJ",
+    "publishedTick": 23505190,
+    "slug": "23505190",
+    "status": 3,
+    "title": "QCS Strategy, Finance & Operations CCF Proposal",
+    "totalVotes": 557,
+    "transferAmount": "80300000000",
+    "transferDestinationIdentity": "STRATGYZMPOAFDMOYMFPFIPWAVGCBPFODBKUCELDQANLSDOHTZYRZDEBGALE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/dc71e08/QCS%20Operations%20CCF%20Proposal%20(April-May).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 156,
+    "id": "8:9:23505180",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 40
+      },
+      {
+        "index": 1,
+        "label": "Send 180,600,000,000 QU",
+        "numberOfVotes": 123
+      }
+    ],
+    "proposalIndex": 9,
+    "proposalType": "Transfer",
+    "proposerIdentity": "RGGNEEZYXQYTYFNFTLQYZKNNFMSCTBRSNZJIQGCXKAVVELCXQQQRMAKDDGOA",
+    "publishedTick": 23505180,
+    "slug": "23505180",
+    "status": 7,
+    "title": "QCS Marketing CCF Proposal",
+    "totalVotes": 163,
+    "transferAmount": "180600000000",
+    "transferDestinationIdentity": "MARKETVWSHMHFFNKEUSIPLIDAYYAWDYJXYQTIBPVOCEZYLYXHBPYYKQAKLJD",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/320d83b/QCS%20Marketing%20CCF%20Proposal%20(April-May).md"
+  },
+  {
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 156,
+    "id": "8:5",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 63
+      },
+      {
+        "index": 1,
+        "label": "Send 119,900,000,000 QU",
+        "numberOfVotes": 121
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "publishedTick": 23505164,
+    "status": 7,
+    "title": "QCS Ecosystem CCF Proposal",
+    "totalVotes": 184,
+    "transferAmount": "119900000000",
+    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
+    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/7bc777e/QCS%20Ecosystem%20CCF%20Proposal%20(April-May).md"
   },
   {
     "contractIndex": 8,
@@ -2940,39 +6689,12 @@
     "proposalIndex": 7,
     "proposalType": "Transfer",
     "publishedTick": 23200878,
-    "status": 3,
+    "status": 7,
     "title": "Proposal to fund the independent moderation team",
     "totalVotes": 101,
     "transferAmount": "24000000000",
     "transferDestinationIdentity": "PRSQQUERVLKQSGZYWWZYGKFEWSKBEOQDHVBKJPZVPFCQFOWUICIERUVABXXD",
     "url": "https://github.com/Qubic-Moderation/proposals/blob/2278651c76286081967c8a787e0710b853b21482/CCF%20proposal-%20funding%20independent%20moderation%20team.md"
-  },
-  {
-    "contractIndex": 8,
-    "contractName": "Computor Controlled Fund",
-    "epoch": 156,
-    "id": "8:5",
-    "options": [
-      {
-        "index": 0,
-        "label": "No transfer",
-        "numberOfVotes": 63
-      },
-      {
-        "index": 1,
-        "label": "Send 119,900,000,000 QU",
-        "numberOfVotes": 121
-      }
-    ],
-    "proposalIndex": 5,
-    "proposalType": "Transfer",
-    "publishedTick": 23505164,
-    "status": 3,
-    "title": "QCS Ecosystem CCF Proposal",
-    "totalVotes": 184,
-    "transferAmount": "119900000000",
-    "transferDestinationIdentity": "ECOSYSIWDJKGCGFUKJDKAELJXGVCBHKOWNULFIRGLEGPBDHRIFWDJFUCTRZE",
-    "url": "https://github.com/Qubic-Core-Services/Proposals/blob/7bc777e/QCS%20Ecosystem%20CCF%20Proposal%20(April-May).md"
   },
   {
     "contractIndex": 6,
@@ -3025,6 +6747,110 @@
     "url": "https://github.com/Palicube/Proposal-to-Restrict-Qubic-Community-Board-Membership-to-Valis-Tockchain-Affiliated-Individuals/blob/main/README.md"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 155,
+    "id": "6:10:22708015",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 10,
+    "proposalType": "General options",
+    "proposerIdentity": "SCAUFYMVFWCLIBTKRDBFDCVLUPMCOLJZNTLXVRPMEAXFKOGLGTIDRPFHOJWA",
+    "publishedTick": 22708015,
+    "slug": "22708015",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 0,
+    "url": "https://github.com/Palicube/Proposal-to-Restrict-Qubic-Community-Board-Membership-to-Valis-Tockchain-Affiliated-Individuals/blob/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 155,
+    "id": "6:10:22707884",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 10,
+    "proposalType": "General options",
+    "proposerIdentity": "SCAUFYMVFWCLIBTKRDBFDCVLUPMCOLJZNTLXVRPMEAXFKOGLGTIDRPFHOJWA",
+    "publishedTick": 22707884,
+    "slug": "22707884",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 0,
+    "url": "https://github.com/Palicube/Quorum-Proposal-to-Require-Doxxed-Members-for-Qubic-Community-Board/blob/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 155,
+    "id": "8:7:23016207",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 7,
+    "proposalType": "Transfer",
+    "proposerIdentity": "BGBNMYAJDOWYABXHHFQUNKZDQTJBQHUPVBYRCFCOVAGGFLCHNQFTILJFWZKF",
+    "publishedTick": 23016207,
+    "slug": "23016207",
+    "status": 7,
+    "title": "Proposal #7",
+    "totalVotes": 0,
+    "transferDestinationIdentity": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB",
+    "url": "https://example.com/proposal-details"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 155,
+    "id": "8:7:23016198",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 7,
+    "proposalType": "Transfer",
+    "proposerIdentity": "BGBNMYAJDOWYABXHHFQUNKZDQTJBQHUPVBYRCFCOVAGGFLCHNQFTILJFWZKF",
+    "publishedTick": 23016198,
+    "slug": "23016198",
+    "status": 7,
+    "title": "Proposal #7",
+    "totalVotes": 0,
+    "transferDestinationIdentity": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB",
+    "url": "https://example.com/proposal-details"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 154,
@@ -3075,6 +6901,36 @@
     "url": "https://github.com/Qubic-Core-Services/Proposals/blob/4e030ac/CM-Proposal-El_Clip.md"
   },
   {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 153,
+    "id": "8:5:21807793",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 484
+      },
+      {
+        "index": 1,
+        "label": "Send 213,290,000,000 QU",
+        "numberOfVotes": 88
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 21807793,
+    "slug": "21807793",
+    "status": 6,
+    "title": "Qubic Core Services - Budget Proposal",
+    "totalVotes": 572,
+    "transferAmount": "213290000000",
+    "transferDestinationIdentity": "STRATGYZMPOAFDMOYMFPFIPWAVGCBPFODBKUCELDQANLSDOHTZYRZDEBGALE",
+    "url": "https://github.com/Zgirt/QCS-Budget-Proposal-April/blob/ddd538d/README.md"
+  },
+  {
     "contractIndex": 6,
     "contractName": "General Quorum Proposal",
     "epoch": 152,
@@ -3082,13 +6938,18 @@
     "options": [
       {
         "index": 0,
-        "label": "No",
+        "label": "No change",
         "numberOfVotes": 1
       },
       {
         "index": 1,
-        "label": "Yes",
+        "label": "Option 1",
         "numberOfVotes": 522
+      },
+      {
+        "index": 2,
+        "label": "Option 2",
+        "numberOfVotes": 0
       }
     ],
     "proposalIndex": 6,
@@ -3098,6 +6959,416 @@
     "title": "Proposal to include Qbay Smart Contract",
     "totalVotes": 523,
     "url": "https://github.com/qubic/proposal/blob/e305392/SmartContracts/2025-03-11-Qbay.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 152,
+    "id": "8:5:21386262",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 445
+      },
+      {
+        "index": 1,
+        "label": "Send 247,780,000,000 QU",
+        "numberOfVotes": 99
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 21386262,
+    "slug": "21386262",
+    "status": 6,
+    "title": "Qubic Core Services - Budget Proposal",
+    "totalVotes": 544,
+    "transferAmount": "247780000000",
+    "transferDestinationIdentity": "STRATGYZMPOAFDMOYMFPFIPWAVGCBPFODBKUCELDQANLSDOHTZYRZDEBGALE",
+    "url": "https://github.com/Zgirt/QCS-Budget-Proposal-April/blob/177da9d/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 149,
+    "id": "6:7:19760136",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 7,
+    "proposalType": "General options",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19760136,
+    "slug": "19760136",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 0,
+    "url": "https://github.com/CryptoDeighs/QubicBay-Proposal/blob/48147f2/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 147,
+    "id": "6:5:19112721",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 1
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 597
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 19112721,
+    "slug": "19112721",
+    "status": 3,
+    "title": "Smart Contract - Multi-Sign-Vault (MSVault)",
+    "totalVotes": 598,
+    "url": "https://github.com/qubic/proposal/blob/e752a114d8b983c946ec705268ccb6ef30efa04f/SmartContracts/2025-02-09-MSVAULT.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 147,
+    "id": "6:6:19008223",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 2
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 620
+      }
+    ],
+    "proposalIndex": 6,
+    "proposalType": "General options",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19008223,
+    "slug": "19008223",
+    "status": 3,
+    "title": "Proposal to Elect New QCS Marketing Lead",
+    "totalVotes": 622,
+    "url": "https://github.com/Zgirt/QCS-Marketing-Lead/blob/8d5d621/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 147,
+    "id": "8:5:19006088",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 386
+      },
+      {
+        "index": 1,
+        "label": "Send 38,230,000,000 QU",
+        "numberOfVotes": 131
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19006088,
+    "slug": "19006088",
+    "status": 6,
+    "title": "Exchange Listings Proposal",
+    "totalVotes": 517,
+    "transferAmount": "38230000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/LBank-Proposal/blob/556c7df/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 147,
+    "id": "8:5:19005971",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 38,230,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19005971,
+    "slug": "19005971",
+    "status": 7,
+    "title": "Exchange Listings Proposal",
+    "totalVotes": 0,
+    "transferAmount": "38230000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/LBank-Proposal/blob/2318c97/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 147,
+    "id": "8:5:19005934",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 3,823,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19005934,
+    "slug": "19005934",
+    "status": 7,
+    "title": "Exchange Listings Proposal",
+    "totalVotes": 0,
+    "transferAmount": "3823000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/LBank-Proposal/blob/2318c97/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 147,
+    "id": "8:5:19005920",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 23,823,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19005920,
+    "slug": "19005920",
+    "status": 7,
+    "title": "Exchange Listings Proposal",
+    "totalVotes": 0,
+    "transferAmount": "23823000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/LBank-Proposal/blob/2318c97/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 147,
+    "id": "8:5:19003351",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 38,230,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 19003351,
+    "slug": "19003351",
+    "status": 7,
+    "title": "Exchange Listings Proposal",
+    "totalVotes": 0,
+    "transferAmount": "38230000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/LBank-Proposal/blob/2318c97/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 146,
+    "id": "8:5:18842418",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 69
+      },
+      {
+        "index": 1,
+        "label": "Send 21,300,000,000 QU",
+        "numberOfVotes": 564
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 18842418,
+    "slug": "18842418",
+    "status": 3,
+    "title": "Ambassador Program - Budget CCF Proposal",
+    "totalVotes": 633,
+    "transferAmount": "21300000000",
+    "transferDestinationIdentity": "LVRGSAJQRAFELGGAHVAGJLKCGUDDOAEVSDEJAAEGNEVJWQRWDPHOBYHFCJCK",
+    "url": "https://github.com/Zgirt/AmbassadorProgram/blob/f5e41f5/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 145,
+    "id": "6:6:18706828",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 6,
+    "proposalType": "General options",
+    "proposerIdentity": "BZBQFLLBNCXEMGLOBHUVFTLUPLVCPQUASSILFABOFFBCADQSSUPNWLZBQEXK",
+    "publishedTick": 18706828,
+    "slug": "18706828",
+    "status": 7,
+    "title": "Proposal #6",
+    "totalVotes": 0,
+    "url": "https://raw.githubusercontent.com/Wolf833/QVAULT-V2/refs/heads/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 145,
+    "id": "6:6:18706755",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 6,
+    "proposalType": "General options",
+    "proposerIdentity": "BZBQFLLBNCXEMGLOBHUVFTLUPLVCPQUASSILFABOFFBCADQSSUPNWLZBQEXK",
+    "publishedTick": 18706755,
+    "slug": "18706755",
+    "status": 7,
+    "title": "Proposal #6",
+    "totalVotes": 0,
+    "url": "https://raw.githubusercontent.com/Wolf833/QVAULT-V2/refs/heads/main/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 145,
+    "id": "8:5:18732033",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 201
+      },
+      {
+        "index": 1,
+        "label": "Send 276,000,000,000 QU",
+        "numberOfVotes": 368
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 18732033,
+    "slug": "18732033",
+    "status": 3,
+    "title": "Qubic Core Services - Budget Proposal",
+    "totalVotes": 569,
+    "transferAmount": "276000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Budget-Q12025/blob/a3446e0/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 145,
+    "id": "8:5:18732022",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 276,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 18732022,
+    "slug": "18732022",
+    "status": 7,
+    "title": "Qubic Core Services - Budget Proposal",
+    "totalVotes": 0,
+    "transferAmount": "276000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Budget-Q12025/blob/a3446e0/README.md"
   },
   {
     "contractIndex": 8,
@@ -3127,6 +7398,481 @@
     "url": "https://github.com/Wolf833/QVAULT-V2"
   },
   {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 143,
+    "id": "6:5:18374067",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 62
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 465
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 18374067,
+    "slug": "18374067",
+    "status": 3,
+    "title": "Proposal to add state variables for additional metrics in QEarn Smart Contract",
+    "totalVotes": 527,
+    "url": "https://github.com/qubic/proposal/blob/67074f8cd6d21c014b30ee54e2fc8c1b551951b1/SmartContracts/2025-01-10-QEarn-metrics.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 142,
+    "id": "8:5:18249127",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 224
+      },
+      {
+        "index": 1,
+        "label": "Send 150,000,000,000 QU",
+        "numberOfVotes": 336
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 18249127,
+    "slug": "18249127",
+    "status": 3,
+    "title": "Proposal: KOL Partnership for Qubic Marketing Campaign",
+    "totalVotes": 560,
+    "transferAmount": "150000000000",
+    "transferDestinationIdentity": "YPTIWNXAGOHUOGGBGXNDIGZBVMKCQFBPUVBKDIWGBEKVGIUZVELXAUSCJFEJ",
+    "url": "https://github.com/Zgirt/KOL-Partnership-Proposal/blob/3672827/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 140,
+    "id": "8:5:17954796",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 435
+      },
+      {
+        "index": 1,
+        "label": "Send 76,647,500,000 QU",
+        "numberOfVotes": 105
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17954796,
+    "slug": "17954796",
+    "status": 6,
+    "title": "Qubic Association Funding Proposal",
+    "totalVotes": 540,
+    "transferAmount": "76647500000",
+    "transferDestinationIdentity": "WTYGROYCCYJRXGHTBGWWCQUIAOJBJINZYEBFUMEMPEORQHHCSSMAIXCBBOVG",
+    "url": "https://github.com/Zgirt/AssociationProposal/blob/ee62625/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 139,
+    "id": "8:5:17769275",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 123
+      },
+      {
+        "index": 1,
+        "label": "Send 76,650,000,000 QU",
+        "numberOfVotes": 330
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17769275,
+    "slug": "17769275",
+    "status": 3,
+    "title": "README",
+    "totalVotes": 453,
+    "transferAmount": "76650000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/ExchangeListingProposal/blob/6732095/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 138,
+    "id": "8:5:17568990",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 75,520,000,000 QU",
+        "numberOfVotes": 344
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17568990,
+    "slug": "17568990",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 344,
+    "transferAmount": "75520000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/ExchangeListingProposal/blob/dbafa9f/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 138,
+    "id": "8:5:17568948",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 75,520,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17568948,
+    "slug": "17568948",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 0,
+    "transferAmount": "75520000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/ExchangeListingProposal/blob/dbafa9f/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 138,
+    "id": "8:5:17568163",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 75,520,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17568163,
+    "slug": "17568163",
+    "status": 7,
+    "title": "README",
+    "totalVotes": 0,
+    "transferAmount": "75520000000",
+    "transferDestinationIdentity": "EXCEXRFCGCLFRAMXIRLDUAENACKDVQPIZIOJRWTQRCMYWFHFYYFDBQXFINMO",
+    "url": "https://github.com/Zgirt/ExchangeListingProposal/blob/2b99781/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 137,
+    "id": "8:5:17493619",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 244
+      },
+      {
+        "index": 1,
+        "label": "Send 94,000,000,000 QU",
+        "numberOfVotes": 401
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17493619,
+    "slug": "17493619",
+    "status": 3,
+    "title": "Qubic Core Services - Budget Request",
+    "totalVotes": 645,
+    "transferAmount": "94000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-DecemberBudgetRequest/blob/29375a6/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 137,
+    "id": "8:5:17477470",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 92,000,000,000 QU",
+        "numberOfVotes": 1
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17477470,
+    "slug": "17477470",
+    "status": 7,
+    "title": "Qubic Core Services - Budget Request",
+    "totalVotes": 1,
+    "transferAmount": "92000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-DecemberBudgetRequest/blob/29375a6/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 136,
+    "id": "6:6:17340459",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 100,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 6,
+    "proposalType": "General options",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17340459,
+    "slug": "17340459",
+    "status": 7,
+    "title": "10pctRevDonationToSwatch",
+    "totalVotes": 0,
+    "transferAmount": "100000",
+    "transferDestinationIdentity": "HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHYCM",
+    "url": "https://github.com/qubic/proposal/blob/29da63e/ComputorDonations/2024-11-22_QEarn_Emission_Proposal(1of2).md/.../10pctRevDonationToSwatch"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 136,
+    "id": "6:5:17339631",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 12
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 579
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "BCVGNYYPXXEMKHRYQAKKBAFSFDWADEBCRRSRZRHEAFFFOFCBOGWQDIDEROHB",
+    "publishedTick": 17339631,
+    "slug": "17339631",
+    "status": 3,
+    "title": "Proposal to include QVault Smart Contract",
+    "totalVotes": 591,
+    "url": "https://github.com/qubic/proposal/blob/62b2698ad47e41da469f4095b56377d2c6e02e45/SmartContracts/2024-11-23-QVault.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 136,
+    "id": "6:0:17339629",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 19
+      },
+      {
+        "index": 1,
+        "label": "Send 122,500 QU",
+        "numberOfVotes": 517
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 17339629,
+    "slug": "17339629",
+    "status": 3,
+    "title": "QEarn Proposal (2/2): Allocate Approximately 100B QU from Weekly Emission to QEarn",
+    "totalVotes": 536,
+    "transferAmount": "122500",
+    "transferDestinationIdentity": "JAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAVKHO",
+    "url": "https://github.com/qubic/proposal/blob/2d5201e4d0f9e72d50fcab46a5355c3f91b23bc5/ComputorDonations/2024-11-22_QEarn_Emission_Proposal(2of2).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 136,
+    "id": "6:1:17339628",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 18
+      },
+      {
+        "index": 1,
+        "label": "Send 100,000 QU",
+        "numberOfVotes": 549
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 17339628,
+    "slug": "17339628",
+    "status": 3,
+    "title": "QEarn Proposal (1/2): Reduce Weekly Emission Burn Rate from 15% to 10%",
+    "totalVotes": 567,
+    "transferAmount": "100000",
+    "transferDestinationIdentity": "HAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAHYCM",
+    "url": "https://github.com/qubic/proposal/blob/2d5201e4d0f9e72d50fcab46a5355c3f91b23bc5/ComputorDonations/2024-11-22_QEarn_Emission_Proposal(1of2).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 136,
+    "id": "6:6:17326578",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 6,
+    "proposalType": "General options",
+    "proposerIdentity": "RWTRPMXRVGHGLDWURVXJUAHQTJUAOECFTBZLVWCPYANOQRPGUHKJPLCANQPJ",
+    "publishedTick": 17326578,
+    "slug": "17326578",
+    "status": 7,
+    "title": "QEarn Proposal (2/2): Allocate Approximately 100B QU from Weekly Emission to QEarn",
+    "totalVotes": 0,
+    "url": "https://github.com/qubic/proposal/blob/29da63e329188b97f2f00b04ff0f630a31dd76f4/ComputorDonations/2024-11-22_QEarn_Emission_Proposal(2of2).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 136,
+    "id": "6:5:17326471",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 5,
+    "proposalType": "General options",
+    "proposerIdentity": "TKJLYIPVCYBRECBJPKKIYHJYLHVBQLFPELHFBTMXXDSGLNWQAVHSRMUBJNAN",
+    "publishedTick": 17326471,
+    "slug": "17326471",
+    "status": 7,
+    "title": "QEarn Proposal (1/2): Reduce Weekly Emission Burn Rate from 15% to 10%",
+    "totalVotes": 0,
+    "url": "https://github.com/qubic/proposal/blob/29da63e/ComputorDonations/2024-11-22_QEarn_Emission_Proposal(1of2).md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 135,
+    "id": "6:0:17181671",
+    "options": [
+      {
+        "index": 0,
+        "label": "No change",
+        "numberOfVotes": 5
+      },
+      {
+        "index": 1,
+        "label": "Option 1",
+        "numberOfVotes": 570
+      },
+      {
+        "index": 2,
+        "label": "Option 2",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 17181671,
+    "slug": "17181671",
+    "status": 3,
+    "title": "Proposal to include QEarn Smart Contract",
+    "totalVotes": 575,
+    "url": "https://github.com/qubic/proposal/blob/c7c67506f9afa9112284f126ef8615240829006f/SmartContracts/2024-11-14-QEarn.md"
+  },
+  {
     "contractIndex": 8,
     "contractName": "Computor Controlled Fund",
     "epoch": 135,
@@ -3152,6 +7898,186 @@
     "transferAmount": "25000000000",
     "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
     "url": "https://github.com/Zgirt/QCS-Booster-Proposal2/blob/f424fb2/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 135,
+    "id": "8:3:17184135",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 367
+      },
+      {
+        "index": 1,
+        "label": "Send 25,000,000,000 QU",
+        "numberOfVotes": 214
+      }
+    ],
+    "proposalIndex": 3,
+    "proposalType": "Transfer",
+    "proposerIdentity": "HJVZKBEWSHXBIHOMRIWOEXCALBXBYZXFYJHGDNTTACCZWUAUVQWEKJDDYOOH",
+    "publishedTick": 17184135,
+    "slug": "17184135",
+    "status": 6,
+    "title": "Marketing Booster Fund Proposal - PR Booster",
+    "totalVotes": 581,
+    "transferAmount": "25000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Booster-Proposal1/blob/3d31474/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 135,
+    "id": "8:2:17184099",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 128
+      },
+      {
+        "index": 1,
+        "label": "Send 172,700,000,000 QU",
+        "numberOfVotes": 401
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 17184099,
+    "slug": "17184099",
+    "status": 3,
+    "title": "Qubic Core Services - Base Budget Proposal",
+    "totalVotes": 529,
+    "transferAmount": "172700000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Revised-Budget/blob/d26d24e/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 135,
+    "id": "8:2:17184054",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 172,700,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 17184054,
+    "slug": "17184054",
+    "status": 7,
+    "title": "Qubic Core Services - Base Budget Proposal",
+    "totalVotes": 0,
+    "transferAmount": "172700000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Revised-Budget/blob/d26d24e/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 135,
+    "id": "8:2:17184024",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 25,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 17184024,
+    "slug": "17184024",
+    "status": 7,
+    "title": "Marketing Booster Fund Proposal - KOL Booster",
+    "totalVotes": 0,
+    "transferAmount": "25000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Booster-Proposal2/blob/f424fb2/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 135,
+    "id": "8:2:17183761",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 172,700,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 17183761,
+    "slug": "17183761",
+    "status": 7,
+    "title": "Qubic Core Services - Base Budget Proposal",
+    "totalVotes": 0,
+    "transferAmount": "172700000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Revised-Budget/blob/d26d24e/README.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 135,
+    "id": "8:2:17183181",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 172,700,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 2,
+    "proposalType": "Transfer",
+    "proposerIdentity": "TTVGKPIMQTGWDFRNQPAZWJDDHGADFXLPASJGQYIPTDVVVBYMBWGXLHNFRVRD",
+    "publishedTick": 17183181,
+    "slug": "17183181",
+    "status": 7,
+    "title": "Qubic Core Services - Base Budget Proposal",
+    "totalVotes": 0,
+    "transferAmount": "172700000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Revised-Budget/blob/e690532/README.md"
   },
   {
     "contractIndex": 8,
@@ -3188,22 +8114,235 @@
     "options": [
       {
         "index": 0,
-        "label": "No",
+        "label": "No change",
         "numberOfVotes": 0
       },
       {
         "index": 1,
-        "label": "Yes",
+        "label": "Option 1",
         "numberOfVotes": 74
+      },
+      {
+        "index": 2,
+        "label": "Option 2",
+        "numberOfVotes": 300
       }
     ],
     "proposalIndex": 4,
     "proposalType": "General options",
     "publishedTick": 17130943,
-    "status": 3,
+    "status": 7,
     "title": "QCS Booster Proposal",
-    "totalVotes": 74,
+    "totalVotes": 374,
     "url": "https://github.com/Zgirt/QCS-Booster-Proposal"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 134,
+    "id": "8:1:17130666",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 93
+      },
+      {
+        "index": 1,
+        "label": "Send 250,000,000,000 QU",
+        "numberOfVotes": 258
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ACWNEGHPRAEPCFXNDEZDRQXLOPSCYDIFBUPRUIULSEZWHDHBFUMOLDVGNAZA",
+    "publishedTick": 17130666,
+    "slug": "17130666",
+    "status": 7,
+    "title": "QCS Budget Proposal",
+    "totalVotes": 351,
+    "transferAmount": "250000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Budget-Proposal"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 134,
+    "id": "8:1:17130629",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 250,000,000,000 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ACWNEGHPRAEPCFXNDEZDRQXLOPSCYDIFBUPRUIULSEZWHDHBFUMOLDVGNAZA",
+    "publishedTick": 17130629,
+    "slug": "17130629",
+    "status": 7,
+    "title": "QCS Budget Proposal",
+    "totalVotes": 0,
+    "transferAmount": "250000000000",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Budget-Proposal"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 134,
+    "id": "8:1:17130584",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 0
+      },
+      {
+        "index": 1,
+        "label": "Send 250 QU",
+        "numberOfVotes": 0
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "Transfer",
+    "proposerIdentity": "ACWNEGHPRAEPCFXNDEZDRQXLOPSCYDIFBUPRUIULSEZWHDHBFUMOLDVGNAZA",
+    "publishedTick": 17130584,
+    "slug": "17130584",
+    "status": 7,
+    "title": "QCS Budget Proposal",
+    "totalVotes": 0,
+    "transferAmount": "250",
+    "transferDestinationIdentity": "TKUWWSNBAEGWJHQJDFLGQHJJCJBAXBSQMQAZJJDYXEPBVBBLIQANJTIDXMQH",
+    "url": "https://github.com/Zgirt/QCS-Budget-Proposal"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 133,
+    "id": "6:3:16945549",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 138
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 315
+      }
+    ],
+    "proposalIndex": 3,
+    "proposalType": "General options",
+    "proposerIdentity": "NEEZJJQWCSDMVBKTFROXJQGBGXIALDRZGWGFOMAGBECTPANXOKXMXINFBCEK",
+    "publishedTick": 16945549,
+    "slug": "16945549",
+    "status": 3,
+    "title": "Dab88532054b5aafc87ca45f7543d32cc098bf19",
+    "totalVotes": 453,
+    "url": "https://github.com/Foleycious/Steco-Term-Proposal/commit/dab88532054b5aafc87ca45f7543d32cc098bf19"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 133,
+    "id": "8:0:16931545",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 69
+      },
+      {
+        "index": 1,
+        "label": "Send 44,000,000,000 QU",
+        "numberOfVotes": 430
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "Transfer",
+    "proposerIdentity": "VGIWRRNVVRRXSEASPENCIMVNANPCFHAASZVPBIEFLCRYHWSZYSGXHNSBYPVN",
+    "publishedTick": 16931545,
+    "slug": "16931545",
+    "status": 3,
+    "title": "Proposal to Fund the Development of a Wallet App for The Ledger Hardware Wallet",
+    "totalVotes": 499,
+    "transferAmount": "44000000000",
+    "transferDestinationIdentity": "JXGMJLWEGFFORBQNEKGPIIZMQNYBNJKJSNWYJSAXDDCZCEZMQUBNGFHFWTMH",
+    "url": "https://github.com/qubic/proposal/blob/4c9ed807d7988939d9561288c01b02f1c7b4fc4c/CCF-Funding-Requests/2024-10-23-ledger-wallet-integration.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 132,
+    "id": "8:0:16804875",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 63
+      },
+      {
+        "index": 1,
+        "label": "Send 44,000,000,000 QU",
+        "numberOfVotes": 139
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "Transfer",
+    "proposerIdentity": "VGIWRRNVVRRXSEASPENCIMVNANPCFHAASZVPBIEFLCRYHWSZYSGXHNSBYPVN",
+    "publishedTick": 16804875,
+    "slug": "16804875",
+    "status": 7,
+    "title": "Proposal to Fund the Development of a Wallet App for The Ledger Hardware Wallet",
+    "totalVotes": 202,
+    "transferAmount": "44000000000",
+    "transferDestinationIdentity": "JXGMJLWEGFFORBQNEKGPIIZMQNYBNJKJSNWYJSAXDDCZCEZMQUBNGFHFWTMH",
+    "url": "https://github.com/qubic/proposal/blob/4c9ed807d7988939d9561288c01b02f1c7b4fc4c/CCF-Funding-Requests/2024-10-23-ledger-wallet-integration.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 8,
+    "contractName": "Computor Controlled Fund",
+    "epoch": 131,
+    "id": "8:0:16645515",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 225
+      },
+      {
+        "index": 1,
+        "label": "Send 5,500,000,000 QU",
+        "numberOfVotes": 296
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "Transfer",
+    "proposerIdentity": "VGIWRRNVVRRXSEASPENCIMVNANPCFHAASZVPBIEFLCRYHWSZYSGXHNSBYPVN",
+    "publishedTick": 16645515,
+    "slug": "16645515",
+    "status": 3,
+    "title": "Proposal to Fund the Development of QVAULT Smart Contract with 5.5 Billion $QUBIC",
+    "totalVotes": 521,
+    "transferAmount": "5500000000",
+    "transferDestinationIdentity": "AVXAJKOXPJJYPGKJSRAOSSCOXSNAYLQZPKKUFBDZFFHCYZPBROWKFGRCQCUL",
+    "url": "https://github.com/qubic/proposal/blob/290f9e7d9f6a39d0245d108101e1e062638e5c1f/CCF-Funding-Requests/2024-10-13-qvault-smart-contract.md"
   },
   {
     "contractIndex": 6,
@@ -3229,5 +8368,63 @@
     "title": "Budget Request to CCF",
     "totalVotes": 497,
     "url": "https://github.com/qubic/proposal/blob/0b7f51f36ce6f131d0e55865f8030a7e71c91814/GeneralComputorProposals/2024-09-27-Ambassador-Program.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 128,
+    "id": "6:1:16102472",
+    "options": [
+      {
+        "index": 0,
+        "label": "No transfer",
+        "numberOfVotes": 38
+      },
+      {
+        "index": 1,
+        "label": "Send 80,000 QU",
+        "numberOfVotes": 461
+      }
+    ],
+    "proposalIndex": 1,
+    "proposalType": "General options",
+    "proposerIdentity": "ZFPYXZJQZJXQFHRGOHZWETHBGHYAEPSKHPGUBNDZIAUESPQDBXOLKTBDHDRG",
+    "publishedTick": 16102472,
+    "slug": "16102472",
+    "status": 3,
+    "title": "Reallocate 8% of Weekly Emissions to Our Community Fund, the CCF",
+    "totalVotes": 499,
+    "transferAmount": "80000",
+    "transferDestinationIdentity": "IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABXSH",
+    "url": "https://github.com/qubic/proposal/blob/2679a6c5ad98e6a781672e49b1add75320224106/ComputorDonations/2024-09-25-CCF-proposal.md"
+  },
+  {
+    "archived": true,
+    "contractIndex": 6,
+    "contractName": "General Quorum Proposal",
+    "epoch": 125,
+    "id": "6:0:15796800",
+    "options": [
+      {
+        "index": 0,
+        "label": "No",
+        "numberOfVotes": 524
+      },
+      {
+        "index": 1,
+        "label": "Yes",
+        "numberOfVotes": 21
+      }
+    ],
+    "proposalIndex": 0,
+    "proposalType": "General options",
+    "proposerIdentity": "EQOTMBNINEBMWFTBFTHTMWWLKHNBBAUHJNHUEQKDOCRTCLQBTDCMFOFHNNPJ",
+    "publishedTick": 15796800,
+    "slug": "15796800",
+    "status": 6,
+    "title": "Smart Contract - Computor Controled Fund (CCF) - 2024-09-09",
+    "totalVotes": 545,
+    "url": "https://github.com/qubic/proposal/blob/2e25df383dc95b937a3e0c56d11925b664770108/SmartContracts/2024-09-09-CCF.md"
   }
 ]

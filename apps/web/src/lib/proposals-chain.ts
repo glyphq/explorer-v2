@@ -24,6 +24,7 @@ type ContractProposalResponse = {
     data?: number[] | Uint8Array;
     epoch: number;
     tick: number;
+    type?: number;
     url: number[] | Uint8Array;
   };
 };
@@ -57,6 +58,7 @@ const CONTRACTS: GovernanceContract[] = [
 ];
 
 const STATUS = { PASSED: 3, REJECTED: 6, VOTING: 2, INCONCLUSIVE: 7 } as const;
+const QUORUM = 451;
 
 const titleCache = new Map<string, string>();
 
@@ -190,9 +192,107 @@ async function readTitle(url: string, proposalIndex: number): Promise<string> {
   }
 }
 
-function optionCounts(response: VotingResultsResponse): [number, number] {
-  const counts = response.results.optionVoteCount;
-  return [Number(counts[1] ?? 0), Number(counts[2] ?? 0)];
+function votingResults(response: VotingResultsResponse): {
+  counts: number[];
+  totalVotes: number;
+} {
+  // The generated decoder misaligns this struct after the leading bit field.
+  // The first entry of optionVoteCount is the total number of votes cast.
+  const raw = response.results.optionVoteCount ?? [];
+  return { counts: raw.slice(1).map(Number), totalVotes: Number(raw[0] ?? 0) };
+}
+
+function optionCountForType(type: number): number {
+  return type & 0x00ff;
+}
+
+function proposalClass(type: number): number {
+  return type & 0xff00;
+}
+
+function transferDetails(type: number, data: number[] | Uint8Array | undefined) {
+  const bytes = data ? Uint8Array.from(data) : new Uint8Array();
+  const optionCount = optionCountForType(type);
+  const details: {
+    transferAmount?: string;
+    transferAmounts?: number[];
+    transferDestinationIdentity?: string;
+    transferTargetEpoch?: number;
+  } = {};
+  if (proposalClass(type) === 0x400) {
+    if (bytes.length < 42) {
+      return details;
+    }
+    details.transferAmount = BigInt.asIntN(64, decodeUint64(bytes, 32)).toString();
+    details.transferDestinationIdentity = publicKeyToIdentity(bytes.subarray(0, 32));
+    details.transferTargetEpoch = bytes[40]! | (bytes[41]! << 8);
+    return details;
+  }
+  if (proposalClass(type) !== 0x100 || bytes.length < 32) {
+    return details;
+  }
+  const amounts: number[] = [];
+  for (let index = 0; index < Math.max(0, optionCount - 1); index += 1) {
+    const offset = 32 + index * 8;
+    if (offset + 8 > bytes.length) {
+      break;
+    }
+    amounts.push(Number(BigInt.asIntN(64, decodeUint64(bytes, offset))));
+  }
+  details.transferAmount = amounts[0] === undefined ? undefined : String(amounts[0]);
+  details.transferAmounts = amounts;
+  details.transferDestinationIdentity = publicKeyToIdentity(bytes.subarray(0, 32));
+  return details;
+}
+
+function optionLabels(
+  type: number,
+  details: { transferAmount?: string; transferAmounts?: number[]; transferTargetEpoch?: number },
+): string[] {
+  const optionCount = optionCountForType(type);
+  const labels: string[] = [];
+  if (proposalClass(type) === 0x100) {
+    labels.push("No transfer");
+    for (const amount of details.transferAmounts ?? []) {
+      labels.push(`Send ${amount.toLocaleString("en-US")} QU`);
+    }
+  } else if (proposalClass(type) === 0x400) {
+    labels.push("No transfer");
+    labels.push(
+      `Send ${Number(details.transferAmount).toLocaleString("en-US")} QU in epoch ${
+        details.transferTargetEpoch
+      }`,
+    );
+  } else if (optionCount === 2) {
+    labels.push("No", "Yes");
+  } else {
+    labels.push("No change");
+    for (let index = 1; index < optionCount; index += 1) {
+      labels.push(`Option ${index}`);
+    }
+  }
+  return labels;
+}
+
+function proposalStatus(active: boolean, totalVotes: number, counts: number[]): number {
+  if (active) {
+    return STATUS.VOTING;
+  }
+  if (totalVotes < QUORUM) {
+    return STATUS.INCONCLUSIVE;
+  }
+  let winnerIndex = -1;
+  let winnerVotes = -1;
+  for (let index = 0; index < counts.length; index += 1) {
+    if ((counts[index] ?? 0) > winnerVotes) {
+      winnerVotes = counts[index] ?? 0;
+      winnerIndex = index;
+    }
+  }
+  if (winnerIndex <= 0 || winnerVotes <= Math.floor(QUORUM / 2)) {
+    return STATUS.REJECTED;
+  }
+  return STATUS.PASSED;
 }
 
 async function readProposal(
@@ -211,34 +311,14 @@ async function readProposal(
     }),
   ]);
   const { proposal } = proposalResponse;
-  const [noVotes, yesVotes] = optionCounts(resultsResponse);
-  const totalVotes = noVotes + yesVotes;
-  const status = active
-    ? STATUS.VOTING
-    : totalVotes === 0 || noVotes === yesVotes
-      ? STATUS.INCONCLUSIVE
-      : yesVotes > noVotes
-        ? STATUS.PASSED
-        : STATUS.REJECTED;
-
-  let transferDestinationIdentity: string | undefined;
-  let transferAmount: string | undefined;
-  if (contract.name === "CCF" && proposal.data) {
-    const data = Uint8Array.from(proposal.data);
-    if (data.length >= 40) {
-      transferDestinationIdentity = publicKeyToIdentity(data.subarray(0, 32));
-      transferAmount = decodeUint64(data, 32).toString();
-    }
-  }
-
-  const optionLabels =
-    contract.name === "CCF" && transferAmount
-      ? ["No transfer", `Send ${Number(transferAmount).toLocaleString("en-US")} QU`]
-      : ["No", "Yes"];
-  const options: ProposalOption[] = optionLabels.map((label, index) => ({
+  const { counts, totalVotes } = votingResults(resultsResponse);
+  const type = proposal.type ?? (contract.name === "CCF" ? 258 : 2);
+  const details = transferDetails(type, proposal.data);
+  const labels = optionLabels(type, details);
+  const options: ProposalOption[] = labels.map((label, index) => ({
     index,
     label,
-    numberOfVotes: index === 0 ? noVotes : yesVotes,
+    numberOfVotes: counts[index] ?? 0,
   }));
   const url = decodeText(proposal.url);
 
@@ -251,11 +331,15 @@ async function readProposal(
     proposalIndex,
     proposalType: contract.proposalType,
     publishedTick: proposal.tick,
-    status,
+    status: proposalStatus(
+      active,
+      totalVotes,
+      options.map((option) => option.numberOfVotes),
+    ),
     title: await readTitle(url, proposalIndex),
     totalVotes,
-    transferAmount,
-    transferDestinationIdentity,
+    transferAmount: details.transferAmount,
+    transferDestinationIdentity: details.transferDestinationIdentity,
     url,
   };
 }
@@ -329,16 +413,32 @@ export async function readChangedProposals(
   existing: Proposal[],
   openIds: Set<string>,
 ): Promise<Proposal[]> {
+  const existingById = new Map(existing.map((proposal) => [proposal.id, proposal]));
   const existingIds = new Set(existing.map((proposal) => proposal.id));
   const proposals = (
     await Promise.all(
       CONTRACTS.map((contract) => readContractProposals(contract, existingIds, openIds)),
     )
   ).flat();
-  return proposals.sort(
+  const archived: Proposal[] = [];
+  for (const proposal of proposals) {
+    const previous = existingById.get(proposal.id);
+    if (
+      previous?.publishedTick !== undefined &&
+      previous.publishedTick !== proposal.publishedTick
+    ) {
+      archived.push({
+        ...previous,
+        archived: true,
+        id: `${previous.contractIndex}:${previous.proposalIndex}:${previous.publishedTick}`,
+        slug: String(previous.publishedTick),
+      });
+    }
+  }
+  return [...proposals, ...archived].sort(
     (left, right) =>
       right.epoch - left.epoch ||
       left.contractIndex - right.contractIndex ||
-      right.proposalIndex - left.proposalIndex,
+      (right.publishedTick ?? 0) - (left.publishedTick ?? 0),
   );
 }

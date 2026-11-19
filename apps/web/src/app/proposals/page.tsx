@@ -4,6 +4,7 @@ import { ArrowRightUpIcon } from "@solar-icons/react/linear/arrow-right-up";
 import type { Metadata } from "next";
 import Link from "next/link";
 
+import { CcfTreasuryStrip } from "@/components/explorer/ccf-treasury-strip";
 import { ContractMark } from "@/components/explorer/contract-mark";
 import { EpochLink, IdentityLink, TickLink } from "@/components/explorer/links";
 import { PageHeader, SectionHeading } from "@/components/explorer/page-header";
@@ -13,6 +14,7 @@ import {
   proposalHref,
   statusMeta,
 } from "@/components/explorer/proposal-summary";
+import { getCcfTreasury } from "@/lib/ccf-treasury";
 import { countLabel, formatInteger } from "@/lib/format";
 import { getProposals, type Proposal } from "@/lib/proposals";
 
@@ -188,7 +190,6 @@ function ProposalRow({ proposal }: { proposal: Proposal }) {
         <span className="hidden w-16 shrink-0 text-right text-[11px] text-muted tabular sm:block">
           {countLabel(total, "vote")}
         </span>
-        <ArrowRightIcon className="size-3.5 shrink-0 text-muted/40 transition-transform group-hover:translate-x-0.5 group-hover:text-foreground" />
       </div>
     </Link>
   );
@@ -253,7 +254,11 @@ export default async function ProposalsPage({
 }: {
   searchParams: Promise<{ page?: string }>;
 }) {
-  const [proposals, params] = await Promise.all([getProposals(), searchParams]);
+  const [proposals, params, treasury] = await Promise.all([
+    getProposals(),
+    searchParams,
+    getCcfTreasury(),
+  ]);
   const requestedPage = Number.parseInt(params.page ?? "1", 10);
   const decidedGroups = groupByEpoch(proposals.ended);
   const totalPages = Math.max(1, Math.ceil(decidedGroups.length / EPOCHS_PER_PAGE));
@@ -286,6 +291,8 @@ export default async function ProposalsPage({
         description="Computor votes on General Quorum Proposals and Computor Controlled Fund requests, read from the GQMPROP and CCF contracts."
         title="Proposals"
       />
+
+      {treasury ? <CcfTreasuryStrip treasury={treasury} /> : null}
 
       <div className="mb-6 flex flex-wrap gap-2 text-muted text-xs">
         <span className="rounded-full bg-surface-secondary px-3 py-1.5">
@@ -328,11 +335,6 @@ export default async function ProposalsPage({
                     <h3 className="font-medium text-foreground text-sm">
                       Epoch <EpochLink epoch={group.epoch} />
                     </h3>
-                    {group.proposals.length > 1 ? (
-                      <span className="text-[11px] text-muted">
-                        {countLabel(group.proposals.length, "proposal")}
-                      </span>
-                    ) : null}
                   </div>
                   <div className="overflow-hidden rounded-2xl bg-surface">
                     {group.proposals.map((proposal) => (
