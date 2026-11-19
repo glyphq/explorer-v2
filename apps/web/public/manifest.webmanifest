@@ -1,0 +1,23 @@
+{
+  "name": "Glyph Explorer",
+  "short_name": "Glyph",
+  "description": "Explore Qubic ticks, transactions, epochs, accounts, events and assets from Glyph's direct-peer index.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f6f4ef",
+  "theme_color": "#090909",
+  "icons": [
+    {
+      "src": "/favicon/web-app-manifest-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon/web-app-manifest-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
