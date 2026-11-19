@@ -1,1 +1,15 @@
 @import "@explorer-v2/ui/globals.css";
+@import "sileo/styles.css";
+
+[data-sileo-viewport] [data-sileo-title],
+[data-sileo-viewport] [data-sileo-badge] {
+  color: var(--background) !important;
+}
+
+[data-sileo-viewport] [data-sileo-badge] {
+  background-color: transparent !important;
+}
+
+[data-sileo-viewport] [data-sileo-description] {
+  color: color-mix(in oklab, var(--background) 68%, transparent) !important;
+}
