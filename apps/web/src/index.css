@@ -202,8 +202,7 @@
 
 @media (max-width: 640px) {
   .proposal-document table {
-    display: block;
-    overflow-x: auto;
+    display: table;
   }
 }
 
@@ -221,4 +220,189 @@
 
 .proposal-document details[open] summary {
   margin-bottom: 0.6rem;
+}
+
+.proposal-table-wrap {
+  margin: 1rem 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.proposal-table-wrap table {
+  margin: 0;
+}
+
+.proposal-document .heading-anchor {
+  color: var(--muted);
+  margin-left: 0.4rem;
+  opacity: 0;
+  text-decoration: none;
+  transition: opacity 150ms ease;
+}
+
+.proposal-document .heading-anchor::before {
+  content: "#";
+}
+
+.proposal-document h1:hover .heading-anchor,
+.proposal-document h2:hover .heading-anchor,
+.proposal-document h3:hover .heading-anchor,
+.proposal-document h4:hover .heading-anchor,
+.proposal-document .heading-anchor:focus-visible {
+  opacity: 1;
+}
+
+.proposal-code-block {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.proposal-code-bar {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 0.68rem;
+  justify-content: space-between;
+  letter-spacing: 0.08em;
+  padding: 0.55rem 0.85rem 0.15rem 1.1rem;
+  text-transform: uppercase;
+}
+
+.proposal-code-copy {
+  align-items: center;
+  border-radius: 999px;
+  display: inline-flex;
+  gap: 0.3rem;
+  padding: 0.25rem 0.5rem;
+  text-transform: none;
+  transition:
+    background-color 150ms ease,
+    color 150ms ease;
+}
+
+.proposal-code-copy:hover {
+  background: var(--surface-secondary);
+  color: var(--foreground);
+}
+
+.proposal-code-block pre {
+  border-radius: 0 0 0.75rem 0.75rem;
+  margin: 0;
+}
+
+.proposal-document .hljs-comment,
+.proposal-document .hljs-quote {
+  color: var(--muted);
+  font-style: italic;
+}
+
+.proposal-document .hljs-keyword,
+.proposal-document .hljs-selector-tag,
+.proposal-document .hljs-literal,
+.proposal-document .hljs-section,
+.proposal-document .hljs-link {
+  color: color-mix(in oklch, var(--accent) 80%, var(--foreground));
+}
+
+.proposal-document .hljs-string,
+.proposal-document .hljs-title,
+.proposal-document .hljs-name,
+.proposal-document .hljs-type,
+.proposal-document .hljs-attribute,
+.proposal-document .hljs-symbol,
+.proposal-document .hljs-bullet,
+.proposal-document .hljs-addition {
+  color: var(--success);
+}
+
+.proposal-document .hljs-number,
+.proposal-document .hljs-variable,
+.proposal-document .hljs-template-variable,
+.proposal-document .hljs-regexp,
+.proposal-document .hljs-deletion {
+  color: var(--danger);
+}
+
+.proposal-document .hljs-built_in,
+.proposal-document .hljs-builtin-name,
+.proposal-document .hljs-params {
+  color: color-mix(in oklch, var(--accent) 60%, var(--muted));
+}
+
+.proposal-mermaid,
+.proposal-mermaid-loading,
+.proposal-mermaid-error {
+  background: var(--surface);
+  border-radius: 0.75rem;
+  margin: 1rem 0;
+  overflow-x: auto;
+  padding: 1rem;
+}
+
+.proposal-mermaid {
+  text-align: center;
+}
+
+.proposal-mermaid svg {
+  height: auto;
+  max-width: 100%;
+}
+
+.proposal-mermaid-loading {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 0.8rem;
+  justify-content: center;
+  min-height: 8rem;
+}
+
+.proposal-mermaid-error p {
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin: 0 0 0.5rem;
+}
+
+.proposal-mermaid-error pre {
+  margin: 0;
+}
+
+.proposal-document .katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.25rem 0;
+}
+
+.proposal-document .footnotes {
+  border-top: 1px solid var(--surface-secondary);
+  color: var(--muted);
+  font-size: 0.8rem;
+  margin-top: 2rem;
+  padding-top: 1rem;
+}
+
+.proposal-document .footnotes ol {
+  margin: 0.5rem 0 0;
+}
+
+.proposal-document .data-footnote-backref {
+  margin-left: 0.25rem;
+  text-decoration: none;
+}
+
+.proposal-document kbd {
+  background: var(--surface-secondary);
+  border-radius: 0.35rem;
+  font-family: var(--font-geist-mono, "Geist Mono"), ui-monospace, monospace;
+  font-size: 0.8em;
+  padding: 0.1rem 0.35rem;
+}
+
+.proposal-document mark {
+  background: color-mix(in oklch, var(--success) 22%, transparent);
+  border-radius: 0.2rem;
+  color: var(--foreground);
+  padding: 0 0.15rem;
 }
