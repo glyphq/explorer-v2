@@ -89,7 +89,13 @@ export function OptionBars({ proposal, size = "sm" }: { proposal: Proposal; size
   const total =
     proposal.totalVotes || options.reduce((sum, option) => sum + option.numberOfVotes, 0);
   const winningVotes = Math.max(...options.map((option) => option.numberOfVotes));
-  const decided = proposal.status !== 2;
+  const decided = proposal.status === 3 || proposal.status === 4 || proposal.status === 6;
+  const winnerClassName =
+    proposal.status === 3
+      ? "bg-success"
+      : proposal.status === 4 || proposal.status === 6
+        ? "bg-danger"
+        : "bg-foreground";
   const large = size === "md";
 
   return (
@@ -115,11 +121,7 @@ export function OptionBars({ proposal, size = "sm" }: { proposal: Proposal; size
               }`}
             >
               <div
-                className={
-                  winner
-                    ? "h-full rounded-full bg-foreground"
-                    : "h-full rounded-full bg-foreground/25"
-                }
+                className={`h-full rounded-full ${winner ? winnerClassName : "bg-foreground/25"}`}
                 style={{ width: `${Math.max(share, option.numberOfVotes > 0 ? 1 : 0)}%` }}
               />
             </div>

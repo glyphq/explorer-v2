@@ -154,23 +154,34 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
           )}
         </article>
 
-        <aside className="order-first space-y-6 lg:sticky lg:top-6 lg:order-last lg:h-fit lg:self-start">
+        <aside className="order-first lg:sticky lg:top-6 lg:order-last lg:h-fit lg:self-start">
           <div className="rounded-2xl bg-surface p-5">
-            <div className="flex items-baseline justify-between gap-3">
+            <div className="flex items-center justify-between gap-3">
               <h2 className="font-medium text-foreground text-sm">Votes</h2>
-              <span className="text-muted text-xs">{countLabel(proposal.totalVotes, "vote")}</span>
+              <StatusChip status={proposal.status} />
             </div>
+            <p className="mt-1 text-[11px] text-muted">{countLabel(proposal.totalVotes, "vote")}</p>
             <div className="mt-5">
               <OptionBars proposal={proposal} size="md" />
             </div>
-          </div>
 
-          <div className="rounded-2xl bg-surface p-5">
-            <h2 className="font-medium text-foreground text-sm">Details</h2>
-            <dl className="mt-4 space-y-3 text-xs">
-              <div className="flex items-start justify-between gap-4">
-                <dt className="shrink-0 text-muted">Contract</dt>
-                <dd>
+            <h3 className="mt-6 font-medium text-[10px] text-muted uppercase tracking-[0.14em]">
+              Details
+            </h3>
+            <dl className="mt-3 grid grid-cols-2 gap-x-4 gap-y-4 text-xs">
+              <div>
+                <dt className="text-[10px] text-muted uppercase tracking-[0.12em]">Epoch</dt>
+                <dd className="mt-1">
+                  <EpochLink epoch={proposal.epoch} />
+                </dd>
+              </div>
+              <div>
+                <dt className="text-[10px] text-muted uppercase tracking-[0.12em]">Proposal</dt>
+                <dd className="mt-1 tabular">#{formatInteger(proposal.proposalIndex)}</dd>
+              </div>
+              <div>
+                <dt className="text-[10px] text-muted uppercase tracking-[0.12em]">Contract</dt>
+                <dd className="mt-1">
                   <Link
                     className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
                     href={`/contracts/${ticker.toLowerCase()}`}
@@ -180,34 +191,28 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
                   </Link>
                 </dd>
               </div>
-              <div className="flex items-start justify-between gap-4">
-                <dt className="shrink-0 text-muted">Proposal</dt>
-                <dd className="tabular">#{formatInteger(proposal.proposalIndex)}</dd>
-              </div>
-              <div className="flex items-start justify-between gap-4">
-                <dt className="shrink-0 text-muted">Epoch</dt>
-                <dd>
-                  <EpochLink epoch={proposal.epoch} />
-                </dd>
-              </div>
               {proposal.publishedTick === undefined ? null : (
-                <div className="flex items-start justify-between gap-4">
-                  <dt className="shrink-0 text-muted">Created</dt>
-                  <dd>
+                <div>
+                  <dt className="text-[10px] text-muted uppercase tracking-[0.12em]">Created</dt>
+                  <dd className="mt-1">
                     <TickLink tick={proposal.publishedTick} />
                   </dd>
                 </div>
               )}
               {proposal.transferAmount ? (
-                <div className="flex items-start justify-between gap-4">
-                  <dt className="shrink-0 text-muted">Amount</dt>
-                  <dd className="tabular">{formatInteger(Number(proposal.transferAmount))} QU</dd>
+                <div className="col-span-2">
+                  <dt className="text-[10px] text-muted uppercase tracking-[0.12em]">Amount</dt>
+                  <dd className="mt-1 tabular">
+                    {formatInteger(Number(proposal.transferAmount))} QU
+                  </dd>
                 </div>
               ) : null}
               {proposal.transferDestinationIdentity ? (
-                <div className="flex items-start justify-between gap-4">
-                  <dt className="shrink-0 text-muted">Destination</dt>
-                  <dd className="min-w-0 text-right">
+                <div className="col-span-2">
+                  <dt className="text-[10px] text-muted uppercase tracking-[0.12em]">
+                    Destination
+                  </dt>
+                  <dd className="mt-1 min-w-0">
                     <IdentityLink identity={proposal.transferDestinationIdentity} />
                   </dd>
                 </div>
