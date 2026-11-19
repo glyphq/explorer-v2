@@ -17,7 +17,7 @@ export async function generateMetadata({
   return {
     description: contract
       ? `${contract.name} contract address, balance and activity on Qubic.`
-      : "Account balance, activity and counterparties.",
+      : "Account balance, activity, sources and destinations.",
     openGraph: {
       images: [
         {

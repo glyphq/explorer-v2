@@ -39,7 +39,7 @@ type ActivityFilter = "all" | ActivityKind;
 type EventsFilter = "all" | "with" | "none";
 type AmountFilter = "all" | "positive" | "zero";
 type PeriodFilter = "all" | "24h" | "7d" | "30d";
-type SortColumn = "time" | "inputType" | "counterparty" | "amount" | "tick";
+type SortColumn = "time" | "inputType" | "source" | "destination" | "amount" | "tick";
 type SortDirection = "ascending" | "descending";
 
 type IconComponent = typeof ArrowLeftDownIcon;
@@ -96,42 +96,29 @@ function activityMeta(
   group: ActivityGroup,
   identity: string,
 ): {
-  counterparty: string;
   kind: ActivityKind;
 } {
   const { transaction } = group;
   const isTransfer = (transaction.input_type ?? 0) === 0;
 
   if (!isTransfer) {
-    return {
-      counterparty: transaction.destination ?? transaction.source ?? "",
-      kind: "call",
-    };
+    return { kind: "call" };
   }
 
   if (transaction.source === identity) {
-    return {
-      counterparty: transaction.destination ?? "",
-      kind: "outgoing",
-    };
+    return { kind: "outgoing" };
   }
 
   if (transaction.destination === identity) {
-    return {
-      counterparty: transaction.source ?? "",
-      kind: "incoming",
-    };
+    return { kind: "incoming" };
   }
 
-  return {
-    counterparty: transaction.destination ?? transaction.source ?? "",
-    kind: "outgoing",
-  };
+  return { kind: "outgoing" };
 }
 
 function searchText(group: ActivityGroup, identity: string): string {
   const { transaction } = group;
-  const { counterparty, kind } = activityMeta(group, identity);
+  const { kind } = activityMeta(group, identity);
   const amount =
     transaction.amount === undefined || transaction.amount === null
       ? ""
@@ -139,7 +126,6 @@ function searchText(group: ActivityGroup, identity: string): string {
 
   return [
     ACTIVITY_META[kind].label,
-    counterparty,
     transaction.source,
     transaction.destination,
     transaction.hash,
@@ -184,7 +170,8 @@ function isSortColumn(value: string): value is SortColumn {
   return (
     value === "time" ||
     value === "inputType" ||
-    value === "counterparty" ||
+    value === "source" ||
+    value === "destination" ||
     value === "amount" ||
     value === "tick"
   );
@@ -194,10 +181,16 @@ function compareRows(left: ActivityRow, right: ActivityRow, column: SortColumn):
   switch (column) {
     case "amount":
       return (left.group.transaction.amount ?? 0) - (right.group.transaction.amount ?? 0);
-    case "counterparty":
-      return left.meta.counterparty.localeCompare(right.meta.counterparty);
     case "inputType":
       return (left.group.transaction.input_type ?? 0) - (right.group.transaction.input_type ?? 0);
+    case "source":
+      return (left.group.transaction.source ?? "").localeCompare(
+        right.group.transaction.source ?? "",
+      );
+    case "destination":
+      return (left.group.transaction.destination ?? "").localeCompare(
+        right.group.transaction.destination ?? "",
+      );
     case "tick":
       return (left.group.transaction.tick ?? 0) - (right.group.transaction.tick ?? 0);
     default:
@@ -305,6 +298,13 @@ function InputType({ transaction }: { transaction: ActivityGroup["transaction"] 
   );
 }
 
+function PartyCell({ identity }: { identity: string | null | undefined }) {
+  if (!identity) {
+    return <span className="text-muted text-xs">—</span>;
+  }
+  return <IdentityLink avatar identity={identity} />;
+}
+
 function ActivityCell({ events, kind }: { events: ActivityEvent[]; kind: ActivityKind }) {
   return (
     <div className="flex max-w-[18rem] flex-col items-start">
@@ -373,7 +373,12 @@ function hiddenColumnClass(columnId: string): string | undefined {
 }
 
 function cellClass(columnId: string): string {
-  const base = columnId === "activity" || columnId === "time" ? "min-w-44" : "whitespace-nowrap";
+  const base =
+    columnId === "activity" || columnId === "time"
+      ? "min-w-44"
+      : columnId === "source" || columnId === "destination"
+        ? "min-w-36"
+        : "whitespace-nowrap";
   return `${base} px-2 py-2.5 align-top sm:px-2.5`;
 }
 
@@ -594,7 +599,7 @@ export function ActivityTable({
         <Table.ScrollContainer>
           <Table.Content
             aria-label="Recent activity"
-            className="min-w-[620px] lg:min-w-[900px] [&_tbody_td]:border-b-0 [&_tbody_tr]:border-b-0"
+            className="min-w-[760px] lg:min-w-[1080px] [&_tbody_td]:border-b-0 [&_tbody_tr]:border-b-0"
             onSortChange={(descriptor) => {
               const next = String(descriptor.column);
               if (isSortColumn(next)) {
@@ -622,10 +627,17 @@ export function ActivityTable({
                   </Table.SortableColumnHeader>
                 )}
               </Table.Column>
-              <Table.Column allowsSorting className={headerClass("counterparty")} id="counterparty">
+              <Table.Column allowsSorting className={headerClass("source")} id="source">
                 {({ sortDirection: direction }) => (
                   <Table.SortableColumnHeader sortDirection={direction}>
-                    Counterparty
+                    Source
+                  </Table.SortableColumnHeader>
+                )}
+              </Table.Column>
+              <Table.Column allowsSorting className={headerClass("destination")} id="destination">
+                {({ sortDirection: direction }) => (
+                  <Table.SortableColumnHeader sortDirection={direction}>
+                    Destination
                   </Table.SortableColumnHeader>
                 )}
               </Table.Column>
@@ -674,8 +686,11 @@ export function ActivityTable({
                     <Table.Cell className={cellClass("inputType")}>
                       <InputType transaction={transaction} />
                     </Table.Cell>
-                    <Table.Cell className={cellClass("counterparty")}>
-                      <IdentityLink avatar identity={meta.counterparty} />
+                    <Table.Cell className={cellClass("source")}>
+                      <PartyCell identity={transaction.source} />
+                    </Table.Cell>
+                    <Table.Cell className={cellClass("destination")}>
+                      <PartyCell identity={transaction.destination} />
                     </Table.Cell>
                     <Table.Cell className={classNames(cellClass("amount"), "text-right")}>
                       <span className="tabular text-xs">{formatQu(transaction.amount)}</span>
