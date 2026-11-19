@@ -121,7 +121,7 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
       </div>
 
       <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_19rem] lg:items-start">
-        <article className="min-w-0 max-w-3xl">
+        <article className="min-w-0">
           {unavailable ? (
             <div className="rounded-2xl bg-surface px-6 py-12 text-center">
               <span className="inline-flex rounded-full bg-surface-secondary p-3 text-muted">
@@ -154,7 +154,7 @@ export default async function ProposalPage({ params }: ProposalPageProps) {
           )}
         </article>
 
-        <aside className="order-first space-y-6 lg:order-last lg:sticky lg:top-24">
+        <aside className="order-first space-y-6 lg:sticky lg:top-6 lg:order-last lg:h-fit lg:self-start">
           <div className="rounded-2xl bg-surface p-5">
             <div className="flex items-baseline justify-between gap-3">
               <h2 className="font-medium text-foreground text-sm">Votes</h2>
