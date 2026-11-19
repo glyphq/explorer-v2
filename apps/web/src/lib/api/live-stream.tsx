@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import { createContext, startTransition, useContext, useEffect, useMemo, useState } from "react";
 
 import type { Tick, Transaction } from "./generated/types.gen";
 import { GLYPH_API_URL } from "./hey-api";
@@ -38,12 +38,14 @@ export function LiveStreamProvider({ children }: { children: React.ReactNode }) 
           return;
         }
         const nextTick = { ...tick, tick: tick.tick };
-        setTicks((previous) => {
-          if (previous[0]?.tick === nextTick.tick) {
-            return previous;
-          }
-          const next = previous.filter((item) => item.tick !== nextTick.tick);
-          return [nextTick, ...next].slice(0, 100);
+        startTransition(() => {
+          setTicks((previous) => {
+            if (previous[0]?.tick === nextTick.tick) {
+              return previous;
+            }
+            const next = previous.filter((item) => item.tick !== nextTick.tick);
+            return [nextTick, ...next].slice(0, 100);
+          });
         });
       } catch {
         // Ignore malformed frames and keep the stream open.
@@ -58,12 +60,14 @@ export function LiveStreamProvider({ children }: { children: React.ReactNode }) 
           return;
         }
         const nextTransaction = { ...transaction, hash: transaction.hash };
-        setTransactions((previous) => {
-          if (previous[0]?.hash === nextTransaction.hash) {
-            return previous;
-          }
-          const next = previous.filter((item) => item.hash !== nextTransaction.hash);
-          return [nextTransaction, ...next].slice(0, 12);
+        startTransition(() => {
+          setTransactions((previous) => {
+            if (previous[0]?.hash === nextTransaction.hash) {
+              return previous;
+            }
+            const next = previous.filter((item) => item.hash !== nextTransaction.hash);
+            return [nextTransaction, ...next].slice(0, 12);
+          });
         });
       } catch {
         // Ignore malformed frames and keep the stream open.

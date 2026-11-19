@@ -19,9 +19,9 @@ export function SectionCard({
   title: string;
 }) {
   return (
-    <Card className={classNames("gap-4", className)}>
+    <Card className={classNames("min-w-0 gap-4", className)}>
       <CardHeader className="flex-row items-start justify-between gap-4">
-        <div>
+        <div className="min-w-0">
           <CardTitle>{title}</CardTitle>
           {description ? <CardDescription className="mt-1">{description}</CardDescription> : null}
         </div>
