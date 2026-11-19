@@ -4,11 +4,12 @@
   "private": true,
   "scripts": {
     "api:generate": "openapi-ts",
-    "build": "next build",
-    "build:cloudflare": "opennextjs-cloudflare build",
+    "build": "bun run og:generate && next build",
+    "build:cloudflare": "bun run og:generate && opennextjs-cloudflare build",
     "check-types": "tsc --noEmit",
-    "dev:bare": "next dev --port 3001",
+    "dev:bare": "bun run og:generate && next dev --port 3001",
     "env:generate": "varlock codegen",
+    "og:generate": "bun run scripts/generate-og.tsx",
     "start": "next start"
   },
   "dependencies": {

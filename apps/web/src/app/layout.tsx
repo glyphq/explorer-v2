@@ -50,6 +50,14 @@ export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   openGraph: {
     description: siteDescription,
+    images: [
+      {
+        alt: "Glyph Explorer",
+        height: 630,
+        url: "/og/glyph-explorer.png",
+        width: 1200,
+      },
+    ],
     locale: "en_US",
     siteName: "Glyph Explorer",
     title: {
@@ -66,6 +74,7 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
     description: siteDescription,
+    images: ["/og/glyph-explorer.png"],
     title: {
       default: "Glyph Explorer",
       template: "%s · Glyph Explorer",

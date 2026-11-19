@@ -11,9 +11,19 @@ export async function generateMetadata({
   const title = `Epoch ${epoch}`;
   return {
     description: "Epoch summary, computors and activity.",
-    openGraph: { title },
+    openGraph: {
+      images: [
+        {
+          alt: `${title} · Glyph Explorer`,
+          height: 630,
+          url: "/og/epoch.png",
+          width: 1200,
+        },
+      ],
+      title,
+    },
     title,
-    twitter: { title },
+    twitter: { images: ["/og/epoch.png"], title },
   };
 }
 

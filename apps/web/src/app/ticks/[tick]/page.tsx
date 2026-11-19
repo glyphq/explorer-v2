@@ -11,9 +11,19 @@ export async function generateMetadata({
   const title = `Tick ${Number(tick).toLocaleString("en-US")}`;
   return {
     description: "Tick header, quorum evidence, transactions and events.",
-    openGraph: { title },
+    openGraph: {
+      images: [
+        {
+          alt: `${title} · Glyph Explorer`,
+          height: 630,
+          url: "/og/tick.png",
+          width: 1200,
+        },
+      ],
+      title,
+    },
     title,
-    twitter: { title },
+    twitter: { images: ["/og/tick.png"], title },
   };
 }
 

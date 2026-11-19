@@ -12,9 +12,19 @@ export async function generateMetadata({
   const title = `Account ${shorten(identity, 10, 8)}`;
   return {
     description: "Account balance, activity and counterparties.",
-    openGraph: { title },
+    openGraph: {
+      images: [
+        {
+          alt: `${title} · Glyph Explorer`,
+          height: 630,
+          url: "/og/account.png",
+          width: 1200,
+        },
+      ],
+      title,
+    },
     title,
-    twitter: { title },
+    twitter: { images: ["/og/account.png"], title },
   };
 }
 

@@ -12,9 +12,19 @@ export async function generateMetadata({
   const title = `Transaction ${shorten(hash, 10, 8)}`;
   return {
     description: "Transaction details, effects and attached events.",
-    openGraph: { title },
+    openGraph: {
+      images: [
+        {
+          alt: `${title} · Glyph Explorer`,
+          height: 630,
+          url: "/og/transaction.png",
+          width: 1200,
+        },
+      ],
+      title,
+    },
     title,
-    twitter: { title },
+    twitter: { images: ["/og/transaction.png"], title },
   };
 }
 
