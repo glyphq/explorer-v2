@@ -45,6 +45,7 @@
     "motion": "^14.14.0",
     "next": "^16.4.6",
     "next-themes": "catalog:",
+    "obscenity": "^0.4.6",
     "qrcode.react": "^4.2.0",
     "react": "catalog:",
     "react-aria": "3.53.1",

@@ -1,7 +1,15 @@
 import { identityToPublicKey } from "@qubic.org/crypto";
 import type { Identity } from "@qubic.org/crypto";
 
-import type { ProfileApiError, ProfileChallengeAction, ProfileInput } from "./types";
+import { hasDisallowedLanguage } from "./moderation";
+import { normalizeSocialUrl, SOCIAL_LABELS } from "./socials";
+import type {
+  ProfileApiError,
+  ProfileChallengeAction,
+  ProfileInput,
+  ProfileSocials,
+} from "./types";
+import { SOCIAL_PLATFORMS } from "./types";
 
 export type ProfileApiErrorCode = ProfileApiError["code"];
 
@@ -21,7 +29,8 @@ const MAX_BIO_LENGTH = 280;
 const MAX_WEBSITE_LENGTH = 200;
 
 const UPPERCASE_LETTERS = /^[A-Z]+$/;
-const PROFILE_FIELDS = new Set(["displayName", "bio", "website"]);
+const PROFILE_FIELDS = new Set(["displayName", "bio", "website", "socials"]);
+const SOCIAL_FIELDS = new Set<string>(SOCIAL_PLATFORMS);
 
 export function hasControlCharacters(value: string, allowLineBreaks = false): boolean {
   for (const character of value) {
@@ -85,6 +94,12 @@ function parseDisplayName(value: unknown): string {
       `displayName must be 1-${MAX_DISPLAY_NAME_LENGTH} characters`,
     );
   }
+  if (hasDisallowedLanguage(displayName)) {
+    throw new ProfileError(
+      "content_not_allowed",
+      "Display name contains language that is not allowed",
+    );
+  }
   return displayName;
 }
 
@@ -96,6 +111,9 @@ function parseBio(value: unknown): string {
   }
   if (bio.length > MAX_BIO_LENGTH) {
     throw new ProfileError("invalid_request", `bio must be at most ${MAX_BIO_LENGTH} characters`);
+  }
+  if (hasDisallowedLanguage(bio)) {
+    throw new ProfileError("content_not_allowed", "Bio contains language that is not allowed");
   }
   return bio;
 }
@@ -140,6 +158,43 @@ function parseWebsite(value: unknown): string | undefined {
   return canonical;
 }
 
+function parseSocials(value: unknown): ProfileSocials | undefined {
+  if (value === undefined || value === null) {
+    return undefined;
+  }
+  if (!isRecord(value)) {
+    throw new ProfileError("invalid_request", "socials must be an object");
+  }
+
+  for (const key of Object.keys(value)) {
+    if (!SOCIAL_FIELDS.has(key)) {
+      throw new ProfileError("invalid_request", `Unknown social platform: ${key}`);
+    }
+  }
+
+  const socials: ProfileSocials = {};
+  for (const platform of SOCIAL_PLATFORMS) {
+    const raw = value[platform];
+    if (raw === undefined || raw === null || raw === "") {
+      continue;
+    }
+    if (typeof raw !== "string") {
+      throw new ProfileError("invalid_request", `${platform} must be a string`);
+    }
+
+    const normalized = normalizeSocialUrl(platform, raw);
+    if (!normalized) {
+      throw new ProfileError(
+        "invalid_request",
+        `Enter a valid ${SOCIAL_LABELS[platform]} profile link`,
+      );
+    }
+    socials[platform] = normalized;
+  }
+
+  return Object.keys(socials).length > 0 ? socials : undefined;
+}
+
 /** Strictly parses untrusted profile input, rejecting unknown fields. */
 export function parseProfileInput(value: unknown): ProfileInput {
   if (!isRecord(value)) {
@@ -156,6 +211,7 @@ export function parseProfileInput(value: unknown): ProfileInput {
     displayName: parseDisplayName(value.displayName),
     bio: parseBio(value.bio),
     website: parseWebsite(value.website),
+    socials: parseSocials(value.socials),
   };
 }
 
@@ -164,6 +220,7 @@ export function isProfileApiErrorCode(value: string): value is ProfileApiErrorCo
     value === "invalid_request" ||
     value === "invalid_identity" ||
     value === "invalid_signature" ||
+    value === "content_not_allowed" ||
     value === "challenge_expired" ||
     value === "challenge_used" ||
     value === "challenge_not_found" ||

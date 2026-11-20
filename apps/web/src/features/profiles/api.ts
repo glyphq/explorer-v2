@@ -3,8 +3,11 @@ import type {
   ProfileChallengeAction,
   ProfileChallengeResponse,
   ProfileInput,
+  ProfileSocials,
   PublicProfile,
 } from "@/lib/profiles/types";
+import { SOCIAL_PLATFORMS } from "@/lib/profiles/types";
+import { normalizeSocialUrl } from "@/lib/profiles/socials";
 
 /**
  * Client-side profile errors. `profile_unavailable` stays visible so callers
@@ -31,6 +34,7 @@ const PROFILE_ERROR_MESSAGES: Record<ProfileErrorCode, string> = {
   challenge_expired: "This signing request expired. Try again.",
   challenge_not_found: "This signing request is no longer valid. Try again.",
   challenge_used: "This signing request was already used. Try again.",
+  content_not_allowed: "Remove offensive language from the display name or bio and try again.",
   exchange_identity:
     "This account is managed by a Qubic exchange. Exchange profiles are curated and cannot be edited here.",
   invalid_identity: "This account identity is not valid.",
@@ -48,6 +52,7 @@ const KNOWN_CODES = new Set<ProfileApiError["code"]>([
   "challenge_expired",
   "challenge_not_found",
   "challenge_used",
+  "content_not_allowed",
   "exchange_identity",
   "invalid_identity",
   "invalid_request",
@@ -78,6 +83,40 @@ export function normalizeSignatureHex(value: string): string | null {
 
 function isRecord(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null;
+}
+
+const SOCIAL_PLATFORM_SET = new Set<string>(SOCIAL_PLATFORMS);
+
+function parseSocials(value: unknown): ProfileSocials {
+  if (value === undefined) {
+    return {};
+  }
+  if (!isRecord(value)) {
+    throw new ProfileRequestError("invalid_response");
+  }
+
+  for (const key of Object.keys(value)) {
+    if (!SOCIAL_PLATFORM_SET.has(key)) {
+      throw new ProfileRequestError("invalid_response");
+    }
+  }
+
+  const socials: ProfileSocials = {};
+  for (const platform of SOCIAL_PLATFORMS) {
+    const candidate = value[platform];
+    if (candidate === undefined) {
+      continue;
+    }
+    if (typeof candidate !== "string") {
+      throw new ProfileRequestError("invalid_response");
+    }
+    const normalized = normalizeSocialUrl(platform, candidate);
+    if (!normalized) {
+      throw new ProfileRequestError("invalid_response");
+    }
+    socials[platform] = normalized;
+  }
+  return socials;
 }
 
 function codeFromStatus(status: number): ProfileErrorCode {
@@ -175,6 +214,7 @@ function parseProfile(value: unknown): PublicProfile | null {
     verification,
     verifiedAt: value.verifiedAt,
     website: typeof value.website === "string" ? value.website : undefined,
+    socials: parseSocials(value.socials),
   };
 }
 

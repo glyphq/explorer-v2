@@ -21,7 +21,7 @@ import {
   useLiveIdentity,
   useMarket,
 } from "@/lib/api/hooks";
-import { formatInteger, formatQu, formatUsdValue, shorten } from "@/lib/format";
+import { classNames, formatInteger, formatQu, formatUsdValue, shorten } from "@/lib/format";
 
 import { groupActivity } from "./activity-feed";
 import { ActivityTable } from "./activity-table";
@@ -31,6 +31,81 @@ function MetricChip({ children, label }: { children: ReactNode; label: string })
     <span className="inline-flex items-baseline gap-1.5 rounded-full bg-surface-secondary px-3 py-1.5 text-xs">
       <span className="text-muted">{label}</span>
       <span className="tabular font-medium text-foreground">{children}</span>
+    </span>
+  );
+}
+
+function AccountStats({
+  balance,
+  centered = false,
+  firstSeenTick,
+  incoming,
+  lastSeenLabel,
+  lastSeenTick,
+  loading,
+  netFlow,
+  outgoing,
+  transferCount,
+  usdBalance,
+}: {
+  balance?: number;
+  centered?: boolean;
+  firstSeenTick?: number;
+  incoming?: number;
+  lastSeenLabel: string;
+  lastSeenTick?: number;
+  loading: boolean;
+  netFlow?: number;
+  outgoing?: number;
+  transferCount?: number;
+  usdBalance?: number;
+}) {
+  return (
+    <div className={centered ? "text-center" : undefined}>
+      <div className="font-semibold text-4xl tabular-nums tracking-tight sm:text-5xl">
+        {loading ? (
+          <AsciiSkeleton className="text-4xl sm:text-5xl" lines={1} widths={["8ch"]} />
+        ) : (
+          formatQu(balance)
+        )}
+      </div>
+      <p className="tabular mt-1 text-muted text-xs">
+        {usdBalance === undefined ? "—" : `≈ ${formatUsdValue(usdBalance)}`}
+      </p>
+      <div className={classNames("mt-5 flex flex-wrap gap-2", centered && "justify-center")}>
+        <MetricChip label="incoming">{formatQu(incoming)}</MetricChip>
+        <MetricChip label="outgoing">{formatQu(outgoing)}</MetricChip>
+        <MetricChip label="net">
+          {netFlow !== undefined && netFlow > 0 ? "+" : ""}
+          {formatQu(netFlow)}
+        </MetricChip>
+        <MetricChip label="transfers">{formatInteger(transferCount)}</MetricChip>
+        {firstSeenTick === undefined ? null : (
+          <MetricChip label="first seen">
+            <TickLink tick={firstSeenTick} />
+          </MetricChip>
+        )}
+        {lastSeenTick === undefined ? null : (
+          <MetricChip label={lastSeenLabel}>
+            <TickLink tick={lastSeenTick} />
+          </MetricChip>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function PublicKeyLine({
+  centered = false,
+  publicKey,
+}: {
+  centered?: boolean;
+  publicKey?: string;
+}) {
+  return (
+    <span className={classNames("flex items-baseline gap-2 text-xs", centered && "justify-center")}>
+      <span className="text-muted">Public key</span>
+      <span className="font-mono text-foreground">{shorten(publicKey, 14, 10)}</span>
     </span>
   );
 }
@@ -125,66 +200,70 @@ export function AccountDetail({ identity }: { identity: string }) {
               {profile ? <ProfileMeta profile={profile} /> : null}
             </div>
           </div>
+        ) : profile ? (
+          <ProfileHeader
+            identity={identity}
+            onProfileAction={() => setProfileDialogOpen(true)}
+            profile={profile}
+            profileAction={profileAction}
+          >
+            <AccountStats
+              balance={balance}
+              centered
+              firstSeenTick={data?.first_seen_tick}
+              incoming={incoming}
+              lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
+              lastSeenTick={lastSeenTick}
+              loading={loading}
+              netFlow={netFlow}
+              outgoing={outgoing}
+              transferCount={transferCount}
+              usdBalance={usdBalance}
+            />
+            <div className="mt-5">
+              <PublicKeyLine centered publicKey={liveData?.public_key ?? data?.public_key} />
+            </div>
+          </ProfileHeader>
         ) : (
           <div className="flex min-w-0 flex-col items-start gap-3">
             <IdentityAvatar size={56} value={identity} />
-            {profile ? (
-              <ProfileHeader identity={identity} profile={profile} />
-            ) : (
-              <p
-                className="select-all break-all font-mono text-foreground text-sm tracking-tight sm:text-base"
-                title={identity}
-              >
-                {identity}
-              </p>
-            )}
+            <p
+              className="select-all break-all font-mono text-foreground text-sm tracking-tight sm:text-base"
+              title={identity}
+            >
+              {identity}
+            </p>
           </div>
         )}
-        <div className="mt-5 font-semibold text-4xl tabular-nums tracking-tight sm:text-5xl">
-          {loading ? (
-            <AsciiSkeleton className="text-4xl sm:text-5xl" lines={1} widths={["8ch"]} />
-          ) : (
-            formatQu(balance)
-          )}
-        </div>
-        <p className="tabular mt-1 text-muted text-xs">
-          {usdBalance === undefined ? "—" : `≈ ${formatUsdValue(usdBalance)}`}
-        </p>
-        <div className="mt-5 flex flex-wrap gap-2">
-          <MetricChip label="incoming">{formatQu(incoming)}</MetricChip>
-          <MetricChip label="outgoing">{formatQu(outgoing)}</MetricChip>
-          <MetricChip label="net">
-            {netFlow !== undefined && netFlow > 0 ? "+" : ""}
-            {formatQu(netFlow)}
-          </MetricChip>
-          <MetricChip label="transfers">{formatInteger(transferCount)}</MetricChip>
-          {data?.first_seen_tick === undefined ? null : (
-            <MetricChip label="first seen">
-              <TickLink tick={data.first_seen_tick} />
-            </MetricChip>
-          )}
-          {lastSeenTick === undefined ? null : (
-            <MetricChip label={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}>
-              <TickLink tick={lastSeenTick} />
-            </MetricChip>
-          )}
-        </div>
-        <div className="mt-6 flex flex-col items-start gap-3">
-          <span className="flex items-baseline gap-2 text-xs">
-            <span className="text-muted">Public key</span>
-            <span className="font-mono text-foreground">
-              {shorten(liveData?.public_key ?? data?.public_key, 14, 10)}
-            </span>
-          </span>
-          <div className="flex flex-wrap items-center gap-2">
-            <IdentityActions identity={identity} />
-            {profileAction ? (
-              <Button onPress={() => setProfileDialogOpen(true)} size="sm" variant="outline">
-                {profileAction === "edit" ? "Edit profile" : "Claim profile"}
-              </Button>
-            ) : null}
-          </div>
-        </div>
+        {contract || !profile ? (
+          <>
+            <div className="mt-5">
+              <AccountStats
+                balance={balance}
+                firstSeenTick={data?.first_seen_tick}
+                incoming={incoming}
+                lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
+                lastSeenTick={lastSeenTick}
+                loading={loading}
+                netFlow={netFlow}
+                outgoing={outgoing}
+                transferCount={transferCount}
+                usdBalance={usdBalance}
+              />
+            </div>
+            <div className="mt-6 flex flex-col items-start gap-3">
+              <PublicKeyLine publicKey={liveData?.public_key ?? data?.public_key} />
+              <div className="flex flex-wrap items-center gap-2">
+                <IdentityActions identity={identity} />
+                {profileAction ? (
+                  <Button onPress={() => setProfileDialogOpen(true)} size="sm" variant="outline">
+                    {profileAction === "edit" ? "Edit profile" : "Claim profile"}
+                  </Button>
+                ) : null}
+              </div>
+            </div>
+          </>
+        ) : null}
       </section>
 
       <section className="pt-4 pb-10">

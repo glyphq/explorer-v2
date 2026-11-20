@@ -1,39 +1,27 @@
-import { Chip } from "@heroui/react";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { DiplomaVerifiedIcon } from "@solar-icons/react/linear/diploma-verified";
-import type { ReactNode } from "react";
 
 import type { PublicProfile } from "@/lib/profiles/types";
+import { classNames } from "@/lib/format";
 
-import { formatProfileDate } from "./profile-format";
-
-export function ProfileVerificationBadge({
-  profile,
-  showDate = true,
-}: {
-  profile: PublicProfile;
-  showDate?: boolean;
-}) {
+export function ProfileVerificationBadge({ profile }: { profile: PublicProfile }) {
   const isWallet = profile.verification === "wallet";
-  let meta: ReactNode = <span className="text-muted text-xs">Curated by Qubic</span>;
-  if (isWallet) {
-    meta = showDate ? (
-      <span className="text-muted text-xs">Verified {formatProfileDate(profile.verifiedAt)}</span>
-    ) : null;
-  }
+  const label = isWallet ? "Wallet verified" : "Curated by Qubic";
+
   return (
-    <span className="flex min-w-0 flex-wrap items-center gap-2">
-      <Chip color={isWallet ? "success" : "default"} size="sm" variant="soft">
-        <span className="inline-flex items-center gap-1.5">
-          {isWallet ? (
-            <CheckCircleIcon className="size-3.5" />
-          ) : (
-            <DiplomaVerifiedIcon className="size-3.5" />
-          )}
-          {isWallet ? "Wallet-verified" : "Exchange"}
-        </span>
-      </Chip>
-      {meta}
+    <span
+      aria-label={label}
+      className={classNames(
+        "inline-flex size-6 shrink-0 items-center justify-center rounded-full",
+        isWallet ? "bg-success/15 text-success" : "bg-surface-tertiary text-muted",
+      )}
+      role="img"
+    >
+      {isWallet ? (
+        <CheckCircleIcon className="size-4" />
+      ) : (
+        <DiplomaVerifiedIcon className="size-4" />
+      )}
     </span>
   );
 }

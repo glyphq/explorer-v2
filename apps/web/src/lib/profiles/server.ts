@@ -8,6 +8,7 @@ import type {
   PublicProfile,
 } from "./types";
 import { verifyChallengeSignature } from "./signature";
+import { parseStoredSocials } from "./socials";
 import { ProfileError, type ProfileApiErrorCode } from "./validation";
 
 export type {
@@ -38,6 +39,7 @@ type ProfileRow = {
   displayName: string;
   bio: string;
   website: string | null;
+  socials: string | null;
   kind: ProfileKind;
   source: string;
   verifiedAt: number;
@@ -62,6 +64,7 @@ const PROFILE_COLUMNS = `
   display_name AS displayName,
   bio,
   website,
+  socials,
   kind,
   source,
   verified_at AS verifiedAt,
@@ -89,6 +92,7 @@ function toPublicProfile(row: ProfileRow): PublicProfile {
     displayName: row.displayName,
     bio: row.bio,
     website: row.website ?? undefined,
+    socials: parseStoredSocials(row.socials),
     kind: row.kind,
     verification,
     source: row.source === "qubic-exchanges" ? "qubic-exchanges" : "wallet",
@@ -298,15 +302,17 @@ export async function claimProfile(input: ClaimProfileInput): Promise<PublicProf
   await markChallengeUsed(db, challenge.id, claimedAt);
 
   const website = input.profile.website ?? null;
+  const socials = JSON.stringify(input.profile.socials ?? {});
   const result = await db
     .prepare(
       `INSERT INTO profiles
-        (identity, display_name, bio, website, kind, source, verified_at, created_at, updated_at)
-       VALUES (?, ?, ?, ?, 'wallet', 'wallet', ?, ?, ?)
+        (identity, display_name, bio, website, socials, kind, source, verified_at, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, 'wallet', 'wallet', ?, ?, ?)
        ON CONFLICT (identity) DO UPDATE SET
          display_name = excluded.display_name,
          bio = excluded.bio,
          website = excluded.website,
+         socials = excluded.socials,
          kind = excluded.kind,
          source = excluded.source,
          verified_at = excluded.verified_at,
@@ -318,6 +324,7 @@ export async function claimProfile(input: ClaimProfileInput): Promise<PublicProf
       input.profile.displayName,
       input.profile.bio,
       website,
+      socials,
       claimedAt,
       claimedAt,
       claimedAt,
@@ -426,6 +433,7 @@ export function profileErrorStatus(code: ProfileApiErrorCode): number {
     case "invalid_request":
     case "invalid_identity":
     case "invalid_signature":
+    case "content_not_allowed":
       return 400;
     case "origin_not_allowed":
       return 403;

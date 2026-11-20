@@ -1,29 +1,9 @@
+import { normalizeSocialUrl, SOCIAL_LABELS, SOCIAL_URL_MAX } from "@/lib/profiles/socials";
+import type { SocialPlatform } from "@/lib/profiles/types";
+
 export const DISPLAY_NAME_MAX = 48;
 export const BIO_MAX = 280;
 export const WEBSITE_MAX = 200;
-
-const profileDateFormatter = new Intl.DateTimeFormat("en-US", {
-  day: "numeric",
-  month: "short",
-  timeZone: "UTC",
-  year: "numeric",
-});
-
-/**
- * Format a profile timestamp in UTC so server and client render the same text.
- * Accepts either seconds or milliseconds.
- */
-export function formatProfileDate(timestamp: number | null | undefined): string {
-  if (timestamp === null || timestamp === undefined || !Number.isFinite(timestamp)) {
-    return "Not available";
-  }
-  const milliseconds = timestamp < 10_000_000_000 ? timestamp * 1000 : timestamp;
-  const date = new Date(milliseconds);
-  if (Number.isNaN(date.getTime())) {
-    return "Not available";
-  }
-  return profileDateFormatter.format(date);
-}
 
 export function profileWebsiteHref(website: string | undefined | null): string | null {
   if (!website) {
@@ -52,6 +32,20 @@ export function websiteValidationMessage(website: string): string | null {
   const url = new URL(href);
   if (url.username || url.password) {
     return "Links cannot include credentials.";
+  }
+  return null;
+}
+
+export function socialValidationMessage(platform: SocialPlatform, value: string): string | null {
+  const trimmed = value.trim();
+  if (!trimmed) {
+    return null;
+  }
+  if (trimmed.length > SOCIAL_URL_MAX) {
+    return `Keep the link under ${SOCIAL_URL_MAX} characters.`;
+  }
+  if (!normalizeSocialUrl(platform, trimmed)) {
+    return `Enter a valid ${SOCIAL_LABELS[platform]} link.`;
   }
   return null;
 }

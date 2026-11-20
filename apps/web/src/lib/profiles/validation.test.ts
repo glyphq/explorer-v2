@@ -3,6 +3,15 @@ import { describe, expect, test } from "bun:test";
 
 import { ProfileError, parseProfileInput } from "./validation";
 
+function errorCode(action: () => void): string | undefined {
+  try {
+    action();
+  } catch (error) {
+    return error instanceof ProfileError ? error.code : undefined;
+  }
+  return undefined;
+}
+
 describe("parseProfileInput", () => {
   test("normalizes a valid profile", () => {
     expect(
@@ -14,6 +23,7 @@ describe("parseProfileInput", () => {
     ).toEqual({
       bio: "Qubic builder",
       displayName: "Glyph Builder",
+      socials: undefined,
       website: "https://example.com/profile",
     });
   });
@@ -22,6 +32,7 @@ describe("parseProfileInput", () => {
     expect(parseProfileInput({ bio: "", displayName: "Glyph" })).toEqual({
       bio: "",
       displayName: "Glyph",
+      socials: undefined,
       website: undefined,
     });
   });
@@ -35,8 +46,81 @@ describe("parseProfileInput", () => {
     ).toEqual({
       bio: "First line\nSecond line\n\nThird line",
       displayName: "Glyph",
+      socials: undefined,
       website: undefined,
     });
+  });
+
+  test("normalizes social handles and profile links", () => {
+    expect(
+      parseProfileInput({
+        bio: "",
+        displayName: "Glyph",
+        socials: {
+          discord: "discord.gg/glyph",
+          github: "glyphq",
+          telegram: "@glyphq",
+          x: "https://twitter.com/glyphq?ref=profile#top",
+        },
+      }),
+    ).toEqual({
+      bio: "",
+      displayName: "Glyph",
+      socials: {
+        discord: "https://discord.gg/glyph",
+        github: "https://github.com/glyphq",
+        telegram: "https://t.me/glyphq",
+        x: "https://x.com/glyphq",
+      },
+      website: undefined,
+    });
+  });
+
+  test("rejects social links on the wrong host or without a profile path", () => {
+    expect(
+      errorCode(() =>
+        parseProfileInput({
+          displayName: "Glyph",
+          socials: { x: "https://example.com/glyph" },
+        }),
+      ),
+    ).toBe("invalid_request");
+    expect(
+      errorCode(() =>
+        parseProfileInput({
+          displayName: "Glyph",
+          socials: { x: "https://x.com" },
+        }),
+      ),
+    ).toBe("invalid_request");
+    expect(
+      errorCode(() =>
+        parseProfileInput({
+          displayName: "Glyph",
+          socials: { github: "http://github.com/glyphq" },
+        }),
+      ),
+    ).toBe("invalid_request");
+  });
+
+  test("rejects unknown social platforms", () => {
+    expect(
+      errorCode(() =>
+        parseProfileInput({
+          displayName: "Glyph",
+          socials: { mastodon: "https://mastodon.social/@glyph" },
+        }),
+      ),
+    ).toBe("invalid_request");
+  });
+
+  test("rejects profanity and slurs in public text", () => {
+    expect(errorCode(() => parseProfileInput({ displayName: "fuck this" }))).toBe(
+      "content_not_allowed",
+    );
+    expect(errorCode(() => parseProfileInput({ bio: "a shitty bio", displayName: "Glyph" }))).toBe(
+      "content_not_allowed",
+    );
   });
 
   test("rejects empty names and oversized fields", () => {

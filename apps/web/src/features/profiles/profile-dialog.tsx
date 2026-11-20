@@ -12,12 +12,16 @@ import { sileo } from "sileo";
 
 import { GlyphMark } from "@/components/glyph-mark";
 import { shorten } from "@/lib/format";
+import { normalizeSocialUrl, SOCIAL_LABELS } from "@/lib/profiles/socials";
 import type {
   ProfileChallenge,
   ProfileChallengeAction,
   ProfileInput,
+  ProfileSocials,
   PublicProfile,
+  SocialPlatform,
 } from "@/lib/profiles/types";
+import { SOCIAL_PLATFORMS } from "@/lib/profiles/types";
 
 import {
   normalizeSignatureHex,
@@ -32,9 +36,11 @@ import {
   BIO_MAX,
   DISPLAY_NAME_MAX,
   isChallengeExpired,
+  socialValidationMessage,
   WEBSITE_MAX,
   websiteValidationMessage,
 } from "./profile-format";
+import { ProfileSocialIcon } from "./social-icons";
 import { profileQueryKey } from "./use-profile";
 import { ProfileWalletProvider, useProfileWallet } from "./wallet";
 import type { ProfileWalletKind, ProfileWalletSignature } from "./wallet/types";
@@ -133,6 +139,11 @@ function ProfileDialogContent({
   const [displayName, setDisplayName] = useState(profile?.displayName ?? "");
   const [bio, setBio] = useState(profile?.bio ?? "");
   const [website, setWebsite] = useState(profile?.website ?? "");
+  const [socials, setSocials] = useState<ProfileSocials>(profile?.socials ?? {});
+  const [contentErrors, setContentErrors] = useState<{
+    bio: string | null;
+    displayName: string | null;
+  }>({ bio: null, displayName: null });
   const [showErrors, setShowErrors] = useState(false);
   const [busy, setBusy] = useState<"load-claim" | "load-revoke" | "sign" | null>(null);
   const [pendingKind, setPendingKind] = useState<ProfileWalletKind | null>(null);
@@ -155,11 +166,19 @@ function ProfileDialogContent({
   }
   const bioError = bio.length > BIO_MAX ? `Keep the bio under ${BIO_MAX} characters.` : null;
   const websiteError = websiteValidationMessage(website);
-  const formValid = nameError === null && bioError === null && websiteError === null;
+  const socialErrors = Object.fromEntries(
+    SOCIAL_PLATFORMS.map((platform) => [
+      platform,
+      socialValidationMessage(platform, socials[platform] ?? ""),
+    ]),
+  ) as Record<SocialPlatform, string | null>;
+  const socialsValid = SOCIAL_PLATFORMS.every((platform) => socialErrors[platform] === null);
+  const formValid =
+    nameError === null && bioError === null && websiteError === null && socialsValid;
 
   let title = isEdit ? "Edit profile" : "Claim profile";
   let description = isEdit
-    ? "Update the public name shown on this account."
+    ? "Update the public name, bio, and links shown on this account."
     : "Verify this account with your wallet and add a public profile.";
   if (isExchange) {
     title = "Curated profile";
@@ -246,11 +265,23 @@ function ProfileDialogContent({
   const handleSaveIntent = async () => {
     setShowErrors(true);
     setError(null);
+    setContentErrors({ bio: null, displayName: null });
     if (!formValid) {
       return;
     }
     setBusy("load-claim");
     try {
+      const { hasDisallowedLanguage } = await import("@/lib/profiles/moderation");
+      const nextContentErrors = {
+        bio: hasDisallowedLanguage(bio) ? "Remove offensive language from the bio." : null,
+        displayName: hasDisallowedLanguage(trimmedName)
+          ? "Remove offensive language from the display name."
+          : null,
+      };
+      if (nextContentErrors.bio || nextContentErrors.displayName) {
+        setContentErrors(nextContentErrors);
+        return;
+      }
       const challenge = await loadChallenge("claim");
       setReview({ action: "claim", challenge });
     } catch (cause) {
@@ -300,6 +331,20 @@ function ProfileDialogContent({
       const websiteValue = website.trim();
       if (websiteValue) {
         input.website = websiteValue;
+      }
+      const normalizedSocials: ProfileSocials = {};
+      for (const platform of SOCIAL_PLATFORMS) {
+        const raw = (socials[platform] ?? "").trim();
+        if (!raw) {
+          continue;
+        }
+        const normalized = normalizeSocialUrl(platform, raw);
+        if (normalized) {
+          normalizedSocials[platform] = normalized;
+        }
+      }
+      if (Object.keys(normalizedSocials).length > 0) {
+        input.socials = normalizedSocials;
       }
       const saved = await saveProfile(identity, { ...signed, profile: input });
       queryClient.setQueryData(profileQueryKey(identity), saved);
@@ -470,7 +515,10 @@ function ProfileDialogContent({
                     fullWidth
                     isDisabled={review !== null}
                     isRequired
-                    onChange={setDisplayName}
+                    onChange={(value) => {
+                      setContentErrors((current) => ({ ...current, displayName: null }));
+                      setDisplayName(value);
+                    }}
                     value={displayName}
                   >
                     <Label>Display name</Label>
@@ -492,13 +540,21 @@ function ProfileDialogContent({
                         {nameError}
                       </p>
                     ) : null}
+                    {showErrors && contentErrors.displayName ? (
+                      <p className="mt-1 text-danger text-xs" role="alert">
+                        {contentErrors.displayName}
+                      </p>
+                    ) : null}
                   </TextField>
 
                   <TextField
                     className="min-w-0"
                     fullWidth
                     isDisabled={review !== null}
-                    onChange={setBio}
+                    onChange={(value) => {
+                      setContentErrors((current) => ({ ...current, bio: null }));
+                      setBio(value);
+                    }}
                     value={bio}
                   >
                     <Label>Bio</Label>
@@ -522,6 +578,11 @@ function ProfileDialogContent({
                     {bioError ? (
                       <p className="mt-1 text-danger text-xs" role="alert">
                         {bioError}
+                      </p>
+                    ) : null}
+                    {showErrors && contentErrors.bio ? (
+                      <p className="mt-1 text-danger text-xs" role="alert">
+                        {contentErrors.bio}
                       </p>
                     ) : null}
                   </TextField>
@@ -554,12 +615,54 @@ function ProfileDialogContent({
                     ) : null}
                   </TextField>
 
+                  <div className="flex flex-col gap-3 rounded-xl bg-surface-secondary/40 p-3 ring-1 ring-border/60">
+                    <div>
+                      <p className="font-medium text-sm">Social links</p>
+                      <p className="mt-0.5 text-muted text-xs">
+                        Optional. Use a handle or a full profile link.
+                      </p>
+                    </div>
+                    <div className="grid gap-3 sm:grid-cols-2">
+                      {SOCIAL_PLATFORMS.map((platform) => {
+                        const socialError = showErrors ? socialErrors[platform] : null;
+                        return (
+                          <TextField
+                            className="min-w-0"
+                            fullWidth
+                            isDisabled={review !== null}
+                            key={platform}
+                            onChange={(value) =>
+                              setSocials((current) => ({ ...current, [platform]: value }))
+                            }
+                            value={socials[platform] ?? ""}
+                          >
+                            <Label>
+                              <span className="inline-flex items-center gap-1.5">
+                                <ProfileSocialIcon
+                                  className="size-3.5 text-muted"
+                                  kind={platform}
+                                />
+                                {SOCIAL_LABELS[platform]}
+                              </span>
+                            </Label>
+                            <Input placeholder={socialPlaceholder(platform)} />
+                            {socialError ? (
+                              <p className="mt-1 text-danger text-xs" role="alert">
+                                {socialError}
+                              </p>
+                            ) : null}
+                          </TextField>
+                        );
+                      })}
+                    </div>
+                  </div>
+
                   {isEdit && review === null ? (
                     <div className="mt-1">
                       <p className="font-medium text-sm">Remove profile</p>
                       <p className="mt-1 text-muted text-xs leading-relaxed">
-                        Removes the public name, bio, and website from this account. The account and
-                        its balance stay unchanged.
+                        Removes the public name, bio, website, and social links from this account.
+                        The account and its balance stay unchanged.
                       </p>
                       {revokeConfirm ? (
                         <div className="mt-3 rounded-xl bg-danger/5 p-3 ring-1 ring-danger/20">
@@ -717,6 +820,17 @@ function reviewActionLabel(action: ProfileChallengeAction, isEdit: boolean): str
 
 function saveActionLabel(isEdit: boolean): string {
   return isEdit ? "Save changes" : "Claim profile";
+}
+
+const SOCIAL_PLACEHOLDERS: Record<SocialPlatform, string> = {
+  discord: "https://discord.gg/invite",
+  github: "https://github.com/yourhandle",
+  telegram: "@yourhandle",
+  x: "@yourhandle",
+};
+
+function socialPlaceholder(platform: SocialPlatform): string {
+  return SOCIAL_PLACEHOLDERS[platform];
 }
 
 function WalletOption({
