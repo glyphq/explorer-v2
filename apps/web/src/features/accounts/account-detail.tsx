@@ -3,7 +3,7 @@
 import { Button } from "@heroui/react";
 import { AsciiSkeleton } from "ascii-reveal";
 import { type ReactNode, useCallback, useState } from "react";
-import { ContractMark, ZeroMark } from "@/components/explorer/contract-mark";
+import { ContractMark } from "@/components/explorer/contract-mark";
 import { useContract } from "@/components/explorer/contract-provider";
 import { IdentityActions } from "@/components/explorer/identity-actions";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
@@ -302,11 +302,7 @@ export function AccountDetail({ identity }: { identity: string }) {
         ) : (
           <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
             <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
-              {zeroAddress ? (
-                <ZeroMark size={112} />
-              ) : (
-                <IdentityAvatar size={112} value={identity} />
-              )}
+              <IdentityAvatar size={112} value={identity} />
             </span>
             {zeroAddress ? (
               <>

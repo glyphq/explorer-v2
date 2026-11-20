@@ -41,15 +41,3 @@ export function BurnMark({ size = 18 }: { size?: number }) {
     </span>
   );
 }
-
-export function ZeroMark({ size = 18 }: { size?: number }) {
-  return (
-    <span
-      aria-hidden
-      className="inline-flex shrink-0 items-center justify-center rounded-full bg-foreground/5 font-mono text-[9px] text-muted ring-1 ring-foreground/10"
-      style={{ fontSize: Math.max(9, Math.round(size * 0.28)), height: size, width: size }}
-    >
-      0
-    </span>
-  );
-}

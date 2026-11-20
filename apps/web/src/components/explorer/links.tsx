@@ -8,21 +8,17 @@ import Link from "next/link";
 import { useState } from "react";
 import { sileo } from "sileo";
 
-import { isZeroIdentity } from "@/lib/contracts/constants";
 import { classNames, shorten } from "@/lib/format";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 import { useContract } from "./contract-provider";
-import { ContractMark, ZeroMark } from "./contract-mark";
+import { ContractMark } from "./contract-mark";
 import { IdentityAvatar } from "./identity-avatar";
 
 const idClass =
   "font-mono text-xs text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
 const contractClass =
   "font-sans text-xs font-medium text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
-const zeroClass =
-  "inline-flex items-center gap-1.5 font-sans text-xs font-medium text-muted underline-offset-4 transition-colors hover:text-foreground hover:underline";
-
 export function IdentityLink({
   avatar = false,
   identity,
@@ -38,19 +34,6 @@ export function IdentityLink({
 
   if (!identity) {
     return <span className="text-muted text-xs">—</span>;
-  }
-
-  if (isZeroIdentity(identity)) {
-    return (
-      <Link
-        className={classNames(zeroClass, className)}
-        href={`/accounts/${identity}` as Route}
-        title={`${identity} · protocol zero address`}
-      >
-        <ZeroMark size={16} />
-        Zero address
-      </Link>
-    );
   }
 
   if (contract) {
