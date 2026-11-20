@@ -68,9 +68,9 @@ export function contractTicker(proposal: Proposal): string {
 }
 
 export function proposalHref(proposal: Proposal): Route {
-  return `/proposals/${contractTicker(proposal).toLowerCase()}/${
-    proposal.slug ?? proposal.proposalIndex
-  }` as Route;
+  const contract = contractTicker(proposal).toLowerCase();
+  const index = encodeURIComponent(String(proposal.slug ?? proposal.proposalIndex));
+  return `/proposals/view?contract=${contract}&index=${index}` as Route;
 }
 
 export function StatusChip({ status }: { status: number }) {

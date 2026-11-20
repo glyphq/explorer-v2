@@ -53,6 +53,9 @@ function detailLabel(pathname: string, item: NavigationItem): string | null {
     case "/contracts":
       return first ? first.toUpperCase() : null;
     case "/proposals":
+      if (first === "view") {
+        return null;
+      }
       return first ? `${first.toUpperCase()}${segment[1] ? ` #${segment[1]}` : ""}` : null;
     default:
       return first ? first.replaceAll("-", " ") : null;
