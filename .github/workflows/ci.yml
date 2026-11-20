@@ -15,6 +15,9 @@ concurrency:
 jobs:
   check:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID: ${{ vars.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID }}
+      NEXT_PUBLIC_SITE_URL: https://explorer.glyphq.org
     steps:
       - name: Check out repository
         uses: actions/checkout@v4

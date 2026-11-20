@@ -12,6 +12,12 @@ export default Alchemy.Stack(
   Effect.gen(function* () {
     const cache = yield* Cloudflare.KV.Namespace("Cache");
 
+    const profilesDb = yield* Cloudflare.D1.Database("Profiles", {
+      name: "explorer-v2-profiles",
+      primaryLocationHint: "weur",
+      migrations: "./migrations",
+    });
+
     const webWorker = yield* Cloudflare.Website.StaticSite("web", {
       assets: {
         runWorkerFirst: false,
@@ -35,6 +41,7 @@ export default Alchemy.Stack(
         NEXT_INC_CACHE_KV: cache,
         NEXT_TAG_CACHE_KV: cache,
         PROPOSALS_KV: cache,
+        PROFILES_DB: profilesDb,
       },
       main: "../../apps/web/.open-next/worker.js",
       // Rebuild shared workspace dependencies until Alchemy has a workspace-aware default memo.

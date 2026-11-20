@@ -11,6 +11,7 @@
     "env:generate": "varlock codegen",
     "og:generate": "bun run scripts/generate-og.tsx",
     "proposals:backfill": "node scripts/backfill-proposals.mjs",
+    "test": "bun test",
     "start": "next start"
   },
   "dependencies": {
@@ -22,6 +23,9 @@
     "@internationalized/date": "3.12.4",
     "@number-flow/react": "^0.6.2",
     "@opennextjs/cloudflare": "^1.20.17",
+    "@qubic.org/crypto": "1.0.0",
+    "@qubic.org/react": "1.0.0",
+    "@qubic.org/types": "1.0.0",
     "@react-aria/ssr": "3.10.1",
     "@react-aria/utils": "3.34.1",
     "@solar-icons/react": "^2.6.0",
@@ -29,6 +33,7 @@
     "@tanstack/react-query": "5.108.0",
     "@tanstack/react-table": "9.3.1",
     "@tanstack/react-virtual": "3.14.26",
+    "@walletconnect/sign-client": "^2.23.10",
     "ascii-reveal": "^0.3.0",
     "babel-plugin-react-compiler": "^1.0.0",
     "boring-avatars": "^2.0.4",

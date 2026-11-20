@@ -11,4 +11,13 @@
   "images": {
     "binding": "IMAGES",
   },
+  // Local development only. Production creates and binds the real D1 database
+  // through Alchemy (packages/infra/alchemy.run.ts).
+  "d1_databases": [
+    {
+      "binding": "PROFILES_DB",
+      "database_name": "explorer-v2-profiles-local",
+      "database_id": "00000000-0000-0000-0000-000000000001",
+    },
+  ],
 }

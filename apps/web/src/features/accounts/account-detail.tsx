@@ -1,15 +1,19 @@
 "use client";
 
+import { Button } from "@heroui/react";
 import { AsciiSkeleton } from "ascii-reveal";
-import { type ReactNode, useCallback } from "react";
-
-import { useContract } from "@/components/explorer/contract-provider";
+import { type ReactNode, useCallback, useState } from "react";
 import { ContractMark } from "@/components/explorer/contract-mark";
+import { useContract } from "@/components/explorer/contract-provider";
 import { IdentityActions } from "@/components/explorer/identity-actions";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
 import { TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { ErrorState } from "@/components/explorer/state";
+import { isProfileUnavailable } from "@/features/profiles/api";
+import { ProfileDialog } from "@/features/profiles/profile-dialog";
+import { ProfileHeader, ProfileMeta } from "@/features/profiles/profile-header";
+import { useProfile } from "@/features/profiles/use-profile";
 import {
   pageRows,
   useIdentity,
@@ -35,14 +39,28 @@ export function AccountDetail({ identity }: { identity: string }) {
   const contract = useContract(identity);
   const identityQuery = useIdentity(identity);
   const liveIdentity = useLiveIdentity(identity);
+  const profileQuery = useProfile(identity);
   const market = useMarket();
   const activity = useIdentityActivity(identity, 25);
+  const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const data = identityQuery.data?.data;
   const liveData = liveIdentity.data?.data;
+  const profile = profileQuery.data ?? null;
+  const profileUnavailable = isProfileUnavailable(profileQuery.error);
+  const profileReady = profileQuery.isSuccess;
+  let profileAction: "claim" | "edit" | null = null;
+  if (!contract && profileQuery.isSuccess) {
+    if (profile === null) {
+      profileAction = "claim";
+    } else if (profile.kind === "wallet") {
+      profileAction = "edit";
+    }
+  }
   const activityGroups = groupActivity(pageRows(activity.data?.pages));
   const hasData = Boolean(data ?? liveData);
-  const loading = !hasData && (identityQuery.isLoading || liveIdentity.isLoading);
-  const failed = !loading && !hasData;
+  const loading =
+    !hasData && (identityQuery.isLoading || liveIdentity.isLoading || profileQuery.isLoading);
+  const failed = !(loading || hasData || profileReady);
   const balance =
     liveData?.balance ??
     (data?.balance !== undefined && data.balance >= 0 ? data.balance : undefined);
@@ -104,17 +122,22 @@ export function AccountDetail({ identity }: { identity: string }) {
               >
                 {identity}
               </p>
+              {profile ? <ProfileMeta profile={profile} /> : null}
             </div>
           </div>
         ) : (
           <div className="flex min-w-0 flex-col items-start gap-3">
             <IdentityAvatar size={56} value={identity} />
-            <p
-              className="select-all break-all font-mono text-sm text-foreground tracking-tight sm:text-base"
-              title={identity}
-            >
-              {identity}
-            </p>
+            {profile ? (
+              <ProfileHeader identity={identity} profile={profile} />
+            ) : (
+              <p
+                className="select-all break-all font-mono text-foreground text-sm tracking-tight sm:text-base"
+                title={identity}
+              >
+                {identity}
+              </p>
+            )}
           </div>
         )}
         <div className="mt-5 font-semibold text-4xl tabular-nums tracking-tight sm:text-5xl">
@@ -153,13 +176,20 @@ export function AccountDetail({ identity }: { identity: string }) {
               {shorten(liveData?.public_key ?? data?.public_key, 14, 10)}
             </span>
           </span>
-          <IdentityActions identity={identity} />
+          <div className="flex flex-wrap items-center gap-2">
+            <IdentityActions identity={identity} />
+            {profileAction ? (
+              <Button onPress={() => setProfileDialogOpen(true)} size="sm" variant="outline">
+                {profileAction === "edit" ? "Edit profile" : "Claim profile"}
+              </Button>
+            ) : null}
+          </div>
         </div>
       </section>
 
-      <section className="pb-10 pt-4">
+      <section className="pt-4 pb-10">
         <div className="mb-4">
-          <h2 className="text-sm font-medium">Recent activity</h2>
+          <h2 className="font-medium text-sm">Recent activity</h2>
           <p className="mt-1 text-muted text-xs">
             Transfers and contract calls involving this account.
           </p>
@@ -174,6 +204,15 @@ export function AccountDetail({ identity }: { identity: string }) {
           />
         ) : null}
       </section>
+
+      {contract || profileUnavailable ? null : (
+        <ProfileDialog
+          identity={identity}
+          onOpenChange={setProfileDialogOpen}
+          open={profileDialogOpen}
+          profile={profile}
+        />
+      )}
     </div>
   );
 }

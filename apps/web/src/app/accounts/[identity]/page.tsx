@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 import { AccountDetail } from "@/features/accounts/account-detail";
 import { findContractSummary } from "@/lib/contracts/registry";
 import { shorten } from "@/lib/format";
+import { getPublicProfile } from "@/lib/profiles/server";
 
 export async function generateMetadata({
   params,
@@ -11,13 +12,22 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { identity } = await params;
   const contract = findContractSummary(identity);
+  const profile = contract ? null : await getPublicProfile(identity).catch(() => null);
   const title = contract
     ? `${contract.name} smart contract`
-    : `Account ${shorten(identity, 10, 8)}`;
+    : profile
+      ? `${profile.displayName} (${shorten(identity, 6, 4)})`
+      : `Account ${shorten(identity, 10, 8)}`;
+  const description = contract
+    ? `${contract.name} contract address, balance and activity on Qubic.`
+    : profile
+      ? profile.bio ||
+        (profile.verification === "wallet"
+          ? `${profile.displayName} is a wallet-verified Qubic identity. View balance and activity on Glyph Explorer.`
+          : `${profile.displayName} is a curated exchange identity on Qubic. View balance and activity on Glyph Explorer.`)
+      : "Account balance, activity, sources and destinations.";
   return {
-    description: contract
-      ? `${contract.name} contract address, balance and activity on Qubic.`
-      : "Account balance, activity, sources and destinations.",
+    description,
     openGraph: {
       images: [
         {
