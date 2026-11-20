@@ -21,15 +21,24 @@ describe("normalizeSocialUrl", () => {
     );
     expect(normalizeSocialUrl("discord", "@glyphq")).toBe("https://discord.com/users/glyphq");
     expect(normalizeSocialUrl("discord", "glyphq")).toBe("https://discord.com/users/glyphq");
+    expect(normalizeSocialUrl("discord", "@alez.t04")).toBe("https://discord.com/users/alez.t04");
+    expect(normalizeSocialUrl("discord", "alez.t04")).toBe("https://discord.com/users/alez.t04");
     expect(normalizeSocialUrl("discord", "https://discord.com/users/glyphq")).toBe(
       "https://discord.com/users/glyphq",
     );
+    expect(normalizeSocialUrl("discord", "https://discordapp.com/users/123456789012345678")).toBe(
+      "https://discord.com/users/123456789012345678",
+    );
+    expect(normalizeSocialUrl("github", "@glyphq")).toBe("https://github.com/glyphq");
   });
 
   test("rejects links outside the selected platform", () => {
     expect(normalizeSocialUrl("x", "https://example.com/glyphq")).toBeNull();
     expect(normalizeSocialUrl("github", "https://gitlab.com/glyphq")).toBeNull();
     expect(normalizeSocialUrl("discord", "https://discord.gg/")).toBeNull();
+    expect(normalizeSocialUrl("discord", "discord.com")).toBeNull();
+    expect(normalizeSocialUrl("discord", "discordapp.com")).toBeNull();
+    expect(normalizeSocialUrl("x", "@glyph.q")).toBeNull();
     expect(normalizeSocialUrl("x", "https://user:pass@x.com/glyphq")).toBeNull();
     expect(normalizeSocialUrl("x", "http://x.com/glyphq")).toBeNull();
     expect(normalizeSocialUrl("x", `https://x.com/${"a".repeat(200)}`)).toBeNull();

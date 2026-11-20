@@ -11,7 +11,7 @@ export const SOCIAL_LABELS: Record<SocialPlatform, string> = {
 };
 
 const SOCIAL_HOSTS: Record<SocialPlatform, readonly string[]> = {
-  discord: ["discord.com", "discord.gg"],
+  discord: ["discord.com", "discord.gg", "discordapp.com"],
   github: ["github.com"],
   telegram: ["t.me", "telegram.me"],
   x: ["mobile.twitter.com", "mobile.x.com", "twitter.com", "x.com"],
@@ -24,7 +24,20 @@ const SOCIAL_HANDLE_BASES: Partial<Record<SocialPlatform, string>> = {
   x: "https://x.com/",
 };
 
-const SOCIAL_HANDLE_PATTERN = /^[a-z0-9][a-z0-9_.-]{0,38}$/i;
+const SOCIAL_HANDLE_PATTERNS: Partial<Record<SocialPlatform, RegExp>> = {
+  discord: /^[a-z0-9._]{2,32}$/i,
+  github: /^[a-z0-9](?:[a-z0-9-]{0,37}[a-z0-9])?$/i,
+  telegram: /^[a-z0-9_]{1,32}$/i,
+  x: /^[a-z0-9_]{1,15}$/i,
+};
+
+function looksLikeSocialUrl(platform: SocialPlatform, value: string): boolean {
+  if (/^[a-z][a-z0-9+.-]*:/i.test(value) || value.includes("/") || /^www\./i.test(value)) {
+    return true;
+  }
+  const lower = value.toLowerCase();
+  return SOCIAL_HOSTS[platform].some((host) => lower === host || lower.endsWith(`.${host}`));
+}
 
 /**
  * Normalizes a social profile link into a canonical HTTPS URL. Handles without
@@ -40,8 +53,8 @@ export function normalizeSocialUrl(platform: SocialPlatform, value: string): str
   const handleBase = SOCIAL_HANDLE_BASES[platform];
   const handle = trimmed.startsWith("@") ? trimmed.slice(1) : trimmed;
   let candidate = trimmed;
-  if (handleBase && !trimmed.includes(".") && !trimmed.includes("/") && !trimmed.includes(":")) {
-    if (!SOCIAL_HANDLE_PATTERN.test(handle)) {
+  if (handleBase && !looksLikeSocialUrl(platform, trimmed)) {
+    if (!SOCIAL_HANDLE_PATTERNS[platform]?.test(handle)) {
       return null;
     }
     candidate = `${handleBase}${handle}`;
@@ -77,6 +90,8 @@ export function normalizeSocialUrl(platform: SocialPlatform, value: string): str
     canonicalHost = "t.me";
   } else if (platform === "github") {
     canonicalHost = "github.com";
+  } else if (platform === "discord" && host === "discordapp.com") {
+    canonicalHost = "discord.com";
   }
 
   return `https://${canonicalHost}${path}`;

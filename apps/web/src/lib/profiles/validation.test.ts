@@ -76,6 +76,21 @@ describe("parseProfileInput", () => {
     });
   });
 
+  test("accepts Discord handles containing periods", () => {
+    expect(
+      parseProfileInput({
+        displayName: "Glyph",
+        socials: { discord: "@alez.t04" },
+      }).socials,
+    ).toEqual({ discord: "https://discord.com/users/alez.t04" });
+    expect(
+      parseProfileInput({
+        displayName: "Glyph",
+        socials: { discord: "alez.t04" },
+      }).socials,
+    ).toEqual({ discord: "https://discord.com/users/alez.t04" });
+  });
+
   test("rejects social links on the wrong host or without a profile path", () => {
     expect(
       errorCode(() =>
