@@ -3,7 +3,7 @@
 import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 
-import { REFRESH_MS } from "./model";
+import { CORE_REFRESH_MS, RACE_REFRESH_MS } from "./model";
 import type { BppRaceSnapshot, BppSnapshot } from "./types";
 
 async function readSnapshot<T>(part: "core" | "race", signal: AbortSignal): Promise<T> {
@@ -27,8 +27,8 @@ export function useBpp9000() {
   return useQuery({
     queryFn: ({ signal }) => readSnapshot<BppSnapshot>("core", signal),
     queryKey: ["bpp9000", "core"],
-    refetchInterval: REFRESH_MS,
-    staleTime: REFRESH_MS / 2,
+    refetchInterval: CORE_REFRESH_MS,
+    staleTime: CORE_REFRESH_MS / 2,
   });
 }
 
@@ -36,8 +36,8 @@ export function useBppRace() {
   return useQuery({
     queryFn: ({ signal }) => readSnapshot<BppRaceSnapshot>("race", signal),
     queryKey: ["bpp9000", "race"],
-    refetchInterval: REFRESH_MS,
-    staleTime: REFRESH_MS / 2,
+    refetchInterval: RACE_REFRESH_MS,
+    staleTime: RACE_REFRESH_MS / 2,
   });
 }
 

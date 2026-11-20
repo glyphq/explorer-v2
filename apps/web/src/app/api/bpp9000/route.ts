@@ -11,6 +11,8 @@ import type {
 const UPSTREAM = "https://annexplorer.jetskipool.ai/api/v1";
 const TIMEOUT_MS = 10_000;
 const PAGE_SIZE = 200;
+const CORE_CACHE_SECONDS = 240;
+const RACE_CACHE_SECONDS = 600;
 
 interface TickResponse {
   tickInfo?: {
@@ -69,11 +71,11 @@ interface OverviewResponse {
   };
 }
 
-async function read<T>(path: string): Promise<T | null> {
+async function read<T>(path: string, revalidate = 60): Promise<T | null> {
   try {
     const response = await fetch(`${UPSTREAM}${path}`, {
-      cache: "no-store",
       headers: { Accept: "application/json" },
+      next: { revalidate },
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
     if (!response.ok) {
@@ -120,13 +122,14 @@ function normalizeHours(epoch: number, hours: OverviewHour[]): BppHour[] {
 }
 
 async function currentEpoch(): Promise<number | null> {
-  const tick = await read<TickResponse>("/live/tick-info");
+  const tick = await read<TickResponse>("/live/tick-info", 15);
   return tick?.tickInfo?.epoch ?? null;
 }
 
 async function overviewPage(epoch: number, offset = 0): Promise<OverviewResponse | null> {
   return read<OverviewResponse>(
     `/epochs/${epoch}/ant-colony-overview?limit=${PAGE_SIZE}&offset=${offset}`,
+    60,
   );
 }
 
@@ -208,7 +211,7 @@ async function coreSnapshot(): Promise<Response> {
   }
 
   const [epochInfo, overview] = await Promise.all([
-    read<EpochResponse>(`/epochs/${epoch}`),
+    read<EpochResponse>(`/epochs/${epoch}`, 300),
     overviewPage(epoch),
   ]);
 
@@ -236,9 +239,7 @@ async function coreSnapshot(): Promise<Response> {
     race: null,
   };
 
-  return Response.json(snapshot, {
-    headers: { "Cache-Control": "no-store" },
-  });
+  return Response.json(snapshot);
 }
 
 async function raceSnapshot(): Promise<Response> {
@@ -259,20 +260,62 @@ async function raceSnapshot(): Promise<Response> {
     race: buildRace(overview, accuracy, board),
   };
 
-  return Response.json(snapshot, {
-    headers: { "Cache-Control": "no-store" },
-  });
+  return Response.json(snapshot);
 }
 
 export const dynamic = "force-dynamic";
 
+async function withEdgeCache(
+  request: Request,
+  ttlSeconds: number,
+  build: () => Promise<Response>,
+): Promise<Response> {
+  const cache = typeof caches === "undefined" ? undefined : await caches.open("glyph-bpp9000");
+  if (!cache) {
+    return build();
+  }
+
+  const cacheUrl = new URL(request.url);
+  cacheUrl.search = `?part=${cacheUrl.searchParams.get("part") ?? "core"}`;
+  const key = new Request(cacheUrl, { method: "GET" });
+  const cached = await cache.match(key).catch(() => undefined);
+  if (cached) {
+    const hit = new Response(cached.body, {
+      headers: cached.headers,
+      status: cached.status,
+      statusText: cached.statusText,
+    });
+    hit.headers.set("x-glyph-cache", "hit");
+    return hit;
+  }
+
+  const response = await build();
+  if (!response.ok) {
+    return response;
+  }
+
+  const headers = new Headers(response.headers);
+  headers.set(
+    "Cache-Control",
+    `public, max-age=${ttlSeconds}, s-maxage=${ttlSeconds}, stale-while-revalidate=${ttlSeconds}`,
+  );
+  headers.set("x-glyph-cache", "miss");
+  const cacheable = new Response(response.body, {
+    headers,
+    status: response.status,
+    statusText: response.statusText,
+  });
+  await cache.put(key, cacheable.clone()).catch(() => undefined);
+  return cacheable;
+}
+
 export async function GET(request: Request) {
   const part = new URL(request.url).searchParams.get("part") ?? "core";
   if (part === "core") {
-    return coreSnapshot();
+    return withEdgeCache(request, CORE_CACHE_SECONDS, coreSnapshot);
   }
   if (part === "race") {
-    return raceSnapshot();
+    return withEdgeCache(request, RACE_CACHE_SECONDS, raceSnapshot);
   }
   return Response.json({ error: "Unknown BPP-9000 part." }, { status: 400 });
 }

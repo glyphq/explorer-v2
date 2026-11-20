@@ -1,7 +1,8 @@
 import type { BppColony, BppDirection, BppHour, BppHourStatus } from "./types";
 import { formatDayLabel } from "./format-time";
 
-export const REFRESH_MS = 60_000;
+export const CORE_REFRESH_MS = 2 * 60_000;
+export const RACE_REFRESH_MS = 5 * 60_000;
 const DAY_SECONDS = 86_400;
 
 export function hourCloseAt(hour: BppHour): number {

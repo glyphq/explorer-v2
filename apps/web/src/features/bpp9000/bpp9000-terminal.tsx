@@ -34,8 +34,8 @@ function TerminalHeader({
       </h1>
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-muted text-xs tabular-nums">{updated}</span>
-        <Chip size="sm" title="Refreshes every 60 seconds" variant="soft">
-          Every 60s
+        <Chip size="sm" title="Calls refresh every 2 minutes; alignment every 5" variant="soft">
+          Calls 2m · board 5m
         </Chip>
         <Button isDisabled={isFetching} onPress={onRefresh} size="sm" variant="tertiary">
           <RefreshIcon className={isFetching ? "size-4 animate-spin" : "size-4"} />
