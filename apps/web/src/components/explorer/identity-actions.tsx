@@ -106,8 +106,8 @@ export function IdentityActions({
 
       <Modal isOpen={qrOpen} onOpenChange={setQrOpen}>
         <Modal.Backdrop>
-          <Modal.Container>
-            <Modal.Dialog>
+          <Modal.Container className="modal-sheet p-0 sm:p-0" placement="top">
+            <Modal.Dialog className="rounded-t-none rounded-b-3xl">
               <Modal.CloseTrigger />
               <Modal.Header>
                 <Modal.Heading>Account QR</Modal.Heading>

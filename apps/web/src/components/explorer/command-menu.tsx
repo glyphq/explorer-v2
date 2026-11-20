@@ -302,7 +302,7 @@ export function CommandMenu({
         {open ? (
           <motion.div
             animate={{ opacity: 1 }}
-            className="fixed inset-0 z-[100] flex items-start justify-center bg-black/55 px-4 pt-[12vh] backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-start justify-center bg-black/55 backdrop-blur-sm"
             exit={{ opacity: 0 }}
             initial={{ opacity: 0 }}
             key="overlay"
@@ -313,19 +313,14 @@ export function CommandMenu({
               animate={{ opacity: 1 }}
               aria-label="Command menu"
               aria-modal="true"
-              className="w-full max-w-[640px] overflow-hidden rounded-2xl bg-overlay text-foreground"
+              className="max-h-[88dvh] w-full max-w-2xl overflow-hidden rounded-b-3xl bg-overlay pt-[env(safe-area-inset-top)] text-foreground"
               exit={{ opacity: 0 }}
               initial={{ opacity: 0 }}
               layoutId="command-surface"
               onMouseDown={(event) => event.stopPropagation()}
               ref={panelRef}
               role="dialog"
-              transition={{
-                damping: 34,
-                mass: 0.7,
-                stiffness: 360,
-                type: "spring",
-              }}
+              transition={{ damping: 34, mass: 0.7, stiffness: 360, type: "spring" }}
             >
               <Command label="Command menu" loop>
                 <div className="flex items-center gap-3 px-4 py-3">
@@ -485,12 +480,7 @@ export function CommandMenu({
               className="pointer-events-auto flex h-9 items-center justify-center gap-2 rounded-b-3xl bg-surface px-5 text-muted text-xs transition-colors hover:bg-surface-secondary hover:text-foreground sm:min-w-52 sm:px-6"
               layoutId="command-surface"
               onClick={() => onOpenChange(true)}
-              transition={{
-                damping: 34,
-                mass: 0.7,
-                stiffness: 360,
-                type: "spring",
-              }}
+              transition={{ damping: 34, mass: 0.7, stiffness: 360, type: "spring" }}
               type="button"
             >
               <MagnifierIcon className="size-3.5 shrink-0" />

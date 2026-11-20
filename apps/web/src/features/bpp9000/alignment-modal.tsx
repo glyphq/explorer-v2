@@ -197,8 +197,13 @@ export function AlignmentModal({
   return (
     <Modal isOpen={open} onOpenChange={onOpenChange}>
       <Modal.Backdrop>
-        <Modal.Container scroll="inside" size="lg">
-          <Modal.Dialog className="max-h-[85vh]">
+        <Modal.Container
+          className="modal-sheet p-0 sm:p-0"
+          placement="top"
+          scroll="inside"
+          size="lg"
+        >
+          <Modal.Dialog className="max-h-[88dvh] rounded-t-none rounded-b-3xl">
             <Modal.CloseTrigger />
             <Modal.Header>
               <Modal.Heading>Computor alignment</Modal.Heading>

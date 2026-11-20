@@ -1,8 +1,10 @@
 "use client";
 
-import { Button, Modal } from "@heroui/react";
+import { Button, ListBox, ListBoxItem, Modal, Select } from "@heroui/react";
+import { UndoLeftIcon } from "@solar-icons/react/linear/undo-left";
+import { motion, useDragControls } from "motion/react";
 import { useTheme } from "next-themes";
-import { useEffect, useState, type ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 import {
   motionPreferences,
@@ -24,55 +26,51 @@ const modeOptions = [
   { id: "dark", label: "Dark" },
 ] as const;
 
-const typefacePreview: Record<TypefaceId, string> = {
-  geist: "var(--font-geist-sans)",
-  "space-grotesk": "var(--font-space-grotesk)",
-  system: "ui-sans-serif, system-ui, sans-serif",
+type SelectOption<T extends string> = {
+  id: T;
+  label: string;
 };
 
-function SettingSection({
-  children,
-  description,
-  title,
+function SettingSelect<T extends string>({
+  label,
+  onChange,
+  options,
+  value,
 }: {
-  children: ReactNode;
-  description?: string;
-  title: string;
+  label: string;
+  onChange: (id: T) => void;
+  options: readonly SelectOption<T>[];
+  value: T;
 }) {
   return (
-    <section className="grid gap-3">
-      <div>
-        <h3 className="font-medium text-foreground text-sm">{title}</h3>
-        {description ? <p className="mt-1 text-muted text-xs leading-5">{description}</p> : null}
-      </div>
-      {children}
-    </section>
-  );
-}
-
-function SegmentedButton({
-  active,
-  children,
-  onClick,
-}: {
-  active: boolean;
-  children: ReactNode;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      aria-pressed={active}
-      className={classNames(
-        "flex min-h-10 items-center justify-center gap-2 rounded-lg border px-3 py-2 text-center text-xs transition-colors",
-        active
-          ? "border-accent/40 bg-accent/10 text-accent"
-          : "border-border text-muted hover:border-foreground/20 hover:text-foreground",
-      )}
-      onClick={onClick}
-      type="button"
-    >
-      {children}
-    </button>
+    <div className="flex items-center justify-between gap-4">
+      <span className="text-muted text-sm">{label}</span>
+      <Select
+        aria-label={label}
+        className="w-44 shrink-0 sm:w-48"
+        onChange={(key) => {
+          if (key !== null) {
+            onChange(String(key) as T);
+          }
+        }}
+        value={value}
+        variant="secondary"
+      >
+        <Select.Trigger className="h-9 w-full justify-between rounded-lg bg-surface-secondary/60 px-3 text-xs">
+          <Select.Value />
+          <Select.Indicator />
+        </Select.Trigger>
+        <Select.Popover className="bg-surface-tertiary">
+          <ListBox>
+            {options.map((option) => (
+              <ListBoxItem id={option.id} key={option.id} textValue={option.label}>
+                {option.label}
+              </ListBoxItem>
+            ))}
+          </ListBox>
+        </Select.Popover>
+      </Select>
+    </div>
   );
 }
 
@@ -87,140 +85,126 @@ export function SettingsDialog({
     useAppearance();
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const dragControls = useDragControls();
 
   useEffect(() => setMounted(true), []);
 
-  const activeMode = mounted ? (theme ?? "system") : "system";
+  const activeMode = (
+    mounted ? (theme ?? "system") : "system"
+  ) as (typeof modeOptions)[number]["id"];
 
   return (
     <Modal isOpen={open} onOpenChange={onOpenChange}>
       <Modal.Backdrop>
-        <Modal.Container scroll="inside" size="lg">
-          <Modal.Dialog className="max-h-[86vh]">
-            <Modal.CloseTrigger />
-            <Modal.Header>
-              <Modal.Heading>Appearance</Modal.Heading>
-              <p className="mt-1 text-muted text-sm">
-                Tune the explorer without leaving the page. Preferences stay on this device.
-              </p>
-            </Modal.Header>
-            <Modal.Body className="gap-6">
-              <SettingSection title="Mode">
-                <div className="grid grid-cols-3 gap-2">
-                  {modeOptions.map((option) => (
-                    <SegmentedButton
-                      active={activeMode === option.id}
-                      key={option.id}
-                      onClick={() => setTheme(option.id)}
-                    >
-                      {option.label}
-                    </SegmentedButton>
-                  ))}
-                </div>
-              </SettingSection>
-
-              <SettingSection
-                description="Every accent keeps the same tinted neutrals and semantic colors."
-                title="Accent"
-              >
-                <div className="grid grid-cols-2 gap-2">
-                  {palettes.map((palette) => {
-                    const active = appearance.palette === palette.id;
-                    return (
-                      <button
-                        aria-pressed={active}
-                        className={classNames(
-                          "flex items-center gap-3 rounded-xl border p-3 text-left transition-colors",
-                          active
-                            ? "border-accent/40 bg-accent/10"
-                            : "border-border hover:border-foreground/20 hover:bg-surface-secondary/50",
-                        )}
-                        key={palette.id}
-                        onClick={() => setPalette(palette.id as PaletteId)}
-                        type="button"
-                      >
-                        <span
-                          className="size-5 shrink-0 rounded-full ring-1 ring-foreground/15"
-                          style={{ backgroundColor: palette.swatch }}
-                        />
-                        <span className="min-w-0">
+        <Modal.Container
+          className="modal-sheet modal-drag-sheet p-0 sm:p-0"
+          placement="top"
+          scroll="inside"
+          size="lg"
+        >
+          <Modal.Dialog className="max-h-[92dvh] w-full max-w-xl rounded-none bg-transparent p-0">
+            <motion.div
+              animate={
+                open ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0.6, scale: 0.985, y: "-100%" }
+              }
+              className="flex max-h-[92dvh] flex-col overflow-hidden rounded-b-3xl bg-overlay px-6 pt-[calc(2rem+env(safe-area-inset-top))] pb-6"
+              drag="y"
+              dragConstraints={{ bottom: 0, top: -1000 }}
+              dragControls={dragControls}
+              dragElastic={{ bottom: 0, top: 0.9 }}
+              dragListener={false}
+              dragSnapToOrigin
+              initial={{ opacity: 0.6, scale: 0.985, y: "-100%" }}
+              key={open ? "open" : "closed"}
+              onDragEnd={(_, info) => {
+                if (info.offset.y < -120 || info.velocity.y < -700) {
+                  onOpenChange(false);
+                }
+              }}
+              transition={{ damping: 34, mass: 0.9, stiffness: 380, type: "spring" }}
+            >
+              <Modal.Header>
+                <Modal.Heading>Appearance</Modal.Heading>
+                <p className="mt-1 text-muted text-sm">
+                  Changes apply immediately. Preferences stay on this device.
+                </p>
+              </Modal.Header>
+              <Modal.Body className="gap-5">
+                <div className="grid gap-3">
+                  <h3 className="font-medium text-foreground text-sm">Accent</h3>
+                  <div
+                    aria-label="Accent palette"
+                    className="flex max-w-[17rem] items-center justify-between"
+                    role="radiogroup"
+                  >
+                    {palettes.map((palette) => {
+                      const active = appearance.palette === palette.id;
+                      return (
+                        <button
+                          aria-checked={active}
+                          aria-label={palette.label}
+                          className="flex size-8 items-center justify-center rounded-full transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                          key={palette.id}
+                          onClick={() => setPalette(palette.id as PaletteId)}
+                          role="radio"
+                          title={palette.label}
+                          type="button"
+                        >
                           <span
                             className={classNames(
-                              "block font-medium text-xs",
-                              active ? "text-accent" : "text-foreground",
+                              "size-6 rounded-full transition-[box-shadow]",
+                              active
+                                ? "ring-2 ring-foreground/70 ring-offset-2 ring-offset-overlay"
+                                : "ring-1 ring-foreground/15",
                             )}
-                          >
-                            {palette.label}
-                          </span>
-                          <span className="block font-mono text-[10px] text-muted uppercase">
-                            {palette.swatch}
-                          </span>
-                        </span>
-                      </button>
-                    );
-                  })}
+                            style={{ backgroundColor: palette.swatch }}
+                          />
+                        </button>
+                      );
+                    })}
+                  </div>
                 </div>
-              </SettingSection>
 
-              <SettingSection title="Typeface">
-                <div className="grid grid-cols-3 gap-2">
-                  {typefaces.map((typeface) => (
-                    <SegmentedButton
-                      active={appearance.typeface === typeface.id}
-                      key={typeface.id}
-                      onClick={() => setTypeface(typeface.id as TypefaceId)}
-                    >
-                      <span
-                        className="text-base"
-                        style={{ fontFamily: typefacePreview[typeface.id] }}
-                      >
-                        Aa
-                      </span>
-                      <span className="truncate">{typeface.label}</span>
-                    </SegmentedButton>
-                  ))}
+                <div className="grid gap-2">
+                  <SettingSelect
+                    label="Mode"
+                    onChange={(id) => setTheme(id)}
+                    options={modeOptions}
+                    value={activeMode}
+                  />
+                  <SettingSelect
+                    label="Typeface"
+                    onChange={(id) => setTypeface(id as TypefaceId)}
+                    options={typefaces}
+                    value={appearance.typeface}
+                  />
+                  <SettingSelect
+                    label="Text size"
+                    onChange={(id) => setTextSize(id as TextSizeId)}
+                    options={textSizes}
+                    value={appearance.textSize}
+                  />
+                  <SettingSelect
+                    label="Motion"
+                    onChange={(id) => setMotion(id as MotionPreferenceId)}
+                    options={motionPreferences}
+                    value={appearance.motion}
+                  />
                 </div>
-              </SettingSection>
-
-              <SettingSection title="Text size">
-                <div className="grid grid-cols-3 gap-2">
-                  {textSizes.map((size) => (
-                    <SegmentedButton
-                      active={appearance.textSize === size.id}
-                      key={size.id}
-                      onClick={() => setTextSize(size.id as TextSizeId)}
-                    >
-                      {size.label}
-                    </SegmentedButton>
-                  ))}
-                </div>
-              </SettingSection>
-
-              <SettingSection
-                description="Follow your system preference, always animate, or keep layout motion minimal."
-                title="Motion"
+              </Modal.Body>
+              <Modal.Footer className="justify-start">
+                <Button onPress={resetAppearance} size="sm" variant="ghost">
+                  <UndoLeftIcon className="size-4" />
+                  Reset appearance
+                </Button>
+              </Modal.Footer>
+              <div
+                className="-mx-6 -mb-6 flex cursor-grab touch-none justify-center px-6 pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] select-none active:cursor-grabbing"
+                onPointerDown={(event) => dragControls.start(event)}
               >
-                <div className="grid grid-cols-3 gap-2">
-                  {motionPreferences.map((option) => (
-                    <SegmentedButton
-                      active={appearance.motion === option.id}
-                      key={option.id}
-                      onClick={() => setMotion(option.id as MotionPreferenceId)}
-                    >
-                      {option.label}
-                    </SegmentedButton>
-                  ))}
-                </div>
-              </SettingSection>
-            </Modal.Body>
-            <Modal.Footer className="justify-between">
-              <Button onPress={resetAppearance} size="sm" variant="ghost">
-                Reset appearance
-              </Button>
-              <Button onPress={() => onOpenChange(false)} size="sm" variant="outline">
-                Done
-              </Button>
-            </Modal.Footer>
+                <div aria-hidden className="h-1 w-10 rounded-full bg-foreground/15" />
+              </div>
+            </motion.div>
           </Modal.Dialog>
         </Modal.Container>
       </Modal.Backdrop>

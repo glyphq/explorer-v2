@@ -1,10 +1,15 @@
 export const APPEARANCE_KEY = "glyph:appearance";
+const APPEARANCE_VERSION = 2;
 
 export const palettes = [
   { id: "iris", label: "Iris", swatch: "#c9b8ff" },
   { id: "tidal", label: "Tidal", swatch: "#ccfcfb" },
   { id: "jade", label: "Jade", swatch: "#b8f7cf" },
   { id: "ember", label: "Ember", swatch: "#f9d3b8" },
+  { id: "rose", label: "Rose", swatch: "#ffc1d6" },
+  { id: "sky", label: "Sky", swatch: "#b8d8ff" },
+  { id: "gold", label: "Gold", swatch: "#f6e6a5" },
+  { id: "steel", label: "Steel", swatch: "#cbd5e1" },
 ] as const;
 
 export const typefaces = [
@@ -39,7 +44,7 @@ export interface Appearance {
 
 export const DEFAULT_APPEARANCE: Appearance = {
   motion: "system",
-  palette: "iris",
+  palette: "sky",
   textSize: "default",
   typeface: "space-grotesk",
 };
@@ -84,7 +89,18 @@ export function parseAppearance(value: unknown): Appearance {
 
 export function readAppearance(): Appearance {
   try {
-    return parseAppearance(JSON.parse(localStorage.getItem(APPEARANCE_KEY) ?? "null"));
+    const stored = JSON.parse(localStorage.getItem(APPEARANCE_KEY) ?? "null") as
+      | (Partial<Appearance> & { version?: unknown })
+      | null;
+    const appearance = parseAppearance(stored);
+
+    if (stored && stored.version !== APPEARANCE_VERSION) {
+      const migrated = { ...appearance, palette: DEFAULT_APPEARANCE.palette };
+      storeAppearance(migrated);
+      return migrated;
+    }
+
+    return appearance;
   } catch {
     return DEFAULT_APPEARANCE;
   }
@@ -100,7 +116,10 @@ export function applyAppearance(appearance: Appearance) {
 
 export function storeAppearance(appearance: Appearance) {
   try {
-    localStorage.setItem(APPEARANCE_KEY, JSON.stringify(appearance));
+    localStorage.setItem(
+      APPEARANCE_KEY,
+      JSON.stringify({ ...appearance, version: APPEARANCE_VERSION }),
+    );
   } catch {
     // Preferences are optional in private browsing.
   }

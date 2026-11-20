@@ -14,7 +14,6 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { GlyphMark } from "@/components/glyph-mark";
-import { ModeToggle } from "@/components/mode-toggle";
 import { useMarket } from "@/lib/api/hooks";
 import { LiveStreamProvider } from "@/lib/api/live-stream";
 import { classNames } from "@/lib/format";
@@ -25,7 +24,6 @@ import {
   activeFor,
   buildNavigation,
   chainNavigation,
-  dataNavigation,
   type NavigationItem,
   primaryNavigation,
 } from "./navigation";
@@ -151,12 +149,10 @@ function SidebarGroup({
 
 function Sidebar({
   collapsed,
-  onSettings,
   onToggle,
   pathname,
 }: {
   collapsed: boolean;
-  onSettings: () => void;
   onToggle: () => void;
   pathname: string;
 }) {
@@ -200,12 +196,6 @@ function Sidebar({
             />
             <SidebarGroup
               collapsed={collapsed}
-              items={dataNavigation}
-              pathname={pathname}
-              title="Data"
-            />
-            <SidebarGroup
-              collapsed={collapsed}
               items={buildNavigation}
               pathname={pathname}
               title="Build"
@@ -215,20 +205,6 @@ function Sidebar({
       </div>
 
       <div className={classNames("mt-auto shrink-0 pb-16", collapsed ? "px-2" : "px-3")}>
-        <button
-          aria-label="Open appearance settings"
-          className={classNames(
-            "mb-1 flex items-center rounded-lg text-muted transition-colors hover:bg-surface-secondary/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
-            collapsed
-              ? "mx-auto size-10 justify-center"
-              : "-mr-3 h-9 w-[calc(100%+0.75rem)] gap-2.5 rounded-l-lg px-2.5 text-[13px]",
-          )}
-          onClick={onSettings}
-          type="button"
-        >
-          <SettingsIcon className="size-4" />
-          {collapsed ? null : <span>Settings</span>}
-        </button>
         <button
           aria-controls="app-sidebar"
           aria-expanded={!collapsed}
@@ -416,7 +392,6 @@ function MobileMenu({
             pathname={pathname}
             title="Chain"
           />
-          <MobileGroup items={dataNavigation} onClose={onClose} pathname={pathname} title="Data" />
           <MobileGroup
             items={buildNavigation}
             onClose={onClose}
@@ -436,11 +411,6 @@ function MobileMenu({
           <SettingsIcon className="size-4" />
           <span>Settings</span>
         </button>
-
-        <div className="mt-6 flex items-center justify-between">
-          <span className="text-[10px] text-muted uppercase tracking-[0.16em]">Appearance</span>
-          <ModeToggle />
-        </div>
       </div>
     </motion.div>
   );
@@ -497,12 +467,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           Skip to content
         </a>
 
-        <Sidebar
-          collapsed={sidebarCollapsed}
-          onSettings={() => setSettingsOpen(true)}
-          onToggle={toggleSidebar}
-          pathname={pathname}
-        />
+        <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} pathname={pathname} />
 
         <div className="flex h-svh min-w-0 flex-1 flex-col overflow-hidden">
           <header className="relative z-40 shrink-0 bg-background/85 backdrop-blur-xl">
@@ -527,10 +492,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 >
                   {formatPerBillion(pricePerBillion)}
                 </span>
-
-                <div className="hidden md:block">
-                  <ModeToggle />
-                </div>
 
                 <button
                   aria-label="Open appearance settings"

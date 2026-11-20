@@ -111,8 +111,13 @@ function ExchangeProfileDialog({
   return (
     <Modal isOpen onOpenChange={onOpenChange}>
       <Modal.Backdrop>
-        <Modal.Container scroll="inside" size="md">
-          <Modal.Dialog>
+        <Modal.Container
+          className="modal-sheet p-0 sm:p-0"
+          placement="top"
+          scroll="inside"
+          size="md"
+        >
+          <Modal.Dialog className="rounded-t-none rounded-b-3xl">
             <Modal.CloseTrigger />
             <Modal.Header>
               <Modal.Heading>Curated profile</Modal.Heading>
@@ -383,8 +388,13 @@ function ProfileDialogContent({
   return (
     <Modal isOpen onOpenChange={handleOpenChange}>
       <Modal.Backdrop>
-        <Modal.Container scroll="inside" size="md">
-          <Modal.Dialog>
+        <Modal.Container
+          className="modal-sheet p-0 sm:p-0"
+          placement="top"
+          scroll="inside"
+          size="md"
+        >
+          <Modal.Dialog className="rounded-t-none rounded-b-3xl">
             <Modal.CloseTrigger />
             <Modal.Header>
               <Modal.Heading>{title}</Modal.Heading>
