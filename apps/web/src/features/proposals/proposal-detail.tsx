@@ -5,7 +5,7 @@ import { ArrowRightUpIcon } from "@solar-icons/react/linear/arrow-right-up";
 import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { useQuery } from "@tanstack/react-query";
 import Link from "next/link";
-import { useMemo } from "react";
+import { useEffect, useMemo } from "react";
 
 import { ContractMark } from "@/components/explorer/contract-mark";
 import { EpochLink, IdentityLink, TickLink } from "@/components/explorer/links";
@@ -103,16 +103,22 @@ export function ProposalDetail({
     staleTime: 60 * 60 * 1000,
   });
 
-  const document: ProposalDocument | undefined = proposal?.url
+  useEffect(() => {
+    if (proposal) {
+      document.title = `${proposal.title} · Glyph Explorer`;
+    }
+  }, [proposal]);
+
+  const proposalDocument: ProposalDocument | undefined = proposal?.url
     ? documentQuery.data
     : { reason: "This proposal does not reference an off-chain document." };
   const content =
-    document && "content" in document
-      ? document.format === "markdown"
-        ? stripLeadingHeading(document.content)
-        : document.content
+    proposalDocument && "content" in proposalDocument
+      ? proposalDocument.format === "markdown"
+        ? stripLeadingHeading(proposalDocument.content)
+        : proposalDocument.content
       : null;
-  const unavailable = document && "reason" in document;
+  const unavailable = proposalDocument && "reason" in proposalDocument;
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">
@@ -187,17 +193,17 @@ export function ProposalDetail({
                       <DocumentTextIcon className="size-5" />
                     </span>
                     <h2 className="mt-4 font-medium text-foreground text-sm">
-                      {document.sourceUrl ? "Document removed" : "No document attached"}
+                      {proposalDocument.sourceUrl ? "Document removed" : "No document attached"}
                     </h2>
                     <p className="mx-auto mt-2 max-w-md text-muted text-xs leading-5">
-                      {document.sourceUrl
+                      {proposalDocument.sourceUrl
                         ? "The author may have deleted this document or made it private. The proposal and its on-chain vote record are still preserved here."
                         : "This proposal was published on-chain without an off-chain document."}
                     </p>
-                    {document.sourceUrl ? (
+                    {proposalDocument.sourceUrl ? (
                       <a
                         className="mt-5 inline-flex items-center gap-1.5 rounded-full bg-surface-secondary px-3 py-2 font-medium text-foreground text-xs transition-colors hover:bg-surface"
-                        href={document.sourceUrl}
+                        href={proposalDocument.sourceUrl}
                         rel="noreferrer"
                         target="_blank"
                       >
@@ -206,8 +212,13 @@ export function ProposalDetail({
                       </a>
                     ) : null}
                   </div>
-                ) : document && "content" in document && document.format === "markdown" ? (
-                  <ProposalMarkdown content={content ?? ""} sourceUrl={document.sourceUrl} />
+                ) : proposalDocument &&
+                  "content" in proposalDocument &&
+                  proposalDocument.format === "markdown" ? (
+                  <ProposalMarkdown
+                    content={content ?? ""}
+                    sourceUrl={proposalDocument.sourceUrl}
+                  />
                 ) : (
                   <div className="proposal-text">{content ?? ""}</div>
                 )}
