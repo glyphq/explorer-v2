@@ -11,6 +11,7 @@ import { sileo } from "sileo";
 
 import { GlyphMark } from "@/components/glyph-mark";
 import { shorten } from "@/lib/format";
+import { isZeroIdentity } from "@/lib/transactions/special-hash";
 
 function ActionTooltip({ children, label }: { children: ReactNode; label: string }) {
   return (
@@ -54,22 +55,25 @@ export function IdentityActions({
 
   const openQr = useCallback(() => setQrOpen(true), []);
   const sendLink = `${GLYPH_DEEP_LINK_SCHEME}://pay?to=${encodeURIComponent(identity)}`;
+  const canSend = !isZeroIdentity(identity);
 
   return (
     <div className="flex items-center justify-center gap-1">
-      <ActionTooltip label="Send via Glyph">
-        <a
-          aria-label="Send via Glyph"
-          className={buttonVariants({
-            isIconOnly: true,
-            size: "sm",
-            variant: "ghost",
-          })}
-          href={sendLink}
-        >
-          <GlyphMark className="size-4" />
-        </a>
-      </ActionTooltip>
+      {canSend ? (
+        <ActionTooltip label="Send via Glyph">
+          <a
+            aria-label="Send via Glyph"
+            className={buttonVariants({
+              isIconOnly: true,
+              size: "sm",
+              variant: "ghost",
+            })}
+            href={sendLink}
+          >
+            <GlyphMark className="size-4" />
+          </a>
+        </ActionTooltip>
+      ) : null}
       <ActionTooltip label="Copy identity">
         <Button
           aria-label="Copy identity"

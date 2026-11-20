@@ -3,7 +3,7 @@
 import { Button } from "@heroui/react";
 import { AsciiSkeleton } from "ascii-reveal";
 import { type ReactNode, useCallback, useState } from "react";
-import { ContractMark } from "@/components/explorer/contract-mark";
+import { ContractMark, ZeroMark } from "@/components/explorer/contract-mark";
 import { useContract } from "@/components/explorer/contract-provider";
 import { IdentityActions } from "@/components/explorer/identity-actions";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
@@ -24,6 +24,7 @@ import {
 } from "@/lib/api/hooks";
 import { exchangeBrand } from "@/lib/exchanges/brands";
 import { classNames, formatInteger, formatQu, formatUsdValue, shorten } from "@/lib/format";
+import { isZeroIdentity } from "@/lib/transactions/special-hash";
 
 import { groupActivity } from "./activity-feed";
 import { ActivityTable } from "./activity-table";
@@ -156,6 +157,7 @@ function ProfileLoading({
 }
 
 export function AccountDetail({ identity }: { identity: string }) {
+  const zeroAddress = isZeroIdentity(identity);
   const contract = useContract(identity);
   const identityQuery = useIdentity(identity);
   const liveIdentity = useLiveIdentity(identity);
@@ -166,11 +168,11 @@ export function AccountDetail({ identity }: { identity: string }) {
   const data = identityQuery.data?.data;
   const liveData = liveIdentity.data?.data;
   const profile = profileQuery.data ?? null;
-  const profilePending = !contract && !profile && profileQuery.isLoading;
+  const profilePending = !zeroAddress && !contract && !profile && profileQuery.isLoading;
   const profileUnavailable = isProfileUnavailable(profileQuery.error);
   const profileReady = profileQuery.isSuccess;
   let profileAction: "claim" | "edit" | null = null;
-  if (!contract && profileQuery.isSuccess) {
+  if (!zeroAddress && !contract && profileQuery.isSuccess) {
     if (profile === null) {
       profileAction = "claim";
     } else if (profile.kind === "wallet") {
@@ -300,8 +302,22 @@ export function AccountDetail({ identity }: { identity: string }) {
         ) : (
           <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
             <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
-              <IdentityAvatar size={112} value={identity} />
+              {zeroAddress ? (
+                <ZeroMark size={112} />
+              ) : (
+                <IdentityAvatar size={112} value={identity} />
+              )}
             </span>
+            {zeroAddress ? (
+              <>
+                <p className="mt-4 font-semibold text-lg tracking-tight">Protocol zero address</p>
+                <p className="mt-1 max-w-md text-muted text-xs leading-5">
+                  Qubic uses this identity as NULL_ID for special transactions such as mining
+                  solutions, votes, oracle replies, and system events. A transfer here is not
+                  automatically a burn.
+                </p>
+              </>
+            ) : null}
             <p
               className="mt-4 max-w-full select-all break-all font-mono text-[11px] text-muted tracking-tight sm:text-xs"
               title={identity}
@@ -387,7 +403,7 @@ export function AccountDetail({ identity }: { identity: string }) {
         ) : null}
       </section>
 
-      {contract || profileUnavailable ? null : (
+      {contract || profileUnavailable || zeroAddress ? null : (
         <ProfileDialog
           identity={identity}
           onOpenChange={setProfileDialogOpen}

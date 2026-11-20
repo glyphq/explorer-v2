@@ -18,7 +18,6 @@ import {
   getTickOptions,
   getTickQuorumEvidenceOptions,
   getTransactionEffectsOptions,
-  getTransactionOptions,
   getTransactionStatusOptions,
   listAssetHoldersOptions,
   listAssetsInfiniteOptions,
@@ -38,6 +37,7 @@ import {
   listTransactionsInfiniteOptions,
   searchOptions,
 } from "./generated/@tanstack/react-query.gen";
+import { listTickEvents } from "./generated/sdk.gen";
 import type { PageMeta, Tick } from "./generated/types.gen";
 import { useLiveStream } from "./live-stream";
 
@@ -104,11 +104,14 @@ export function useTicks(limit = 25, epoch?: number) {
   });
 }
 
-export function useTick(tick: number | undefined) {
+export function useTick(
+  tick: number | undefined,
+  refetchInterval: number | false = REFRESH_INTERVAL,
+) {
   return useQuery({
     ...getTickOptions({ path: { tick: tick ?? 0 } }),
     enabled: Number.isInteger(tick) && (tick ?? 0) > 0,
-    refetchInterval: REFRESH_INTERVAL,
+    refetchInterval,
   });
 }
 
@@ -133,6 +136,50 @@ export function useTickEvents(tick: number, limit = 25) {
   });
 }
 
+const SPECIAL_EVENT_PAGE_SIZE = 200;
+const SPECIAL_EVENT_PAGE_LIMIT = 20;
+
+/**
+ * Special transactions are synthetic hashes (`special:<tick>:<slot>`) and are not addressable
+ * through the transaction endpoint. Read the tick event stream instead, following cursors until
+ * the synthetic hash is found.
+ */
+export function useSpecialEvents(tick: number, hash: string) {
+  return useQuery({
+    enabled: Number.isInteger(tick) && tick > 0 && Boolean(hash),
+    queryFn: async () => {
+      let cursor: string | undefined;
+      const seen = new Set<string>();
+      for (let pageIndex = 0; pageIndex < SPECIAL_EVENT_PAGE_LIMIT; pageIndex += 1) {
+        const response = await listTickEvents({
+          path: { tick },
+          query: { cursor, limit: SPECIAL_EVENT_PAGE_SIZE },
+        });
+        if (!response.data) {
+          throw new Error("The tick event index did not answer.");
+        }
+        const eventPage = response.data;
+        const matches = eventPage.data.filter(
+          (event) => event.tx_hash?.toLowerCase() === hash.toLowerCase(),
+        );
+        if (matches.length > 0) {
+          return matches;
+        }
+        const next = eventPage.meta?.next_cursor ?? undefined;
+        if (!next || seen.has(next)) {
+          return [];
+        }
+        seen.add(next);
+        cursor = next;
+      }
+      return [];
+    },
+    queryKey: ["special-events", tick, hash],
+    retry: 1,
+    staleTime: Number.POSITIVE_INFINITY,
+  });
+}
+
 export function useTickEvidence(tick: number | undefined) {
   return useQuery({
     ...getTickQuorumEvidenceOptions({ path: { tick: tick ?? 0 } }),
@@ -152,17 +199,11 @@ export function useTransactions(
   });
 }
 
-export function useTransaction(hash: string | undefined) {
-  return useQuery({
-    ...getTransactionOptions({ path: { hash: hash ?? "" } }),
-    enabled: Boolean(hash),
-  });
-}
-
 export function useTransactionEffects(hash: string | undefined) {
   return useQuery({
     ...getTransactionEffectsOptions({ path: { hash: hash ?? "" } }),
     enabled: Boolean(hash),
+    staleTime: 60_000,
   });
 }
 
@@ -170,7 +211,7 @@ export function useTransactionStatus(hash: string | undefined) {
   return useQuery({
     ...getTransactionStatusOptions({ path: { hash: hash ?? "" } }),
     enabled: Boolean(hash),
-    refetchInterval: 15_000,
+    refetchInterval: 60_000,
   });
 }
 

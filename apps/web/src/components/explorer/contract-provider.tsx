@@ -3,8 +3,12 @@
 import { createContext, useContext, useMemo } from "react";
 
 import type { Transaction } from "@/lib/api/generated/types.gen";
-import { isBurnIdentity } from "@/lib/contracts/constants";
+import { isZeroIdentity } from "@/lib/contracts/constants";
 import type { ContractSummary } from "@/lib/contracts/types";
+import {
+  specialTransactionType,
+  type SpecialTransactionType,
+} from "@/lib/transactions/special-hash";
 
 type ContractRegistry = {
   byAddress: ReadonlyMap<string, ContractSummary>;
@@ -57,8 +61,9 @@ export function useContractByIndex(index: number | null | undefined): ContractSu
 export type TransactionContract = {
   contract?: ContractSummary;
   inputType: number;
-  kind: "burn" | "call" | "transfer";
+  kind: "call" | "special" | "transfer";
   procedure?: ContractSummary["procedures"][number];
+  special?: SpecialTransactionType;
 };
 
 export function useTransactionContract(
@@ -67,8 +72,11 @@ export function useTransactionContract(
   const contract = useContract(transaction?.destination);
   const inputType = transaction?.input_type ?? 0;
 
-  if (isBurnIdentity(transaction?.destination)) {
-    return { inputType, kind: "burn" };
+  if (isZeroIdentity(transaction?.destination)) {
+    if (inputType === 0) {
+      return { inputType, kind: "transfer" };
+    }
+    return { inputType, kind: "special", special: specialTransactionType(inputType) };
   }
 
   if (inputType === 0) {

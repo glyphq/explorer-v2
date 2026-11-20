@@ -10,7 +10,7 @@ import {
 } from "@glyph-oss/contracts";
 
 const GLYPH_API = process.env.GLYPH_API_URL ?? "https://api.glyphq.org";
-const BURN_IDENTITY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB";
+const ZERO_IDENTITY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB";
 const QUORUM = 451;
 const CONTRACTS = [
   { name: "GQMPROP", label: "General Quorum Proposal", type: "General options" },
@@ -305,7 +305,7 @@ async function readProposalIndices(contractName, activeProposals) {
 async function readProposal(contract, proposalIndex, active) {
   const input =
     contract.name === "CCF"
-      ? { proposalIndex, subscriptionDestination: BURN_IDENTITY }
+      ? { proposalIndex, subscriptionDestination: ZERO_IDENTITY }
       : { proposalIndex };
   const [{ proposal }, results] = await Promise.all([
     query(contract.name, "GetProposal", input),

@@ -1,5 +1,1 @@
-export const BURN_IDENTITY = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAFXIB";
-
-export function isBurnIdentity(identity: string | null | undefined): boolean {
-  return identity?.toUpperCase() === BURN_IDENTITY;
-}
+export { ZERO_IDENTITY, isZeroIdentity } from "@/lib/transactions/special-hash";

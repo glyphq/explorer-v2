@@ -8,19 +8,20 @@ import Link from "next/link";
 import { useState } from "react";
 import { sileo } from "sileo";
 
-import { isBurnIdentity } from "@/lib/contracts/constants";
+import { isZeroIdentity } from "@/lib/contracts/constants";
 import { classNames, shorten } from "@/lib/format";
+import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 import { useContract } from "./contract-provider";
-import { BurnMark, ContractMark } from "./contract-mark";
+import { ContractMark, ZeroMark } from "./contract-mark";
 import { IdentityAvatar } from "./identity-avatar";
 
 const idClass =
   "font-mono text-xs text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
 const contractClass =
   "font-sans text-xs font-medium text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
-const burnClass =
-  "inline-flex items-center gap-1.5 font-sans text-xs font-medium text-danger underline-offset-4 transition-colors hover:underline";
+const zeroClass =
+  "inline-flex items-center gap-1.5 font-sans text-xs font-medium text-muted underline-offset-4 transition-colors hover:text-foreground hover:underline";
 
 export function IdentityLink({
   avatar = false,
@@ -35,11 +36,19 @@ export function IdentityLink({
 }) {
   const contract = useContract(identity);
 
-  if (isBurnIdentity(identity)) {
+  if (!identity) {
+    return <span className="text-muted text-xs">—</span>;
+  }
+
+  if (isZeroIdentity(identity)) {
     return (
-      <Link className={classNames(burnClass, className)} href={`/accounts/${identity}` as Route}>
-        <BurnMark size={16} />
-        Burn
+      <Link
+        className={classNames(zeroClass, className)}
+        href={`/accounts/${identity}` as Route}
+        title={`${identity} · protocol zero address`}
+      >
+        <ZeroMark size={16} />
+        Zero address
       </Link>
     );
   }
@@ -100,13 +109,19 @@ export function TransactionLink({
   className?: string;
   full?: boolean;
 }) {
+  if (!hash) {
+    return <span className="text-muted text-xs">—</span>;
+  }
+  const special = parseSpecialHash(hash);
+  const target = special?.hash ?? hash;
+  const label = special ? special.displayLabel : full ? hash : shorten(hash, 8, 6);
   const link = (
     <Link
       className={classNames(idClass, className)}
-      href={`/transactions/${hash}` as Route}
-      title={hash}
+      href={`/transactions/${target}` as Route}
+      title={special ? `${special.label} · ${target}` : hash}
     >
-      {full ? hash : shorten(hash, 8, 6)}
+      {label}
     </Link>
   );
 
@@ -116,7 +131,11 @@ export function TransactionLink({
 
   return (
     <span className="inline-flex min-w-0 items-center gap-1.5">
-      <IdentityAvatar size={16} value={hash} variant="pixel" />
+      {special ? (
+        <ContractMark name={special.label} size={16} />
+      ) : (
+        <IdentityAvatar size={16} value={hash} variant="pixel" />
+      )}
       {link}
     </span>
   );

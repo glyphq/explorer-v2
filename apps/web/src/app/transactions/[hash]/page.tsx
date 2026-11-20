@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 
 import { TransactionDetail } from "@/features/transactions/transaction-detail";
 import { shorten } from "@/lib/format";
+import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 export async function generateMetadata({
   params,
@@ -9,9 +10,15 @@ export async function generateMetadata({
   params: Promise<{ hash: string }>;
 }): Promise<Metadata> {
   const { hash } = await params;
-  const title = `Transaction ${shorten(hash, 10, 8)}`;
+  const special = parseSpecialHash(hash);
+  const title = special
+    ? `${special.displayLabel} special transaction`
+    : `Transaction ${shorten(hash, 10, 8)}`;
+  const description = special
+    ? `${special.label} system event in tick ${special.tick}.`
+    : "Transaction details, effects and attached events.";
   return {
-    description: "Transaction details, effects and attached events.",
+    description,
     openGraph: {
       images: [
         {

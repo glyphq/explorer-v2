@@ -5,6 +5,7 @@ import { AsciiSkeleton } from "ascii-reveal";
 import type { ReactNode } from "react";
 
 import { useContractByIndex } from "@/components/explorer/contract-provider";
+import { BurnMark, ContractMark } from "@/components/explorer/contract-mark";
 import { DetailSection } from "@/components/explorer/detail-section";
 import { EventSummary } from "@/components/explorer/event-summary";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
@@ -13,8 +14,18 @@ import { ProfileHero } from "@/components/explorer/profile-hero";
 import { RecordEmpty, RecordList, RecordRow } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import type { TransactionEffect } from "@/lib/api/generated/types.gen";
-import { useTransaction, useTransactionEffects, useTransactionStatus } from "@/lib/api/hooks";
+import {
+  useSpecialEvents,
+  useTick,
+  useTransactionEffects,
+  useTransactionStatus,
+} from "@/lib/api/hooks";
 import { countLabel, formatInteger, formatQu, formatTimestamp, shorten } from "@/lib/format";
+import {
+  parseSpecialHash,
+  type SpecialTransactionRef,
+  isZeroIdentity,
+} from "@/lib/transactions/special-hash";
 
 import { ContractCallPanel } from "./contract-call";
 
@@ -58,7 +69,10 @@ function EffectRow({ effect }: { effect: TransactionEffect }) {
   return (
     <RecordRow>
       <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-        <span className="font-medium font-mono text-foreground text-xs">{kind}</span>
+        <span className="flex items-center gap-1.5 font-medium font-mono text-foreground text-xs">
+          {effect.kind === "burning" ? <BurnMark size={14} /> : null}
+          {kind}
+        </span>
         <span className="tabular text-[10px] text-muted">log {formatInteger(effect.log_id)}</span>
       </div>
       {hasParticipants ? (
@@ -92,22 +106,27 @@ function EffectRow({ effect }: { effect: TransactionEffect }) {
   );
 }
 
-export function TransactionDetail({ hash }: { hash: string }) {
-  const transaction = useTransaction(hash);
+function TransactionDetailContent({ hash }: { hash: string }) {
   const effects = useTransactionEffects(hash);
   const status = useTransactionStatus(hash);
-  const data = transaction.data?.data;
   const effectsData = effects.data?.data;
+  const data = effectsData?.transaction;
   const statusBody = (status.data as { data?: StatusBody } | undefined)?.data;
   const networkFound = statusBody?.network?.found;
-  const effectCount = effectsData?.effects.length ?? 0;
-  const eventCount = effectsData?.events.length ?? 0;
+  const effectCount = effectsData?.effects?.length ?? 0;
+  const eventCount = effectsData?.events?.length ?? 0;
+  const burnCount = effectsData?.summary?.burn_count ?? 0;
   const failed = data?.status !== undefined && data.status !== "success";
+  const zeroTransfer = isZeroIdentity(data?.destination) && (data?.input_type ?? 0) === 0;
+  const unavailable = effects.isSuccess && !data;
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">
-      {transaction.isError ? (
-        <ErrorState message={transaction.error.message} onRetry={() => transaction.refetch()} />
+      {effects.isError || unavailable ? (
+        <ErrorState
+          message={effects.error?.message ?? "This transaction is not indexed."}
+          onRetry={() => effects.refetch()}
+        />
       ) : (
         <div>
           <ProfileHero
@@ -124,6 +143,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 <span>
                   {countLabel(effectCount, "effect")} · {countLabel(eventCount, "event")}
                 </span>
+                {burnCount > 0 ? <span>{countLabel(burnCount, "burn")}</span> : null}
                 <span title={formatTimestamp(data?.timestamp)}>
                   {formatTimestamp(data?.timestamp)}
                 </span>
@@ -132,7 +152,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
             subtitle={<CopyableId value={hash} />}
             title="Transaction"
             value={
-              transaction.isLoading ? (
+              effects.isLoading ? (
                 <AsciiSkeleton className="text-4xl sm:text-5xl" lines={1} widths={["8ch"]} />
               ) : (
                 formatQu(data?.amount)
@@ -144,7 +164,9 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 <p className="text-[11px] text-muted">From</p>
                 <div className="mt-1.5 flex min-w-0 items-center gap-1">
                   <IdentityLink avatar identity={data?.source ?? ""} />
-                  <CopyButton label="Copy source identity" value={data?.source ?? ""} />
+                  {data?.source ? (
+                    <CopyButton label="Copy source identity" value={data.source} />
+                  ) : null}
                 </div>
               </div>
               <ArrowRightIcon className="mx-auto hidden size-4 text-muted sm:block" />
@@ -152,7 +174,9 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 <p className="text-[11px] text-muted">To</p>
                 <div className="mt-1.5 flex min-w-0 items-center gap-1">
                   <IdentityLink avatar identity={data?.destination ?? ""} />
-                  <CopyButton label="Copy destination identity" value={data?.destination ?? ""} />
+                  {data?.destination ? (
+                    <CopyButton label="Copy destination identity" value={data.destination} />
+                  ) : null}
                 </div>
               </div>
             </div>
@@ -182,6 +206,13 @@ export function TransactionDetail({ hash }: { hash: string }) {
                 </pre>
               </details>
             ) : null}
+
+            {zeroTransfer ? (
+              <p className="mt-6 max-w-2xl text-muted text-xs leading-5">
+                This transfer targets the zero address, Qubic&apos;s protocol NULL_ID. Transfers to
+                the zero address are not automatically burns.
+              </p>
+            ) : null}
           </DetailSection>
 
           <DetailSection
@@ -198,7 +229,7 @@ export function TransactionDetail({ hash }: { hash: string }) {
               <RecordEmpty>No effects attached to this transaction.</RecordEmpty>
             ) : (
               <RecordList>
-                {effectsData?.effects.map((effect) => (
+                {effectsData?.effects?.map((effect) => (
                   <EffectRow effect={effect} key={`${effect.kind}-${effect.log_id}`} />
                 ))}
               </RecordList>
@@ -219,7 +250,112 @@ export function TransactionDetail({ hash }: { hash: string }) {
               <RecordEmpty>No events attached.</RecordEmpty>
             ) : (
               <RecordList>
-                {effectsData?.events.map((event) => (
+                {effectsData?.events?.map((event) => (
+                  <RecordRow
+                    className="scroll-mt-20"
+                    key={`${event.log_id ?? event.tx_hash}-${event.tx_index ?? 0}`}
+                  >
+                    <div id={`log-${event.log_id}`}>
+                      <EventSummary
+                        event={event}
+                        showTransaction={false}
+                        sourceIdentity={data?.source}
+                      />
+                    </div>
+                  </RecordRow>
+                ))}
+              </RecordList>
+            )}
+          </DetailSection>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function SpecialTransactionDetail({ special }: { special: SpecialTransactionRef }) {
+  const tick = useTick(special.tick, false);
+  const events = useSpecialEvents(special.tick, special.hash);
+  const tickData = tick.data?.data;
+  const eventRows = events.data ?? [];
+  const eventCount = eventRows.length;
+
+  return (
+    <div className="page-width px-4 py-8 lg:px-8">
+      {tick.isError || events.isError ? (
+        <ErrorState
+          message={
+            (tick.error ?? events.error)?.message ?? "Could not load this special transaction."
+          }
+          onRetry={() => {
+            tick.refetch();
+            events.refetch();
+          }}
+        />
+      ) : (
+        <div>
+          <ProfileHero
+            avatar={<ContractMark name={special.label} size={56} />}
+            meta={
+              <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-muted text-xs">
+                <span className="text-foreground">system event</span>
+                <span>
+                  tick <TickLink tick={special.tick} />
+                </span>
+                <span>epoch {formatInteger(tickData?.epoch)}</span>
+                <span>{countLabel(eventCount, "event")}</span>
+                <span title={formatTimestamp(tickData?.timestamp)}>
+                  {formatTimestamp(tickData?.timestamp)}
+                </span>
+              </div>
+            }
+            subtitle={<CopyableId value={special.hash} />}
+            title="Special transaction"
+            value={
+              tick.isLoading || events.isLoading ? (
+                <AsciiSkeleton className="text-4xl sm:text-5xl" lines={1} widths={["8ch"]} />
+              ) : (
+                <span className="font-mono">{special.displayLabel}</span>
+              )
+            }
+          />
+
+          <DetailSection
+            description="Protocol-level event generated by a system procedure."
+            title={special.displayLabel}
+          >
+            <dl className="grid grid-cols-2 gap-x-6 gap-y-5 lg:grid-cols-4">
+              <Field label="System slot" mono>
+                {formatInteger(special.slot)}
+              </Field>
+              <Field label="Procedure" mono>
+                {special.label}
+              </Field>
+              <Field label="Tick" mono>
+                {formatInteger(special.tick)}
+              </Field>
+              <Field label="Epoch" mono>
+                {formatInteger(tickData?.epoch)}
+              </Field>
+            </dl>
+            <p className="mt-5 max-w-2xl text-muted text-xs leading-5">{special.description}</p>
+            <p className="mt-3 max-w-2xl text-muted text-xs leading-5">
+              This is not a user transaction: it has no sender, destination, or direct QU transfer.
+              It uses a synthetic protocol hash and is not inherently a burn.
+            </p>
+          </DetailSection>
+
+          <DetailSection
+            description={eventCount === 0 ? "No events." : countLabel(eventCount, "decoded event")}
+            title="Events"
+          >
+            {events.isLoading ? (
+              <RecordEmpty>Loading events…</RecordEmpty>
+            ) : eventCount === 0 ? (
+              <RecordEmpty>No events were recorded for this system slot.</RecordEmpty>
+            ) : (
+              <RecordList>
+                {eventRows.map((event) => (
                   <RecordRow
                     className="scroll-mt-20"
                     key={`${event.log_id ?? event.tx_hash}-${event.tx_index ?? 0}`}
@@ -235,5 +371,21 @@ export function TransactionDetail({ hash }: { hash: string }) {
         </div>
       )}
     </div>
+  );
+}
+
+export function TransactionDetail({ hash }: { hash: string }) {
+  const special = parseSpecialHash(hash);
+  if (!special && hash.toLowerCase().startsWith("special:")) {
+    return (
+      <div className="page-width px-4 py-8 lg:px-8">
+        <ErrorState message="This special transaction id is not valid." />
+      </div>
+    );
+  }
+  return special ? (
+    <SpecialTransactionDetail special={special} />
+  ) : (
+    <TransactionDetailContent hash={hash} />
   );
 }

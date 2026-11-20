@@ -7,7 +7,8 @@ import { DetailSection } from "@/components/explorer/detail-section";
 import { IdentityLink } from "@/components/explorer/links";
 import type { Transaction } from "@/lib/api/generated/types.gen";
 import { useDecodedContractInput } from "@/lib/contracts/use-decoded-contract-input";
-import { formatInteger } from "@/lib/format";
+import { formatInteger, formatQu } from "@/lib/format";
+import { decodeSpecialInput } from "@/lib/transactions/special";
 
 function DecodedFields({
   contractName,
@@ -82,6 +83,51 @@ function DecodedFields({
 
 export function ContractCallPanel({ transaction }: { transaction: Transaction | undefined }) {
   const call = useTransactionContract(transaction);
+
+  if (call.kind === "special") {
+    const special = call.special;
+    const decoded = decodeSpecialInput(call.inputType, transaction?.input_data);
+    const fields =
+      transaction?.amount !== undefined && (call.inputType === 2 || call.inputType === 12)
+        ? [{ label: "Deposit", value: formatQu(transaction.amount) }, ...decoded.fields]
+        : decoded.fields;
+    return (
+      <DetailSection
+        description={
+          <span className="inline-flex flex-wrap items-center gap-1.5">
+            <span>system transaction</span>
+            <span className="text-muted/50">·</span>
+            <span>input type {call.inputType}</span>
+          </span>
+        }
+        title={special?.label ?? "Special transaction"}
+      >
+        <p className="max-w-2xl text-muted text-xs leading-5">{special?.description}</p>
+        {fields.length > 0 ? (
+          <dl className="mt-5 grid gap-x-8 gap-y-5 sm:grid-cols-2">
+            {fields.map((field) => (
+              <div className="min-w-0" key={field.label}>
+                <dt className="font-mono font-medium text-[11px] text-foreground">{field.label}</dt>
+                <dd
+                  className="mt-1.5 break-all font-mono text-foreground text-xs leading-5"
+                  title={field.title}
+                >
+                  {field.value}
+                </dd>
+              </div>
+            ))}
+          </dl>
+        ) : null}
+        {decoded.note ? (
+          <p className="mt-5 max-w-2xl text-muted text-xs leading-5">{decoded.note}</p>
+        ) : null}
+        <p className="mt-5 max-w-2xl text-muted text-xs leading-5">
+          The zero address is Qubic&apos;s protocol NULL_ID. It receives deposits, votes, oracle
+          replies, and other system payloads, so a transfer to it is not automatically a burn.
+        </p>
+      </DetailSection>
+    );
+  }
 
   if (call.kind !== "call") {
     return null;

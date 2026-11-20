@@ -70,27 +70,32 @@ export function TransactionRow({
   showTick?: boolean;
   transaction: Transaction;
 }) {
-  const isTransfer = (transaction.input_type ?? 0) === 0;
   const call = useTransactionContract(transaction);
+  const isTransfer = call.kind === "transfer";
+  const isSpecial = call.kind === "special";
   const outgoing = isTransfer && currentIdentity && transaction.source === currentIdentity;
   const incoming = isTransfer && currentIdentity && transaction.destination === currentIdentity;
   const DirectionIcon = outgoing ? ArrowUpIcon : incoming ? ArrowDownIcon : ArrowRightIcon;
-  const directionLabel = isTransfer
-    ? outgoing
-      ? "Sent to"
-      : incoming
-        ? "Received from"
-        : null
-    : currentIdentity
-      ? "Called"
-      : null;
-  const counterparty = isTransfer
-    ? outgoing
-      ? transaction.destination
-      : incoming
-        ? transaction.source
-        : null
-    : transaction.destination;
+  const directionLabel = isSpecial
+    ? null
+    : isTransfer
+      ? outgoing
+        ? "Sent to"
+        : incoming
+          ? "Received from"
+          : null
+      : currentIdentity
+        ? "Called"
+        : null;
+  const counterparty = isSpecial
+    ? null
+    : isTransfer
+      ? outgoing
+        ? transaction.destination
+        : incoming
+          ? transaction.source
+          : null
+      : transaction.destination;
 
   return (
     <RecordRow>
@@ -104,6 +109,10 @@ export function TransactionRow({
               {isTransfer ? (
                 <span className="tabular font-semibold text-foreground text-sm">
                   {formatQu(transaction.amount)}
+                </span>
+              ) : isSpecial ? (
+                <span className="font-medium text-foreground text-sm">
+                  {call.special?.label ?? "Special transaction"}
                 </span>
               ) : (
                 <span className="font-medium text-foreground text-sm">
@@ -148,7 +157,12 @@ export function TransactionRow({
           {events && events.length > 0 ? (
             <div className="mt-2.5 space-y-2 rounded-lg bg-surface-secondary/60 p-2.5">
               {events.map((event, index) => (
-                <EventSummary compact event={event} key={`${event.log_id ?? "event"}-${index}`} />
+                <EventSummary
+                  compact
+                  event={event}
+                  key={`${event.log_id ?? "event"}-${index}`}
+                  sourceIdentity={transaction.source}
+                />
               ))}
             </div>
           ) : null}

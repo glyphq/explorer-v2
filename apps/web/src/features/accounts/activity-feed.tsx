@@ -9,6 +9,7 @@ import { IdentityLink, TickLink, TransactionLink } from "@/components/explorer/l
 import { RecordEmpty, RecordList } from "@/components/explorer/records";
 import type { IdentityActivityItem, Transaction } from "@/lib/api/generated/types.gen";
 import { classNames, formatQu, formatRelativeTime, formatTimestamp } from "@/lib/format";
+import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 export type ActivityGroup = {
   events: EventLike[];
@@ -201,7 +202,7 @@ function ActivityRow({
   const [open, setOpen] = useState(false);
   const call = useTransactionContract(transaction);
   const detailsId = useId();
-  const isTransfer = (transaction.input_type ?? 0) === 0;
+  const isTransfer = call.kind === "transfer";
   const outgoing = isTransfer && currentIdentity && transaction.source === currentIdentity;
   const incoming = isTransfer && currentIdentity && transaction.destination === currentIdentity;
   const amount = formatQu(transaction.amount);
@@ -213,10 +214,18 @@ function ActivityRow({
   const source = transaction.source ?? "";
   const destination = transaction.destination ?? "";
   const hash = transaction.hash ?? "";
+  const special = parseSpecialHash(hash);
   const failed = transaction.status !== undefined && transaction.status !== "success";
 
   let sentence: ReactNode;
-  if (isTransfer) {
+  if (special) {
+    sentence = (
+      <>
+        System event <span className="font-medium text-foreground">{special.displayLabel}</span> in
+        tick <TickLink tick={special.tick} />
+      </>
+    );
+  } else if (isTransfer) {
     if (outgoing && destination) {
       sentence = (
         <>
@@ -248,6 +257,21 @@ function ActivityRow({
         </>
       );
     }
+  } else if (call.kind === "special") {
+    sentence = (
+      <>
+        <span className="font-medium text-foreground">
+          {call.special?.label ?? "Special transaction"}
+        </span>{" "}
+        to <IdentityLink avatar className="whitespace-nowrap" identity={destination} />
+        {hasAmount ? (
+          <>
+            {" "}
+            with <span className="font-medium text-foreground">{amount}</span>
+          </>
+        ) : null}
+      </>
+    );
   } else if (currentIdentity && destination) {
     sentence = (
       <>
@@ -337,7 +361,12 @@ function ActivityRow({
           {events.length > 0 ? (
             <div className="mt-4 space-y-2.5">
               {events.map((event, index) => (
-                <EventSummary compact event={event} key={`${event.log_id ?? "event"}-${index}`} />
+                <EventSummary
+                  compact
+                  event={event}
+                  key={`${event.log_id ?? "event"}-${index}`}
+                  sourceIdentity={transaction.source}
+                />
               ))}
             </div>
           ) : (

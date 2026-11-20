@@ -29,11 +29,14 @@ import { useMemo, useState } from "react";
 
 import { useTransactionContract } from "@/components/explorer/contract-provider";
 import { IdentityLink, TickLink, TransactionLink } from "@/components/explorer/links";
+import { isZeroIdentity } from "@/lib/contracts/constants";
 import { classNames, formatQu, formatTimestamp } from "@/lib/format";
+import { decodeCustomMessage } from "@/lib/transactions/special";
+import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 import type { ActivityGroup } from "./activity-feed";
 
-type ActivityKind = "incoming" | "outgoing" | "call";
+type ActivityKind = "incoming" | "outgoing" | "call" | "system";
 type ActivityEvent = ActivityGroup["events"][number];
 type ActivityFilter = "all" | ActivityKind;
 type EventsFilter = "all" | "with" | "none";
@@ -64,6 +67,7 @@ const ACTIVITY_META: Record<
   call: { color: "default", Icon: BrainIcon, label: "Contract call" },
   incoming: { color: "success", Icon: ArrowLeftDownIcon, label: "Incoming" },
   outgoing: { color: "accent", Icon: ArrowRightUpIcon, label: "Outgoing" },
+  system: { color: "default", Icon: LayersIcon, label: "System event" },
 };
 
 const ACTIVITY_OPTIONS: readonly FilterOption<ActivityFilter>[] = [
@@ -71,6 +75,7 @@ const ACTIVITY_OPTIONS: readonly FilterOption<ActivityFilter>[] = [
   { icon: ArrowLeftDownIcon, label: "Incoming", value: "incoming" },
   { icon: ArrowRightUpIcon, label: "Outgoing", value: "outgoing" },
   { icon: BrainIcon, label: "Contract call", value: "call" },
+  { icon: LayersIcon, label: "System event", value: "system" },
 ];
 
 const EVENTS_OPTIONS: readonly FilterOption<EventsFilter>[] = [
@@ -99,6 +104,12 @@ function activityMeta(
   kind: ActivityKind;
 } {
   const { transaction } = group;
+  if (parseSpecialHash(transaction.hash)) {
+    return { kind: "system" };
+  }
+  if (isZeroIdentity(transaction.destination) && (transaction.input_type ?? 0) > 0) {
+    return { kind: "system" };
+  }
   const isTransfer = (transaction.input_type ?? 0) === 0;
 
   if (!isTransfer) {
@@ -134,6 +145,7 @@ function searchText(group: ActivityGroup, identity: string): string {
     transaction.status,
     amount,
     ...group.events.map((event) => event.type_name),
+    ...group.events.map((event) => eventLabel(event)),
     ...group.events.map((event) => event.source),
     ...group.events.map((event) => event.destination),
   ]
@@ -160,10 +172,17 @@ function formatEventType(value: string): string {
   return value.replaceAll("_", " ");
 }
 
+function eventLabel(event: ActivityEvent): string {
+  const body =
+    event.body && typeof event.body === "object" ? (event.body as Record<string, unknown>) : null;
+  const raw = typeof body?.raw === "string" ? body.raw : undefined;
+  return decodeCustomMessage(raw)?.label ?? formatEventType(event.type_name || "event");
+}
+
 function eventTitle(event: ActivityEvent): string {
   const from = event.source ? `from ${event.source}` : null;
   const to = event.destination ? `to ${event.destination}` : null;
-  return [event.type_name ?? "event", from, to].filter(Boolean).join(" ");
+  return [eventLabel(event), from, to].filter(Boolean).join(" ");
 }
 
 function isSortColumn(value: string): value is SortColumn {
@@ -282,15 +301,26 @@ function ActivityKindChip({ kind }: { kind: ActivityKind }) {
 function InputType({ transaction }: { transaction: ActivityGroup["transaction"] }) {
   const call = useTransactionContract(transaction);
   const inputType = call.inputType;
-  const label = call.kind === "call" ? (call.procedure?.name ?? `Call ${inputType}`) : "Transfer";
+  const special = parseSpecialHash(transaction.hash);
+  const label = special
+    ? special.displayLabel
+    : call.kind === "special"
+      ? (call.special?.label ?? "System transaction")
+      : call.kind === "call"
+        ? (call.procedure?.name ?? `Call ${inputType}`)
+        : "Transfer";
 
   return (
     <span
       className="block max-w-36 truncate text-muted text-xs"
       title={
-        call.procedure
-          ? `${call.contract?.name}.${call.procedure.name} · input type ${inputType}`
-          : `Input type ${inputType}`
+        special
+          ? `${special.label} · ${special.hash}`
+          : call.kind === "special"
+            ? `${call.special?.label ?? "System transaction"} · input type ${inputType}`
+            : call.procedure
+              ? `${call.contract?.name}.${call.procedure.name} · input type ${inputType}`
+              : `Input type ${inputType}`
       }
     >
       {label}
@@ -331,7 +361,7 @@ function ActivityCell({ events, kind }: { events: ActivityEvent[]; kind: Activit
                   className="absolute -left-5 top-0 h-2.5 w-5 rounded-bl-[8px] border-foreground/20 border-b border-l"
                 />
                 <span className="inline-flex max-w-full items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium leading-4 text-foreground ring-1 ring-foreground/[0.06]">
-                  <span className="truncate">{formatEventType(event.type_name ?? "event")}</span>
+                  <span className="truncate">{eventLabel(event)}</span>
                 </span>
               </li>
             ))}

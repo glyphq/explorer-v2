@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import { formatInteger, shorten } from "@/lib/format";
+import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 import { activeFor, navigation, type NavigationItem } from "./navigation";
 
@@ -44,8 +45,10 @@ function detailLabel(pathname: string, item: NavigationItem): string | null {
       const epoch = Number(first);
       return Number.isFinite(epoch) ? `Epoch ${formatInteger(epoch)}` : first;
     }
-    case "/transactions":
-      return first ? shorten(first, 8, 6) : null;
+    case "/transactions": {
+      const special = parseSpecialHash(first);
+      return special ? special.displayLabel : first ? shorten(first, 8, 6) : null;
+    }
     case "/accounts":
       return first ? shorten(first, 8, 6) : null;
     case "/assets":
