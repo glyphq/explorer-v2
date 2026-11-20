@@ -4,7 +4,7 @@ import { Button, ListBox, ListBoxItem, Modal, Select } from "@heroui/react";
 import { UndoLeftIcon } from "@solar-icons/react/linear/undo-left";
 import { motion, useDragControls } from "motion/react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 
 import {
   motionPreferences,
@@ -43,33 +43,39 @@ function SettingSelect<T extends string>({
   value: T;
 }) {
   return (
-    <div className="flex items-center justify-between gap-4">
-      <span className="text-muted text-sm">{label}</span>
-      <Select
-        aria-label={label}
-        className="w-44 shrink-0 sm:w-48"
-        onChange={(key) => {
-          if (key !== null) {
-            onChange(String(key) as T);
-          }
-        }}
-        value={value}
-        variant="secondary"
-      >
-        <Select.Trigger className="h-9 w-full justify-between rounded-lg bg-surface-secondary/60 px-3 text-xs">
-          <Select.Value />
-          <Select.Indicator />
-        </Select.Trigger>
-        <Select.Popover className="bg-surface-tertiary">
-          <ListBox>
-            {options.map((option) => (
-              <ListBoxItem id={option.id} key={option.id} textValue={option.label}>
-                {option.label}
-              </ListBoxItem>
-            ))}
-          </ListBox>
-        </Select.Popover>
-      </Select>
+    <Select
+      aria-label={label}
+      className="w-full"
+      onChange={(key) => {
+        if (key !== null) {
+          onChange(String(key) as T);
+        }
+      }}
+      value={value}
+      variant="secondary"
+    >
+      <Select.Trigger className="relative h-10 w-full rounded-lg bg-surface-secondary px-9 text-sm transition-colors hover:bg-surface-tertiary">
+        <Select.Value className="flex-1 truncate text-center" />
+        <Select.Indicator className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2" />
+      </Select.Trigger>
+      <Select.Popover className="bg-surface-tertiary">
+        <ListBox>
+          {options.map((option) => (
+            <ListBoxItem id={option.id} key={option.id} textValue={option.label}>
+              {option.label}
+            </ListBoxItem>
+          ))}
+        </ListBox>
+      </Select.Popover>
+    </Select>
+  );
+}
+
+function SettingRow({ children, label }: { children: ReactNode; label: string }) {
+  return (
+    <div className="flex min-h-13 items-center justify-between gap-1.5 py-2 sm:gap-4">
+      <span className="shrink-0 text-muted text-sm">{label}</span>
+      <div className="w-56 shrink-0">{children}</div>
     </div>
   );
 }
@@ -102,12 +108,12 @@ export function SettingsDialog({
           scroll="inside"
           size="lg"
         >
-          <Modal.Dialog className="max-h-[92dvh] w-full max-w-xl rounded-none bg-transparent p-0">
+          <Modal.Dialog className="max-h-[92dvh] w-full max-w-lg rounded-none bg-transparent p-0">
             <motion.div
               animate={
                 open ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0.6, scale: 0.985, y: "-100%" }
               }
-              className="flex max-h-[92dvh] flex-col overflow-hidden rounded-b-3xl bg-overlay px-6 pt-[calc(2rem+env(safe-area-inset-top))] pb-6"
+              className="flex max-h-[92dvh] flex-col overflow-hidden rounded-b-3xl bg-overlay px-4 pt-[calc(2rem+env(safe-area-inset-top))] pb-6 sm:px-6"
               drag="y"
               dragConstraints={{ bottom: 0, top: -1000 }}
               dragControls={dragControls}
@@ -123,18 +129,17 @@ export function SettingsDialog({
               }}
               transition={{ damping: 34, mass: 0.9, stiffness: 380, type: "spring" }}
             >
-              <Modal.Header>
+              <Modal.Header className="mb-3">
                 <Modal.Heading>Appearance</Modal.Heading>
                 <p className="mt-1 text-muted text-sm">
                   Changes apply immediately. Preferences stay on this device.
                 </p>
               </Modal.Header>
-              <Modal.Body className="gap-5">
-                <div className="grid gap-3">
-                  <h3 className="font-medium text-foreground text-sm">Accent</h3>
+              <Modal.Body>
+                <SettingRow label="Accent">
                   <div
                     aria-label="Accent palette"
-                    className="flex max-w-[17rem] items-center justify-between"
+                    className="flex h-10 w-full items-center justify-between"
                     role="radiogroup"
                   >
                     {palettes.map((palette) => {
@@ -143,7 +148,7 @@ export function SettingsDialog({
                         <button
                           aria-checked={active}
                           aria-label={palette.label}
-                          className="flex size-8 items-center justify-center rounded-full transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
+                          className="flex size-7 items-center justify-center rounded-full transition-transform hover:scale-110 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/40"
                           key={palette.id}
                           onClick={() => setPalette(palette.id as PaletteId)}
                           role="radio"
@@ -152,7 +157,7 @@ export function SettingsDialog({
                         >
                           <span
                             className={classNames(
-                              "size-6 rounded-full transition-[box-shadow]",
+                              "size-5 rounded-full transition-[box-shadow]",
                               active
                                 ? "ring-2 ring-foreground/70 ring-offset-2 ring-offset-overlay"
                                 : "ring-1 ring-foreground/15",
@@ -163,43 +168,48 @@ export function SettingsDialog({
                       );
                     })}
                   </div>
-                </div>
-
-                <div className="grid gap-2">
+                </SettingRow>
+                <SettingRow label="Mode">
                   <SettingSelect
                     label="Mode"
                     onChange={(id) => setTheme(id)}
                     options={modeOptions}
                     value={activeMode}
                   />
+                </SettingRow>
+                <SettingRow label="Typeface">
                   <SettingSelect
                     label="Typeface"
                     onChange={(id) => setTypeface(id as TypefaceId)}
                     options={typefaces}
                     value={appearance.typeface}
                   />
+                </SettingRow>
+                <SettingRow label="Text size">
                   <SettingSelect
                     label="Text size"
                     onChange={(id) => setTextSize(id as TextSizeId)}
                     options={textSizes}
                     value={appearance.textSize}
                   />
+                </SettingRow>
+                <SettingRow label="Motion">
                   <SettingSelect
                     label="Motion"
                     onChange={(id) => setMotion(id as MotionPreferenceId)}
                     options={motionPreferences}
                     value={appearance.motion}
                   />
-                </div>
+                </SettingRow>
               </Modal.Body>
-              <Modal.Footer className="justify-start">
+              <Modal.Footer className="mt-4 justify-start">
                 <Button onPress={resetAppearance} size="sm" variant="ghost">
                   <UndoLeftIcon className="size-4" />
                   Reset appearance
                 </Button>
               </Modal.Footer>
               <div
-                className="-mx-6 -mb-6 flex cursor-grab touch-none justify-center px-6 pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] select-none active:cursor-grabbing"
+                className="-mx-4 -mb-6 flex cursor-grab touch-none justify-center px-4 pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] select-none active:cursor-grabbing sm:-mx-6 sm:px-6"
                 onPointerDown={(event) => dragControls.start(event)}
               >
                 <div aria-hidden className="h-1 w-10 rounded-full bg-foreground/15" />
