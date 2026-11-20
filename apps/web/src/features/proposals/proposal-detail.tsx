@@ -17,11 +17,7 @@ import { countLabel, formatInteger } from "@/lib/format";
 import { getProposalDocument, type ProposalDocument } from "@/lib/proposal-content";
 import type { ProposalSnapshot } from "@/lib/proposals";
 
-function findProposal(
-  snapshot: ProposalSnapshot | undefined,
-  contract: string,
-  route: string,
-) {
+function findProposal(snapshot: ProposalSnapshot | undefined, contract: string, route: string) {
   if (!snapshot) {
     return undefined;
   }
