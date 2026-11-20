@@ -69,7 +69,7 @@ function AccountStats({
           <AsciiSkeleton
             className="text-[clamp(1.75rem,8vw,3rem)] sm:text-5xl"
             lines={1}
-            widths={["8ch"]}
+            widths={["16ch"]}
           />
         ) : (
           formatQu(balance)
@@ -116,6 +116,45 @@ function PublicKeyLine({
   );
 }
 
+function ProfileLoading({
+  identity,
+  publicKey,
+  ...stats
+}: {
+  identity: string;
+  publicKey?: string;
+} & Parameters<typeof AccountStats>[0]) {
+  return (
+    <>
+      <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
+        <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
+          <AsciiSkeleton circle height={112} rows={10} width={112} />
+        </span>
+        <div className="mt-4 flex min-w-0 flex-col items-center gap-1.5">
+          <AsciiSkeleton className="text-3xl sm:text-4xl" lines={1} widths={["10rem"]} />
+          <AsciiSkeleton className="text-[10px]" lines={1} widths={["4.5rem"]} />
+        </div>
+        <span
+          className="mt-2 inline-flex max-w-full items-center rounded-full border border-border/80 bg-background/50 px-3 py-1 font-mono text-[11px] text-muted"
+          title={identity}
+        >
+          <span className="hidden sm:inline">{identity}</span>
+          <span className="sm:hidden">{shorten(identity, 10, 8)}</span>
+        </span>
+      </div>
+      <div className="mx-auto mt-8 max-w-3xl">
+        <AccountStats {...stats} centered />
+        <div className="mt-5">
+          <PublicKeyLine centered publicKey={publicKey} />
+        </div>
+        <div className="mt-5 flex justify-center">
+          <AsciiSkeleton className="rounded-full" lines={1} widths={["9rem"]} />
+        </div>
+      </div>
+    </>
+  );
+}
+
 export function AccountDetail({ identity }: { identity: string }) {
   const contract = useContract(identity);
   const identityQuery = useIdentity(identity);
@@ -127,6 +166,7 @@ export function AccountDetail({ identity }: { identity: string }) {
   const data = identityQuery.data?.data;
   const liveData = liveIdentity.data?.data;
   const profile = profileQuery.data ?? null;
+  const profilePending = !contract && !profile && profileQuery.isLoading;
   const profileUnavailable = isProfileUnavailable(profileQuery.error);
   const profileReady = profileQuery.isSuccess;
   let profileAction: "claim" | "edit" | null = null;
@@ -206,6 +246,21 @@ export function AccountDetail({ identity }: { identity: string }) {
               {profile ? <ProfileMeta profile={profile} /> : null}
             </div>
           </div>
+        ) : profilePending ? (
+          <ProfileLoading
+            balance={balance}
+            firstSeenTick={data?.first_seen_tick}
+            identity={identity}
+            incoming={incoming}
+            lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
+            lastSeenTick={lastSeenTick}
+            loading={loading}
+            netFlow={netFlow}
+            outgoing={outgoing}
+            publicKey={liveData?.public_key ?? data?.public_key}
+            transferCount={transferCount}
+            usdBalance={usdBalance}
+          />
         ) : profile ? (
           <ProfileHeader
             avatar={
@@ -283,7 +338,7 @@ export function AccountDetail({ identity }: { identity: string }) {
               </div>
             </div>
           </>
-        ) : profile ? null : (
+        ) : profile || profilePending ? null : (
           <div className="mx-auto mt-8 max-w-3xl">
             <AccountStats
               balance={balance}

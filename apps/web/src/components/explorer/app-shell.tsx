@@ -511,7 +511,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     as="div"
                     duration="fast"
                     key={pathname}
-                    origin="top-left"
+                    origin={pathname.startsWith("/accounts/") ? "center" : "top-left"}
                     preset="dither"
                     revealOnHydrate
                   >
