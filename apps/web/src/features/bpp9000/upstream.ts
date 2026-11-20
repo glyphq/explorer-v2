@@ -6,13 +6,12 @@ import type {
   BppRace,
   BppRaceSnapshot,
   BppSnapshot,
-} from "@/features/bpp9000/types";
+} from "./types";
 
 const UPSTREAM = "https://annexplorer.jetskipool.ai/api/v1";
 const TIMEOUT_MS = 10_000;
 const PAGE_SIZE = 200;
-const CORE_CACHE_SECONDS = 240;
-const RACE_CACHE_SECONDS = 600;
+const CONTEXT_TTL_MS = 30_000;
 
 interface TickResponse {
   tickInfo?: {
@@ -71,12 +70,23 @@ interface OverviewResponse {
   };
 }
 
-async function read<T>(path: string, revalidate = 60): Promise<T | null> {
+type EpochContext = {
+  epoch: number;
+  overview: OverviewResponse;
+};
+
+let contextCache: { at: number; promise: Promise<EpochContext | null> } | null = null;
+
+async function read<T>(path: string, signal?: AbortSignal): Promise<T | null> {
+  const controller = new AbortController();
+  const timer = window.setTimeout(() => controller.abort(), TIMEOUT_MS);
+  const abort = () => controller.abort();
+  signal?.addEventListener("abort", abort, { once: true });
+
   try {
     const response = await fetch(`${UPSTREAM}${path}`, {
       headers: { Accept: "application/json" },
-      next: { revalidate },
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: controller.signal,
     });
     if (!response.ok) {
       return null;
@@ -84,6 +94,9 @@ async function read<T>(path: string, revalidate = 60): Promise<T | null> {
     return (await response.json()) as T;
   } catch {
     return null;
+  } finally {
+    window.clearTimeout(timer);
+    signal?.removeEventListener("abort", abort);
   }
 }
 
@@ -121,16 +134,37 @@ function normalizeHours(epoch: number, hours: OverviewHour[]): BppHour[] {
   });
 }
 
-async function currentEpoch(): Promise<number | null> {
-  const tick = await read<TickResponse>("/live/tick-info", 15);
-  return tick?.tickInfo?.epoch ?? null;
-}
-
-async function overviewPage(epoch: number, offset = 0): Promise<OverviewResponse | null> {
+async function overviewPage(
+  epoch: number,
+  offset = 0,
+  signal?: AbortSignal,
+): Promise<OverviewResponse | null> {
   return read<OverviewResponse>(
     `/epochs/${epoch}/ant-colony-overview?limit=${PAGE_SIZE}&offset=${offset}`,
-    60,
+    signal,
   );
+}
+
+async function loadContext(): Promise<EpochContext | null> {
+  if (contextCache && Date.now() - contextCache.at < CONTEXT_TTL_MS) {
+    return contextCache.promise;
+  }
+
+  const promise = (async () => {
+    const tick = await read<TickResponse>("/live/tick-info");
+    const epoch = tick?.tickInfo?.epoch;
+    if (!epoch) {
+      return null;
+    }
+    const overview = await overviewPage(epoch);
+    return overview ? { epoch, overview } : null;
+  })();
+  contextCache = { at: Date.now(), promise };
+  const context = await promise;
+  if (!context) {
+    contextCache = null;
+  }
+  return context;
 }
 
 function buildColony(epoch: number, overview: OverviewResponse): BppColony | null {
@@ -160,7 +194,11 @@ function buildColony(epoch: number, overview: OverviewResponse): BppColony | nul
   };
 }
 
-async function buildBoard(epoch: number, overview: OverviewResponse): Promise<RankingItem[]> {
+async function buildBoard(
+  epoch: number,
+  overview: OverviewResponse,
+  signal?: AbortSignal,
+): Promise<RankingItem[]> {
   const items = [...(overview.ranking?.items ?? [])];
   const total = overview.ranking?.total ?? items.length;
   const pageCount = Math.ceil(total / PAGE_SIZE);
@@ -168,7 +206,7 @@ async function buildBoard(epoch: number, overview: OverviewResponse): Promise<Ra
     { length: Math.max(0, pageCount - 1) },
     (_, index) => (index + 1) * PAGE_SIZE,
   ).filter((offset) => offset <= 4000);
-  const pages = await Promise.all(offsets.map((offset) => overviewPage(epoch, offset)));
+  const pages = await Promise.all(offsets.map((offset) => overviewPage(epoch, offset, signal)));
   for (const page of pages) {
     if (page?.ranking) {
       items.push(...page.ranking.items);
@@ -204,24 +242,17 @@ function buildRace(
   };
 }
 
-async function coreSnapshot(): Promise<Response> {
-  const epoch = await currentEpoch();
-  if (!epoch) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+export async function readCoreSnapshot(signal?: AbortSignal): Promise<BppSnapshot> {
+  const context = await loadContext();
+  if (!context) {
+    throw new Error("BPP-9000 data is not answering right now.");
   }
 
-  const [epochInfo, overview] = await Promise.all([
-    read<EpochResponse>(`/epochs/${epoch}`, 300),
-    overviewPage(epoch),
-  ]);
-
-  if (!overview) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
-  }
-
+  const { epoch, overview } = context;
+  const epochInfo = await read<EpochResponse>(`/epochs/${epoch}`, signal);
   const colony = buildColony(epoch, overview);
   if (!colony) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+    throw new Error("BPP-9000 data is not answering right now.");
   }
 
   const meta: BppEpochMeta | null = epochInfo
@@ -232,90 +263,24 @@ async function coreSnapshot(): Promise<Response> {
       }
     : null;
 
-  const snapshot: BppSnapshot = {
+  return {
     colony,
     fetchedAt: new Date().toISOString(),
     meta,
     race: null,
   };
-
-  return Response.json(snapshot);
 }
 
-async function raceSnapshot(): Promise<Response> {
-  const epoch = await currentEpoch();
-  if (!epoch) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
+export async function readRaceSnapshot(signal?: AbortSignal): Promise<BppRaceSnapshot> {
+  const context = await loadContext();
+  const accuracy = context?.overview.hypotheticalAccuracy;
+  if (!(context && accuracy && context.overview.ranking)) {
+    throw new Error("BPP-9000 data is not answering right now.");
   }
 
-  const overview = await overviewPage(epoch);
-  const accuracy = overview?.hypotheticalAccuracy;
-  if (!(accuracy && overview?.ranking)) {
-    return Response.json({ error: "BPP-9000 data is not answering right now." }, { status: 502 });
-  }
-
-  const board = await buildBoard(epoch, overview);
-  const snapshot: BppRaceSnapshot = {
+  const board = await buildBoard(context.epoch, context.overview, signal);
+  return {
     fetchedAt: new Date().toISOString(),
-    race: buildRace(overview, accuracy, board),
+    race: buildRace(context.overview, accuracy, board),
   };
-
-  return Response.json(snapshot);
-}
-
-export const dynamic = "force-dynamic";
-
-async function withEdgeCache(
-  request: Request,
-  ttlSeconds: number,
-  build: () => Promise<Response>,
-): Promise<Response> {
-  const cache = typeof caches === "undefined" ? undefined : await caches.open("glyph-bpp9000");
-  if (!cache) {
-    return build();
-  }
-
-  const cacheUrl = new URL(request.url);
-  cacheUrl.search = `?part=${cacheUrl.searchParams.get("part") ?? "core"}`;
-  const key = new Request(cacheUrl, { method: "GET" });
-  const cached = await cache.match(key).catch(() => undefined);
-  if (cached) {
-    const hit = new Response(cached.body, {
-      headers: cached.headers,
-      status: cached.status,
-      statusText: cached.statusText,
-    });
-    hit.headers.set("x-glyph-cache", "hit");
-    return hit;
-  }
-
-  const response = await build();
-  if (!response.ok) {
-    return response;
-  }
-
-  const headers = new Headers(response.headers);
-  headers.set(
-    "Cache-Control",
-    `public, max-age=${ttlSeconds}, s-maxage=${ttlSeconds}, stale-while-revalidate=${ttlSeconds}`,
-  );
-  headers.set("x-glyph-cache", "miss");
-  const cacheable = new Response(response.body, {
-    headers,
-    status: response.status,
-    statusText: response.statusText,
-  });
-  await cache.put(key, cacheable.clone()).catch(() => undefined);
-  return cacheable;
-}
-
-export async function GET(request: Request) {
-  const part = new URL(request.url).searchParams.get("part") ?? "core";
-  if (part === "core") {
-    return withEdgeCache(request, CORE_CACHE_SECONDS, coreSnapshot);
-  }
-  if (part === "race") {
-    return withEdgeCache(request, RACE_CACHE_SECONDS, raceSnapshot);
-  }
-  return Response.json({ error: "Unknown BPP-9000 part." }, { status: 400 });
 }

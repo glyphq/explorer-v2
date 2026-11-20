@@ -19,19 +19,20 @@ const CONTRACTS = [
 const STATUS = { PASSED: 3, REJECTED: 6, VOTING: 2, INCONCLUSIVE: 7 };
 const OUTPUT_PATH = new URL("../src/lib/proposals-seed.json", import.meta.url);
 const KV_KEY = "proposals:v2";
+const LIST_KV_KEY = "proposals:list:v1";
 const KV_NAMESPACE_ID = process.env.PROPOSALS_KV_NAMESPACE_ID;
 const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
 const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
 
-function kvUrl() {
-  return `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${KV_NAMESPACE_ID}/values/${encodeURIComponent(KV_KEY)}`;
+function kvUrl(key) {
+  return `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${KV_NAMESPACE_ID}/values/${encodeURIComponent(key)}`;
 }
 
 async function readKV() {
   if (!(KV_NAMESPACE_ID && CLOUDFLARE_ACCOUNT_ID && CLOUDFLARE_API_TOKEN)) {
     return null;
   }
-  const response = await fetch(kvUrl(), {
+  const response = await fetch(kvUrl(KV_KEY), {
     headers: { Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}` },
   });
   if (response.status === 404) {
@@ -48,16 +49,34 @@ async function writeKV(proposals) {
     console.error("Cloudflare KV credentials are not set; skipping the KV update.");
     return;
   }
-  const response = await fetch(kvUrl(), {
-    body: JSON.stringify(proposals),
-    headers: {
-      Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
-      "Content-Type": "application/json",
-    },
-    method: "PUT",
-  });
-  if (!response.ok) {
-    throw new Error(`Writing ${KV_KEY} to KV returned ${response.status}.`);
+  const active = proposals
+    .filter((proposal) => proposal.status === 2)
+    .sort(
+      (left, right) =>
+        right.epoch - left.epoch || (right.publishedTick ?? 0) - (left.publishedTick ?? 0),
+    );
+  const ended = proposals
+    .filter((proposal) => proposal.status !== 2)
+    .sort(
+      (left, right) =>
+        right.epoch - left.epoch || (right.publishedTick ?? 0) - (left.publishedTick ?? 0),
+    );
+  const list = JSON.stringify({ active, ended, source: "kv" });
+  for (const [key, body] of [
+    [KV_KEY, JSON.stringify(proposals)],
+    [LIST_KV_KEY, list],
+  ]) {
+    const response = await fetch(kvUrl(key), {
+      body,
+      headers: {
+        Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
+        "Content-Type": "application/json",
+      },
+      method: "PUT",
+    });
+    if (!response.ok) {
+      throw new Error(`Writing ${key} to KV returned ${response.status}.`);
+    }
   }
   console.error(`Wrote ${proposals.length} proposals to KV.`);
 }

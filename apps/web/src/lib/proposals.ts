@@ -31,12 +31,13 @@ type SeedProposal = Omit<Proposal, "proposerIdentity" | "publishedTick" | "url">
 };
 
 const STORAGE_KEY = "proposals:v2";
+const LIST_STORAGE_KEY = "proposals:list:v1";
 const SNAPSHOT_CACHE_MS = 30_000;
 
 let kvPromise: Promise<KVNamespace | null> | null = null;
 let snapshotCache: { at: number; value: ProposalSnapshot } | null = null;
 
-type ProposalSnapshot = {
+export type ProposalSnapshot = {
   active: Proposal[];
   ended: Proposal[];
   source: "kv" | "seed";
@@ -77,23 +78,6 @@ async function seedSnapshot(): Promise<ProposalSnapshot> {
   return toSnapshot(seed as SeedProposal[], "seed");
 }
 
-export async function getProposalByRoute(
-  contract: string,
-  route: string,
-): Promise<Proposal | undefined> {
-  const contractIndex =
-    contract.toLowerCase() === "gqmprop" ? 6 : contract.toLowerCase() === "ccf" ? 8 : undefined;
-  if (!contractIndex) {
-    return undefined;
-  }
-  const proposals = await getProposals();
-  return [...proposals.active, ...proposals.ended].find(
-    (proposal) =>
-      proposal.contractIndex === contractIndex &&
-      (proposal.slug ? proposal.slug === route : String(proposal.proposalIndex) === route),
-  );
-}
-
 /**
  * Reads the proposal snapshot maintained by the hourly proposals-sync
  * workflow. Workers never query the chain or backfill KV during a request.
@@ -120,4 +104,17 @@ export async function getProposals(): Promise<ProposalSnapshot> {
   const value = await seedSnapshot();
   snapshotCache = { at: Date.now(), value };
   return value;
+}
+
+/** Returns the pre-serialized list response written by the sync workflow. */
+export async function getProposalListJson(): Promise<string | null> {
+  const kv = await proposalsKV();
+  if (!kv) {
+    return null;
+  }
+  try {
+    return await kv.get(LIST_STORAGE_KEY);
+  } catch {
+    return null;
+  }
 }

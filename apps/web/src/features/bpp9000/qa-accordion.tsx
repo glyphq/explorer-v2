@@ -51,7 +51,8 @@ export function QaAccordion({ colony, race }: { colony: BppColony | null; race: 
       question: "What do right and wrong mean?",
     },
     {
-      answer: "Every minute. The countdown and the current hour update more often as votes arrive.",
+      answer:
+        "Calls refresh every two minutes and the alignment board every five. The countdown updates more often as votes arrive.",
       id: "refresh",
       question: "How often does this page refresh?",
     },

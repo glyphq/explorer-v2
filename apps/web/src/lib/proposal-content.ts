@@ -103,7 +103,6 @@ export async function getProposalDocument(url?: string): Promise<ProposalDocumen
   try {
     const response = await fetch(documentUrl, {
       headers: { Accept: "text/markdown, text/plain;q=0.9, text/html;q=0.8" },
-      next: { revalidate: 3600 },
       signal: AbortSignal.timeout(10_000),
     });
     if (!response.ok) {
