@@ -310,9 +310,38 @@ html[data-text-size="large"] {
   }
 }
 
+.glyph-epoch-pulse:not(:hover) {
+  animation: glyph-epoch-pulse 3.2s ease-in-out infinite;
+}
+
+@keyframes glyph-epoch-pulse {
+  0%,
+  100% {
+    background-color: color-mix(in oklch, var(--accent) 2%, transparent);
+  }
+
+  50% {
+    background-color: color-mix(in oklch, var(--accent) 8%, transparent);
+  }
+}
+
+[data-motion="full"] .glyph-epoch-pulse:not(:hover) {
+  animation: glyph-epoch-pulse 3.2s ease-in-out infinite;
+}
+
+[data-motion="reduced"] .glyph-epoch-pulse:not(:hover) {
+  animation: none;
+  background-color: color-mix(in oklch, var(--accent) 3%, transparent);
+}
+
 @media (prefers-reduced-motion: reduce) {
   .modal-sheet:not(.modal-drag-sheet)[data-entering="true"] .modal__dialog,
   .modal-sheet:not(.modal-drag-sheet)[data-exiting="true"] .modal__dialog {
     animation: none;
+  }
+
+  .glyph-epoch-pulse:not(:hover) {
+    animation: none;
+    background-color: color-mix(in oklch, var(--accent) 3%, transparent);
   }
 }

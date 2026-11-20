@@ -6,7 +6,6 @@ import { DollarMinimalisticIcon } from "@solar-icons/react/linear/dollar-minimal
 import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { Home2Icon } from "@solar-icons/react/linear/home-2";
 import { LayersIcon } from "@solar-icons/react/linear/layers";
-import { PulseIcon } from "@solar-icons/react/linear/pulse";
 import { TransferHorizontalIcon } from "@solar-icons/react/linear/transfer-horizontal";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import type { ComponentType } from "react";
@@ -39,12 +38,6 @@ const transactions = {
   href: "/transactions",
   icon: TransferHorizontalIcon,
   label: "Transactions",
-} satisfies NavigationItem;
-
-const events = {
-  href: "/events",
-  icon: PulseIcon,
-  label: "Events",
 } satisfies NavigationItem;
 
 const accounts = {
@@ -88,7 +81,6 @@ export const navigation = [
   ticks,
   epochs,
   transactions,
-  events,
   accounts,
   assets,
   exchanges,
@@ -99,7 +91,7 @@ export const navigation = [
 
 export const primaryNavigation = [overview, bpp] as const;
 
-export const chainNavigation = [ticks, epochs, transactions, events, exchanges] as const;
+export const chainNavigation = [ticks, epochs, transactions, exchanges] as const;
 
 export const buildNavigation = [contracts, proposals] as const;
 

@@ -329,5 +329,5 @@ function formatDateTimeRange(series: ActivityBucket[]): string {
   if (!(first && last)) {
     return "";
   }
-  return `${formatHour(first.bucket)} — ${formatHour(last.bucket)} UTC · ${series.length} hourly buckets`;
+  return `${formatHour(first.bucket)} — ${formatHour(last.bucket)} local · ${series.length} hourly buckets`;
 }

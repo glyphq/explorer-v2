@@ -6,7 +6,6 @@ const routes = [
   { changeFrequency: "hourly", path: "/", priority: 1 },
   { changeFrequency: "hourly", path: "/ticks", priority: 0.9 },
   { changeFrequency: "hourly", path: "/transactions", priority: 0.9 },
-  { changeFrequency: "hourly", path: "/events", priority: 0.8 },
   { changeFrequency: "daily", path: "/epochs", priority: 0.8 },
   { changeFrequency: "daily", path: "/accounts", priority: 0.8 },
   { changeFrequency: "daily", path: "/assets", priority: 0.7 },

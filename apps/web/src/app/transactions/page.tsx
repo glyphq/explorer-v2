@@ -1,14 +1,13 @@
 "use client";
 
-import { LoadMore } from "@/components/explorer/load-more";
+import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
-import {
-  RecordEmpty,
-  RecordList,
-  RecordSkeleton,
-  TransactionRow,
-} from "@/components/explorer/records";
+import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
+import {
+  TransactionTable,
+  TransactionTableSkeleton,
+} from "@/features/transactions/transaction-table";
 import { pageRows, useTransactions } from "@/lib/api/hooks";
 
 export default function TransactionsPage() {
@@ -18,7 +17,7 @@ export default function TransactionsPage() {
   return (
     <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Transfers and contract calls inside verified ticks, newest first."
+        description="Transfers and contract calls inside verified ticks, with their events."
         title="Transactions"
       />
 
@@ -31,30 +30,26 @@ export default function TransactionsPage() {
         />
       ) : (
         <>
-          <div className="rounded-2xl bg-surface p-1.5">
-            {transactions.isLoading ? (
-              <RecordSkeleton rows={10} />
-            ) : rows.length === 0 ? (
+          {transactions.isLoading ? (
+            <TransactionTableSkeleton rows={10} />
+          ) : rows.length === 0 ? (
+            <div className="rounded-2xl bg-surface">
               <RecordEmpty>No transactions yet.</RecordEmpty>
-            ) : (
-              <RecordList>
-                {rows.map((transaction) => (
-                  <TransactionRow
-                    key={transaction.hash ?? `${transaction.tick}-${transaction.tx_index}`}
-                    transaction={transaction}
-                  />
-                ))}
-              </RecordList>
-            )}
-          </div>
-          <LoadMore
-            fetchNextPage={() => {
-              transactions.fetchNextPage();
-            }}
-            hasNextPage={transactions.hasNextPage}
-            isFetchingNextPage={transactions.isFetchingNextPage}
-            loaded={rows.length}
-          />
+            </div>
+          ) : (
+            <TransactionTable transactions={rows} />
+          )}
+          {transactions.isLoading ? null : (
+            <InfiniteScroll
+              fetchNextPage={() => {
+                transactions.fetchNextPage();
+              }}
+              hasNextPage={transactions.hasNextPage}
+              isFetchingNextPage={transactions.isFetchingNextPage}
+              loaded={rows.length}
+              noun="transactions"
+            />
+          )}
         </>
       )}
     </div>

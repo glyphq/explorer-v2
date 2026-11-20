@@ -3,6 +3,8 @@
 import { Button, Spinner } from "@heroui/react";
 import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
 
+import { countLabel } from "@/lib/format";
+
 export function LoadMore({
   fetchNextPage,
   hasNextPage,
@@ -17,9 +19,7 @@ export function LoadMore({
   if (!hasNextPage) {
     return (
       <p className="py-6 text-center text-muted text-xs">
-        {loaded === 0
-          ? "No rows to show."
-          : `End of results · ${loaded.toLocaleString("en-US")} rows`}
+        {loaded === 0 ? "No rows to show." : `End of results · ${countLabel(loaded, "row")}`}
       </p>
     );
   }
@@ -34,7 +34,7 @@ export function LoadMore({
         )}
         Load more
       </Button>
-      <p className="text-muted text-xs">{loaded.toLocaleString("en-US")} rows loaded</p>
+      <p className="text-muted text-xs">{countLabel(loaded, "row")} loaded</p>
     </div>
   );
 }

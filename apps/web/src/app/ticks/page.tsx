@@ -1,9 +1,10 @@
 "use client";
 
-import { LoadMore } from "@/components/explorer/load-more";
+import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
-import { RecordEmpty, RecordList, RecordSkeleton, TickRow } from "@/components/explorer/records";
+import { RecordEmpty, RecordSkeleton } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
+import { TickTable } from "@/features/ticks/tick-table";
 import { pageRows, useTicks } from "@/lib/api/hooks";
 
 export default function TicksPage() {
@@ -23,27 +24,28 @@ export default function TicksPage() {
         />
       ) : (
         <>
-          <div className="rounded-2xl bg-surface p-1.5">
-            {ticks.isLoading ? (
+          {ticks.isLoading ? (
+            <div className="rounded-2xl bg-surface p-1.5">
               <RecordSkeleton rows={10} />
-            ) : rows.length === 0 ? (
+            </div>
+          ) : rows.length === 0 ? (
+            <div className="rounded-2xl bg-surface">
               <RecordEmpty>No ticks yet.</RecordEmpty>
-            ) : (
-              <RecordList>
-                {rows.map((tick) => (
-                  <TickRow key={tick.tick} tick={tick} />
-                ))}
-              </RecordList>
-            )}
-          </div>
-          <LoadMore
-            fetchNextPage={() => {
-              ticks.fetchNextPage();
-            }}
-            hasNextPage={ticks.hasNextPage}
-            isFetchingNextPage={ticks.isFetchingNextPage}
-            loaded={rows.length}
-          />
+            </div>
+          ) : (
+            <TickTable ticks={rows} />
+          )}
+          {ticks.isLoading ? null : (
+            <InfiniteScroll
+              fetchNextPage={() => {
+                ticks.fetchNextPage();
+              }}
+              hasNextPage={ticks.hasNextPage}
+              isFetchingNextPage={ticks.isFetchingNextPage}
+              loaded={rows.length}
+              noun="ticks"
+            />
+          )}
         </>
       )}
     </div>

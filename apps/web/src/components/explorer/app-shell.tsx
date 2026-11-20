@@ -540,7 +540,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     key={pathname}
                     origin={pathname.startsWith("/accounts/") ? "center" : "top-left"}
                     preset="dither"
-                    revealOnHydrate
                   >
                     {children}
                   </AsciiReveal>
@@ -567,7 +566,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     >
                       Indexer status
                     </a>
-                    <span>Amounts are integer QU · timestamps UTC</span>
+                    <span>Amounts are integer QU · timestamps local unless noted</span>
                   </div>
                 </div>
               </footer>
