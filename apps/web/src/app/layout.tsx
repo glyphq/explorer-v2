@@ -1,7 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 
 import "../index.css";
+import { AppearanceProvider } from "@/components/explorer/appearance-provider";
 import { AppShell } from "@/components/explorer/app-shell";
 import { ContractProvider } from "@/components/explorer/contract-provider";
 import Providers from "@/components/providers";
@@ -9,12 +10,20 @@ import PwaRegistration from "@/components/pwa-registration";
 import { contractSummaries } from "@/lib/contracts/registry";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
+const spaceGrotesk = Space_Grotesk({
+  display: "swap",
+  subsets: ["latin"],
+  variable: "--font-space-grotesk",
+});
+
 const geistSans = Geist({
+  display: "swap",
   subsets: ["latin"],
   variable: "--font-geist-sans",
 });
 
 const geistMono = Geist_Mono({
+  display: "swap",
   subsets: ["latin"],
   variable: "--font-geist-mono",
 });
@@ -84,8 +93,8 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   colorScheme: "light dark",
   themeColor: [
-    { color: "#f4f4f4", media: "(prefers-color-scheme: light)" },
-    { color: "#070707", media: "(prefers-color-scheme: dark)" },
+    { color: "#f8f5fb", media: "(prefers-color-scheme: light)" },
+    { color: "#08060d", media: "(prefers-color-scheme: dark)" },
   ],
 };
 
@@ -95,12 +104,24 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html data-scroll-behavior="smooth" lang="en" suppressHydrationWarning>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+    <html
+      data-motion="system"
+      data-palette="iris"
+      data-scroll-behavior="smooth"
+      data-text-size="default"
+      data-typeface="space-grotesk"
+      lang="en"
+      suppressHydrationWarning
+    >
+      <body
+        className={`${spaceGrotesk.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         <PwaRegistration />
         <ContractProvider contracts={contractSummaries}>
           <Providers>
-            <AppShell>{children}</AppShell>
+            <AppearanceProvider>
+              <AppShell>{children}</AppShell>
+            </AppearanceProvider>
           </Providers>
         </ContractProvider>
       </body>

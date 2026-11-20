@@ -139,15 +139,15 @@ export function ActivityChart({
 
         <div className="flex flex-wrap items-center gap-4 text-[10px] text-muted uppercase tracking-[0.14em]">
           <span className="flex items-center gap-2">
-            <span className="h-2.5 w-1.5 rounded-[2px] bg-foreground" />
+            <span className="h-2.5 w-1.5 rounded-[2px] bg-accent" />
             Transactions
           </span>
           <span className="flex items-center gap-2">
-            <span className="h-0.5 w-4 rounded-full bg-foreground/50" />
+            <span className="h-0.5 w-4 rounded-full bg-success" />
             Events
           </span>
           <span className="flex items-center gap-2">
-            <span className="h-2 w-4 rounded-[2px] bg-foreground/10" />
+            <span className="h-2 w-4 rounded-[2px] bg-warning/20" />
             Volume
           </span>
         </div>
@@ -194,17 +194,6 @@ export function ActivityChart({
           role="img"
           viewBox={`0 0 ${width} ${height}`}
         >
-          <defs>
-            <linearGradient id="activity-bar" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="var(--foreground)" stopOpacity="0.92" />
-              <stop offset="100%" stopColor="var(--foreground)" stopOpacity="0.16" />
-            </linearGradient>
-            <linearGradient id="activity-volume" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="var(--foreground)" stopOpacity="0.12" />
-              <stop offset="100%" stopColor="var(--foreground)" stopOpacity="0" />
-            </linearGradient>
-          </defs>
-
           {[0, 0.25, 0.5, 0.75, 1].map((step) => (
             <line
               key={step}
@@ -221,16 +210,17 @@ export function ActivityChart({
           <motion.path
             animate={{ opacity: 1 }}
             d={volumeArea}
-            fill="url(#activity-volume)"
+            fill="var(--warning)"
+            fillOpacity={0.12}
             initial={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
           />
 
           {activeIndex === null ? null : (
             <rect
-              fill="var(--foreground)"
+              fill="var(--accent)"
               height={plotHeight}
-              opacity={0.035}
+              opacity={0.07}
               width={slot}
               x={activeBandX}
               y={padding.top}
@@ -240,7 +230,8 @@ export function ActivityChart({
           {transactionPoints.map((point) => (
             <motion.rect
               animate={{ height: point.height, y: baseline - point.height }}
-              fill={point.index === activeIndex ? "var(--foreground)" : "url(#activity-bar)"}
+              fill="var(--accent)"
+              fillOpacity={point.index === activeIndex ? 1 : 0.55}
               initial={{ height: 0, y: baseline }}
               key={point.bucket.bucket}
               rx={3}
@@ -259,7 +250,7 @@ export function ActivityChart({
             d={smoothPath(eventPoints)}
             fill="none"
             initial={{ opacity: 0, pathLength: 0 }}
-            stroke="var(--foreground)"
+            stroke="var(--success)"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.4}
@@ -273,7 +264,7 @@ export function ActivityChart({
               fill="var(--background)"
               key={series[index]?.bucket}
               r={index === activeIndex ? 3.5 : 2}
-              stroke="var(--foreground)"
+              stroke="var(--success)"
               strokeOpacity={index === activeIndex ? 1 : 0.55}
               strokeWidth={1.2}
             />
@@ -284,11 +275,11 @@ export function ActivityChart({
               <circle
                 cx={activePoint.x}
                 cy={activePoint.y}
-                fill="var(--foreground)"
+                fill="var(--success)"
                 opacity={0.2}
                 r={9}
               />
-              <circle cx={activePoint.x} cy={activePoint.y} fill="var(--foreground)" r={3.5} />
+              <circle cx={activePoint.x} cy={activePoint.y} fill="var(--success)" r={3.5} />
             </g>
           ) : null}
 

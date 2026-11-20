@@ -2,12 +2,12 @@
 
 import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
-import { ArrowRightUpIcon } from "@solar-icons/react/linear/arrow-right-up";
 import { CloseIcon } from "@solar-icons/react/linear/close";
 import { HamburgerMenuIcon } from "@solar-icons/react/linear/hamburger-menu";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
+import { SettingsIcon } from "@solar-icons/react/linear/settings";
 import { AsciiReveal } from "ascii-reveal";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
+import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -28,8 +28,8 @@ import {
   dataNavigation,
   type NavigationItem,
   primaryNavigation,
-  resourceNavigation,
 } from "./navigation";
+import { SettingsDialog } from "./settings-dialog";
 
 const perBillionFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
@@ -67,43 +67,34 @@ function SidebarLink({
   items: readonly NavigationItem[];
   pathname: string;
 }) {
+  const reduceMotion = useReducedMotion();
+
   return (
     <>
       {items.map((item) => {
         const active = activeFor(pathname, item.href);
         const Icon = item.icon;
-        const external = "external" in item && item.external === true;
         const content = (
-          <>
+          <span
+            className={classNames(
+              "relative flex min-w-0 items-center",
+              collapsed ? "justify-center" : "flex-1 gap-2.5",
+            )}
+          >
             <Icon className="size-4 shrink-0" />
             {collapsed ? null : <span className="min-w-0 flex-1 truncate">{item.label}</span>}
-            {!collapsed && external ? (
-              <ArrowRightUpIcon className="size-3.5 shrink-0 text-muted" />
-            ) : null}
-          </>
+          </span>
         );
         const itemClass = classNames(
-          "flex items-center rounded-lg text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
-          collapsed ? "mx-auto size-10 justify-center" : "h-9 gap-2.5 px-2.5",
-          active
-            ? "bg-surface-secondary text-foreground"
-            : "text-muted hover:bg-surface-secondary/60 hover:text-foreground",
+          "relative flex items-center text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
+          collapsed
+            ? "mx-auto size-10 justify-center rounded-lg"
+            : "-mr-3 h-9 gap-2.5 rounded-l-lg px-2.5",
+          active ? "text-accent" : "text-muted hover:bg-surface-secondary/60 hover:text-foreground",
         );
         const title = collapsed ? item.label : undefined;
 
-        return external ? (
-          <a
-            aria-label={title}
-            className={itemClass}
-            href={item.href}
-            key={item.href}
-            rel="noreferrer"
-            target="_blank"
-            title={title}
-          >
-            {content}
-          </a>
-        ) : (
+        return (
           <Link
             aria-current={active ? "page" : undefined}
             aria-label={title}
@@ -112,6 +103,21 @@ function SidebarLink({
             key={item.href}
             title={title}
           >
+            {active ? (
+              <motion.span
+                aria-hidden
+                className={classNames(
+                  "pointer-events-none absolute inset-0 bg-accent/10",
+                  collapsed ? "rounded-lg" : "rounded-l-lg",
+                )}
+                layoutId="sidebar-active"
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : { damping: 36, mass: 0.7, stiffness: 420, type: "spring" }
+                }
+              />
+            ) : null}
             {content}
           </Link>
         );
@@ -145,10 +151,12 @@ function SidebarGroup({
 
 function Sidebar({
   collapsed,
+  onSettings,
   onToggle,
   pathname,
 }: {
   collapsed: boolean;
+  onSettings: () => void;
   onToggle: () => void;
   pathname: string;
 }) {
@@ -156,7 +164,7 @@ function Sidebar({
     <aside
       className={classNames(
         "sticky top-0 hidden h-svh shrink-0 flex-col overflow-hidden transition-[width] duration-200 ease-out xl:flex",
-        collapsed ? "w-[72px]" : "w-[260px]",
+        collapsed ? "w-[4.5rem]" : "w-[16.25rem]",
       )}
       id="app-sidebar"
     >
@@ -176,48 +184,60 @@ function Sidebar({
           collapsed ? "px-2" : "px-3",
         )}
       >
-        <nav aria-label="Primary" className="grid gap-5">
-          <SidebarGroup
-            collapsed={collapsed}
-            items={primaryNavigation}
-            pathname={pathname}
-            title="Explore"
-          />
-          <SidebarGroup
-            collapsed={collapsed}
-            items={chainNavigation}
-            pathname={pathname}
-            title="Chain"
-          />
-          <SidebarGroup
-            collapsed={collapsed}
-            items={dataNavigation}
-            pathname={pathname}
-            title="Data"
-          />
-          <SidebarGroup
-            collapsed={collapsed}
-            items={buildNavigation}
-            pathname={pathname}
-            title="Build"
-          />
-          <SidebarGroup
-            collapsed={collapsed}
-            items={resourceNavigation}
-            pathname={pathname}
-            title="Resources"
-          />
-        </nav>
+        <LayoutGroup id="sidebar-navigation">
+          <nav aria-label="Primary" className="grid gap-5">
+            <SidebarGroup
+              collapsed={collapsed}
+              items={primaryNavigation}
+              pathname={pathname}
+              title="Explore"
+            />
+            <SidebarGroup
+              collapsed={collapsed}
+              items={chainNavigation}
+              pathname={pathname}
+              title="Chain"
+            />
+            <SidebarGroup
+              collapsed={collapsed}
+              items={dataNavigation}
+              pathname={pathname}
+              title="Data"
+            />
+            <SidebarGroup
+              collapsed={collapsed}
+              items={buildNavigation}
+              pathname={pathname}
+              title="Build"
+            />
+          </nav>
+        </LayoutGroup>
       </div>
 
       <div className={classNames("mt-auto shrink-0 pb-16", collapsed ? "px-2" : "px-3")}>
+        <button
+          aria-label="Open appearance settings"
+          className={classNames(
+            "mb-1 flex items-center rounded-lg text-muted transition-colors hover:bg-surface-secondary/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
+            collapsed
+              ? "mx-auto size-10 justify-center"
+              : "-mr-3 h-9 w-[calc(100%+0.75rem)] gap-2.5 rounded-l-lg px-2.5 text-[13px]",
+          )}
+          onClick={onSettings}
+          type="button"
+        >
+          <SettingsIcon className="size-4" />
+          {collapsed ? null : <span>Settings</span>}
+        </button>
         <button
           aria-controls="app-sidebar"
           aria-expanded={!collapsed}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={classNames(
             "flex items-center rounded-lg text-muted transition-colors hover:bg-surface-secondary/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
-            collapsed ? "mx-auto size-10 justify-center" : "h-9 w-full gap-2.5 px-2.5 text-[13px]",
+            collapsed
+              ? "mx-auto size-10 justify-center"
+              : "-mr-3 h-9 w-[calc(100%+0.75rem)] gap-2.5 rounded-l-lg px-2.5 text-[13px]",
           )}
           onClick={onToggle}
           type="button"
@@ -252,16 +272,11 @@ function MobileGroup({
         {items.map((item) => {
           const Icon = item.icon;
           const active = activeFor(pathname, item.href);
-          const external = "external" in item && item.external === true;
           const content = (
             <>
               <Icon className="size-4 shrink-0" />
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
-              {external ? (
-                <ArrowRightUpIcon className="size-4 shrink-0 text-muted" />
-              ) : active ? (
-                <span className="size-1.5 shrink-0 rounded-full bg-foreground" />
-              ) : null}
+              {active ? <span className="size-1.5 shrink-0 rounded-full bg-foreground" /> : null}
             </>
           );
           const itemClass = classNames(
@@ -269,18 +284,7 @@ function MobileGroup({
             active ? "text-foreground" : "text-muted hover:text-foreground",
           );
 
-          return external ? (
-            <a
-              className={itemClass}
-              href={item.href}
-              key={item.href}
-              onClick={onClose}
-              rel="noreferrer"
-              target="_blank"
-            >
-              {content}
-            </a>
-          ) : (
+          return (
             <Link className={itemClass} href={item.href as Route} key={item.href} onClick={onClose}>
               {content}
             </Link>
@@ -294,11 +298,13 @@ function MobileGroup({
 function MobileMenu({
   onClose,
   onSearch,
+  onSettings,
   open,
   pathname,
 }: {
   onClose: () => void;
   onSearch: () => void;
+  onSettings: () => void;
   open: boolean;
   pathname: string;
 }) {
@@ -417,13 +423,19 @@ function MobileMenu({
             pathname={pathname}
             title="Build"
           />
-          <MobileGroup
-            items={resourceNavigation}
-            onClose={onClose}
-            pathname={pathname}
-            title="Resources"
-          />
         </nav>
+
+        <button
+          className="mt-6 flex h-11 w-full items-center gap-3 text-[15px] text-muted transition-colors hover:text-foreground"
+          onClick={() => {
+            onClose();
+            onSettings();
+          }}
+          type="button"
+        >
+          <SettingsIcon className="size-4" />
+          <span>Settings</span>
+        </button>
 
         <div className="mt-6 flex items-center justify-between">
           <span className="text-[10px] text-muted uppercase tracking-[0.16em]">Appearance</span>
@@ -439,8 +451,10 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const market = useMarket();
   const [commandOpen, setCommandOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
+  const showBreadcrumbs = pathname !== "/" && pathname !== "/bpp9000";
   const price = market.data?.data?.price_usd;
   const pricePerBillion =
     typeof price === "number" && Number.isFinite(price) ? price * 1_000_000_000 : null;
@@ -483,17 +497,22 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           Skip to content
         </a>
 
-        <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} pathname={pathname} />
+        <Sidebar
+          collapsed={sidebarCollapsed}
+          onSettings={() => setSettingsOpen(true)}
+          onToggle={toggleSidebar}
+          pathname={pathname}
+        />
 
         <div className="flex h-svh min-w-0 flex-1 flex-col overflow-hidden">
-          <header className="z-40 shrink-0 bg-background/85 backdrop-blur-xl">
+          <header className="relative z-40 shrink-0 bg-background/85 backdrop-blur-xl">
             <div className="page-width flex h-16 items-center px-4 lg:px-8">
               <div className="xl:hidden">
                 <Brand flush />
               </div>
 
               <div className="hidden min-w-0 flex-1 pr-4 xl:block">
-                <Breadcrumbs inline />
+                <Breadcrumbs />
               </div>
 
               <div className="ml-auto flex items-center gap-1.5">
@@ -503,37 +522,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       ? "Qubic price per billion unavailable"
                       : `Qubic price per billion ${formatPerBillion(pricePerBillion)}`
                   }
-                  className="min-w-[4.5rem] px-1.5 text-right font-medium text-foreground text-xs tabular-nums"
+                  className="min-w-[4.5rem] px-1.5 text-right font-medium text-accent text-xs tabular-nums"
                   title="Qubic price per billion"
                 >
                   {formatPerBillion(pricePerBillion)}
                 </span>
 
-                <button
-                  aria-keyshortcuts="Meta+K Control+K"
-                  className="hidden h-9 items-center gap-2 rounded-full border border-foreground/10 bg-background/30 px-3 text-muted text-xs transition-colors hover:border-foreground/20 hover:bg-surface-secondary hover:text-foreground xl:flex"
-                  onClick={openSearch}
-                  type="button"
-                >
-                  <MagnifierIcon className="size-3.5" />
-                  <span>Search</span>
-                  <kbd className="rounded-full border border-foreground/10 px-1.5 py-0.5 font-mono text-[9px] text-muted">
-                    ⌘K
-                  </kbd>
-                </button>
-
-                <button
-                  aria-label="Search"
-                  className="hidden size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-secondary hover:text-foreground min-[360px]:flex xl:hidden"
-                  onClick={openSearch}
-                  type="button"
-                >
-                  <MagnifierIcon className="size-4" />
-                </button>
-
                 <div className="hidden md:block">
                   <ModeToggle />
                 </div>
+
+                <button
+                  aria-label="Open appearance settings"
+                  className="hidden size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-secondary hover:text-foreground md:flex"
+                  onClick={() => setSettingsOpen(true)}
+                  type="button"
+                >
+                  <SettingsIcon className="size-4" />
+                </button>
 
                 <button
                   aria-controls="mobile-navigation"
@@ -551,9 +557,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 </button>
               </div>
             </div>
-            <div className="page-width px-4 xl:hidden">
-              <Breadcrumbs inline />
-            </div>
+            {showBreadcrumbs ? (
+              <div className="page-width px-4 pb-3 xl:hidden">
+                <Breadcrumbs />
+              </div>
+            ) : null}
           </header>
 
           <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface/50 xl:rounded-tl-[28px]">
@@ -611,6 +619,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <MobileMenu
               onClose={closeMobile}
               onSearch={openSearch}
+              onSettings={() => setSettingsOpen(true)}
               open={mobileOpen}
               pathname={pathname}
             />
@@ -619,6 +628,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </div>
 
       <CommandMenu onOpenChange={setCommandOpen} open={commandOpen} />
+      <SettingsDialog onOpenChange={setSettingsOpen} open={settingsOpen} />
     </LiveStreamProvider>
   );
 }

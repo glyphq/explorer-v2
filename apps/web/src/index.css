@@ -2,7 +2,7 @@
 @import "sileo/styles.css";
 
 :root {
-  --page-max-width: 1440px;
+  --page-max-width: clamp(1440px, 88vw, 2040px);
 }
 
 @layer utilities {

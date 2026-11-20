@@ -17,10 +17,6 @@ export interface NavigationItem {
   label: string;
 }
 
-export interface ResourceItem extends NavigationItem {
-  external: true;
-}
-
 const overview = {
   href: "/",
   icon: Home2Icon,
@@ -108,21 +104,6 @@ export const chainNavigation = [ticks, epochs, transactions, events] as const;
 export const dataNavigation = [accounts, assets, exchanges] as const;
 
 export const buildNavigation = [contracts, proposals] as const;
-
-export const resourceNavigation: ResourceItem[] = [
-  {
-    external: true,
-    href: "https://api.glyphq.org/status",
-    icon: PulseIcon,
-    label: "Indexer status",
-  },
-  {
-    external: true,
-    href: "https://api.glyphq.org/openapi.json",
-    icon: DocumentTextIcon,
-    label: "OpenAPI",
-  },
-];
 
 export function activeFor(pathname: string, href: string) {
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(`${href}/`);

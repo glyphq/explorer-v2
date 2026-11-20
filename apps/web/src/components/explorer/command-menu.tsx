@@ -4,7 +4,7 @@ import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { Command } from "cmdk";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import type { Route } from "next";
 import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -188,32 +188,6 @@ function isTypingTarget(target: EventTarget | null): boolean {
   );
 }
 
-export function CommandMenuButton({
-  compact = false,
-  onClick,
-}: {
-  compact?: boolean;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      className="flex h-9 w-full items-center gap-2 rounded-lg bg-surface-secondary px-3 text-left text-muted text-xs transition-colors hover:bg-surface-tertiary hover:text-foreground"
-      onClick={onClick}
-      type="button"
-    >
-      <MagnifierIcon className="size-4 shrink-0" />
-      <span className="min-w-0 flex-1 truncate">
-        {compact ? "Search or jump to" : "Search ticks, accounts, or jump to"}
-      </span>
-      {compact ? null : (
-        <kbd className="rounded-[4px] bg-background px-1.5 py-0.5 font-mono text-[9px] text-muted">
-          ⌘K
-        </kbd>
-      )}
-    </button>
-  );
-}
-
 export function CommandMenu({
   onOpenChange,
   open,
@@ -323,181 +297,211 @@ export function CommandMenu({
   };
 
   return (
-    <AnimatePresence>
-      {open ? (
-        <motion.div
-          animate={{ opacity: 1 }}
-          className="fixed inset-0 z-[100] flex items-start justify-center bg-black/55 px-4 pt-[12vh] backdrop-blur-sm"
-          exit={{ opacity: 0 }}
-          initial={{ opacity: 0 }}
-          onMouseDown={() => onOpenChange(false)}
-          transition={{ duration: 0.18 }}
-        >
+    <LayoutGroup id="command-menu">
+      <AnimatePresence initial={false}>
+        {open ? (
           <motion.div
-            animate={{ filter: "blur(0px)", opacity: 1, scale: 1, y: 0 }}
-            aria-label="Command menu"
-            aria-modal="true"
-            className="w-full max-w-[640px] overflow-hidden rounded-2xl bg-overlay text-foreground shadow-overlay"
-            exit={{ filter: "blur(6px)", opacity: 0, scale: 0.97, y: -10 }}
-            initial={{ filter: "blur(10px)", opacity: 0, scale: 0.96, y: -18 }}
-            onMouseDown={(event) => event.stopPropagation()}
-            ref={panelRef}
-            role="dialog"
-            transition={{
-              damping: 30,
-              mass: 0.7,
-              stiffness: 360,
-              type: "spring",
-            }}
+            animate={{ opacity: 1 }}
+            className="fixed inset-0 z-[100] flex items-start justify-center bg-black/55 px-4 pt-[12vh] backdrop-blur-sm"
+            exit={{ opacity: 0 }}
+            initial={{ opacity: 0 }}
+            key="overlay"
+            onMouseDown={() => onOpenChange(false)}
+            transition={{ duration: 0.18 }}
           >
-            <Command label="Command menu" loop>
-              <div className="flex items-center gap-3 px-4 py-3">
-                <MagnifierIcon className="size-4 shrink-0 text-muted" />
-                <Command.Input
-                  autoFocus
-                  className="h-8 w-full bg-transparent text-foreground text-sm outline-none placeholder:text-muted"
-                  onValueChange={setQuery}
-                  placeholder="Search ticks, transactions, accounts, or jump to a page"
-                  value={query}
-                />
-                <kbd className="shrink-0 rounded-[4px] bg-surface-secondary px-1.5 py-0.5 font-mono text-[9px] text-muted">
-                  esc
-                </kbd>
-              </div>
+            <motion.div
+              animate={{ opacity: 1 }}
+              aria-label="Command menu"
+              aria-modal="true"
+              className="w-full max-w-[640px] overflow-hidden rounded-2xl bg-overlay text-foreground"
+              exit={{ opacity: 0 }}
+              initial={{ opacity: 0 }}
+              layoutId="command-surface"
+              onMouseDown={(event) => event.stopPropagation()}
+              ref={panelRef}
+              role="dialog"
+              transition={{
+                damping: 34,
+                mass: 0.7,
+                stiffness: 360,
+                type: "spring",
+              }}
+            >
+              <Command label="Command menu" loop>
+                <div className="flex items-center gap-3 px-4 py-3">
+                  <MagnifierIcon className="size-4 shrink-0 text-muted" />
+                  <Command.Input
+                    autoFocus
+                    className="h-8 w-full bg-transparent text-foreground text-sm outline-none placeholder:text-muted"
+                    onValueChange={setQuery}
+                    placeholder="Search ticks, transactions, accounts, or jump to a page"
+                    value={query}
+                  />
+                  <kbd className="shrink-0 rounded-[4px] bg-surface-secondary px-1.5 py-0.5 font-mono text-[9px] text-muted">
+                    esc
+                  </kbd>
+                </div>
 
-              <Command.List className="max-h-[440px] overflow-y-auto overscroll-contain p-2">
-                <Command.Empty className="px-3 py-10 text-center text-muted text-sm">
-                  No results for “{query}”.
-                </Command.Empty>
+                <Command.List className="max-h-[440px] overflow-y-auto overscroll-contain p-2">
+                  <Command.Empty className="px-3 py-10 text-center text-muted text-sm">
+                    No results for “{query}”.
+                  </Command.Empty>
 
-                {identity ? (
-                  <Command.Group
-                    className="mb-1"
-                    heading={
-                      <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
-                        Open account
-                      </span>
-                    }
-                  >
-                    <Command.Item
-                      className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
-                      onSelect={() =>
-                        run(
-                          directContract
-                            ? (`/contracts/${directContract.name.toLowerCase()}` as Route)
-                            : (`/accounts/${identity}` as Route),
-                        )
+                  {identity ? (
+                    <Command.Group
+                      className="mb-1"
+                      heading={
+                        <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
+                          Open account
+                        </span>
                       }
-                      value={`${directContract ? "contract" : "account"} ${directContract?.name ?? identity} ${query}`}
                     >
-                      {directContract ? (
-                        <ContractMark name={directContract.name} size={18} />
-                      ) : (
-                        <UsersGroupRoundedIcon className="size-4 shrink-0" />
-                      )}
-                      <span
-                        className={
-                          directContract
-                            ? "min-w-0 flex-1 truncate text-xs"
-                            : "min-w-0 flex-1 truncate font-mono text-xs"
+                      <Command.Item
+                        className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
+                        onSelect={() =>
+                          run(
+                            directContract
+                              ? (`/contracts/${directContract.name.toLowerCase()}` as Route)
+                              : (`/accounts/${identity}` as Route),
+                          )
                         }
-                        title={identity}
+                        value={`${directContract ? "contract" : "account"} ${directContract?.name ?? identity} ${query}`}
                       >
-                        {directContract?.name ?? identity}
-                      </span>
-                      <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
-                        {directContract ? "Contract" : "Account"}
-                      </span>
-                    </Command.Item>
-                  </Command.Group>
-                ) : null}
-
-                {history.length > 0 ? (
-                  <Command.Group
-                    className="mb-1"
-                    heading={
-                      <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
-                        Recent
-                      </span>
-                    }
-                  >
-                    {history.map((path) => (
-                      <Command.Item
-                        className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
-                        key={path}
-                        onSelect={() => run(path)}
-                        value={`recent ${labelForPath(path)} ${path}`}
-                      >
-                        <ClockCircleIcon className="size-4 shrink-0" />
-                        <span className="min-w-0 flex-1 truncate">{labelForPath(path)}</span>
-                        <span className="shrink-0 font-mono text-[10px] text-muted">{path}</span>
+                        {directContract ? (
+                          <ContractMark name={directContract.name} size={18} />
+                        ) : (
+                          <UsersGroupRoundedIcon className="size-4 shrink-0" />
+                        )}
+                        <span
+                          className={
+                            directContract
+                              ? "min-w-0 flex-1 truncate text-xs"
+                              : "min-w-0 flex-1 truncate font-mono text-xs"
+                          }
+                          title={identity}
+                        >
+                          {directContract?.name ?? identity}
+                        </span>
+                        <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
+                          {directContract ? "Contract" : "Account"}
+                        </span>
                       </Command.Item>
-                    ))}
-                  </Command.Group>
-                ) : null}
+                    </Command.Group>
+                  ) : null}
 
-                <Command.Group
-                  heading={
-                    <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
-                      Navigate
-                    </span>
-                  }
-                >
-                  {navigation.map((item) => {
-                    const Icon = item.icon;
-                    const current = activeFor(pathname ?? "", item.href);
-                    return (
-                      <Command.Item
-                        className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
-                        key={item.href}
-                        onSelect={() => run(item.href)}
-                        value={`${item.label} ${item.href}`}
-                      >
-                        <Icon className="size-4 shrink-0" />
-                        <span className="flex-1">{item.label}</span>
-                        {current ? (
-                          <span className="font-mono text-[9px] text-muted uppercase tracking-[0.14em]">
-                            current
-                          </span>
-                        ) : null}
-                      </Command.Item>
-                    );
-                  })}
-                </Command.Group>
+                  {history.length > 0 ? (
+                    <Command.Group
+                      className="mb-1"
+                      heading={
+                        <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
+                          Recent
+                        </span>
+                      }
+                    >
+                      {history.map((path) => (
+                        <Command.Item
+                          className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
+                          key={path}
+                          onSelect={() => run(path)}
+                          value={`recent ${labelForPath(path)} ${path}`}
+                        >
+                          <ClockCircleIcon className="size-4 shrink-0" />
+                          <span className="min-w-0 flex-1 truncate">{labelForPath(path)}</span>
+                          <span className="shrink-0 font-mono text-[10px] text-muted">{path}</span>
+                        </Command.Item>
+                      ))}
+                    </Command.Group>
+                  ) : null}
 
-                {query.trim().length >= 3 ? (
                   <Command.Group
                     heading={
                       <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
-                        Index search
+                        Navigate
                       </span>
                     }
                   >
-                    {isFetching ? (
-                      <Command.Loading className="px-3 py-2 text-muted text-xs">
-                        Searching the index…
-                      </Command.Loading>
-                    ) : null}
-                    {results.map((result, index) => (
-                      <SearchResultRow
-                        key={`${result.type}-${index}`}
-                        onSelect={run}
-                        result={result}
-                        skipIdentity={identity}
-                      />
-                    ))}
+                    {navigation.map((item) => {
+                      const Icon = item.icon;
+                      const current = activeFor(pathname ?? "", item.href);
+                      return (
+                        <Command.Item
+                          className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
+                          key={item.href}
+                          onSelect={() => run(item.href)}
+                          value={`${item.label} ${item.href}`}
+                        >
+                          <Icon className="size-4 shrink-0" />
+                          <span className="flex-1">{item.label}</span>
+                          {current ? (
+                            <span className="font-mono text-[9px] text-muted uppercase tracking-[0.14em]">
+                              current
+                            </span>
+                          ) : null}
+                        </Command.Item>
+                      );
+                    })}
                   </Command.Group>
-                ) : null}
-              </Command.List>
 
-              <div className="flex items-center justify-between gap-4 bg-surface-secondary/50 px-4 py-2 text-[10px] text-muted">
-                <span>↑↓ navigate · ↵ open · cmd+k toggle</span>
-                <span>esc close</span>
-              </div>
-            </Command>
+                  {query.trim().length >= 3 ? (
+                    <Command.Group
+                      heading={
+                        <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
+                          Index search
+                        </span>
+                      }
+                    >
+                      {isFetching ? (
+                        <Command.Loading className="px-3 py-2 text-muted text-xs">
+                          Searching the index…
+                        </Command.Loading>
+                      ) : null}
+                      {results.map((result, index) => (
+                        <SearchResultRow
+                          key={`${result.type}-${index}`}
+                          onSelect={run}
+                          result={result}
+                          skipIdentity={identity}
+                        />
+                      ))}
+                    </Command.Group>
+                  ) : null}
+                </Command.List>
+
+                <div className="flex items-center justify-between gap-4 bg-surface-secondary/50 px-4 py-2 text-[10px] text-muted">
+                  <span>↑↓ navigate · ↵ open · cmd+k toggle</span>
+                  <span>esc close</span>
+                </div>
+              </Command>
+            </motion.div>
           </motion.div>
-        </motion.div>
-      ) : null}
-    </AnimatePresence>
+        ) : (
+          <div
+            className="pointer-events-none fixed inset-x-0 top-0 z-50 flex justify-center"
+            key="notch"
+          >
+            <motion.button
+              aria-label="Search or jump to"
+              aria-keyshortcuts="Meta+K Control+K"
+              className="pointer-events-auto flex h-9 items-center justify-center gap-2 rounded-b-3xl bg-surface px-5 text-muted text-xs transition-colors hover:bg-surface-secondary hover:text-foreground sm:min-w-52 sm:px-6"
+              layoutId="command-surface"
+              onClick={() => onOpenChange(true)}
+              transition={{
+                damping: 34,
+                mass: 0.7,
+                stiffness: 360,
+                type: "spring",
+              }}
+              type="button"
+            >
+              <MagnifierIcon className="size-3.5 shrink-0" />
+              <span className="hidden sm:inline">Search</span>
+              <kbd className="hidden rounded-[4px] bg-background px-1.5 py-0.5 font-mono text-[9px] text-muted md:inline">
+                ⌘K
+              </kbd>
+            </motion.button>
+          </div>
+        )}
+      </AnimatePresence>
+    </LayoutGroup>
   );
 }

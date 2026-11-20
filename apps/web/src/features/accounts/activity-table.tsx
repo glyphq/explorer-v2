@@ -344,7 +344,7 @@ function ActivityCell({ events, kind }: { events: ActivityEvent[]; kind: Activit
         <div className="relative mt-2.5 ml-3 pl-5">
           <span
             aria-hidden
-            className="absolute -top-2 bottom-2 left-0 w-px rounded-full bg-gradient-to-b from-foreground/25 via-foreground/10 to-transparent"
+            className="absolute -top-2 bottom-2 left-0 w-px rounded-full bg-foreground/15"
           />
           <ol
             aria-label={`${events.length} decoded ${events.length === 1 ? "event" : "events"}`}

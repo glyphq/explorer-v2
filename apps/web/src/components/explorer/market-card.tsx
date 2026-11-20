@@ -2,7 +2,6 @@
 
 import { AsciiSkeleton } from "ascii-reveal";
 import { motion } from "motion/react";
-import { useId } from "react";
 
 import { AnimatedNumber } from "@/components/explorer/animated-number";
 import type { MarketSnapshot, PricePoint } from "@/lib/api/generated/types.gen";
@@ -11,12 +10,12 @@ import { classNames, formatPercent } from "@/lib/format";
 const chartWidth = 640;
 const chartHeight = 160;
 
-function buildPath(points: PricePoint[]): { area: string; line: string } {
+function buildPath(points: PricePoint[]): string {
   const prices = points
     .map((point) => point.price_usdt)
     .filter((value): value is number => typeof value === "number" && Number.isFinite(value));
   if (prices.length === 0) {
-    return { area: "", line: "" };
+    return "";
   }
 
   const min = Math.min(...prices);
@@ -36,10 +35,7 @@ function buildPath(points: PricePoint[]): { area: string; line: string } {
     return `${path} C ${middle} ${previous.y}, ${middle} ${point.y}, ${point.x} ${point.y}`;
   }, "");
 
-  return {
-    area: `${line} L ${chartWidth} ${chartHeight} L 0 ${chartHeight} Z`,
-    line,
-  };
+  return line;
 }
 
 export function MarketCard({
@@ -51,9 +47,6 @@ export function MarketCard({
   isLoading?: boolean;
   market: MarketSnapshot | undefined;
 }) {
-  const uid = useId().replaceAll(":", "");
-  const gradientId = `market-gradient-${uid}`;
-  const maskId = `market-mask-${uid}`;
   const points = history ?? [];
   const path = buildPath(points);
   const change = market?.change_24h_percent ?? 0;
@@ -78,34 +71,12 @@ export function MarketCard({
           preserveAspectRatio="none"
           viewBox={`0 0 ${chartWidth} ${chartHeight}`}
         >
-          <defs>
-            <linearGradient id={gradientId} x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0%" stopColor="var(--foreground)" stopOpacity="0.1" />
-              <stop offset="100%" stopColor="var(--foreground)" stopOpacity="0" />
-            </linearGradient>
-            <mask
-              height={chartHeight}
-              id={maskId}
-              maskUnits="userSpaceOnUse"
-              width={chartWidth}
-              x="0"
-              y="0"
-            >
-              <path d={path.area} fill="white" />
-            </mask>
-          </defs>
-          <rect
-            fill={`url(#${gradientId})`}
-            height={chartHeight}
-            mask={`url(#${maskId})`}
-            width={chartWidth}
-          />
           <motion.path
-            animate={{ opacity: 0.2, pathLength: 1 }}
-            d={path.line}
+            animate={{ opacity: 0.55, pathLength: 1 }}
+            d={path}
             fill="none"
             initial={{ opacity: 0, pathLength: 0 }}
-            stroke="var(--foreground)"
+            stroke={positive ? "var(--success)" : "var(--danger)"}
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.4}

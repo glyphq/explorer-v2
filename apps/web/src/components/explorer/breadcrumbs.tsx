@@ -101,55 +101,51 @@ function crumbsFor(pathname: string): Crumb[] {
   return crumbs;
 }
 
-function widthFor(): string {
-  return "max-w-[var(--page-max-width)]";
-}
-
-export function Breadcrumbs({ inline = false }: { inline?: boolean }) {
+export function Breadcrumbs() {
   const pathname = usePathname();
   const crumbs = crumbsFor(pathname);
 
-  return (
-    <div
-      className={inline ? "min-w-0 pb-3 xl:pb-0" : `mx-auto w-full ${widthFor()} px-4 pt-3 lg:px-8`}
-    >
-      <nav
-        aria-label="Breadcrumb"
-        className="max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
-      >
-        <ol className="flex items-center gap-1.5 whitespace-nowrap text-[11px]">
-          {crumbs.map((crumb, index) => {
-            const Icon = crumb.icon;
-            const content = (
-              <>
-                <Icon className="size-3.5 shrink-0" />
-                <span className="max-w-[14rem] truncate">{crumb.label}</span>
-              </>
-            );
+  if (crumbs.length <= 1) {
+    return null;
+  }
 
-            return (
-              <li className="flex items-center gap-1.5" key={`${crumb.href}-${index}`}>
-                {index > 0 ? <AltArrowRightIcon className="size-3 shrink-0 text-muted/35" /> : null}
-                {crumb.current ? (
-                  <span
-                    aria-current="page"
-                    className="flex items-center gap-1.5 font-medium text-foreground"
-                  >
-                    {content}
-                  </span>
-                ) : (
-                  <Link
-                    className="flex items-center gap-1.5 text-muted transition-colors hover:text-foreground"
-                    href={crumb.href as Route}
-                  >
-                    {content}
-                  </Link>
-                )}
-              </li>
-            );
-          })}
-        </ol>
-      </nav>
-    </div>
+  return (
+    <nav
+      aria-label="Breadcrumb"
+      className="max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+    >
+      <ol className="flex items-center gap-1.5 whitespace-nowrap text-[11px]">
+        {crumbs.map((crumb, index) => {
+          const Icon = crumb.icon;
+          const content = (
+            <>
+              <Icon className="size-3.5 shrink-0" />
+              <span className="max-w-[14rem] truncate">{crumb.label}</span>
+            </>
+          );
+
+          return (
+            <li className="flex items-center gap-1.5" key={`${crumb.href}-${index}`}>
+              {index > 0 ? <AltArrowRightIcon className="size-3 shrink-0 text-muted/35" /> : null}
+              {crumb.current ? (
+                <span
+                  aria-current="page"
+                  className="flex items-center gap-1.5 font-medium text-accent"
+                >
+                  {content}
+                </span>
+              ) : (
+                <Link
+                  className="flex items-center gap-1.5 text-muted transition-colors hover:text-foreground"
+                  href={crumb.href as Route}
+                >
+                  {content}
+                </Link>
+              )}
+            </li>
+          );
+        })}
+      </ol>
+    </nav>
   );
 }

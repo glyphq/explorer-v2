@@ -18,7 +18,7 @@ function ActionTooltip({ children, label }: { children: ReactNode; label: string
     <span className="group relative inline-flex">
       {children}
       <span
-        className="pointer-events-none absolute top-full left-1/2 z-50 mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 font-medium text-background text-xs opacity-0 shadow-lg transition-opacity duration-150 group-focus-within:opacity-100 group-hover:opacity-100"
+        className="pointer-events-none absolute top-full left-1/2 z-50 mt-1.5 -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 font-medium text-background text-xs opacity-0 transition-opacity duration-150 group-focus-within:opacity-100 group-hover:opacity-100"
         role="tooltip"
       >
         {label}
