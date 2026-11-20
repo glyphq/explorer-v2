@@ -1,7 +1,3 @@
-import seed from "./proposals-seed.json";
-
-import { readChangedProposals } from "./proposals-chain";
-
 export type ProposalOption = {
   index: number;
   label: string;
@@ -35,12 +31,16 @@ type SeedProposal = Omit<Proposal, "proposerIdentity" | "publishedTick" | "url">
 };
 
 const STORAGE_KEY = "proposals:v2";
-const seedProposals = seed as SeedProposal[];
+const SNAPSHOT_CACHE_MS = 30_000;
 
 let kvPromise: Promise<KVNamespace | null> | null = null;
-let lastSyncAt = 0;
+let snapshotCache: { at: number; value: ProposalSnapshot } | null = null;
 
-const SYNC_INTERVAL_MS = 5 * 60_000;
+type ProposalSnapshot = {
+  active: Proposal[];
+  ended: Proposal[];
+  source: "kv" | "seed";
+};
 
 async function proposalsKV(): Promise<KVNamespace | null> {
   kvPromise ??= (async () => {
@@ -60,35 +60,21 @@ async function readStored(kv: KVNamespace): Promise<Proposal[] | null> {
   return Array.isArray(rows) && rows.length > 0 ? rows : null;
 }
 
-async function writeStored(kv: KVNamespace, proposals: Proposal[]): Promise<void> {
-  await kv.put(STORAGE_KEY, JSON.stringify(proposals));
-}
-
-async function syncSnapshot(kv: KVNamespace, existing: Proposal[]): Promise<Proposal[]> {
-  if (Date.now() - lastSyncAt < SYNC_INTERVAL_MS) {
-    return existing;
-  }
-  lastSyncAt = Date.now();
-
-  const openIds = new Set(
-    existing.filter((proposal) => proposal.status === 2).map((proposal) => proposal.id),
-  );
-  const changed = await readChangedProposals(existing, openIds);
-  if (changed.length === 0) {
-    return existing;
-  }
-
-  const byId = new Map(existing.map((proposal) => [proposal.id, proposal]));
-  for (const proposal of changed) {
-    byId.set(proposal.id, proposal);
-  }
-  const proposals = [...byId.values()];
-  await writeStored(kv, proposals);
-  return proposals;
-}
-
 function byNewest(left: Proposal, right: Proposal): number {
   return right.epoch - left.epoch || (right.publishedTick ?? 0) - (left.publishedTick ?? 0);
+}
+
+function toSnapshot(proposals: Proposal[], source: ProposalSnapshot["source"]): ProposalSnapshot {
+  return {
+    active: proposals.filter((proposal) => proposal.status === 2).sort(byNewest),
+    ended: proposals.filter((proposal) => proposal.status !== 2).sort(byNewest),
+    source,
+  };
+}
+
+async function seedSnapshot(): Promise<ProposalSnapshot> {
+  const { default: seed } = await import("./proposals-seed.json");
+  return toSnapshot(seed as SeedProposal[], "seed");
 }
 
 export async function getProposalByRoute(
@@ -108,37 +94,30 @@ export async function getProposalByRoute(
   );
 }
 
-export async function getProposals(): Promise<{
-  active: Proposal[];
-  ended: Proposal[];
-  source: "kv" | "seed";
-}> {
+/**
+ * Reads the proposal snapshot maintained by the hourly proposals-sync
+ * workflow. Workers never query the chain or backfill KV during a request.
+ */
+export async function getProposals(): Promise<ProposalSnapshot> {
+  if (snapshotCache && Date.now() - snapshotCache.at < SNAPSHOT_CACHE_MS) {
+    return snapshotCache.value;
+  }
+
   const kv = await proposalsKV();
   if (kv) {
     try {
-      let proposals = await readStored(kv);
-      if (!proposals) {
-        proposals = seedProposals;
-        await writeStored(kv, proposals);
+      const proposals = await readStored(kv);
+      if (proposals) {
+        const value = toSnapshot(proposals, "kv");
+        snapshotCache = { at: Date.now(), value };
+        return value;
       }
-      try {
-        proposals = await syncSnapshot(kv, proposals);
-      } catch {
-        // Keep serving the stored snapshot when the live chain query is unavailable.
-      }
-      return {
-        active: proposals.filter((proposal) => proposal.status === 2).sort(byNewest),
-        ended: proposals.filter((proposal) => proposal.status !== 2).sort(byNewest),
-        source: "kv",
-      };
     } catch {
       // Fall back to the bundled on-chain snapshot if the binding is unavailable.
     }
   }
 
-  return {
-    active: seedProposals.filter((proposal) => proposal.status === 2).sort(byNewest),
-    ended: seedProposals.filter((proposal) => proposal.status !== 2).sort(byNewest),
-    source: "seed",
-  };
+  const value = await seedSnapshot();
+  snapshotCache = { at: Date.now(), value };
+  return value;
 }

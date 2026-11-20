@@ -14,7 +14,7 @@ import { countLabel, formatInteger } from "@/lib/format";
 import { getProposalDocument } from "@/lib/proposal-content";
 import { getProposalByRoute } from "@/lib/proposals";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 300;
 
 type ProposalPageProps = {
   params: Promise<{ contract: string; index: string }>;

@@ -18,7 +18,7 @@ import { getCcfTreasury } from "@/lib/ccf-treasury";
 import { countLabel, formatInteger } from "@/lib/format";
 import { getProposals, type Proposal } from "@/lib/proposals";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 60;
 
 export const metadata: Metadata = {
   description:
@@ -66,6 +66,7 @@ function ProposalCard({ proposal }: { proposal: Proposal }) {
           <Link
             className="decoration-foreground/25 underline-offset-4 transition-colors hover:underline"
             href={proposalHref(proposal)}
+            prefetch={false}
           >
             {proposal.title}
           </Link>
@@ -155,6 +156,7 @@ function ProposalRow({ proposal }: { proposal: Proposal }) {
     <Link
       className="group flex items-stretch transition-colors hover:bg-surface-secondary"
       href={proposalHref(proposal)}
+      prefetch={false}
     >
       <span aria-hidden className={`w-5 shrink-0 ${status.barClassName}`} title={status.label} />
       <div className="flex min-w-0 flex-1 items-center gap-3 px-4 py-3.5 sm:gap-4 sm:px-5">

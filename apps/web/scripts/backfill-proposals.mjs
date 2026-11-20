@@ -18,6 +18,49 @@ const CONTRACTS = [
 ];
 const STATUS = { PASSED: 3, REJECTED: 6, VOTING: 2, INCONCLUSIVE: 7 };
 const OUTPUT_PATH = new URL("../src/lib/proposals-seed.json", import.meta.url);
+const KV_KEY = "proposals:v2";
+const KV_NAMESPACE_ID = process.env.PROPOSALS_KV_NAMESPACE_ID;
+const CLOUDFLARE_ACCOUNT_ID = process.env.CLOUDFLARE_ACCOUNT_ID;
+const CLOUDFLARE_API_TOKEN = process.env.CLOUDFLARE_API_TOKEN;
+
+function kvUrl() {
+  return `https://api.cloudflare.com/client/v4/accounts/${CLOUDFLARE_ACCOUNT_ID}/storage/kv/namespaces/${KV_NAMESPACE_ID}/values/${encodeURIComponent(KV_KEY)}`;
+}
+
+async function readKV() {
+  if (!(KV_NAMESPACE_ID && CLOUDFLARE_ACCOUNT_ID && CLOUDFLARE_API_TOKEN)) {
+    return null;
+  }
+  const response = await fetch(kvUrl(), {
+    headers: { Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}` },
+  });
+  if (response.status === 404) {
+    return null;
+  }
+  if (!response.ok) {
+    throw new Error(`Reading ${KV_KEY} from KV returned ${response.status}.`);
+  }
+  return await response.json();
+}
+
+async function writeKV(proposals) {
+  if (!(KV_NAMESPACE_ID && CLOUDFLARE_ACCOUNT_ID && CLOUDFLARE_API_TOKEN)) {
+    console.error("Cloudflare KV credentials are not set; skipping the KV update.");
+    return;
+  }
+  const response = await fetch(kvUrl(), {
+    body: JSON.stringify(proposals),
+    headers: {
+      Authorization: `Bearer ${CLOUDFLARE_API_TOKEN}`,
+      "Content-Type": "application/json",
+    },
+    method: "PUT",
+  });
+  if (!response.ok) {
+    throw new Error(`Writing ${KV_KEY} to KV returned ${response.status}.`);
+  }
+  console.error(`Wrote ${proposals.length} proposals to KV.`);
+}
 
 async function query(contractName, functionName, input) {
   const contract = getContractDefinition(contractName);
@@ -307,7 +350,7 @@ function archivedCopy(proposal) {
 }
 
 async function main() {
-  const previous = JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
+  const previous = (await readKV()) ?? JSON.parse(await readFile(OUTPUT_PATH, "utf8"));
   const jobs = [];
   for (const contract of CONTRACTS) {
     const [activeIndices, inactiveIndices] = await Promise.all([
@@ -361,6 +404,7 @@ async function main() {
   );
   await writeFile(OUTPUT_PATH, `${JSON.stringify(proposals, null, 2)}\n`);
   console.error(`Wrote ${proposals.length} proposals to ${OUTPUT_PATH.pathname}.`);
+  await writeKV(proposals);
 }
 
 main().catch((error) => {

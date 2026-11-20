@@ -1,6 +1,6 @@
-import { getContractDefinition } from "@glyph-oss/contracts";
-
 import { GLYPH_API_URL } from "@/lib/api/hey-api";
+
+const CCF_IDENTITY = "IAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABXSH";
 
 export type CcfTreasury = {
   balance: number;
@@ -46,7 +46,7 @@ async function readJson<T>(url: string): Promise<T | null> {
 }
 
 export async function getCcfTreasury(): Promise<CcfTreasury | null> {
-  const identity = getContractDefinition("CCF").contractAddress;
+  const identity = CCF_IDENTITY;
   const [wallet, price] = await Promise.all([
     readJson<WalletResponse>(`${GLYPH_API_URL}/v1/wallets/${identity}`),
     readJson<PriceResponse>(`${GLYPH_API_URL}/v1/prices/latest`),
