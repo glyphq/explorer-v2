@@ -42,6 +42,7 @@ import type { PageMeta, Tick } from "./generated/types.gen";
 import { useLiveStream } from "./live-stream";
 
 const REFRESH_INTERVAL = 15_000;
+const HISTORY_STALE_TIME = 5 * 60_000;
 const FIRST_PAGE = undefined as unknown as string;
 
 export function useNetwork() {
@@ -64,6 +65,7 @@ export function useActivity(limit = 24, interval = 3600) {
   return useQuery({
     ...getActivityOptions({ query: { interval, limit } }),
     placeholderData: keepPreviousData,
+    staleTime: HISTORY_STALE_TIME,
   });
 }
 
@@ -71,6 +73,7 @@ export function useEventTypes(limit = 8) {
   return useQuery({
     ...listEventTypesOptions({ query: { limit } }),
     placeholderData: keepPreviousData,
+    staleTime: HISTORY_STALE_TIME,
   });
 }
 
@@ -93,6 +96,7 @@ export function usePriceHistory(hours = 168) {
   return useQuery({
     ...getPriceHistoryOptions({ query: { hours } }),
     placeholderData: keepPreviousData,
+    staleTime: HISTORY_STALE_TIME,
   });
 }
 

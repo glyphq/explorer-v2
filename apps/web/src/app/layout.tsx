@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "../index.css";
@@ -7,10 +7,7 @@ import { ContractProvider } from "@/components/explorer/contract-provider";
 import Providers from "@/components/providers";
 import PwaRegistration from "@/components/pwa-registration";
 import { contractSummaries } from "@/lib/contracts/registry";
-
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://explorer.glyphq.org";
-const siteDescription =
-  "Explore Qubic ticks, transactions, epochs, accounts, events and assets from Glyph's direct-peer index.";
+import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   subsets: ["latin"],
@@ -23,8 +20,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  applicationName: "Glyph Explorer",
-  description: siteDescription,
+  applicationName: SITE_NAME,
+  description: SITE_DESCRIPTION,
   icons: {
     apple: [
       {
@@ -49,39 +46,47 @@ export const metadata: Metadata = {
     shortcut: "/favicon.ico",
   },
   manifest: "/manifest.webmanifest",
-  metadataBase: new URL(siteUrl),
+  metadataBase: new URL(SITE_URL),
   openGraph: {
-    description: siteDescription,
+    description: SITE_DESCRIPTION,
     images: [
       {
-        alt: "Glyph Explorer",
+        alt: SITE_NAME,
         height: 630,
         url: "/og/glyph-explorer.png",
         width: 1200,
       },
     ],
     locale: "en_US",
-    siteName: "Glyph Explorer",
+    siteName: SITE_NAME,
     title: {
-      default: "Glyph Explorer",
-      template: "%s · Glyph Explorer",
+      default: SITE_NAME,
+      template: `%s · ${SITE_NAME}`,
     },
     type: "website",
     url: "/",
   },
   title: {
-    default: "Glyph Explorer",
-    template: "%s · Glyph Explorer",
+    default: SITE_NAME,
+    template: `%s · ${SITE_NAME}`,
   },
   twitter: {
     card: "summary_large_image",
-    description: siteDescription,
+    description: SITE_DESCRIPTION,
     images: ["/og/glyph-explorer.png"],
     title: {
-      default: "Glyph Explorer",
-      template: "%s · Glyph Explorer",
+      default: SITE_NAME,
+      template: `%s · ${SITE_NAME}`,
     },
   },
+};
+
+export const viewport: Viewport = {
+  colorScheme: "light dark",
+  themeColor: [
+    { color: "#f4f4f4", media: "(prefers-color-scheme: light)" },
+    { color: "#070707", media: "(prefers-color-scheme: dark)" },
+  ],
 };
 
 export default function RootLayout({

@@ -7,7 +7,7 @@ import { Command } from "cmdk";
 import { AnimatePresence, motion } from "motion/react";
 import type { Route } from "next";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import type { SearchResult } from "@/lib/api/generated/types.gen";
 import { useSearch } from "@/lib/api/hooks";
@@ -28,8 +28,18 @@ const typeLabels: Record<string, string> = {
   transaction: "Transaction",
 };
 
+function resultValue(result: SearchResult): Record<string, unknown> | null {
+  if (!result.value || typeof result.value !== "object") {
+    return null;
+  }
+  return result.value as Record<string, unknown>;
+}
+
 function routeForResult(result: SearchResult): Route | null {
-  const value = result.value as Record<string, unknown>;
+  const value = resultValue(result);
+  if (!value) {
+    return null;
+  }
   switch (result.type) {
     case "tick": {
       const tick = value.tick;
@@ -60,7 +70,10 @@ function routeForResult(result: SearchResult): Route | null {
 }
 
 function labelForResult(result: SearchResult): string {
-  const value = result.value as Record<string, unknown>;
+  const value = resultValue(result);
+  if (!value) {
+    return typeLabels[result.type] ?? result.type;
+  }
   switch (result.type) {
     case "tick":
       return `Tick ${value.tick ?? ""}`;
@@ -121,9 +134,9 @@ function SearchResultRow({
   result: SearchResult;
   skipIdentity: string | null;
 }) {
-  const value = result.value as Record<string, unknown>;
+  const value = resultValue(result);
   const rawIdentity =
-    result.type === "identity" && typeof value.identity === "string" ? value.identity : null;
+    result.type === "identity" && typeof value?.identity === "string" ? value.identity : null;
   const contract = useContract(rawIdentity);
 
   if (rawIdentity && skipIdentity && rawIdentity.toUpperCase() === skipIdentity) {
@@ -210,6 +223,7 @@ export function CommandMenu({
 }) {
   const pathname = usePathname();
   const router = useRouter();
+  const panelRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const { data, isFetching } = useSearch(query.trim());
@@ -264,18 +278,41 @@ export function CommandMenu({
       setQuery("");
       return;
     }
+    const previouslyFocused = document.activeElement as HTMLElement | null;
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
-    const onEscape = (event: KeyboardEvent) => {
+    const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         event.preventDefault();
         onOpenChange(false);
+        return;
+      }
+      if (event.key !== "Tab" || !panelRef.current) {
+        return;
+      }
+      const focusable = Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!first || !last) {
+        return;
+      }
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
-    window.addEventListener("keydown", onEscape);
+    window.addEventListener("keydown", onKeyDown);
     return () => {
       document.body.style.overflow = previousOverflow;
-      window.removeEventListener("keydown", onEscape);
+      window.removeEventListener("keydown", onKeyDown);
+      previouslyFocused?.focus();
     };
   }, [onOpenChange, open]);
 
@@ -298,10 +335,14 @@ export function CommandMenu({
         >
           <motion.div
             animate={{ filter: "blur(0px)", opacity: 1, scale: 1, y: 0 }}
+            aria-label="Command menu"
+            aria-modal="true"
             className="w-full max-w-[640px] overflow-hidden rounded-2xl bg-overlay text-foreground shadow-overlay"
             exit={{ filter: "blur(6px)", opacity: 0, scale: 0.97, y: -10 }}
             initial={{ filter: "blur(10px)", opacity: 0, scale: 0.96, y: -18 }}
             onMouseDown={(event) => event.stopPropagation()}
+            ref={panelRef}
+            role="dialog"
             transition={{
               damping: 30,
               mass: 0.7,

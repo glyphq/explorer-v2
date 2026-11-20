@@ -23,6 +23,8 @@ import { Breadcrumbs } from "./breadcrumbs";
 import { CommandMenu } from "./command-menu";
 import {
   activeFor,
+  buildNavigation,
+  chainNavigation,
   dataNavigation,
   type NavigationItem,
   primaryNavigation,
@@ -183,9 +185,21 @@ function Sidebar({
           />
           <SidebarGroup
             collapsed={collapsed}
-            items={dataNavigation}
+            items={chainNavigation}
             pathname={pathname}
             title="Chain"
+          />
+          <SidebarGroup
+            collapsed={collapsed}
+            items={dataNavigation}
+            pathname={pathname}
+            title="Data"
+          />
+          <SidebarGroup
+            collapsed={collapsed}
+            items={buildNavigation}
+            pathname={pathname}
+            title="Build"
           />
           <SidebarGroup
             collapsed={collapsed}
@@ -288,6 +302,7 @@ function MobileMenu({
   open: boolean;
   pathname: string;
 }) {
+  const panelRef = useRef<HTMLDivElement>(null);
   const closeButton = useRef<HTMLButtonElement>(null);
   const reduceMotion = useReducedMotion();
 
@@ -295,12 +310,34 @@ function MobileMenu({
     if (!open) {
       return;
     }
+    const previouslyFocused = document.activeElement as HTMLElement | null;
     const previous = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     closeButton.current?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         onClose();
+        return;
+      }
+      if (event.key !== "Tab" || !panelRef.current) {
+        return;
+      }
+      const focusable = Array.from(
+        panelRef.current.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
+        ),
+      ).filter((element) => element.offsetParent !== null);
+      const first = focusable[0];
+      const last = focusable.at(-1);
+      if (!first || !last) {
+        return;
+      }
+      if (event.shiftKey && document.activeElement === first) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
       }
     };
     const desktop = window.matchMedia("(min-width: 1280px)");
@@ -315,6 +352,7 @@ function MobileMenu({
       document.body.style.overflow = previous;
       window.removeEventListener("keydown", onKeyDown);
       desktop.removeEventListener("change", onDesktop);
+      previouslyFocused?.focus();
     };
   }, [onClose, open]);
 
@@ -327,6 +365,7 @@ function MobileMenu({
       exit={reduceMotion ? { opacity: 0 } : { opacity: 1, x: "100%" }}
       id="mobile-navigation"
       initial={reduceMotion ? { opacity: 0 } : { opacity: 1, x: "100%" }}
+      ref={panelRef}
       role="dialog"
       transition={reduceMotion ? { duration: 0.12 } : { duration: 0.28, ease: [0.32, 0.72, 0, 1] }}
     >
@@ -365,7 +404,19 @@ function MobileMenu({
             pathname={pathname}
             title="Explore"
           />
-          <MobileGroup items={dataNavigation} onClose={onClose} pathname={pathname} title="Chain" />
+          <MobileGroup
+            items={chainNavigation}
+            onClose={onClose}
+            pathname={pathname}
+            title="Chain"
+          />
+          <MobileGroup items={dataNavigation} onClose={onClose} pathname={pathname} title="Data" />
+          <MobileGroup
+            items={buildNavigation}
+            onClose={onClose}
+            pathname={pathname}
+            title="Build"
+          />
           <MobileGroup
             items={resourceNavigation}
             onClose={onClose}
@@ -425,6 +476,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <LiveStreamProvider>
       <div className="flex h-svh overflow-hidden bg-background">
+        <a
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:rounded-full focus:bg-foreground focus:px-4 focus:py-2 focus:font-medium focus:text-background focus:text-sm"
+          href="#main"
+        >
+          Skip to content
+        </a>
+
         <Sidebar collapsed={sidebarCollapsed} onToggle={toggleSidebar} pathname={pathname} />
 
         <div className="flex h-svh min-w-0 flex-1 flex-col overflow-hidden">
@@ -503,7 +561,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"
               ref={contentRef}
             >
-              <main className="flex-1" id="main">
+              <main className="flex-1" id="main" tabIndex={-1}>
                 {pathname === "/" || pathname === "/bpp9000" ? (
                   children
                 ) : (

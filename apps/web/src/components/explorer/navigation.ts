@@ -103,14 +103,11 @@ export const navigation = [
 
 export const primaryNavigation = [overview, bpp] as const;
 
-export const dataNavigation = [
-  ticks,
-  epochs,
-  transactions,
-  exchanges,
-  contracts,
-  proposals,
-] as const;
+export const chainNavigation = [ticks, epochs, transactions, events] as const;
+
+export const dataNavigation = [accounts, assets, exchanges] as const;
+
+export const buildNavigation = [contracts, proposals] as const;
 
 export const resourceNavigation: ResourceItem[] = [
   {
