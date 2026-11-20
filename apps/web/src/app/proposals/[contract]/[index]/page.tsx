@@ -21,6 +21,14 @@ export function generateStaticParams() {
     const index = proposal.slug ?? String(proposal.proposalIndex);
     routes.set(`${contract}/${index}`, { contract, index });
   }
+  for (const [contract, lastIndex] of [
+    ["gqmprop", 64],
+    ["ccf", 100],
+  ] as const) {
+    for (let index = 1; index <= lastIndex; index += 1) {
+      routes.set(`${contract}/${index}`, { contract, index: String(index) });
+    }
+  }
   return [...routes.values()];
 }
 
