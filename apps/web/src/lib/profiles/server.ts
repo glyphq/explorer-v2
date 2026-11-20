@@ -146,8 +146,10 @@ export type CreateChallengeInput = {
 };
 
 /**
- * Builds the canonical challenge message. The format is stable: LF newlines,
- * no trailing newline, and a fixed explanatory footer.
+ * Builds the canonical challenge message on one line. Qubic Wallet's
+ * WalletConnect signer passes the message through a WebView JavaScript string
+ * without escaping line breaks, so multi-line messages fail with errCode
+ * -32015. Keep the message single-line and free of quotes and backslashes.
  */
 export function buildChallengeMessage(input: {
   identity: string;
@@ -161,16 +163,14 @@ export function buildChallengeMessage(input: {
 
   return [
     "Glyph Explorer profile",
-    "---------------------",
     `Identity: ${input.identity}`,
     `Action: ${actionLabel}`,
     `Domain: ${input.domain}`,
     `Nonce: ${input.nonce}`,
     `Issued At: ${input.issuedAt}`,
     `Expiration Time: ${input.expiresAt}`,
-    "",
     "Signing this message proves you control this Qubic identity. It does not authorize a transaction.",
-  ].join("\n");
+  ].join(" | ");
 }
 
 export async function createChallenge(input: CreateChallengeInput): Promise<ProfileChallenge> {

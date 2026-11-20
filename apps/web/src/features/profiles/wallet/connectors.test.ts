@@ -82,5 +82,11 @@ describe("WalletConnect response handling", () => {
     const expired = new Error("Missing or invalid. Record was recently deleted (-32000)");
     expect(toSafeWalletError(expired)).toContain("session expired");
     expect(toSafeWalletError(expired)).not.toContain("-32000");
+
+    const webViewFailure = new Error(
+      "An internal error occurred. If the error persists, contact us (errCode: -32015)",
+    );
+    expect(toSafeWalletError(webViewFailure)).toContain("could not sign this message");
+    expect(toSafeWalletError(webViewFailure)).not.toContain("-32015");
   });
 });

@@ -45,7 +45,7 @@ const TIMEOUT_MESSAGE_REGEX = /timed?\s*out|timeout/i;
 const HTTPS_ORIGIN_REGEX = /HTTPS origin|credential-free HTTPS/i;
 const WALLETCONNECT_SESSION_REGEX =
   /session.*(?:expired|not found|invalid|deleted)|no matching key|record was recently deleted/i;
-const WALLETCONNECT_CODE_PATTERN = /\b(-326\d{2}|-320\d{2}|5000|4001)\b/;
+const WALLETCONNECT_CODE_PATTERN = /(?:^|[^\d])(-326\d{2}|-320\d{2}|5000|4001)(?!\d)/;
 const RELAY_REGISTRATION_TIMEOUT_MS = 10_000;
 
 const WALLETCONNECT_CODE_MESSAGES: Record<number, string> = {
@@ -54,6 +54,7 @@ const WALLETCONNECT_CODE_MESSAGES: Record<number, string> = {
   [-32602]:
     "Qubic Wallet could not sign for this account. Share the account in Qubic Wallet and try again.",
   [-32603]: "Qubic Wallet hit an internal error. Try again.",
+  [-32015]: "Qubic Wallet could not sign this message. Update the app and try again.",
   [-32000]: "The WalletConnect session expired. Connect your wallet again.",
   [-32001]: "Qubic Wallet is busy with another request. Finish it and try again.",
   [-32002]: "The request expired before it was approved. Try again.",
@@ -755,8 +756,10 @@ function walletConnectResponseError(response: unknown): string | null {
   if (!(errorCode !== null || errorMessage)) {
     return null;
   }
-  if (errorCode !== null && WALLETCONNECT_CODE_MESSAGES[errorCode]) {
-    return WALLETCONNECT_CODE_MESSAGES[errorCode];
+  const codeFromMessage = errorMessage?.match(WALLETCONNECT_CODE_PATTERN);
+  const code = errorCode ?? (codeFromMessage?.[1] ? Number.parseInt(codeFromMessage[1], 10) : null);
+  if (code !== null && WALLETCONNECT_CODE_MESSAGES[code]) {
+    return WALLETCONNECT_CODE_MESSAGES[code];
   }
   if (errorMessage && REJECT_MESSAGE_REGEX.test(errorMessage)) {
     return "The request was rejected in the wallet.";
