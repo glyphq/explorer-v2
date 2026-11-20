@@ -1,8 +1,8 @@
-import { Button } from "@heroui/react";
 import type { ReactNode } from "react";
 
-import { IdentityActions } from "@/components/explorer/identity-actions";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
+import { ExchangeListingNotice } from "@/features/exchanges/exchange-logo";
+import { isExchangeDelisted } from "@/lib/exchanges/brands";
 import { classNames, shorten } from "@/lib/format";
 import { SOCIAL_LABELS } from "@/lib/profiles/socials";
 import type { PublicProfile } from "@/lib/profiles/types";
@@ -82,29 +82,31 @@ export function ProfileSocialLinks({
  * as children so the profile and financial summary stay one composition.
  */
 export function ProfileHeader({
+  avatar,
   children,
   identity,
-  onProfileAction,
   profile,
-  profileAction,
 }: {
+  avatar?: ReactNode;
   children?: ReactNode;
   identity: string;
-  onProfileAction?: () => void;
   profile: PublicProfile;
-  profileAction?: "claim" | "edit" | null;
 }) {
   return (
     <div>
       <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
         <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
-          <IdentityAvatar size={112} value={identity} />
+          {avatar ?? <IdentityAvatar size={112} value={identity} />}
         </span>
-        <div className="mt-4 flex min-w-0 flex-wrap items-center justify-center gap-x-2.5 gap-y-2">
+        <div className="mt-4 flex min-w-0 flex-col items-center gap-1.5">
           <h1 className="min-w-0 break-words font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
             {profile.displayName}
           </h1>
-          <ProfileVerificationBadge profile={profile} />
+          {profile.kind === "exchange" && isExchangeDelisted(profile.displayName) ? (
+            <ExchangeListingNotice name={profile.displayName} />
+          ) : (
+            <ProfileVerificationBadge profile={profile} />
+          )}
         </div>
         <span
           className="mt-2 inline-flex max-w-full items-center rounded-full border border-border/80 bg-background/50 px-3 py-1 font-mono text-[11px] text-muted"
@@ -119,20 +121,8 @@ export function ProfileHeader({
           </p>
         ) : null}
         <ProfileSocialLinks className="mt-5" profile={profile} />
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-2">
-          <div className="flex items-center rounded-full border border-border/70 bg-background/50 p-1">
-            <IdentityActions identity={identity} />
-          </div>
-          {profileAction && onProfileAction ? (
-            <Button onPress={onProfileAction} size="sm" variant="outline">
-              {profileAction === "edit" ? "Edit profile" : "Claim profile"}
-            </Button>
-          ) : null}
-        </div>
       </div>
-      {children ? (
-        <div className="mx-auto mt-8 max-w-3xl border-t border-border/70 pt-6">{children}</div>
-      ) : null}
+      {children ? <div className="mx-auto mt-8 max-w-3xl">{children}</div> : null}
     </div>
   );
 }

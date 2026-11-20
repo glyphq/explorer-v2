@@ -3,6 +3,7 @@
 import { GLYPH_DEEP_LINK_SCHEME } from "@glyph-oss/connect";
 import { Button, buttonVariants, Modal } from "@heroui/react";
 import { CopyIcon } from "@solar-icons/react/linear/copy";
+import { PenIcon } from "@solar-icons/react/linear/pen";
 import { QrCodeIcon } from "@solar-icons/react/linear/qr-code";
 import { QRCodeSVG } from "qrcode.react";
 import { type ReactNode, useCallback, useState } from "react";
@@ -25,7 +26,15 @@ function ActionTooltip({ children, label }: { children: ReactNode; label: string
   );
 }
 
-export function IdentityActions({ identity }: { identity: string }) {
+export function IdentityActions({
+  identity,
+  onProfileAction,
+  profileAction,
+}: {
+  identity: string;
+  onProfileAction?: () => void;
+  profileAction?: "claim" | "edit" | null;
+}) {
   const [qrOpen, setQrOpen] = useState(false);
 
   const copyIdentity = useCallback(async () => {
@@ -77,6 +86,19 @@ export function IdentityActions({ identity }: { identity: string }) {
           <QrCodeIcon className="size-4" />
         </Button>
       </ActionTooltip>
+      {profileAction && onProfileAction ? (
+        <ActionTooltip label={profileAction === "edit" ? "Edit profile" : "Claim profile"}>
+          <Button
+            aria-label={profileAction === "edit" ? "Edit profile" : "Claim profile"}
+            isIconOnly
+            onPress={onProfileAction}
+            size="sm"
+            variant="ghost"
+          >
+            <PenIcon className="size-4" />
+          </Button>
+        </ActionTooltip>
+      ) : null}
 
       <Modal isOpen={qrOpen} onOpenChange={setQrOpen}>
         <Modal.Backdrop>

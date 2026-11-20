@@ -3,6 +3,8 @@
 -- Source: https://static.qubic.org/v1/general/data/exchanges.json
 -- (snapshot captured 2026-11-20, 19 identities). These profiles are curated,
 -- not wallet-signed, and must never be overwritable by a claim challenge.
+-- Several of these venues have since delisted QUBIC; the app's active listing
+-- state lives in apps/web/src/lib/exchanges/brands.ts.
 -- Timestamps are Unix epoch milliseconds and are identical for the snapshot.
 
 INSERT INTO profiles (

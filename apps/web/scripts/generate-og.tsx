@@ -29,6 +29,11 @@ const cards = [
     title: "Account",
   },
   {
+    description: "Active Qubic exchange accounts and their on-chain identities.",
+    slug: "exchanges",
+    title: "Exchanges",
+  },
+  {
     description: "Every tick Glyph fetched from a Qubic peer, with quorum evidence and activity.",
     slug: "ticks",
     title: "Ticks",

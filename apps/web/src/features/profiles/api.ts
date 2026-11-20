@@ -268,6 +268,23 @@ export async function fetchProfile(
   return parseProfileResponse(payload, true);
 }
 
+export async function fetchExchangeProfiles(signal?: AbortSignal): Promise<PublicProfile[]> {
+  const { payload } = await requestJson("/api/profiles/exchanges", {
+    headers: { Accept: "application/json" },
+    method: "GET",
+    signal,
+  });
+  if (!(isRecord(payload) && Array.isArray(payload.profiles))) {
+    throw new ProfileRequestError("invalid_response");
+  }
+
+  const profiles = payload.profiles.map((value) => parseProfile(value));
+  if (profiles.some((profile) => profile === null || profile.kind !== "exchange")) {
+    throw new ProfileRequestError("invalid_response");
+  }
+  return profiles as PublicProfile[];
+}
+
 export async function requestProfileChallenge(
   identity: string,
   action: ProfileChallengeAction,

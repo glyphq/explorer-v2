@@ -1,13 +1,23 @@
 "use client";
 
-import { Button, Input, Label, Modal, Spinner, TextArea, TextField } from "@heroui/react";
+import {
+  Button,
+  buttonVariants,
+  Input,
+  Label,
+  Modal,
+  Spinner,
+  TextArea,
+  TextField,
+} from "@heroui/react";
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { DangerTriangleIcon } from "@solar-icons/react/linear/danger-triangle";
 import { PuzzleIcon } from "@solar-icons/react/linear/puzzle";
 import { QrCodeIcon } from "@solar-icons/react/linear/qr-code";
+import { SmartphoneIcon } from "@solar-icons/react/linear/smartphone";
 import { useQueryClient } from "@tanstack/react-query";
 import { QRCodeSVG } from "qrcode.react";
-import { type ReactNode, useState } from "react";
+import { type ReactNode, useEffect, useState } from "react";
 import { sileo } from "sileo";
 
 import { GlyphMark } from "@/components/glyph-mark";
@@ -43,6 +53,7 @@ import {
 import { ProfileSocialIcon } from "./social-icons";
 import { profileQueryKey } from "./use-profile";
 import { ProfileWalletProvider, useProfileWallet } from "./wallet";
+import { isMobileWalletEnvironment, qubicWalletPairingLink } from "./wallet/connectors";
 import type { ProfileWalletKind, ProfileWalletSignature } from "./wallet/types";
 
 class ProfileUiError extends Error {
@@ -153,6 +164,11 @@ function ProfileDialogContent({
   } | null>(null);
   const [revokeConfirm, setRevokeConfirm] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [mobileWallet, setMobileWallet] = useState(false);
+
+  useEffect(() => {
+    setMobileWallet(isMobileWalletEnvironment());
+  }, []);
 
   const account = wallet.account;
   const isMatchingAccount = account !== null && account.identity === identity;
@@ -430,6 +446,15 @@ function ProfileDialogContent({
                   ) : null}
                   {wallet.walletConnectUri ? (
                     <div className="flex flex-col items-center gap-3 rounded-xl bg-surface-secondary p-4">
+                      {mobileWallet ? (
+                        <a
+                          className={`${buttonVariants({ size: "sm", variant: "primary" })} w-full justify-center`}
+                          href={qubicWalletPairingLink(wallet.walletConnectUri)}
+                        >
+                          <SmartphoneIcon className="size-4" />
+                          Open Qubic Wallet
+                        </a>
+                      ) : null}
                       <QRCodeSVG
                         bgColor="transparent"
                         fgColor="currentColor"
@@ -440,7 +465,9 @@ function ProfileDialogContent({
                         value={wallet.walletConnectUri}
                       />
                       <p className="max-w-full text-center text-muted text-xs">
-                        Scan this code with your wallet, then approve the connection.
+                        {mobileWallet
+                          ? "Open the official Qubic Wallet app, then approve the connection."
+                          : "Scan this code with your wallet, then approve the connection."}
                       </p>
                     </div>
                   ) : null}
@@ -615,7 +642,7 @@ function ProfileDialogContent({
                     ) : null}
                   </TextField>
 
-                  <div className="flex flex-col gap-3 rounded-xl bg-surface-secondary/40 p-3 ring-1 ring-border/60">
+                  <div className="flex flex-col gap-3">
                     <div>
                       <p className="font-medium text-sm">Social links</p>
                       <p className="mt-0.5 text-muted text-xs">
@@ -823,7 +850,7 @@ function saveActionLabel(isEdit: boolean): string {
 }
 
 const SOCIAL_PLACEHOLDERS: Record<SocialPlatform, string> = {
-  discord: "https://discord.gg/invite",
+  discord: "@yourhandle",
   github: "https://github.com/yourhandle",
   telegram: "@yourhandle",
   x: "@yourhandle",

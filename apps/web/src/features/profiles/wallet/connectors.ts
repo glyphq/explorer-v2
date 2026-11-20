@@ -30,6 +30,8 @@ const GLYPH_ACCOUNT_STORAGE_KEY = "glyph-explorer.wallet.glyph-account";
 const WALLETCONNECT_TOPIC_STORAGE_KEY = "glyph-explorer.wallet.walletconnect-topic";
 
 const QUBIC_CHAIN_ID = "qubic:mainnet";
+const QUBIC_WALLET_OPEN_LINK = "qubic-wallet://open";
+const QUBIC_WALLET_PAIRING_PREFIX = "qubic-wallet://pairwc/";
 const WALLETCONNECT_METHODS = [
   "qubic_requestAccounts",
   "qubic_signTransaction",
@@ -41,7 +43,23 @@ const HEX_REGEX = /^[0-9a-fA-F]+$/;
 const REJECT_MESSAGE_REGEX = /reject|denied|cancel/i;
 const TIMEOUT_MESSAGE_REGEX = /timed?\s*out|timeout/i;
 const HTTPS_ORIGIN_REGEX = /HTTPS origin|credential-free HTTPS/i;
+const WALLETCONNECT_SESSION_REGEX =
+  /session.*(?:expired|not found|invalid|deleted)|no matching key|record was recently deleted/i;
+const WALLETCONNECT_CODE_PATTERN = /\b(-326\d{2}|-320\d{2}|5000|4001)\b/;
 const RELAY_REGISTRATION_TIMEOUT_MS = 10_000;
+
+const WALLETCONNECT_CODE_MESSAGES: Record<number, string> = {
+  [-32600]: "The wallet rejected the request format. Update Qubic Wallet and try again.",
+  [-32601]: "Qubic Wallet does not support this request. Update the app and try again.",
+  [-32602]:
+    "Qubic Wallet could not sign for this account. Share the account in Qubic Wallet and try again.",
+  [-32603]: "Qubic Wallet hit an internal error. Try again.",
+  [-32000]: "The WalletConnect session expired. Connect your wallet again.",
+  [-32001]: "Qubic Wallet is busy with another request. Finish it and try again.",
+  [-32002]: "The request expired before it was approved. Try again.",
+  4001: "The request was rejected in the wallet.",
+  5000: "The request was rejected in the wallet.",
+};
 
 type WalletConnectConnectResult = Awaited<ReturnType<SignClient["connect"]>>;
 type WalletConnectSession = Awaited<ReturnType<WalletConnectConnectResult["approval"]>>;
@@ -58,6 +76,31 @@ export class WalletError extends Error {
 
 export function isBrowser(): boolean {
   return typeof window !== "undefined";
+}
+
+/** True on phones and tablets, where a WalletConnect deep link can open the app. */
+export function isMobileWalletEnvironment(): boolean {
+  if (typeof navigator === "undefined") {
+    return false;
+  }
+  const userAgent = navigator.userAgent;
+  return (
+    /Android|iPhone|iPad|iPod|Mobile/i.test(userAgent) ||
+    (navigator.maxTouchPoints > 1 && /Macintosh/i.test(userAgent))
+  );
+}
+
+/** Deep link that opens a WalletConnect pairing URI in the official Qubic Wallet app. */
+export function qubicWalletPairingLink(uri: string): string {
+  return `${QUBIC_WALLET_PAIRING_PREFIX}${uri}`;
+}
+
+/** Foregrounds Qubic Wallet so it receives a pending signing request. */
+export function openQubicWalletApp(): void {
+  if (!(isBrowser() && isMobileWalletEnvironment())) {
+    return;
+  }
+  window.location.href = QUBIC_WALLET_OPEN_LINK;
 }
 
 export function getWalletConnectProjectId(): string | null {
@@ -262,9 +305,21 @@ export function toSafeWalletError(error: unknown): string {
         return "Glyph Wallet request failed. Try again.";
     }
   }
-  const message = error instanceof Error ? error.message : "";
+  const { code, message } = walletConnectErrorDetails(error);
   if (REJECT_MESSAGE_REGEX.test(message)) {
     return "The request was rejected in the wallet.";
+  }
+  if (code !== null) {
+    const mapped = WALLETCONNECT_CODE_MESSAGES[code];
+    if (mapped) {
+      return mapped;
+    }
+  }
+  if (WALLETCONNECT_SESSION_REGEX.test(message)) {
+    return "The WalletConnect session expired. Connect your wallet again.";
+  }
+  if (/expired/i.test(message)) {
+    return "The wallet request expired. Try again.";
   }
   if (TIMEOUT_MESSAGE_REGEX.test(message)) {
     return "The wallet did not respond in time. Try again.";
@@ -272,7 +327,36 @@ export function toSafeWalletError(error: unknown): string {
   if (HTTPS_ORIGIN_REGEX.test(message)) {
     return "Glyph Wallet requires a secure HTTPS origin.";
   }
-  return "Wallet request failed. Try again.";
+  return "The wallet could not complete the request. Try again.";
+}
+
+function walletConnectErrorDetails(
+  error: unknown,
+  depth = 0,
+): { code: number | null; message: string } {
+  if (depth > 3 || !error || typeof error !== "object") {
+    return { code: null, message: error instanceof Error ? error.message : "" };
+  }
+
+  const record = error as Record<string, unknown>;
+  const directCode = typeof record.code === "number" ? record.code : null;
+  const directMessage =
+    typeof record.message === "string"
+      ? record.message
+      : error instanceof Error
+        ? error.message
+        : "";
+
+  if (directCode !== null || directMessage) {
+    const match = directMessage.match(WALLETCONNECT_CODE_PATTERN);
+    return {
+      code: directCode ?? (match?.[1] ? Number.parseInt(match[1], 10) : null),
+      message: directMessage,
+    };
+  }
+
+  const nested = record.cause ?? record.error;
+  return nested ? walletConnectErrorDetails(nested, depth + 1) : { code: null, message: "" };
 }
 
 export function glyphDappMeta(): GlyphDappMeta {
@@ -606,19 +690,78 @@ export async function connectWalletConnect(
   return { identity, kind: "walletconnect", label: "WalletConnect" };
 }
 
-function extractWalletConnectSignature(response: unknown): string | null {
+function decodeAnyBytes(value: string): Uint8Array | null {
+  const trimmed = value.trim();
+  const hexValue = trimmed.startsWith("0x") ? trimmed.slice(2) : trimmed;
+  if (HEX_REGEX.test(hexValue) && hexValue.length % 2 === 0) {
+    return hexToBytes(hexValue);
+  }
+  return base64ToBytes(trimmed);
+}
+
+function signatureFromSignedData(value: unknown): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+  const bytes = decodeAnyBytes(value);
+  return bytes && bytes.length >= 64 ? bytesToHex(bytes.slice(-64)) : null;
+}
+
+/** Extracts a 64-byte signature from the shapes returned by Qubic wallets. */
+export function normalizeWalletConnectSignResponse(response: unknown): string | null {
   if (typeof response === "string") {
-    return normalizeSignatureHex(response);
+    const trimmed = response.trim();
+    if (trimmed.startsWith("{")) {
+      try {
+        return normalizeWalletConnectSignResponse(JSON.parse(trimmed));
+      } catch {
+        return null;
+      }
+    }
+    return normalizeSignatureHex(trimmed);
   }
   if (!response || typeof response !== "object") {
     return null;
   }
   const record = response as Record<string, unknown>;
-  return (
+  const direct =
     normalizeSignatureHex(record.signatureHex) ??
     normalizeSignatureHex(record.signature) ??
-    normalizeSignatureHex(record.signature_hex)
-  );
+    normalizeSignatureHex(record.signature_hex);
+  if (direct) {
+    return direct;
+  }
+  for (const key of ["result", "data"] as const) {
+    const nested = normalizeWalletConnectSignResponse(record[key]);
+    if (nested) {
+      return nested;
+    }
+  }
+  return signatureFromSignedData(record.signedData);
+}
+
+function walletConnectResponseError(response: unknown): string | null {
+  if (!response || typeof response !== "object") {
+    return null;
+  }
+  const record = response as Record<string, unknown>;
+  const errorCode = typeof record.errorCode === "number" ? record.errorCode : null;
+  const errorMessage =
+    typeof record.errorMessage === "string"
+      ? record.errorMessage
+      : typeof record.error === "string"
+        ? record.error
+        : null;
+  if (!(errorCode !== null || errorMessage)) {
+    return null;
+  }
+  if (errorCode !== null && WALLETCONNECT_CODE_MESSAGES[errorCode]) {
+    return WALLETCONNECT_CODE_MESSAGES[errorCode];
+  }
+  if (errorMessage && REJECT_MESSAGE_REGEX.test(errorMessage)) {
+    return "The request was rejected in the wallet.";
+  }
+  return "Qubic Wallet could not complete the signing request. Try again.";
 }
 
 export async function signWithWalletConnect(
@@ -630,7 +773,7 @@ export async function signWithWalletConnect(
     throw new WalletError("WalletConnect is not connected.");
   }
   const client = await getWalletConnectClient();
-  const response = await client.request<unknown>({
+  const request = client.request<unknown>({
     chainId: QUBIC_CHAIN_ID,
     request: {
       method: "qubic_sign",
@@ -638,8 +781,15 @@ export async function signWithWalletConnect(
     },
     topic,
   });
+  openQubicWalletApp();
+  const response = await request;
 
-  const signatureHex = extractWalletConnectSignature(response);
+  const responseError = walletConnectResponseError(response);
+  if (responseError) {
+    throw new WalletError(responseError);
+  }
+
+  const signatureHex = normalizeWalletConnectSignResponse(response);
   if (!signatureHex) {
     throw new WalletError("WalletConnect returned an invalid signature.");
   }

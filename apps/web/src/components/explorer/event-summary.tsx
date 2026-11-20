@@ -113,14 +113,14 @@ export function EventSummary({
           {from ? (
             <span className="inline-flex min-w-0 items-center gap-1.5">
               <span className="text-muted">from</span>
-              <IdentityLink identity={from} />
+              <IdentityLink avatar identity={from} />
             </span>
           ) : null}
           {from && to ? <ArrowRightIcon className="size-3 shrink-0 text-muted" /> : null}
           {to ? (
             <span className="inline-flex min-w-0 items-center gap-1.5">
               <span className="text-muted">to</span>
-              <IdentityLink identity={to} />
+              <IdentityLink avatar identity={to} />
             </span>
           ) : null}
         </div>

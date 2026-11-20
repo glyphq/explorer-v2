@@ -18,6 +18,7 @@ const SOCIAL_HOSTS: Record<SocialPlatform, readonly string[]> = {
 };
 
 const SOCIAL_HANDLE_BASES: Partial<Record<SocialPlatform, string>> = {
+  discord: "https://discord.com/users/",
   github: "https://github.com/",
   telegram: "https://t.me/",
   x: "https://x.com/",

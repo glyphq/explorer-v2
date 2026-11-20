@@ -222,7 +222,7 @@ function ActivityRow({
         <>
           Sent{" "}
           {hasKnownAmount ? <span className="font-medium text-foreground">{amount} </span> : null}
-          to <IdentityLink className="whitespace-nowrap" identity={destination} />
+          to <IdentityLink avatar className="whitespace-nowrap" identity={destination} />
         </>
       );
     } else if (incoming && source) {
@@ -230,15 +230,15 @@ function ActivityRow({
         <>
           Received{" "}
           {hasKnownAmount ? <span className="font-medium text-foreground">{amount} </span> : null}
-          from <IdentityLink className="whitespace-nowrap" identity={source} />
+          from <IdentityLink avatar className="whitespace-nowrap" identity={source} />
         </>
       );
     } else if (source && destination) {
       sentence = (
         <>
-          <IdentityLink className="whitespace-nowrap" identity={source} /> sent{" "}
+          <IdentityLink avatar className="whitespace-nowrap" identity={source} /> sent{" "}
           {hasKnownAmount ? <span className="font-medium text-foreground">{amount} </span> : null}
-          to <IdentityLink className="whitespace-nowrap" identity={destination} />
+          to <IdentityLink avatar className="whitespace-nowrap" identity={destination} />
         </>
       );
     } else {
@@ -253,7 +253,7 @@ function ActivityRow({
       <>
         Called{" "}
         <span className="font-medium text-foreground">{call.procedure?.name ?? "contract"}</span> on{" "}
-        <IdentityLink className="whitespace-nowrap" identity={destination} />
+        <IdentityLink avatar className="whitespace-nowrap" identity={destination} />
         {hasAmount ? (
           <>
             {" "}
@@ -265,9 +265,9 @@ function ActivityRow({
   } else if (source && destination) {
     sentence = (
       <>
-        <IdentityLink className="whitespace-nowrap" identity={source} /> called{" "}
+        <IdentityLink avatar className="whitespace-nowrap" identity={source} /> called{" "}
         <span className="font-medium text-foreground">{call.procedure?.name ?? "contract"}</span> on{" "}
-        <IdentityLink className="whitespace-nowrap" identity={destination} />
+        <IdentityLink avatar className="whitespace-nowrap" identity={destination} />
         {hasAmount ? (
           <>
             {" "}

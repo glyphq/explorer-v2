@@ -10,6 +10,7 @@ import { IdentityAvatar } from "@/components/explorer/identity-avatar";
 import { TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { ErrorState } from "@/components/explorer/state";
+import { ExchangeLogoAvatar } from "@/features/exchanges/exchange-logo";
 import { isProfileUnavailable } from "@/features/profiles/api";
 import { ProfileDialog } from "@/features/profiles/profile-dialog";
 import { ProfileHeader, ProfileMeta } from "@/features/profiles/profile-header";
@@ -21,6 +22,7 @@ import {
   useLiveIdentity,
   useMarket,
 } from "@/lib/api/hooks";
+import { exchangeBrand } from "@/lib/exchanges/brands";
 import { classNames, formatInteger, formatQu, formatUsdValue, shorten } from "@/lib/format";
 
 import { groupActivity } from "./activity-feed";
@@ -62,9 +64,13 @@ function AccountStats({
 }) {
   return (
     <div className={centered ? "text-center" : undefined}>
-      <div className="font-semibold text-4xl tabular-nums tracking-tight sm:text-5xl">
+      <div className="font-semibold text-[clamp(1.75rem,8vw,3rem)] tabular-nums tracking-tight sm:text-5xl">
         {loading ? (
-          <AsciiSkeleton className="text-4xl sm:text-5xl" lines={1} widths={["8ch"]} />
+          <AsciiSkeleton
+            className="text-[clamp(1.75rem,8vw,3rem)] sm:text-5xl"
+            lines={1}
+            widths={["8ch"]}
+          />
         ) : (
           formatQu(balance)
         )}
@@ -202,10 +208,13 @@ export function AccountDetail({ identity }: { identity: string }) {
           </div>
         ) : profile ? (
           <ProfileHeader
+            avatar={
+              profile.kind === "exchange" && exchangeBrand(profile.displayName)?.icon ? (
+                <ExchangeLogoAvatar name={profile.displayName} />
+              ) : undefined
+            }
             identity={identity}
-            onProfileAction={() => setProfileDialogOpen(true)}
             profile={profile}
-            profileAction={profileAction}
           >
             <AccountStats
               balance={balance}
@@ -223,19 +232,30 @@ export function AccountDetail({ identity }: { identity: string }) {
             <div className="mt-5">
               <PublicKeyLine centered publicKey={liveData?.public_key ?? data?.public_key} />
             </div>
+            <div className="mt-5 flex justify-center">
+              <div className="flex items-center rounded-full border border-border/70 bg-background/50 p-1">
+                <IdentityActions
+                  identity={identity}
+                  onProfileAction={() => setProfileDialogOpen(true)}
+                  profileAction={profileAction}
+                />
+              </div>
+            </div>
           </ProfileHeader>
         ) : (
-          <div className="flex min-w-0 flex-col items-start gap-3">
-            <IdentityAvatar size={56} value={identity} />
+          <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
+            <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
+              <IdentityAvatar size={112} value={identity} />
+            </span>
             <p
-              className="select-all break-all font-mono text-foreground text-sm tracking-tight sm:text-base"
+              className="mt-4 max-w-full select-all break-all font-mono text-[11px] text-muted tracking-tight sm:text-xs"
               title={identity}
             >
               {identity}
             </p>
           </div>
         )}
-        {contract || !profile ? (
+        {contract ? (
           <>
             <div className="mt-5">
               <AccountStats
@@ -263,7 +283,35 @@ export function AccountDetail({ identity }: { identity: string }) {
               </div>
             </div>
           </>
-        ) : null}
+        ) : profile ? null : (
+          <div className="mx-auto mt-8 max-w-3xl">
+            <AccountStats
+              balance={balance}
+              centered
+              firstSeenTick={data?.first_seen_tick}
+              incoming={incoming}
+              lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
+              lastSeenTick={lastSeenTick}
+              loading={loading}
+              netFlow={netFlow}
+              outgoing={outgoing}
+              transferCount={transferCount}
+              usdBalance={usdBalance}
+            />
+            <div className="mt-5">
+              <PublicKeyLine centered publicKey={liveData?.public_key ?? data?.public_key} />
+            </div>
+            <div className="mt-5 flex justify-center">
+              <div className="flex items-center rounded-full border border-border/70 bg-background/50 p-1">
+                <IdentityActions
+                  identity={identity}
+                  onProfileAction={() => setProfileDialogOpen(true)}
+                  profileAction={profileAction}
+                />
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="pt-4 pb-10">

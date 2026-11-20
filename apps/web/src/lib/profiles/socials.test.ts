@@ -19,6 +19,11 @@ describe("normalizeSocialUrl", () => {
     expect(normalizeSocialUrl("discord", "https://discord.com/invite/glyph")).toBe(
       "https://discord.com/invite/glyph",
     );
+    expect(normalizeSocialUrl("discord", "@glyphq")).toBe("https://discord.com/users/glyphq");
+    expect(normalizeSocialUrl("discord", "glyphq")).toBe("https://discord.com/users/glyphq");
+    expect(normalizeSocialUrl("discord", "https://discord.com/users/glyphq")).toBe(
+      "https://discord.com/users/glyphq",
+    );
   });
 
   test("rejects links outside the selected platform", () => {

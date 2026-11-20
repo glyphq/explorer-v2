@@ -7,6 +7,7 @@ import type {
   ProfileVerification,
   PublicProfile,
 } from "./types";
+import { isExchangeActive } from "../exchanges/brands";
 import { verifyChallengeSignature } from "./signature";
 import { parseStoredSocials } from "./socials";
 import { ProfileError, type ProfileApiErrorCode } from "./validation";
@@ -122,6 +123,20 @@ export async function getPublicProfile(identity: string): Promise<PublicProfile 
     .first<ProfileRow>();
 
   return row ? toPublicProfile(row) : null;
+}
+
+/** Exchange profiles for venues that still list QUBIC. */
+export async function listExchangeProfiles(): Promise<PublicProfile[]> {
+  const db = await profilesDb();
+  const result = await db
+    .prepare(
+      `SELECT ${PROFILE_COLUMNS} FROM profiles WHERE kind = 'exchange' ORDER BY display_name COLLATE NOCASE ASC`,
+    )
+    .all<ProfileRow>();
+
+  return (result.results ?? [])
+    .map(toPublicProfile)
+    .filter((profile) => isExchangeActive(profile.displayName));
 }
 
 export type CreateChallengeInput = {
