@@ -15,7 +15,7 @@ import { ErrorState } from "@/components/explorer/state";
 import { readProposals } from "@/features/proposals/data";
 import { countLabel, formatInteger } from "@/lib/format";
 import { getProposalDocument, type ProposalDocument } from "@/lib/proposal-content";
-import type { ProposalSnapshot } from "@/lib/proposals";
+import type { Proposal, ProposalSnapshot } from "@/lib/proposals";
 
 function findProposal(snapshot: ProposalSnapshot | undefined, contract: string, route: string) {
   if (!snapshot) {
@@ -77,16 +77,25 @@ function NotFound() {
   );
 }
 
-export function ProposalDetail({ contract, route }: { contract: string; route: string }) {
+export function ProposalDetail({
+  contract,
+  initialProposal,
+  route,
+}: {
+  contract: string;
+  initialProposal?: Proposal;
+  route: string;
+}) {
   const proposalsQuery = useQuery({
     queryFn: ({ signal }) => readProposals(signal),
     queryKey: ["proposals"],
     staleTime: 30_000,
   });
-  const proposal = useMemo(
+  const fetchedProposal = useMemo(
     () => findProposal(proposalsQuery.data, contract, route),
     [contract, proposalsQuery.data, route],
   );
+  const proposal = proposalsQuery.data ? fetchedProposal : initialProposal;
   const documentQuery = useQuery({
     enabled: Boolean(proposal?.url),
     queryFn: () => getProposalDocument(proposal?.url),
@@ -116,9 +125,9 @@ export function ProposalDetail({ contract, route }: { contract: string; route: s
       </Link>
 
       <div className="mt-5">
-        {proposalsQuery.isPending ? (
+        {proposalsQuery.isPending && !proposal ? (
           <DetailSkeleton />
-        ) : proposalsQuery.isError ? (
+        ) : !proposal && proposalsQuery.isError ? (
           <ErrorState
             message={proposalsQuery.error?.message}
             onRetry={() => proposalsQuery.refetch().catch(() => undefined)}

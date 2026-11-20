@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { ProposalDetail } from "@/features/proposals/proposal-detail";
+import type { Proposal } from "@/lib/proposals";
 import seed from "@/lib/proposals-seed.json";
 
 type ProposalPageProps = {
@@ -23,6 +24,19 @@ export function generateStaticParams() {
   return [...routes.values()];
 }
 
+function findSeedProposal(contract: string, route: string): Proposal | undefined {
+  const contractIndex =
+    contract.toLowerCase() === "gqmprop" ? 6 : contract.toLowerCase() === "ccf" ? 8 : undefined;
+  if (!contractIndex) {
+    return undefined;
+  }
+  return (seed as Proposal[]).find(
+    (proposal) =>
+      proposal.contractIndex === contractIndex &&
+      (proposal.slug ? proposal.slug === route : String(proposal.proposalIndex) === route),
+  );
+}
+
 export async function generateMetadata({ params }: ProposalPageProps): Promise<Metadata> {
   const { contract, index } = await params;
   return {
@@ -33,5 +47,11 @@ export async function generateMetadata({ params }: ProposalPageProps): Promise<M
 
 export default async function ProposalPage({ params }: ProposalPageProps) {
   const { contract, index } = await params;
-  return <ProposalDetail contract={contract} route={index} />;
+  return (
+    <ProposalDetail
+      contract={contract}
+      initialProposal={findSeedProposal(contract, index)}
+      route={index}
+    />
+  );
 }
