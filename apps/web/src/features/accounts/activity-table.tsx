@@ -302,7 +302,7 @@ function PartyCell({ identity }: { identity: string | null | undefined }) {
   if (!identity) {
     return <span className="text-muted text-xs">—</span>;
   }
-  return <IdentityLink avatar identity={identity} />;
+  return <IdentityLink avatar className="whitespace-nowrap" identity={identity} />;
 }
 
 function ActivityCell({ events, kind }: { events: ActivityEvent[]; kind: ActivityKind }) {
@@ -369,16 +369,18 @@ function ActivityEmpty({ filtered, onClear }: { filtered: boolean; onClear: () =
 }
 
 function hiddenColumnClass(columnId: string): string | undefined {
-  return columnId === "tick" || columnId === "transaction" ? "hidden lg:table-cell" : undefined;
+  return columnId === "tick" ? "hidden lg:table-cell" : undefined;
 }
 
 function cellClass(columnId: string): string {
-  const base =
-    columnId === "activity" || columnId === "time"
-      ? "min-w-44"
-      : columnId === "source" || columnId === "destination"
-        ? "min-w-36"
-        : "whitespace-nowrap";
+  let base = "whitespace-nowrap";
+  if (columnId === "activity" || columnId === "time") {
+    base = "min-w-44";
+  } else if (columnId === "source" || columnId === "destination") {
+    base = "min-w-40";
+  } else if (columnId === "transaction") {
+    base = "min-w-32 whitespace-nowrap";
+  }
   return `${base} px-2 py-2.5 align-top sm:px-2.5`;
 }
 
@@ -610,12 +612,8 @@ export function ActivityTable({
             sortDescriptor={{ column: sortColumn, direction: sortDirection }}
           >
             <Table.Header>
-              <Table.Column allowsSorting className={headerClass("time")} id="time" isRowHeader>
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Time
-                  </Table.SortableColumnHeader>
-                )}
+              <Table.Column className={headerClass("transaction")} id="transaction" isRowHeader>
+                Transaction
               </Table.Column>
               <Table.Column className={headerClass("activity")} id="activity">
                 Activity
@@ -659,11 +657,12 @@ export function ActivityTable({
                   </Table.SortableColumnHeader>
                 )}
               </Table.Column>
-              <Table.Column
-                className={classNames(headerClass("transaction"), hiddenColumnClass("transaction"))}
-                id="transaction"
-              >
-                Transaction
+              <Table.Column allowsSorting className={headerClass("time")} id="time">
+                {({ sortDirection: direction }) => (
+                  <Table.SortableColumnHeader sortDirection={direction}>
+                    Time
+                  </Table.SortableColumnHeader>
+                )}
               </Table.Column>
             </Table.Header>
             <Table.Body
@@ -677,8 +676,8 @@ export function ActivityTable({
 
                 return (
                   <Table.Row id={rowId} key={rowId}>
-                    <Table.Cell className={cellClass("time")}>
-                      <TimeCell timestamp={transaction.timestamp} />
+                    <Table.Cell className={cellClass("transaction")}>
+                      <TransactionLink hash={transaction.hash ?? ""} />
                     </Table.Cell>
                     <Table.Cell className={cellClass("activity")}>
                       <ActivityCell events={group.events} kind={meta.kind} />
@@ -700,13 +699,8 @@ export function ActivityTable({
                     >
                       <TickLink tick={transaction.tick} />
                     </Table.Cell>
-                    <Table.Cell
-                      className={classNames(
-                        cellClass("transaction"),
-                        hiddenColumnClass("transaction"),
-                      )}
-                    >
-                      <TransactionLink hash={transaction.hash ?? ""} />
+                    <Table.Cell className={cellClass("time")}>
+                      <TimeCell timestamp={transaction.timestamp} />
                     </Table.Cell>
                   </Table.Row>
                 );
