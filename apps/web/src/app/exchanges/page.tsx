@@ -61,7 +61,6 @@ export default function ExchangesPage() {
               {groups.map((group) => (
                 <section key={group.name}>
                   <div className="flex min-w-0 items-center gap-2 px-3 sm:px-4">
-                    <ExchangeLogo className="size-5 shrink-0" name={group.name} />
                     <h2 className="truncate font-medium text-foreground text-sm">{group.name}</h2>
                     <span className="ml-auto shrink-0 text-[11px] text-muted">
                       {group.profiles.length} {group.profiles.length === 1 ? "account" : "accounts"}
