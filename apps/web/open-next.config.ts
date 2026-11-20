@@ -1,7 +1,8 @@
 import { defineCloudflareConfig } from "@opennextjs/cloudflare";
-import staticAssetsIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/static-assets-incremental-cache";
+import kvIncrementalCache from "@opennextjs/cloudflare/overrides/incremental-cache/kv-incremental-cache";
+import { withRegionalCache } from "@opennextjs/cloudflare/overrides/incremental-cache/regional-cache";
 
 export default defineCloudflareConfig({
   enableCacheInterception: true,
-  incrementalCache: staticAssetsIncrementalCache,
+  incrementalCache: withRegionalCache(kvIncrementalCache, { mode: "long-lived" }),
 });
