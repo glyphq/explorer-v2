@@ -130,7 +130,7 @@ export function ActivityChart({
             <p className="mt-1 font-semibold text-2xl tracking-tight">
               <AnimatedNumber
                 format={{ maximumFractionDigits: 2, notation: "compact" }}
-                suffix=" QU"
+                suffix=" QUBIC"
                 value={totalVolume}
               />
             </p>
@@ -173,7 +173,7 @@ export function ActivityChart({
               </p>
               <p className="flex items-center justify-between gap-3">
                 <span className="text-muted">Volume</span>
-                <span className="tabular">{formatCompact(active.volume)} QU</span>
+                <span className="tabular">{formatCompact(active.volume)} QUBIC</span>
               </p>
             </div>
           </div>

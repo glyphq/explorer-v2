@@ -97,7 +97,7 @@ export function formatQu(value: number | null | undefined): string {
   if (value === null || value === undefined || !Number.isFinite(value)) {
     return "—";
   }
-  return `${numberFormatter.format(value)} QU`;
+  return `${numberFormatter.format(value)} QUBIC`;
 }
 
 export function formatUsd(value: number | null | undefined): string {

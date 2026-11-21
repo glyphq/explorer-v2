@@ -18,7 +18,7 @@ export function CcfTreasuryStrip({ treasury }: { treasury: CcfTreasury }) {
         CCF
       </Link>
       <span className="font-medium text-foreground tabular">
-        {formatCompact(treasury.balance)} QU
+        {formatCompact(treasury.balance)} QUBIC
       </span>
       {treasury.balanceUsd === undefined ? null : (
         <span className="text-muted tabular">≈ {formatUsdValue(treasury.balanceUsd)}</span>

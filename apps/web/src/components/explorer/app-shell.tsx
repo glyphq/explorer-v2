@@ -566,7 +566,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     >
                       Indexer status
                     </a>
-                    <span>Amounts are integer QU · timestamps local unless noted</span>
+                    <span>Amounts are integer QUBIC · timestamps local unless noted</span>
                   </div>
                 </div>
               </footer>

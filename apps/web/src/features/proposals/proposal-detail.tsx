@@ -284,7 +284,7 @@ export function ProposalDetail({
                           Amount
                         </dt>
                         <dd className="mt-1 tabular">
-                          {formatInteger(Number(proposal.transferAmount))} QU
+                          {formatInteger(Number(proposal.transferAmount))} QUBIC
                         </dd>
                       </div>
                     ) : null}

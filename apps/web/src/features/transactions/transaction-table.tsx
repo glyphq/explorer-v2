@@ -31,7 +31,7 @@ const EVENT_LABELS: Record<string, string> = {
   contract_information: "Contract info",
   contract_warning: "Contract warning",
   custom_message: "Custom message",
-  qu_transfer: "QU transfer",
+  qu_transfer: "QUBIC transfer",
 };
 
 function textValue(value: unknown): string | undefined {
@@ -67,7 +67,7 @@ function EventLine({ event, source }: { event: Event; source?: string }) {
       <p className="text-muted text-xs leading-5">
         {isTransfer ? (
           <>
-            Transferred {amountLabel ?? <span className="font-medium text-foreground">QU</span>}
+            Transferred {amountLabel ?? <span className="font-medium text-foreground">QUBIC</span>}
             {from ? (
               <>
                 {" "}

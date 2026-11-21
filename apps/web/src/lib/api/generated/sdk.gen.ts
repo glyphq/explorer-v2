@@ -221,7 +221,7 @@ export const getStatusPage = <ThrowOnError extends boolean = false>(
 /**
  * Get transaction and event counts per time bucket
  *
- * Bucketed activity with deduplicated counts across replayed ticks and summed QU volume. Choose the interval and window with query parameters.
+ * Bucketed activity with deduplicated counts across replayed ticks and summed QUBIC volume. Choose the interval and window with query parameters.
  */
 export const getActivity = <ThrowOnError extends boolean = false>(
   options?: Options<GetActivityData, ThrowOnError>,
@@ -366,7 +366,7 @@ export const listEvents = <ThrowOnError extends boolean = false>(
 /**
  * List identities by most recent activity
  *
- * Ranked by latest activity. Each row carries observed QU balance, incoming and outgoing totals, transfer count, and first and last seen ticks.
+ * Ranked by latest activity. Each row carries observed QUBIC balance, incoming and outgoing totals, transfer count, and first and last seen ticks.
  */
 export const listIdentities = <ThrowOnError extends boolean = false>(
   options?: Options<ListIdentitiesData, ThrowOnError>,
@@ -377,9 +377,9 @@ export const listIdentities = <ThrowOnError extends boolean = false>(
   });
 
 /**
- * Get an identity summary and observed QU flow
+ * Get an identity summary and observed QUBIC flow
  *
- * Indexed QU flow, transfer count, and first and last activity for one identity. This is observed history, not a live spectrum lookup.
+ * Indexed QUBIC flow, transfer count, and first and last activity for one identity. This is observed history, not a live spectrum lookup.
  */
 export const getIdentity = <ThrowOnError extends boolean = false>(
   options: Options<GetIdentityData, ThrowOnError>,
@@ -436,7 +436,7 @@ export const listIdentityEvents = <ThrowOnError extends boolean = false>(
   >({ url: "/v1/identities/{identity}/events", ...options });
 
 /**
- * Get bucketed incoming and outgoing QU flow
+ * Get bucketed incoming and outgoing QUBIC flow
  *
  * Returns a fixed window of buckets ending at the indexed head. Empty buckets are zero-filled so charts do not need to resample. Amounts are in the network's base unit and are not rescaled.
  */

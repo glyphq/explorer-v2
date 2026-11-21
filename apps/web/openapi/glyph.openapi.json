@@ -1060,7 +1060,7 @@
     }
   },
   "info": {
-    "description": "# Glyph API\n\nGlyph indexes Qubic by connecting straight to peers and verifying quorum evidence. There is no hosted RPC in the path: every tick, transaction, and event served here came from peer messages that Glyph fetched, aligned, and persisted itself.\n\n## Response shape\n\nEvery JSON response wraps its payload in `data`. Collections also return `meta` with pagination fields. Errors use RFC 9457 problem documents and a stable `code`.\n\n## Two read paths\n\n- Indexed routes under `/v1` read ClickHouse and return only quorum-verified, persisted history.\n- Live routes under `/v1/live` make a direct peer call per request. They may use a short 2-second cache and return `503 unavailable` when no peer answers.\n\n## Conventions\n\n- Amounts are integer QU in the network's base unit. 1 QU is 1 base unit and is never rescaled.\n- Identities are uppercase base-26. Transaction hashes are lowercase base-26. Tick and epoch numbers are JSON integers.\n- Newest-first collections accept `limit` and an opaque `cursor` from `meta.next_cursor`.\n- `/v1/status` reports ingest and network progress. `/status` renders the same state as HTML.",
+    "description": "# Glyph API\n\nGlyph indexes Qubic by connecting straight to peers and verifying quorum evidence. There is no hosted RPC in the path: every tick, transaction, and event served here came from peer messages that Glyph fetched, aligned, and persisted itself.\n\n## Response shape\n\nEvery JSON response wraps its payload in `data`. Collections also return `meta` with pagination fields. Errors use RFC 9457 problem documents and a stable `code`.\n\n## Two read paths\n\n- Indexed routes under `/v1` read ClickHouse and return only quorum-verified, persisted history.\n- Live routes under `/v1/live` make a direct peer call per request. They may use a short 2-second cache and return `503 unavailable` when no peer answers.\n\n## Conventions\n\n- Amounts are integer QUBIC in the network's base unit. 1 QUBIC is 1 base unit and is never rescaled.\n- Identities are uppercase base-26. Transaction hashes are lowercase base-26. Tick and epoch numbers are JSON integers.\n- Newest-first collections accept `limit` and an opaque `cursor` from `meta.next_cursor`.\n- `/v1/status` reports ingest and network progress. `/status` renders the same state as HTML.",
     "summary": "A direct-peer read API for the Qubic network.",
     "title": "Glyph API",
     "version": "0.2.0",
@@ -1093,7 +1093,7 @@
     },
     "/v1/analytics/activity": {
       "get": {
-        "description": "Bucketed activity with deduplicated counts across replayed ticks and summed QU volume. Choose the interval and window with query parameters.",
+        "description": "Bucketed activity with deduplicated counts across replayed ticks and summed QUBIC volume. Choose the interval and window with query parameters.",
         "operationId": "getActivity",
         "parameters": [
           {
@@ -1608,7 +1608,7 @@
     },
     "/v1/identities": {
       "get": {
-        "description": "Ranked by latest activity. Each row carries observed QU balance, incoming and outgoing totals, transfer count, and first and last seen ticks.",
+        "description": "Ranked by latest activity. Each row carries observed QUBIC balance, incoming and outgoing totals, transfer count, and first and last seen ticks.",
         "operationId": "listIdentities",
         "parameters": [
           {
@@ -1655,7 +1655,7 @@
     },
     "/v1/identities/{identity}": {
       "get": {
-        "description": "Indexed QU flow, transfer count, and first and last activity for one identity. This is observed history, not a live spectrum lookup.",
+        "description": "Indexed QUBIC flow, transfer count, and first and last activity for one identity. This is observed history, not a live spectrum lookup.",
         "operationId": "getIdentity",
         "parameters": [
           {
@@ -1685,7 +1685,7 @@
           "400": { "description": "Invalid identity" },
           "404": { "description": "Identity not indexed" }
         },
-        "summary": "Get an identity summary and observed QU flow",
+        "summary": "Get an identity summary and observed QUBIC flow",
         "tags": ["Identities"]
       }
     },
@@ -1911,7 +1911,7 @@
           "400": { "description": "Invalid identity or interval" },
           "404": { "description": "The index has no ticks yet" }
         },
-        "summary": "Get bucketed incoming and outgoing QU flow",
+        "summary": "Get bucketed incoming and outgoing QUBIC flow",
         "tags": ["Identities"]
       }
     },

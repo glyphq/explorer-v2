@@ -758,7 +758,7 @@ function ProfileDialogContent({
                   </p>
                   <p className="mt-1 text-muted text-xs leading-relaxed">
                     Your wallet will show this exact text. Signing does not send a transaction or
-                    cost QU.
+                    cost QUBIC.
                   </p>
                   <details className="mt-2">
                     <summary className="cursor-pointer text-xs underline-offset-4 hover:underline">

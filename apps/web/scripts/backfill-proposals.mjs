@@ -232,12 +232,12 @@ function optionLabels(type, details) {
   if (cls === 0x100) {
     labels.push("No transfer");
     for (const amount of details.transferAmounts ?? []) {
-      labels.push(`Send ${amount.toLocaleString("en-US")} QU`);
+      labels.push(`Send ${amount.toLocaleString("en-US")} QUBIC`);
     }
   } else if (cls === 0x400) {
     labels.push("No transfer");
     labels.push(
-      `Send ${Number(details.transferAmount).toLocaleString("en-US")} QU in epoch ${
+      `Send ${Number(details.transferAmount).toLocaleString("en-US")} QUBIC in epoch ${
         details.transferTargetEpoch
       }`,
     );
