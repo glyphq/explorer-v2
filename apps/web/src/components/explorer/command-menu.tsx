@@ -1,6 +1,7 @@
 "use client";
 
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
+import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { Command } from "cmdk";
@@ -19,6 +20,7 @@ import { activeFor, navigation } from "./navigation";
 
 const HISTORY_KEY = "glyph:command-history";
 const IDENTITY_PATTERN = /^[A-Z]{60}$/;
+const TRANSACTION_PATTERN = /^[a-z]{60}$/;
 
 const typeLabels: Record<string, string> = {
   asset: "Asset",
@@ -120,26 +122,38 @@ function labelForPath(path: string): string {
   }
 }
 
-function directIdentity(query: string): string | null {
-  const value = query.replace(/\s/g, "").toUpperCase();
+function directAccount(query: string): string | null {
+  const value = query.replace(/\s/g, "");
   return IDENTITY_PATTERN.test(value) ? value : null;
+}
+
+function directTransaction(query: string): string | null {
+  const value = query.replace(/\s/g, "");
+  return TRANSACTION_PATTERN.test(value) ? value : null;
 }
 
 function SearchResultRow({
   onSelect,
   result,
   skipIdentity,
+  skipTransaction,
 }: {
   onSelect: (path: string) => void;
   result: SearchResult;
   skipIdentity: string | null;
+  skipTransaction: string | null;
 }) {
   const value = resultValue(result);
   const rawIdentity =
     result.type === "identity" && typeof value?.identity === "string" ? value.identity : null;
+  const rawTransaction =
+    result.type === "transaction" && typeof value?.hash === "string" ? value.hash : null;
   const contract = useContract(rawIdentity);
 
   if (rawIdentity && skipIdentity && rawIdentity.toUpperCase() === skipIdentity) {
+    return null;
+  }
+  if (rawTransaction && skipTransaction && rawTransaction.toLowerCase() === skipTransaction) {
     return null;
   }
 
@@ -202,8 +216,9 @@ export function CommandMenu({
   const [history, setHistory] = useState<string[]>([]);
   const { data, isFetching } = useSearch(query.trim());
   const results = data?.data ?? [];
-  const identity = directIdentity(query);
-  const directContract = useContract(identity);
+  const account = directAccount(query);
+  const transaction = directTransaction(query);
+  const directContract = useContract(account);
 
   useEffect(() => {
     try {
@@ -342,7 +357,35 @@ export function CommandMenu({
                     No results for “{query}”.
                   </Command.Empty>
 
-                  {identity ? (
+                  {transaction ? (
+                    <Command.Group
+                      className="mb-1"
+                      heading={
+                        <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
+                          Open transaction
+                        </span>
+                      }
+                    >
+                      <Command.Item
+                        className="flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2 text-muted text-sm data-[selected=true]:bg-surface-secondary data-[selected=true]:text-foreground"
+                        onSelect={() => run(`/transactions/${transaction}` as Route)}
+                        value={`transaction ${transaction} ${query}`}
+                      >
+                        <DocumentTextIcon className="size-4 shrink-0" />
+                        <span
+                          className="min-w-0 flex-1 truncate font-mono text-xs"
+                          title={transaction}
+                        >
+                          {transaction}
+                        </span>
+                        <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
+                          Transaction
+                        </span>
+                      </Command.Item>
+                    </Command.Group>
+                  ) : null}
+
+                  {account ? (
                     <Command.Group
                       className="mb-1"
                       heading={
@@ -357,10 +400,10 @@ export function CommandMenu({
                           run(
                             directContract
                               ? (`/contracts/${directContract.name.toLowerCase()}` as Route)
-                              : (`/accounts/${identity}` as Route),
+                              : (`/accounts/${account}` as Route),
                           )
                         }
-                        value={`${directContract ? "contract" : "account"} ${directContract?.name ?? identity} ${query}`}
+                        value={`${directContract ? "contract" : "account"} ${directContract?.name ?? account} ${query}`}
                       >
                         {directContract ? (
                           <ContractMark name={directContract.name} size={18} />
@@ -373,9 +416,9 @@ export function CommandMenu({
                               ? "min-w-0 flex-1 truncate text-xs"
                               : "min-w-0 flex-1 truncate font-mono text-xs"
                           }
-                          title={identity}
+                          title={account}
                         >
-                          {directContract?.name ?? identity}
+                          {directContract?.name ?? account}
                         </span>
                         <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
                           {directContract ? "Contract" : "Account"}
@@ -455,7 +498,8 @@ export function CommandMenu({
                           key={`${result.type}-${index}`}
                           onSelect={run}
                           result={result}
-                          skipIdentity={identity}
+                          skipIdentity={account}
+                          skipTransaction={transaction}
                         />
                       ))}
                     </Command.Group>
