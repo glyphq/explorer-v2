@@ -14,19 +14,11 @@ import { MarketCard } from "@/components/explorer/market-card";
 import { SectionCard } from "@/components/explorer/section-card";
 import { TickPulse } from "@/components/explorer/tick-pulse";
 import type { EventTypeCount } from "@/lib/api/generated/types.gen";
-import {
-  useActivity,
-  useEventTypes,
-  useMarket,
-  useNetwork,
-  usePriceHistory,
-  useStatus,
-} from "@/lib/api/hooks";
+import { useActivity, useEventTypes, useMarket, usePriceHistory, useStatus } from "@/lib/api/hooks";
 import { useLiveStream } from "@/lib/api/live-stream";
 
 export default function HomePage() {
   const status = useStatus();
-  const network = useNetwork();
   const activity = useActivity(24);
   const market = useMarket();
   const priceHistory = usePriceHistory(24);
@@ -34,21 +26,30 @@ export default function HomePage() {
   const { ticks: liveTicks } = useLiveStream();
 
   const statusData = status.data?.data;
-  const networkData = network.data?.data;
+  const counts = (
+    statusData?.stats as
+      | {
+          counts?: {
+            events?: number;
+            identities?: number;
+            ticks?: number;
+            transactions?: number;
+          };
+        }
+      | undefined
+  )?.counts;
   const marketData = market.data?.data;
-  const head = statusData?.head ?? networkData?.head;
+  const head = statusData?.head;
   const liveHead = liveTicks[0] ?? head;
-  const snapshotHead = networkData?.head?.tick ?? head?.tick ?? 0;
+  const snapshotHead = head?.tick ?? 0;
   const pendingTicks = liveTicks.filter((tick) => tick.tick > snapshotHead);
   const pendingTransactions = pendingTicks.reduce(
     (total, tick) => total + (tick.transaction_count ?? 0),
     0,
   );
   const pendingEvents = pendingTicks.reduce((total, tick) => total + (tick.event_count ?? 0), 0);
-  const transactionCount = networkData
-    ? (networkData.transactions ?? 0) + pendingTransactions
-    : undefined;
-  const eventCount = networkData ? (networkData.events ?? 0) + pendingEvents : undefined;
+  const transactionCount = counts ? (counts.transactions ?? 0) + pendingTransactions : undefined;
+  const eventCount = counts ? (counts.events ?? 0) + pendingEvents : undefined;
   const latestEventTypes = (eventTypes.data?.data ?? []) as Array<
     EventTypeCount & { type_name?: string }
   >;
@@ -70,18 +71,13 @@ export default function HomePage() {
             icon={LayersIcon}
             label="Epoch"
             loading={status.isLoading && !liveHead}
-            value={
-              <AnimatedNumber
-                format={{ maximumFractionDigits: 0 }}
-                value={liveHead?.epoch ?? networkData?.head?.epoch}
-              />
-            }
+            value={<AnimatedNumber format={{ maximumFractionDigits: 0 }} value={liveHead?.epoch} />}
             valueWidth="3ch"
           />
           <BentoMetric
             icon={TransferHorizontalIcon}
             label="Transactions"
-            loading={network.isLoading && transactionCount == null}
+            loading={status.isLoading && transactionCount == null}
             value={
               <AnimatedNumber
                 format={{ maximumFractionDigits: 2, notation: "compact" }}
@@ -93,7 +89,7 @@ export default function HomePage() {
           <BentoMetric
             icon={PulseIcon}
             label="Events"
-            loading={network.isLoading && eventCount == null}
+            loading={status.isLoading && eventCount == null}
             value={
               <AnimatedNumber
                 format={{ maximumFractionDigits: 2, notation: "compact" }}
@@ -105,11 +101,11 @@ export default function HomePage() {
           <BentoMetric
             icon={UsersGroupRoundedIcon}
             label="Identities"
-            loading={network.isLoading}
+            loading={status.isLoading}
             value={
               <AnimatedNumber
                 format={{ maximumFractionDigits: 2, notation: "compact" }}
-                value={networkData?.identities}
+                value={counts?.identities}
               />
             }
             valueWidth="5ch"

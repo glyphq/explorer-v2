@@ -12,7 +12,6 @@ import {
   getIdentityOptions,
   getLiveIdentityOptions,
   getMarketOptions,
-  getNetworkOptions,
   getPriceHistoryOptions,
   getStatusOptions,
   getTickOptions,
@@ -44,14 +43,6 @@ import { useLiveStream } from "./live-stream";
 const REFRESH_INTERVAL = 15_000;
 const HISTORY_STALE_TIME = 5 * 60_000;
 const FIRST_PAGE = undefined as unknown as string;
-
-export function useNetwork() {
-  return useQuery({
-    ...getNetworkOptions(),
-    refetchInterval: REFRESH_INTERVAL,
-    staleTime: REFRESH_INTERVAL,
-  });
-}
 
 export function useStatus() {
   return useQuery({
