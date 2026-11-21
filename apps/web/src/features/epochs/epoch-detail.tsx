@@ -1,33 +1,19 @@
 "use client";
 
 import { Chip, Skeleton } from "@heroui/react";
-import { createColumnHelper } from "@tanstack/react-table";
 import type { Route } from "next";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
 import { BoxLabel } from "@/components/explorer/box-label";
-import { DataTable, tableFeaturesConfig } from "@/components/explorer/data-table";
-import { CopyButton, IdentityLink, TickLink } from "@/components/explorer/links";
+import { CopyButton, TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { SectionHeading } from "@/components/explorer/page-header";
 import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
-import type { Computor } from "@/lib/api/generated/types.gen";
+import { ComputorTable, ComputorTableSkeleton } from "@/features/computors/computor-table";
 import { pageRows, useEpoch, useEpochComputors, useTicks } from "@/lib/api/hooks";
 import { formatInteger } from "@/lib/format";
-
-const computorHelper = createColumnHelper<typeof tableFeaturesConfig, Computor>();
-const epochComputorColumns = computorHelper.columns([
-  computorHelper.accessor("computor_index", {
-    cell: ({ getValue }) => <span className="tabular text-muted">{getValue()}</span>,
-    header: "Index",
-  }),
-  computorHelper.accessor("identity", {
-    cell: ({ getValue }) => <IdentityLink full identity={getValue()} />,
-    header: "Identity",
-  }),
-]);
 
 function Stat({ label, loading, value }: { label: string; loading: boolean; value: ReactNode }) {
   return (
@@ -232,15 +218,10 @@ export function EpochDetail({ epoch }: { epoch: number }) {
                     computors.refetch();
                   }}
                 />
+              ) : computors.isLoading ? (
+                <ComputorTableSkeleton rows={8} />
               ) : (
-                <DataTable
-                  columns={epochComputorColumns}
-                  data={computorRows}
-                  empty="No computor set indexed for this epoch."
-                  isLoading={computors.isLoading}
-                  loadingRows={8}
-                  rowKey={(row) => String(row.computor_index)}
-                />
+                <ComputorTable computors={computorRows} epoch={epoch} />
               )}
             </section>
           ) : null}
