@@ -7,6 +7,8 @@ import { AppShell } from "@/components/explorer/app-shell";
 import { ContractProvider } from "@/components/explorer/contract-provider";
 import Providers from "@/components/providers";
 import PwaRegistration from "@/components/pwa-registration";
+import { DEFAULT_APPEARANCE } from "@/lib/appearance";
+import { APPEARANCE_BOOT_SCRIPT } from "@/lib/appearance-boot-script";
 import { contractSummaries } from "@/lib/contracts/registry";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -105,14 +107,18 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      data-motion="system"
-      data-palette="iris"
+      data-motion={DEFAULT_APPEARANCE.motion}
+      data-palette={DEFAULT_APPEARANCE.palette}
       data-scroll-behavior="smooth"
-      data-text-size="default"
-      data-typeface="space-grotesk"
+      data-text-size={DEFAULT_APPEARANCE.textSize}
+      data-typeface={DEFAULT_APPEARANCE.typeface}
       lang="en"
       suppressHydrationWarning
     >
+      <head>
+        {/* Apply device appearance before the first paint to avoid a palette flash. */}
+        <script dangerouslySetInnerHTML={{ __html: APPEARANCE_BOOT_SCRIPT }} />
+      </head>
       <body
         className={`${spaceGrotesk.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >

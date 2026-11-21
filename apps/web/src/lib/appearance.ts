@@ -1,5 +1,5 @@
 export const APPEARANCE_KEY = "glyph:appearance";
-const APPEARANCE_VERSION = 2;
+export const APPEARANCE_VERSION = 2;
 
 export const palettes = [
   { id: "iris", label: "Iris", swatch: "#c9b8ff" },
