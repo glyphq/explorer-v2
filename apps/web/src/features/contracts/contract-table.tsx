@@ -24,9 +24,6 @@ function ContractRow({ contract }: { contract: ContractSummary }) {
             >
               {contract.name}
             </Link>
-            {contract.assetName === contract.name ? null : (
-              <span className="block truncate text-[10px] text-muted">{contract.assetName}</span>
-            )}
           </div>
         </div>
       </td>
@@ -50,8 +47,8 @@ function ContractTable({ contracts }: { contracts: ContractSummary[] }) {
     <ActivityTable label="Smart contracts" minWidth="min-w-[1040px]">
       <ActivityTableHead>
         <th className="w-[7%] px-4 py-3 font-normal">Index</th>
-        <th className="w-[28%] px-3 py-3 font-normal">Contract</th>
-        <th className="w-[42%] px-3 py-3 font-normal">Address</th>
+        <th className="w-[24%] px-3 py-3 font-normal">Contract</th>
+        <th className="w-[46%] px-3 py-3 font-normal">Address</th>
         <th className="w-[11%] px-3 py-3 text-right font-normal">Procedures</th>
         <th className="w-[12%] px-4 py-3 text-right font-normal">Functions</th>
       </ActivityTableHead>

@@ -14,12 +14,10 @@ import type { Proposal } from "@/lib/proposals";
 import { formatInteger } from "@/lib/format";
 
 const SKELETON_COLUMNS: ActivityTableSkeletonColumn[] = [
-  { barClassName: "w-48", header: "Proposal", width: "w-[42%]" },
-  { barClassName: "w-16", header: "Contract", width: "w-[11%]" },
-  { barClassName: "w-10", header: "Epoch", width: "w-[7%]" },
-  { align: "right", barClassName: "w-12", header: "Votes", width: "w-[11%]" },
-  { align: "right", barClassName: "w-10", header: "Yes", width: "w-[10%]" },
-  { align: "right", barClassName: "w-10", header: "No", width: "w-[10%]" },
+  { barClassName: "w-48", header: "Proposal", width: "w-[44%]" },
+  { barClassName: "w-16", header: "Contract", width: "w-[12%]" },
+  { barClassName: "w-10", header: "Epoch", width: "w-[8%]" },
+  { align: "right", barClassName: "w-24", header: "Votes", width: "w-[27%]" },
   { align: "right", barClassName: "w-6", header: "Status", width: "w-[9%]" },
 ];
 
@@ -73,14 +71,15 @@ function ProposalRow({ proposal }: { proposal: Proposal }) {
       <td className="px-3 py-3">
         <EpochLink className="relative z-10" epoch={proposal.epoch} />
       </td>
-      <td className="px-3 py-3 text-right text-foreground text-xs tabular-nums">
-        {formatInteger(votes.total)}
-      </td>
-      <td className="px-3 py-3 text-right text-foreground text-xs tabular-nums">
-        {votes.hasBreakdown ? formatInteger(votes.yes) : "—"}
-      </td>
-      <td className="px-3 py-3 text-right text-foreground text-xs tabular-nums">
-        {votes.hasBreakdown ? formatInteger(votes.no) : "—"}
+      <td className="px-3 py-3 text-right">
+        <span className="inline-flex flex-wrap items-baseline justify-end gap-x-2 gap-y-0.5">
+          <span className="text-foreground text-xs tabular-nums">{formatInteger(votes.total)}</span>
+          {votes.hasBreakdown ? (
+            <span className="whitespace-nowrap text-[10px] text-muted tabular-nums">
+              {formatInteger(votes.yes)} yes · {formatInteger(votes.no)} no
+            </span>
+          ) : null}
+        </span>
       </td>
       <td className="px-4 py-3 text-right">
         <StatusChip status={proposal.status} />
@@ -93,12 +92,10 @@ function ProposalsTable({ proposals }: { proposals: Proposal[] }) {
   return (
     <ActivityTable label="Proposals" minWidth="min-w-[1040px]">
       <ActivityTableHead>
-        <th className="w-[42%] px-4 py-3 font-normal">Proposal</th>
-        <th className="w-[11%] px-3 py-3 font-normal">Contract</th>
-        <th className="w-[7%] px-3 py-3 font-normal">Epoch</th>
-        <th className="w-[11%] px-3 py-3 text-right font-normal">Votes</th>
-        <th className="w-[10%] px-3 py-3 text-right font-normal">Yes</th>
-        <th className="w-[10%] px-3 py-3 text-right font-normal">No</th>
+        <th className="w-[44%] px-4 py-3 font-normal">Proposal</th>
+        <th className="w-[12%] px-3 py-3 font-normal">Contract</th>
+        <th className="w-[8%] px-3 py-3 font-normal">Epoch</th>
+        <th className="w-[27%] px-3 py-3 text-right font-normal">Votes</th>
         <th className="w-[9%] px-4 py-3 text-right font-normal">Status</th>
       </ActivityTableHead>
       <tbody>
