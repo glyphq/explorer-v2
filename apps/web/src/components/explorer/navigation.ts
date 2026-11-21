@@ -1,5 +1,5 @@
 import { BrainIcon } from "@solar-icons/react/linear/brain";
-import { BankIcon } from "@solar-icons/react/linear/bank";
+import { BookmarkIcon } from "@solar-icons/react/linear/bookmark";
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
 import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
 import { DollarMinimalisticIcon } from "@solar-icons/react/linear/dollar-minimalistic";
@@ -52,10 +52,10 @@ const assets = {
   label: "Assets",
 } satisfies NavigationItem;
 
-const exchanges = {
-  href: "/exchanges",
-  icon: BankIcon,
-  label: "Exchanges",
+const addresses = {
+  href: "/addresses",
+  icon: BookmarkIcon,
+  label: "Known addresses",
 } satisfies NavigationItem;
 
 const contracts = {
@@ -83,7 +83,7 @@ export const navigation = [
   transactions,
   accounts,
   assets,
-  exchanges,
+  addresses,
   contracts,
   proposals,
   bpp,
@@ -91,7 +91,7 @@ export const navigation = [
 
 export const primaryNavigation = [overview, bpp] as const;
 
-export const chainNavigation = [ticks, epochs, transactions, exchanges] as const;
+export const chainNavigation = [ticks, epochs, transactions, addresses] as const;
 
 export const buildNavigation = [contracts, proposals] as const;
 

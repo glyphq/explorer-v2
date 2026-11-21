@@ -2,9 +2,9 @@
 
 import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
-import { RecordEmpty, RecordSkeleton } from "@/components/explorer/records";
+import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
-import { TickTable } from "@/features/ticks/tick-table";
+import { TickTable, TickTableSkeleton } from "@/features/ticks/tick-table";
 import { pageRows, useTicks } from "@/lib/api/hooks";
 
 export default function TicksPage() {
@@ -25,9 +25,7 @@ export default function TicksPage() {
       ) : (
         <>
           {ticks.isLoading ? (
-            <div className="rounded-2xl bg-surface p-1.5">
-              <RecordSkeleton rows={10} />
-            </div>
+            <TickTableSkeleton rows={10} />
           ) : rows.length === 0 ? (
             <div className="rounded-2xl bg-surface">
               <RecordEmpty>No ticks yet.</RecordEmpty>

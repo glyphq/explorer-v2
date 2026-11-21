@@ -6,18 +6,19 @@ import Link from "next/link";
 import { Fragment, useId, useMemo, useState } from "react";
 
 import { ActorLabel } from "@/components/explorer/actor-label";
+import {
+  ActivityTable,
+  ActivityTableHead,
+  ActivityTableRow,
+  ActivityTableSkeleton,
+  type ActivityTableSkeletonColumn,
+} from "@/components/explorer/activity-table";
 import { parseEventBody } from "@/components/explorer/event-summary";
 import { useTransactionContract } from "@/components/explorer/contract-provider";
 import { transactionTarget } from "@/components/explorer/transaction-target";
 import type { Event, Transaction } from "@/lib/api/generated/types.gen";
 import { listTickEventsOptions } from "@/lib/api/generated/@tanstack/react-query.gen";
-import {
-  formatInteger,
-  formatQu,
-  formatTime,
-  formatTimestamp,
-  formatTimestampCompact,
-} from "@/lib/format";
+import { formatInteger, formatQu, formatTimestamp, formatTimestampCompact } from "@/lib/format";
 import { decodeCustomMessage } from "@/lib/transactions/special";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
@@ -108,7 +109,7 @@ function EventLine({ event, source }: { event: Event; source?: string }) {
 
 function TransactionEvents({ events, source }: { events: Event[]; source?: string }) {
   return (
-    <div className="bg-surface-secondary/40 px-2 pb-3 sm:px-4">
+    <div className="px-4 pb-3">
       <ul className="ml-6 space-y-2">
         {events.map((event, index) => (
           <EventLine
@@ -144,12 +145,12 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
 
   return (
     <Fragment>
-      <tr
-        className={`group relative transition-colors ${
-          target ? "cursor-pointer" : ""
-        } ${eventsOpen ? "bg-surface-secondary/40" : "hover:bg-surface-secondary"}`}
+      <ActivityTableRow
+        className={eventsOpen ? "bg-surface-secondary/40" : ""}
+        hover={!eventsOpen}
+        interactive={Boolean(target)}
       >
-        <td className="px-2 py-3 sm:px-4">
+        <td className="px-4 py-3">
           <div className="flex min-w-0 items-center gap-2">
             <span className="flex size-4 shrink-0 items-center justify-center">
               {events.length > 0 ? (
@@ -157,7 +158,7 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
                   aria-controls={eventsId}
                   aria-expanded={eventsOpen}
                   aria-label={eventsOpen ? "Hide events" : "Show events"}
-                  className="relative z-10 inline-flex size-4 items-center justify-center rounded-sm text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+                  className="relative z-10 inline-flex size-4 cursor-pointer items-center justify-center rounded-sm text-muted transition-colors hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
                   onClick={() => setEventsOpen((open) => !open)}
                   type="button"
                 >
@@ -184,22 +185,8 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
               <span className="shrink-0 text-[10px] text-danger">{transaction.status}</span>
             ) : null}
           </div>
-          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-muted md:hidden">
-            <span className="min-w-0 truncate">{typeLabel}</span>
-            <span className="inline-flex min-w-0 flex-wrap items-center gap-1">
-              <ActorLabel identity={transaction.source} />→
-              <ActorLabel identity={transaction.destination} />
-            </span>
-            <span>tick {formatInteger(transaction.tick)}</span>
-          </div>
-          <div className="mt-1 hidden flex-wrap gap-x-3 gap-y-0.5 text-[10px] text-muted md:flex xl:hidden">
-            <span className="inline-flex min-w-0 flex-wrap items-center gap-1">
-              <ActorLabel identity={transaction.source} />→
-              <ActorLabel identity={transaction.destination} />
-            </span>
-          </div>
         </td>
-        <td className="hidden px-3 py-3 md:table-cell">
+        <td className="px-3 py-3">
           <span
             className={`block max-w-48 truncate text-xs ${
               isTransfer ? "text-muted" : "font-medium text-foreground"
@@ -209,13 +196,13 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
             {typeLabel}
           </span>
         </td>
-        <td className="hidden px-3 py-3 xl:table-cell">
+        <td className="px-3 py-3">
           <ActorLabel identity={transaction.source} />
         </td>
-        <td className="hidden px-3 py-3 xl:table-cell">
+        <td className="px-3 py-3">
           <ActorLabel identity={transaction.destination} />
         </td>
-        <td className="px-2 py-3 text-right text-xs tabular-nums sm:px-3">
+        <td className="px-3 py-3 text-right text-xs tabular-nums">
           {showAmount ? (
             <span
               className={`whitespace-nowrap ${
@@ -228,22 +215,19 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
             <span className="text-muted">—</span>
           )}
         </td>
-        <td className="hidden px-3 py-3 text-right text-muted text-xs tabular-nums md:table-cell">
+        <td className="px-3 py-3 text-right text-muted text-xs tabular-nums">
           {formatInteger(transaction.tick)}
         </td>
-        <td className="px-2 py-3 text-right text-[10px] text-muted sm:px-4">
+        <td className="px-4 py-3 text-right text-[10px] text-muted">
           <time dateTime={transaction.timestamp} title={formatTimestamp(transaction.timestamp)}>
-            <span className="md:hidden">{formatTime(transaction.timestamp)}</span>
-            <span className="hidden md:inline">
-              {formatTimestampCompact(transaction.timestamp)}
-            </span>
+            {formatTimestampCompact(transaction.timestamp)}
           </time>
         </td>
-      </tr>
+      </ActivityTableRow>
       {events.length > 0 && eventsOpen ? (
         <tr id={eventsId}>
-          <td className="p-0" colSpan={7}>
-            <div className="px-2 pb-3 sm:px-4">
+          <td className="bg-surface-secondary/40 p-0" colSpan={7}>
+            <div className="px-4 pb-3">
               <TransactionEvents events={events} source={transaction.source} />
             </div>
           </td>
@@ -297,119 +281,48 @@ function TransactionTable({ transactions }: { transactions: Transaction[] }) {
   }, [tickEventQueries]);
 
   return (
-    <div className="overflow-hidden rounded-2xl bg-surface">
-      <div className="overflow-x-auto">
-        <table className="w-full table-fixed border-separate border-spacing-0 text-left">
-          <thead>
-            <tr className="text-[10px] text-muted uppercase tracking-[0.14em]">
-              <th className="w-[52%] px-2 py-3 font-normal sm:px-4 md:w-[28%] xl:w-[20%]">Hash</th>
-              <th className="hidden px-3 py-3 font-normal md:table-cell md:w-[22%] xl:w-[15%]">
-                Type
-              </th>
-              <th className="hidden px-3 py-3 font-normal xl:table-cell xl:w-[13%]">From</th>
-              <th className="hidden px-3 py-3 font-normal xl:table-cell xl:w-[13%]">To</th>
-              <th className="w-[26%] px-2 py-3 text-right font-normal sm:px-3 md:w-[18%] xl:w-[12%]">
-                Amount
-              </th>
-              <th className="hidden px-3 py-3 text-right font-normal md:table-cell md:w-[13%] xl:w-[10%]">
-                Tick
-              </th>
-              <th className="w-[22%] px-2 py-3 text-right font-normal sm:px-4 md:w-[19%] xl:w-[17%]">
-                Observed
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {transactions.map((transaction) => {
-              const key = transaction.hash ?? `${transaction.tick}-${transaction.tx_index}`;
-              const events = transaction.hash
-                ? (eventsByHash.get(transaction.hash.toLowerCase()) ?? [])
-                : [];
+    <ActivityTable label="Transactions" minWidth="min-w-[1080px]">
+      <ActivityTableHead>
+        <th className="w-[18%] px-4 py-3 font-normal">Hash</th>
+        <th className="w-[15%] px-3 py-3 font-normal">Type</th>
+        <th className="w-[15%] px-3 py-3 font-normal">From</th>
+        <th className="w-[15%] px-3 py-3 font-normal">To</th>
+        <th className="w-[12%] px-3 py-3 text-right font-normal">Amount</th>
+        <th className="w-[9%] px-3 py-3 text-right font-normal">Tick</th>
+        <th className="w-[16%] px-4 py-3 text-right font-normal">Observed</th>
+      </ActivityTableHead>
+      <tbody>
+        {transactions.map((transaction) => {
+          const key = transaction.hash ?? `${transaction.tick}-${transaction.tx_index}`;
+          const events = transaction.hash
+            ? (eventsByHash.get(transaction.hash.toLowerCase()) ?? [])
+            : [];
 
-              return <TransactionRow events={events} key={key} transaction={transaction} />;
-            })}
-          </tbody>
-        </table>
-      </div>
-    </div>
+          return <TransactionRow events={events} key={key} transaction={transaction} />;
+        })}
+      </tbody>
+    </ActivityTable>
   );
 }
 
+const SKELETON_COLUMNS: ActivityTableSkeletonColumn[] = [
+  { barClassName: "w-28", header: "Hash", width: "w-[18%]" },
+  { barClassName: "w-20", header: "Type", width: "w-[15%]" },
+  { barClassName: "w-24", header: "From", width: "w-[15%]" },
+  { barClassName: "w-24", header: "To", width: "w-[15%]" },
+  { align: "right", barClassName: "w-12", header: "Amount", width: "w-[12%]" },
+  { align: "right", barClassName: "w-10", header: "Tick", width: "w-[9%]" },
+  { align: "right", barClassName: "w-24", header: "Observed", width: "w-[16%]" },
+];
+
 function TransactionTableSkeleton({ rows = 10 }: { rows?: number }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-surface">
-      <div className="overflow-x-auto">
-        <table
-          aria-label="Loading transactions"
-          className="w-full table-fixed border-separate border-spacing-0 text-left"
-        >
-          <thead>
-            <tr className="text-[10px] text-muted uppercase tracking-[0.14em]">
-              <th className="w-[52%] px-2 py-3 font-normal sm:px-4 md:w-[28%] xl:w-[20%]">Hash</th>
-              <th className="hidden px-3 py-3 font-normal md:table-cell md:w-[22%] xl:w-[15%]">
-                Type
-              </th>
-              <th className="hidden px-3 py-3 font-normal xl:table-cell xl:w-[13%]">From</th>
-              <th className="hidden px-3 py-3 font-normal xl:table-cell xl:w-[13%]">To</th>
-              <th className="w-[26%] px-2 py-3 text-right font-normal sm:px-3 md:w-[18%] xl:w-[12%]">
-                Amount
-              </th>
-              <th className="hidden px-3 py-3 text-right font-normal md:table-cell md:w-[13%] xl:w-[10%]">
-                Tick
-              </th>
-              <th className="w-[22%] px-2 py-3 text-right font-normal sm:px-4 md:w-[19%] xl:w-[17%]">
-                Observed
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: rows }).map((_, index) => (
-              <tr key={index}>
-                <td className="px-2 py-3 sm:px-4">
-                  <div className="flex min-w-0 items-center gap-2">
-                    <span className="size-4 shrink-0" />
-                    <span className="h-3 w-32 animate-pulse rounded bg-surface-secondary sm:w-40" />
-                  </div>
-                  <div className="mt-2 flex flex-col gap-1.5 md:hidden">
-                    <span className="h-2 w-16 animate-pulse rounded bg-surface-secondary" />
-                    <span className="h-2 w-32 animate-pulse rounded bg-surface-secondary" />
-                    <span className="h-2 w-20 animate-pulse rounded bg-surface-secondary" />
-                  </div>
-                  <div className="mt-2 hidden items-center gap-1.5 md:flex xl:hidden">
-                    <span className="size-4 animate-pulse rounded-full bg-surface-secondary" />
-                    <span className="h-2 w-24 animate-pulse rounded bg-surface-secondary" />
-                  </div>
-                </td>
-                <td className="hidden px-3 py-3 md:table-cell">
-                  <span className="block h-3 w-20 animate-pulse rounded bg-surface-secondary" />
-                </td>
-                <td className="hidden px-3 py-3 xl:table-cell">
-                  <div className="flex items-center gap-1.5">
-                    <span className="size-4 animate-pulse rounded-full bg-surface-secondary" />
-                    <span className="h-3 w-24 animate-pulse rounded bg-surface-secondary" />
-                  </div>
-                </td>
-                <td className="hidden px-3 py-3 xl:table-cell">
-                  <div className="flex items-center gap-1.5">
-                    <span className="size-4 animate-pulse rounded-full bg-surface-secondary" />
-                    <span className="h-3 w-24 animate-pulse rounded bg-surface-secondary" />
-                  </div>
-                </td>
-                <td className="px-2 py-3 sm:px-3">
-                  <span className="ml-auto block h-3 w-14 animate-pulse rounded bg-surface-secondary" />
-                </td>
-                <td className="hidden px-3 py-3 md:table-cell">
-                  <span className="ml-auto block h-3 w-14 animate-pulse rounded bg-surface-secondary" />
-                </td>
-                <td className="px-2 py-3 sm:px-4">
-                  <span className="ml-auto block h-3 w-16 animate-pulse rounded bg-surface-secondary" />
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
+    <ActivityTableSkeleton
+      columns={SKELETON_COLUMNS}
+      label="Loading transactions"
+      minWidth="min-w-[1080px]"
+      rows={rows}
+    />
   );
 }
 

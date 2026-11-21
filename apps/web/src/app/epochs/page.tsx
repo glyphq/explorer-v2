@@ -2,9 +2,9 @@
 
 import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
-import { RecordEmpty, RecordSkeleton } from "@/components/explorer/records";
+import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
-import { EpochTable } from "@/features/epochs/epoch-table";
+import { EpochTable, EpochTableSkeleton } from "@/features/epochs/epoch-table";
 import { pageRows, useEpochs } from "@/lib/api/hooks";
 
 export default function EpochsPage() {
@@ -25,9 +25,7 @@ export default function EpochsPage() {
       ) : (
         <>
           {epochs.isLoading ? (
-            <div className="rounded-2xl bg-surface p-1.5">
-              <RecordSkeleton rows={8} />
-            </div>
+            <EpochTableSkeleton rows={8} />
           ) : rows.length === 0 ? (
             <div className="rounded-2xl bg-surface">
               <RecordEmpty>No epochs yet.</RecordEmpty>

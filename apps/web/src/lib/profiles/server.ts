@@ -139,6 +139,22 @@ export async function listExchangeProfiles(): Promise<PublicProfile[]> {
     .filter((profile) => isExchangeActive(profile.displayName));
 }
 
+/** Verified wallet profiles plus active exchange accounts. */
+export async function listKnownProfiles(): Promise<PublicProfile[]> {
+  const db = await profilesDb();
+  const result = await db
+    .prepare(
+      `SELECT ${PROFILE_COLUMNS} FROM profiles
+       WHERE kind IN ('wallet', 'exchange')
+       ORDER BY CASE kind WHEN 'exchange' THEN 0 ELSE 1 END, display_name COLLATE NOCASE ASC`,
+    )
+    .all<ProfileRow>();
+
+  return (result.results ?? [])
+    .map(toPublicProfile)
+    .filter((profile) => profile.kind === "wallet" || isExchangeActive(profile.displayName));
+}
+
 export type CreateChallengeInput = {
   identity: string;
   action: ProfileChallengeAction;
