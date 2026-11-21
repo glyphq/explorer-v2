@@ -63,7 +63,7 @@ export function IdentityLink({
       href={`/accounts/${identity}` as Route}
       title={identity}
     >
-      {full ? identity : shorten(identity, 8, 6)}
+      {full ? identity : shorten(identity, 4, 4)}
     </Link>
   );
 
@@ -228,12 +228,12 @@ export function CopyableId({ full = true, value }: { full?: boolean; value: stri
             {value}
           </span>
           <span className="min-w-0 truncate font-mono text-xs sm:hidden" title={value}>
-            {shorten(value, 10, 8)}
+            {shorten(value, 4, 4)}
           </span>
         </>
       ) : (
         <span className="min-w-0 max-w-48 truncate font-mono text-xs" title={value}>
-          {shorten(value, 10, 8)}
+          {shorten(value, 4, 4)}
         </span>
       )}
       <CopyButton value={value} />

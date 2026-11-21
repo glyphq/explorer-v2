@@ -16,8 +16,8 @@ export async function generateMetadata({
   const title = contract
     ? `${contract.name} smart contract`
     : profile
-      ? `${profile.displayName} (${shorten(identity, 6, 4)})`
-      : `Identity ${shorten(identity, 10, 8)}`;
+      ? `${profile.displayName} (${shorten(identity, 4, 4)})`
+      : `Identity ${shorten(identity, 4, 4)}`;
   const description = contract
     ? `${contract.name} contract address, balance and activity on Qubic.`
     : profile

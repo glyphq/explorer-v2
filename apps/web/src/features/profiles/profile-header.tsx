@@ -113,7 +113,7 @@ export function ProfileHeader({
           title={identity}
         >
           <span className="hidden sm:inline">{identity}</span>
-          <span className="sm:hidden">{shorten(identity, 10, 8)}</span>
+          <span className="sm:hidden">{shorten(identity, 4, 4)}</span>
         </span>
         {profile.bio ? (
           <p className="mt-4 max-w-xl whitespace-pre-line break-words text-pretty text-foreground/80 text-sm leading-relaxed">

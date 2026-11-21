@@ -131,7 +131,8 @@ export function AccountDetail({
   const title =
     contract?.name ??
     profile?.displayName ??
-    (zeroAddress ? "Protocol zero address" : shorten(identity, 10, 8));
+    (zeroAddress ? "Protocol zero address" : shorten(identity, 4, 4));
+  const plainIdentity = !contract && !profile && !zeroAddress;
   const fetchNextActivity = useCallback(() => {
     activity.fetchNextPage();
   }, [activity.fetchNextPage]);
@@ -212,9 +213,11 @@ export function AccountDetail({
                 <ExchangeListingNotice name={profile.displayName} />
               ) : null}
             </h1>
-            <div className="mt-2 min-w-0 text-muted text-xs">
-              <CopyableId value={identity} />
-            </div>
+            {plainIdentity ? null : (
+              <div className="mt-2 min-w-0 text-muted text-xs">
+                <CopyableId value={identity} />
+              </div>
+            )}
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-2">
             {contract ? (
@@ -239,7 +242,7 @@ export function AccountDetail({
               </ActionTooltip>
             ) : null}
             <div className="rounded-lg bg-surface p-0.5">
-              <IdentityActions identity={identity} showCopy={false} />
+              <IdentityActions identity={identity} showCopy={plainIdentity} />
             </div>
           </div>
         </div>

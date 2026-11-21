@@ -27,7 +27,7 @@ export function IdentityActions({
     try {
       await navigator.clipboard.writeText(identity);
       sileo.success({
-        description: shorten(identity, 16, 8),
+        description: shorten(identity, 4, 4),
         title: "Identity copied",
       });
     } catch {

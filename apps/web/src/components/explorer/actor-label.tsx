@@ -44,7 +44,7 @@ export function ActorLabel({
           contract ? "font-medium text-foreground" : "text-foreground"
         }`}
       >
-        {contract ? contract.name : shorten(identity, 6, 4)}
+        {contract ? contract.name : shorten(identity, 4, 4)}
       </span>
     </Link>
   );

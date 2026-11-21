@@ -65,7 +65,7 @@ function KnownAddressRow({ address }: { address: KnownAddress }) {
           href={`/accounts/${address.identity}` as Route}
           title={address.identity}
         >
-          {shorten(address.identity, 8, 6)}
+          {shorten(address.identity, 4, 4)}
         </Link>
       </td>
     </ActivityTableRow>

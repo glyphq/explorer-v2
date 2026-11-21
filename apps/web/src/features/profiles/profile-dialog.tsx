@@ -560,7 +560,7 @@ function ProfileDialogContent({
                     <div className="min-w-0 flex-1">
                       <p className="truncate font-medium text-xs">{account.label}</p>
                       <p className="break-all font-mono text-[11px] text-muted">
-                        {shorten(identity, 16, 10)}
+                        {shorten(identity, 4, 4)}
                       </p>
                     </div>
                     <Button

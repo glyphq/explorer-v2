@@ -104,7 +104,7 @@ function labelForPath(path: string): string {
     case "transactions":
       return `Transaction ${shorten(segment ?? "")}`;
     case "accounts":
-      return `Identity ${shorten(segment ?? "")}`;
+      return `Identity ${shorten(segment ?? "", 4, 4)}`;
     case "epochs":
       return `Epoch ${segment ?? ""}`;
     case "assets":

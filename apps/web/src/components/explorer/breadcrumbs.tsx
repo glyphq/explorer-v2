@@ -50,7 +50,7 @@ function detailLabel(pathname: string, item: NavigationItem): string | null {
       return special ? special.displayLabel : first ? shorten(first, 8, 6) : null;
     }
     case "/accounts":
-      return first ? shorten(first, 8, 6) : null;
+      return first ? shorten(first, 4, 4) : null;
     case "/assets":
       return segment.length > 1 ? `Asset ${decodeSegment(segment[1] ?? "")}` : first || null;
     case "/contracts":
