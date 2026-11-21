@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { ClientOnly } from "@/components/explorer/client-only";
+import { DetailSkeleton } from "@/components/explorer/detail-skeleton";
 import { EpochDetail } from "@/features/epochs/epoch-detail";
 
 // Epoch data is fetched client-side; cache the route shell at the edge.
@@ -33,5 +35,9 @@ export async function generateMetadata({
 
 export default async function EpochPage({ params }: { params: Promise<{ epoch: string }> }) {
   const { epoch } = await params;
-  return <EpochDetail epoch={Number(epoch)} />;
+  return (
+    <ClientOnly fallback={<DetailSkeleton />}>
+      <EpochDetail epoch={Number(epoch)} />
+    </ClientOnly>
+  );
 }

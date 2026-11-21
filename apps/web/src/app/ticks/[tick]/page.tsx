@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { ClientOnly } from "@/components/explorer/client-only";
+import { DetailSkeleton } from "@/components/explorer/detail-skeleton";
 import { TickDetail } from "@/features/ticks/tick-detail";
 
 // Tick data is fetched client-side; cache the route shell at the edge.
@@ -33,5 +35,9 @@ export async function generateMetadata({
 
 export default async function TickPage({ params }: { params: Promise<{ tick: string }> }) {
   const { tick } = await params;
-  return <TickDetail tick={Number(tick)} />;
+  return (
+    <ClientOnly fallback={<DetailSkeleton />}>
+      <TickDetail tick={Number(tick)} />
+    </ClientOnly>
+  );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { ClientOnly } from "@/components/explorer/client-only";
+import { DetailSkeleton } from "@/components/explorer/detail-skeleton";
 import { TransactionDetail } from "@/features/transactions/transaction-detail";
 import { shorten } from "@/lib/format";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
@@ -41,5 +43,9 @@ export async function generateMetadata({
 
 export default async function TransactionPage({ params }: { params: Promise<{ hash: string }> }) {
   const { hash } = await params;
-  return <TransactionDetail hash={hash} />;
+  return (
+    <ClientOnly fallback={<DetailSkeleton />}>
+      <TransactionDetail hash={hash} />
+    </ClientOnly>
+  );
 }

@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 
+import { ClientOnly } from "@/components/explorer/client-only";
+import { DetailSkeleton } from "@/components/explorer/detail-skeleton";
 import { AccountDetail } from "@/features/accounts/account-detail";
 import { findContractSummary } from "@/lib/contracts/registry";
 import { shorten } from "@/lib/format";
@@ -42,5 +44,9 @@ export async function generateMetadata({
 
 export default async function AccountPage({ params }: { params: Promise<{ identity: string }> }) {
   const { identity } = await params;
-  return <AccountDetail identity={identity} />;
+  return (
+    <ClientOnly fallback={<DetailSkeleton />}>
+      <AccountDetail identity={identity} />
+    </ClientOnly>
+  );
 }
