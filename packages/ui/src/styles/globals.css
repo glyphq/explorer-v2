@@ -276,6 +276,14 @@ html[data-text-size="large"] {
   animation: none;
 }
 
+.modal-sheet.modal-drag-sheet[data-exiting="true"] {
+  animation: glyph-sheet-hold 420ms linear both;
+}
+
+.modal__backdrop:has(.modal-drag-sheet[data-exiting="true"]) {
+  animation: glyph-sheet-backdrop-out 420ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
 .modal-sheet:not(.modal-drag-sheet)[data-entering="true"] .modal__dialog {
   animation: glyph-sheet-in 320ms cubic-bezier(0.2, 1.15, 0.3, 1) both;
   transform-origin: top center;
@@ -310,6 +318,26 @@ html[data-text-size="large"] {
   }
 }
 
+@keyframes glyph-sheet-hold {
+  from {
+    opacity: 1;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes glyph-sheet-backdrop-out {
+  from {
+    background-color: var(--backdrop);
+  }
+
+  to {
+    background-color: transparent;
+  }
+}
+
 .glyph-epoch-pulse:not(:hover) {
   animation: glyph-epoch-pulse 3.2s ease-in-out infinite;
 }
@@ -336,7 +364,9 @@ html[data-text-size="large"] {
 
 @media (prefers-reduced-motion: reduce) {
   .modal-sheet:not(.modal-drag-sheet)[data-entering="true"] .modal__dialog,
-  .modal-sheet:not(.modal-drag-sheet)[data-exiting="true"] .modal__dialog {
+  .modal-sheet:not(.modal-drag-sheet)[data-exiting="true"] .modal__dialog,
+  .modal-sheet.modal-drag-sheet[data-exiting="true"],
+  .modal__backdrop:has(.modal-drag-sheet[data-exiting="true"]) {
     animation: none;
   }
 

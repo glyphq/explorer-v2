@@ -7,7 +7,7 @@ import { useTransactionContract } from "@/components/explorer/contract-provider"
 import { EventSummary, type EventLike } from "@/components/explorer/event-summary";
 import { IdentityLink, TickLink, TransactionLink } from "@/components/explorer/links";
 import { RecordEmpty, RecordList } from "@/components/explorer/records";
-import type { IdentityActivityItem, Transaction } from "@/lib/api/generated/types.gen";
+import type { Transaction } from "@/lib/api/generated/types.gen";
 import { classNames, formatQu, formatRelativeTime, formatTimestamp } from "@/lib/format";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
@@ -16,76 +16,15 @@ export type ActivityGroup = {
   transaction: Transaction;
 };
 
-function normalizeActivityItem(item: IdentityActivityItem): {
-  event?: EventLike;
-  transaction?: Transaction;
-} {
-  const raw = item as IdentityActivityItem & Record<string, unknown>;
-  if (item.kind === "transaction") {
-    return { transaction: (item.transaction ?? raw) as Transaction };
-  }
-  return { event: (item.event ?? raw) as EventLike };
-}
-
-function syntheticTransaction(event: EventLike, item: IdentityActivityItem): Transaction {
+function syntheticTransaction(event: EventLike): Transaction {
   return {
     amount: event.amount,
     destination: event.destination,
     hash: event.tx_hash ?? event.hash,
     source: event.source,
-    tick: event.tick ?? item.tick,
-    timestamp: event.timestamp ?? item.timestamp,
+    tick: event.tick,
+    timestamp: event.timestamp,
   };
-}
-
-export function groupActivity(items: IdentityActivityItem[]): ActivityGroup[] {
-  const groups = new Map<
-    string,
-    {
-      eventKeys: Set<string>;
-      events: EventLike[];
-      fallback?: { event: EventLike; item: IdentityActivityItem };
-      order: number;
-      transaction?: Transaction;
-    }
-  >();
-
-  items.forEach((item, index) => {
-    const { event, transaction } = normalizeActivityItem(item);
-    const hash = transaction?.hash ?? event?.tx_hash ?? event?.hash ?? event?.log_id;
-    const key = String(hash ?? `activity-${index}`);
-    let group = groups.get(key);
-    if (!group) {
-      group = {
-        eventKeys: new Set(),
-        events: [],
-        order: index,
-        transaction,
-      };
-      groups.set(key, group);
-    }
-    group.transaction ??= transaction;
-    if (event) {
-      const eventKey = String(event.log_id ?? `${key}-${group.events.length}`);
-      if (!group.eventKeys.has(eventKey)) {
-        group.eventKeys.add(eventKey);
-        group.events.push(event);
-      }
-      group.fallback ??= { event, item };
-    }
-  });
-
-  return [...groups.values()]
-    .sort((left, right) => left.order - right.order)
-    .map((group) => ({
-      events: group.events,
-      transaction:
-        group.transaction ??
-        syntheticTransaction(
-          group.fallback?.event ?? {},
-          group.fallback?.item ?? { kind: "event" },
-        ),
-    }));
 }
 
 export function groupTransactionEvents(
@@ -122,7 +61,7 @@ export function groupTransactionEvents(
         eventKeys: new Set(),
         events: [],
         order: transactions.length + index,
-        transaction: syntheticTransaction(event, { kind: "event" }),
+        transaction: syntheticTransaction(event),
       };
       groups.set(key, group);
     }

@@ -1,10 +1,11 @@
 "use client";
 
 import type { IdentityRow } from "@/components/explorer/columns";
-import { LoadMore } from "@/components/explorer/load-more";
+import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
-import { AccountRow, RecordEmpty, RecordList, RecordSkeleton } from "@/components/explorer/records";
+import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
+import { AccountsTable, AccountsTableSkeleton } from "@/features/accounts/accounts-table";
 import { pageRows, useIdentities } from "@/lib/api/hooks";
 
 export default function AccountsPage() {
@@ -14,7 +15,7 @@ export default function AccountsPage() {
   return (
     <div className="page-width px-4 py-8 lg:px-8">
       <PageHeader
-        description="Accounts ranked by recent activity, with balances from the index."
+        description="Accounts ranked by recent activity, with balances and transfer totals from the index."
         title="Accounts"
       />
 
@@ -27,27 +28,26 @@ export default function AccountsPage() {
         />
       ) : (
         <>
-          <div className="rounded-2xl bg-surface p-1.5">
-            {identities.isLoading ? (
-              <RecordSkeleton rows={10} />
-            ) : rows.length === 0 ? (
+          {identities.isLoading ? (
+            <AccountsTableSkeleton rows={10} />
+          ) : rows.length === 0 ? (
+            <div className="rounded-2xl bg-surface">
               <RecordEmpty>No accounts yet.</RecordEmpty>
-            ) : (
-              <RecordList>
-                {rows.map((identity) => (
-                  <AccountRow identity={identity} key={identity.identity} />
-                ))}
-              </RecordList>
-            )}
-          </div>
-          <LoadMore
-            fetchNextPage={() => {
-              identities.fetchNextPage();
-            }}
-            hasNextPage={identities.hasNextPage}
-            isFetchingNextPage={identities.isFetchingNextPage}
-            loaded={rows.length}
-          />
+            </div>
+          ) : (
+            <AccountsTable accounts={rows} />
+          )}
+          {identities.isLoading ? null : (
+            <InfiniteScroll
+              fetchNextPage={() => {
+                identities.fetchNextPage();
+              }}
+              hasNextPage={identities.hasNextPage}
+              isFetchingNextPage={identities.isFetchingNextPage}
+              loaded={rows.length}
+              noun="accounts"
+            />
+          )}
         </>
       )}
     </div>

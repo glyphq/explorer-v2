@@ -9,6 +9,7 @@ import {
   ActivityTableSkeleton,
   type ActivityTableSkeletonColumn,
 } from "@/components/explorer/activity-table";
+import { BoxLabel } from "@/components/explorer/box-label";
 import { BurnMark } from "@/components/explorer/contract-mark";
 import {
   useContractByIndex,
@@ -31,7 +32,6 @@ import { decodeCustomMessage } from "@/lib/transactions/special";
 import { parseSpecialHash, type SpecialTransactionRef } from "@/lib/transactions/special-hash";
 
 import { ContractCallPanel } from "./contract-call";
-import { BoxLabel } from "./box-label";
 import { useTransactionSignature } from "./use-transaction-signature";
 
 const EFFECT_LABELS: Record<string, string> = {

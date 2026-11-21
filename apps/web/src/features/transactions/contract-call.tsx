@@ -4,6 +4,7 @@ import { Skeleton } from "@heroui/react";
 import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
 import type { ReactNode } from "react";
 
+import { BoxLabel } from "@/components/explorer/box-label";
 import { useTransactionContract } from "@/components/explorer/contract-provider";
 import { CopyButton, IdentityLink, TickLink } from "@/components/explorer/links";
 import { SectionHeading } from "@/components/explorer/page-header";
@@ -14,8 +15,6 @@ import {
 } from "@/lib/contracts/use-decoded-contract-input";
 import { formatInteger, formatQu } from "@/lib/format";
 import { decodeSpecialInput, type DecodedField } from "@/lib/transactions/special";
-
-import { BoxLabel } from "./box-label";
 
 function CallSection({
   action,

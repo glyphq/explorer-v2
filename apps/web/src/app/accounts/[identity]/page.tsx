@@ -46,5 +46,9 @@ export async function generateMetadata({
 
 export default async function AccountPage({ params }: { params: Promise<{ identity: string }> }) {
   const { identity } = await params;
-  return <AccountDetail identity={identity} />;
+  const contract = findContractSummary(identity);
+  const initialProfile = contract
+    ? undefined
+    : await getPublicProfile(identity).catch(() => undefined);
+  return <AccountDetail identity={identity} initialProfile={initialProfile} />;
 }

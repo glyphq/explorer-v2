@@ -147,7 +147,7 @@ export function Bpp9000Terminal() {
         <QaAccordion colony={data.colony} race={race} />
       </Reveal>
 
-      {alignmentOpen && race ? (
+      {race ? (
         <AlignmentModal onOpenChange={setAlignmentOpen} open={alignmentOpen} race={race} />
       ) : null}
     </div>

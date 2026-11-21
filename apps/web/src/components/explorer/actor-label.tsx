@@ -34,7 +34,7 @@ export function ActorLabel({
       <span
         className={
           contract
-            ? "min-w-0 truncate font-medium text-foreground text-xs"
+            ? "min-w-0 truncate font-medium font-mono text-foreground text-xs"
             : "min-w-0 truncate font-mono text-muted text-xs"
         }
       >

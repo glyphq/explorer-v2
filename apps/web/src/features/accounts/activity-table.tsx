@@ -1,142 +1,92 @@
 "use client";
 
-import {
-  Button,
-  Chip,
-  Label,
-  ListBox,
-  ListBoxItem,
-  SearchField,
-  Select,
-  Skeleton,
-  Table,
-} from "@heroui/react";
-import { ArrowLeftDownIcon } from "@solar-icons/react/linear/arrow-left-down";
-import { ArrowRightUpIcon } from "@solar-icons/react/linear/arrow-right-up";
-import { BellIcon } from "@solar-icons/react/linear/bell";
-import { BellOffIcon } from "@solar-icons/react/linear/bell-off";
-import { BellRingIcon } from "@solar-icons/react/linear/bell-ring";
-import { BrainIcon } from "@solar-icons/react/linear/brain";
-import { CalendarIcon } from "@solar-icons/react/linear/calendar";
+import { Button, Label, ListBox, ListBoxItem, SearchField, Select } from "@heroui/react";
 import { CloseCircleIcon } from "@solar-icons/react/linear/close-circle";
-import { CoinsIcon } from "@solar-icons/react/linear/coins";
-import { LayersIcon } from "@solar-icons/react/linear/layers";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
-import { MinusCircleIcon } from "@solar-icons/react/linear/minus-circle";
-import { TagIcon } from "@solar-icons/react/linear/tag";
-import { WalletMoneyIcon } from "@solar-icons/react/linear/wallet-money";
 import { useMemo, useState } from "react";
 
+import {
+  ActivityTable as ActivityTableBase,
+  ActivityTableHead,
+  ActivityTableRow,
+  ActivityTableSkeleton,
+  type ActivityTableSkeletonColumn,
+} from "@/components/explorer/activity-table";
+import { ActorLabel } from "@/components/explorer/actor-label";
 import { useTransactionContract } from "@/components/explorer/contract-provider";
-import { IdentityLink, TickLink, TransactionLink } from "@/components/explorer/links";
+import { TickLink, TransactionLink } from "@/components/explorer/links";
 import { isZeroIdentity } from "@/lib/contracts/constants";
-import { classNames, formatQu, formatTimestamp } from "@/lib/format";
-import { decodeCustomMessage } from "@/lib/transactions/special";
+import { formatQu, formatTimestamp, formatTimestampCompact } from "@/lib/format";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 import type { ActivityGroup } from "./activity-feed";
 
 type ActivityKind = "incoming" | "outgoing" | "call" | "system";
-type ActivityEvent = ActivityGroup["events"][number];
 type ActivityFilter = "all" | ActivityKind;
-type EventsFilter = "all" | "with" | "none";
-type AmountFilter = "all" | "positive" | "zero";
 type PeriodFilter = "all" | "24h" | "7d" | "30d";
-type SortColumn = "time" | "inputType" | "source" | "destination" | "amount" | "tick";
-type SortDirection = "ascending" | "descending";
 
-type IconComponent = typeof ArrowLeftDownIcon;
 type FilterOption<T extends string> = {
   value: T;
   label: string;
-  icon: IconComponent;
-};
-type ActivityRow = {
-  group: ActivityGroup;
-  meta: ReturnType<typeof activityMeta>;
 };
 
-const ACTIVITY_META: Record<
-  ActivityKind,
-  {
-    color: "accent" | "default" | "success";
-    Icon: IconComponent;
-    label: string;
-  }
-> = {
-  call: { color: "default", Icon: BrainIcon, label: "Contract call" },
-  incoming: { color: "success", Icon: ArrowLeftDownIcon, label: "Incoming" },
-  outgoing: { color: "accent", Icon: ArrowRightUpIcon, label: "Outgoing" },
-  system: { color: "default", Icon: LayersIcon, label: "System event" },
+const ACTIVITY_KIND_LABELS: Record<ActivityKind, string> = {
+  call: "Contract call",
+  incoming: "Incoming",
+  outgoing: "Outgoing",
+  system: "System event",
 };
 
 const ACTIVITY_OPTIONS: readonly FilterOption<ActivityFilter>[] = [
-  { icon: LayersIcon, label: "All activity", value: "all" },
-  { icon: ArrowLeftDownIcon, label: "Incoming", value: "incoming" },
-  { icon: ArrowRightUpIcon, label: "Outgoing", value: "outgoing" },
-  { icon: BrainIcon, label: "Contract call", value: "call" },
-  { icon: LayersIcon, label: "System event", value: "system" },
-];
-
-const EVENTS_OPTIONS: readonly FilterOption<EventsFilter>[] = [
-  { icon: BellIcon, label: "All events", value: "all" },
-  { icon: BellRingIcon, label: "With events", value: "with" },
-  { icon: BellOffIcon, label: "No events", value: "none" },
-];
-
-const AMOUNT_OPTIONS: readonly FilterOption<AmountFilter>[] = [
-  { icon: WalletMoneyIcon, label: "Any amount", value: "all" },
-  { icon: CoinsIcon, label: "With amount", value: "positive" },
-  { icon: MinusCircleIcon, label: "Zero amount", value: "zero" },
+  { label: "All activity", value: "all" },
+  { label: "Incoming", value: "incoming" },
+  { label: "Outgoing", value: "outgoing" },
+  { label: "Contract calls", value: "call" },
+  { label: "System events", value: "system" },
 ];
 
 const PERIOD_OPTIONS: readonly FilterOption<PeriodFilter>[] = [
-  { icon: CalendarIcon, label: "Any time", value: "all" },
-  { icon: CalendarIcon, label: "Last 24 hours", value: "24h" },
-  { icon: CalendarIcon, label: "Last 7 days", value: "7d" },
-  { icon: CalendarIcon, label: "Last 30 days", value: "30d" },
+  { label: "Any time", value: "all" },
+  { label: "Last 24 hours", value: "24h" },
+  { label: "Last 7 days", value: "7d" },
+  { label: "Last 30 days", value: "30d" },
 ];
 
-function activityMeta(
-  group: ActivityGroup,
-  identity: string,
-): {
-  kind: ActivityKind;
-} {
+function activityKind(group: ActivityGroup, identity: string): ActivityKind {
   const { transaction } = group;
   if (parseSpecialHash(transaction.hash)) {
-    return { kind: "system" };
+    return "system";
   }
   if (isZeroIdentity(transaction.destination) && (transaction.input_type ?? 0) > 0) {
-    return { kind: "system" };
+    return "system";
   }
   const isTransfer = (transaction.input_type ?? 0) === 0;
 
   if (!isTransfer) {
-    return { kind: "call" };
+    return "call";
   }
 
   if (transaction.source === identity) {
-    return { kind: "outgoing" };
+    return "outgoing";
   }
 
   if (transaction.destination === identity) {
-    return { kind: "incoming" };
+    return "incoming";
   }
 
-  return { kind: "outgoing" };
+  return "outgoing";
 }
 
 function searchText(group: ActivityGroup, identity: string): string {
   const { transaction } = group;
-  const { kind } = activityMeta(group, identity);
+  const kind = activityKind(group, identity);
   const amount =
     transaction.amount === undefined || transaction.amount === null
       ? ""
       : `${transaction.amount} ${formatQu(transaction.amount)}`;
 
   return [
-    ACTIVITY_META[kind].label,
+    ACTIVITY_KIND_LABELS[kind],
     transaction.source,
     transaction.destination,
     transaction.hash,
@@ -144,10 +94,6 @@ function searchText(group: ActivityGroup, identity: string): string {
     transaction.input_type,
     transaction.status,
     amount,
-    ...group.events.map((event) => event.type_name),
-    ...group.events.map((event) => eventLabel(event)),
-    ...group.events.map((event) => event.source),
-    ...group.events.map((event) => event.destination),
   ]
     .filter((value) => value !== undefined && value !== null && value !== "")
     .join(" ")
@@ -168,55 +114,6 @@ function periodCutoff(period: PeriodFilter): number | null {
   return Date.now() - hours * 60 * 60 * 1000;
 }
 
-function formatEventType(value: string): string {
-  return value.replaceAll("_", " ");
-}
-
-function eventLabel(event: ActivityEvent): string {
-  const body =
-    event.body && typeof event.body === "object" ? (event.body as Record<string, unknown>) : null;
-  const raw = typeof body?.raw === "string" ? body.raw : undefined;
-  return decodeCustomMessage(raw)?.label ?? formatEventType(event.type_name || "event");
-}
-
-function eventTitle(event: ActivityEvent): string {
-  const from = event.source ? `from ${event.source}` : null;
-  const to = event.destination ? `to ${event.destination}` : null;
-  return [eventLabel(event), from, to].filter(Boolean).join(" ");
-}
-
-function isSortColumn(value: string): value is SortColumn {
-  return (
-    value === "time" ||
-    value === "inputType" ||
-    value === "source" ||
-    value === "destination" ||
-    value === "amount" ||
-    value === "tick"
-  );
-}
-
-function compareRows(left: ActivityRow, right: ActivityRow, column: SortColumn): number {
-  switch (column) {
-    case "amount":
-      return (left.group.transaction.amount ?? 0) - (right.group.transaction.amount ?? 0);
-    case "inputType":
-      return (left.group.transaction.input_type ?? 0) - (right.group.transaction.input_type ?? 0);
-    case "source":
-      return (left.group.transaction.source ?? "").localeCompare(
-        right.group.transaction.source ?? "",
-      );
-    case "destination":
-      return (left.group.transaction.destination ?? "").localeCompare(
-        right.group.transaction.destination ?? "",
-      );
-    case "tick":
-      return (left.group.transaction.tick ?? 0) - (right.group.transaction.tick ?? 0);
-    default:
-      return timestampValue(left.group) - timestampValue(right.group);
-  }
-}
-
 function FilterSelect<T extends string>({
   label,
   onChange,
@@ -228,9 +125,6 @@ function FilterSelect<T extends string>({
   options: readonly FilterOption<T>[];
   value: T;
 }) {
-  const selected = options.find((option) => option.value === value) ?? options[0];
-  const isDefault = selected?.value === options[0]?.value;
-
   return (
     <Select
       aria-label={label}
@@ -244,57 +138,19 @@ function FilterSelect<T extends string>({
       variant="secondary"
     >
       <Label className="sr-only">{label}</Label>
-      <Select.Trigger
-        className={classNames(
-          "h-9 w-auto gap-2 rounded-full px-3 text-xs",
-          !isDefault && "bg-surface-tertiary text-foreground ring-1 ring-foreground/15",
-        )}
-      >
+      <Select.Trigger className="h-9 w-auto gap-2 rounded-lg px-3 text-xs">
         <Select.Value />
       </Select.Trigger>
       <Select.Popover>
         <ListBox>
-          {options.map((option) => {
-            const OptionIcon = option.icon;
-            return (
-              <ListBoxItem id={option.value} key={option.value} textValue={option.label}>
-                <span className="flex items-center gap-2">
-                  <OptionIcon aria-hidden className="size-3.5 text-muted" />
-                  <span>{option.label}</span>
-                </span>
-              </ListBoxItem>
-            );
-          })}
+          {options.map((option) => (
+            <ListBoxItem id={option.value} key={option.value} textValue={option.label}>
+              {option.label}
+            </ListBoxItem>
+          ))}
         </ListBox>
       </Select.Popover>
     </Select>
-  );
-}
-
-function TimeCell({ timestamp }: { timestamp: string | null | undefined }) {
-  const formatted = formatTimestamp(timestamp);
-
-  if (!timestamp) {
-    return <span className="text-muted text-xs">—</span>;
-  }
-
-  return (
-    <span className="tabular whitespace-nowrap text-xs text-foreground" title={formatted}>
-      {formatted.replace(", ", " · ")}
-    </span>
-  );
-}
-
-function ActivityKindChip({ kind }: { kind: ActivityKind }) {
-  const { color, Icon, label } = ACTIVITY_META[kind];
-
-  return (
-    <Chip color={color} size="sm" variant="soft">
-      <span className="inline-flex items-center gap-1.5">
-        <Icon aria-hidden className="size-3.5 shrink-0" />
-        <span>{label}</span>
-      </span>
-    </Chip>
   );
 }
 
@@ -312,7 +168,7 @@ function InputType({ transaction }: { transaction: ActivityGroup["transaction"] 
 
   return (
     <span
-      className="block max-w-36 truncate text-muted text-xs"
+      className="block max-w-full truncate text-muted text-xs"
       title={
         special
           ? `${special.label} · ${special.hash}`
@@ -328,57 +184,19 @@ function InputType({ transaction }: { transaction: ActivityGroup["transaction"] 
   );
 }
 
-function PartyCell({ identity }: { identity: string | null | undefined }) {
-  if (!identity) {
+function TimeCell({ timestamp }: { timestamp: string | null | undefined }) {
+  if (!timestamp) {
     return <span className="text-muted text-xs">—</span>;
   }
-  return <IdentityLink avatar className="whitespace-nowrap" identity={identity} />;
-}
 
-function ActivityCell({ events, kind }: { events: ActivityEvent[]; kind: ActivityKind }) {
   return (
-    <div className="flex max-w-[18rem] flex-col items-start">
-      <ActivityKindChip kind={kind} />
-
-      {events.length === 0 ? null : (
-        <div className="relative mt-2.5 ml-3 pl-5">
-          <span
-            aria-hidden
-            className="absolute -top-2 bottom-2 left-0 w-px rounded-full bg-foreground/15"
-          />
-          <ol
-            aria-label={`${events.length} decoded ${events.length === 1 ? "event" : "events"}`}
-            className="flex flex-col gap-2"
-          >
-            {events.map((event, index) => (
-              <li
-                className="relative min-w-0"
-                key={event.log_id ?? `${event.tx_hash ?? event.hash ?? "event"}-${index}`}
-                title={eventTitle(event)}
-              >
-                <span
-                  aria-hidden
-                  className="absolute -left-5 top-0 h-2.5 w-5 rounded-bl-[8px] border-foreground/20 border-b border-l"
-                />
-                <span className="inline-flex max-w-full items-center rounded-full bg-foreground/[0.06] px-2 py-0.5 text-[11px] font-medium leading-4 text-foreground ring-1 ring-foreground/[0.06]">
-                  <span className="truncate">{eventLabel(event)}</span>
-                </span>
-              </li>
-            ))}
-          </ol>
-        </div>
-      )}
-    </div>
-  );
-}
-
-function ActivitySkeleton() {
-  return (
-    <div className="space-y-2 py-2">
-      {Array.from({ length: 6 }, (_, index) => (
-        <Skeleton className="h-11 w-full rounded-lg" key={index} />
-      ))}
-    </div>
+    <time
+      className="whitespace-nowrap text-[10px] text-muted"
+      dateTime={timestamp}
+      title={formatTimestamp(timestamp)}
+    >
+      {formatTimestampCompact(timestamp)}
+    </time>
   );
 }
 
@@ -398,31 +216,15 @@ function ActivityEmpty({ filtered, onClear }: { filtered: boolean; onClear: () =
   );
 }
 
-function hiddenColumnClass(columnId: string): string | undefined {
-  return columnId === "tick" ? "hidden lg:table-cell" : undefined;
-}
-
-function cellClass(columnId: string): string {
-  let base = "whitespace-nowrap";
-  if (columnId === "activity" || columnId === "time") {
-    base = "min-w-44";
-  } else if (columnId === "source" || columnId === "destination") {
-    base = "min-w-40";
-  } else if (columnId === "transaction") {
-    base = "min-w-32 whitespace-nowrap";
-  }
-  return `${base} px-2 py-2.5 align-top sm:px-2.5`;
-}
-
-function headerClass(columnId: string): string {
-  const base =
-    columnId === "amount"
-      ? "px-2 text-right sm:px-2.5"
-      : columnId === "time"
-        ? "min-w-44 px-2 sm:px-2.5"
-        : "px-2 sm:px-2.5";
-  return `${base} whitespace-nowrap`;
-}
+const SKELETON_COLUMNS: ActivityTableSkeletonColumn[] = [
+  { barClassName: "w-28", header: "Tx ID", width: "w-[16%]" },
+  { barClassName: "w-20", header: "Tx type", width: "w-[15%]" },
+  { align: "right", barClassName: "w-10", header: "Tick", width: "w-[9%]" },
+  { align: "right", barClassName: "w-24", header: "Timestamp", width: "w-[14%]" },
+  { barClassName: "w-24", header: "Source", width: "w-[15%]" },
+  { barClassName: "w-24", header: "Destination", width: "w-[15%]" },
+  { align: "right", barClassName: "w-12", header: "Amount", width: "w-[16%]" },
+];
 
 export function ActivityTable({
   groups,
@@ -435,136 +237,59 @@ export function ActivityTable({
 }) {
   const [query, setQuery] = useState("");
   const [activityFilter, setActivityFilter] = useState<ActivityFilter>("all");
-  const [eventsFilter, setEventsFilter] = useState<EventsFilter>("all");
-  const [eventTypeFilter, setEventTypeFilter] = useState("all");
-  const [amountFilter, setAmountFilter] = useState<AmountFilter>("all");
   const [periodFilter, setPeriodFilter] = useState<PeriodFilter>("all");
-  const [sortColumn, setSortColumn] = useState<SortColumn>("time");
-  const [sortDirection, setSortDirection] = useState<SortDirection>("descending");
 
-  const eventTypes = useMemo(() => {
-    const types = new Set<string>();
-    for (const group of groups) {
-      for (const event of group.events) {
-        if (event.type_name) {
-          types.add(event.type_name);
-        }
-      }
-    }
-    return [...types].sort((left, right) => left.localeCompare(right));
-  }, [groups]);
-
-  const eventTypeOptions = useMemo<FilterOption<string>[]>(
-    () => [
-      { icon: TagIcon, label: "All event types", value: "all" },
-      ...eventTypes.map((type) => ({
-        icon: TagIcon,
-        label: formatEventType(type),
-        value: type,
-      })),
-    ],
-    [eventTypes],
-  );
-
-  const filteredRows = useMemo<ActivityRow[]>(() => {
+  const rows = useMemo(() => {
     const needle = query.trim().toLowerCase();
     const cutoff = periodCutoff(periodFilter);
-    const matched: ActivityRow[] = [];
 
-    for (const group of groups) {
-      const meta = activityMeta(group, identity);
-
-      if (activityFilter !== "all" && meta.kind !== activityFilter) {
-        continue;
+    return groups.filter((group) => {
+      const kind = activityKind(group, identity);
+      if (activityFilter !== "all" && kind !== activityFilter) {
+        return false;
       }
-      if (eventsFilter === "with" && group.events.length === 0) {
-        continue;
-      }
-      if (eventsFilter === "none" && group.events.length > 0) {
-        continue;
-      }
-      if (
-        eventTypeFilter !== "all" &&
-        !group.events.some((event) => event.type_name === eventTypeFilter)
-      ) {
-        continue;
-      }
-
-      const amount = group.transaction.amount ?? 0;
-      if (amountFilter === "positive" && amount <= 0) {
-        continue;
-      }
-      if (amountFilter === "zero" && amount !== 0) {
-        continue;
-      }
-
       if (cutoff !== null) {
         const timestamp = timestampValue(group);
         if (timestamp === 0 || timestamp < cutoff) {
-          continue;
+          return false;
         }
       }
-
-      if (needle && !searchText(group, identity).includes(needle)) {
-        continue;
-      }
-
-      matched.push({ group, meta });
-    }
-
-    return matched;
-  }, [
-    activityFilter,
-    amountFilter,
-    eventTypeFilter,
-    eventsFilter,
-    groups,
-    identity,
-    periodFilter,
-    query,
-  ]);
-
-  const rows = useMemo(() => {
-    const sorted = [...filteredRows];
-    sorted.sort((left, right) => {
-      const difference = compareRows(left, right, sortColumn);
-      return sortDirection === "ascending" ? difference : -difference;
+      return !needle || searchText(group, identity).includes(needle);
     });
-    return sorted;
-  }, [filteredRows, sortColumn, sortDirection]);
+  }, [activityFilter, groups, identity, periodFilter, query]);
 
-  const hasFilters =
-    query.trim().length > 0 ||
-    activityFilter !== "all" ||
-    eventsFilter !== "all" ||
-    eventTypeFilter !== "all" ||
-    amountFilter !== "all" ||
-    periodFilter !== "all";
-  const total = groups.length;
-  const filteredTotal = filteredRows.length;
-  const countLabel =
-    filteredTotal === total
-      ? `${total} ${total === 1 ? "activity" : "activities"}`
-      : `${filteredTotal} of ${total}`;
+  const hasFilters = query.trim().length > 0 || activityFilter !== "all" || periodFilter !== "all";
 
   const clearFilters = () => {
     setQuery("");
     setActivityFilter("all");
-    setEventsFilter("all");
-    setEventTypeFilter("all");
-    setAmountFilter("all");
     setPeriodFilter("all");
   };
 
   if (isLoading) {
-    return <ActivitySkeleton />;
+    return (
+      <ActivityTableSkeleton
+        columns={SKELETON_COLUMNS}
+        label="Loading activity"
+        minWidth="min-w-[1080px]"
+        rows={6}
+      />
+    );
+  }
+
+  if (groups.length === 0) {
+    return (
+      <div className="rounded-2xl bg-surface">
+        <ActivityEmpty filtered={false} onClear={clearFilters} />
+      </div>
+    );
   }
 
   return (
     <div className="min-w-0">
-      <div className="mb-4 flex flex-wrap items-center gap-1.5">
+      <div className="mb-3 flex flex-wrap items-center gap-2">
         <SearchField
-          className="min-w-0 flex-1 basis-full sm:max-w-xs"
+          className="min-w-0 flex-1 basis-full sm:max-w-sm"
           onChange={setQuery}
           value={query}
           variant="secondary"
@@ -574,12 +299,12 @@ export function ActivityTable({
             <SearchField.SearchIcon>
               <MagnifierIcon className="size-4" />
             </SearchField.SearchIcon>
-            <SearchField.Input placeholder="Address, transaction, tick, event" />
+            <SearchField.Input placeholder="Transaction, address, tick" />
             <SearchField.ClearButton />
           </SearchField.Group>
         </SearchField>
         <p aria-live="polite" className="sr-only">
-          {countLabel}
+          {rows.length} of {groups.length} activities
         </p>
         <FilterSelect
           label="Filter by activity"
@@ -588,157 +313,91 @@ export function ActivityTable({
           value={activityFilter}
         />
         <FilterSelect
-          label="Filter by events"
-          onChange={setEventsFilter}
-          options={EVENTS_OPTIONS}
-          value={eventsFilter}
-        />
-        {eventTypes.length > 0 ? (
-          <FilterSelect
-            label="Filter by event type"
-            onChange={setEventTypeFilter}
-            options={eventTypeOptions}
-            value={eventTypeFilter}
-          />
-        ) : null}
-        <FilterSelect
-          label="Filter by amount"
-          onChange={setAmountFilter}
-          options={AMOUNT_OPTIONS}
-          value={amountFilter}
-        />
-        <FilterSelect
           label="Filter by time"
           onChange={setPeriodFilter}
           options={PERIOD_OPTIONS}
           value={periodFilter}
         />
         {hasFilters ? (
-          <Button
-            aria-label="Clear filters"
-            className="ml-auto"
-            isIconOnly
-            onPress={clearFilters}
-            size="sm"
-            variant="ghost"
-          >
+          <Button className="ml-auto sm:ml-0" onPress={clearFilters} size="sm" variant="ghost">
             <CloseCircleIcon aria-hidden className="size-3.5" />
+            Clear
           </Button>
         ) : null}
       </div>
 
-      <Table className="min-w-0" variant="secondary">
-        <Table.ScrollContainer>
-          <Table.Content
-            aria-label="Recent activity"
-            className="min-w-[760px] lg:min-w-[1080px] [&_tbody_td]:border-b-0 [&_tbody_tr]:border-b-0"
-            onSortChange={(descriptor) => {
-              const next = String(descriptor.column);
-              if (isSortColumn(next)) {
-                setSortColumn(next);
-              }
-              setSortDirection(descriptor.direction);
-            }}
-            sortDescriptor={{ column: sortColumn, direction: sortDirection }}
-          >
-            <Table.Header>
-              <Table.Column className={headerClass("transaction")} id="transaction" isRowHeader>
-                Transaction
-              </Table.Column>
-              <Table.Column className={headerClass("activity")} id="activity">
-                Activity
-              </Table.Column>
-              <Table.Column allowsSorting className={headerClass("inputType")} id="inputType">
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Input type
-                  </Table.SortableColumnHeader>
-                )}
-              </Table.Column>
-              <Table.Column allowsSorting className={headerClass("source")} id="source">
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Source
-                  </Table.SortableColumnHeader>
-                )}
-              </Table.Column>
-              <Table.Column allowsSorting className={headerClass("destination")} id="destination">
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Destination
-                  </Table.SortableColumnHeader>
-                )}
-              </Table.Column>
-              <Table.Column allowsSorting className={headerClass("amount")} id="amount">
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Amount
-                  </Table.SortableColumnHeader>
-                )}
-              </Table.Column>
-              <Table.Column
-                allowsSorting
-                className={classNames(headerClass("tick"), hiddenColumnClass("tick"))}
-                id="tick"
-              >
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Tick
-                  </Table.SortableColumnHeader>
-                )}
-              </Table.Column>
-              <Table.Column allowsSorting className={headerClass("time")} id="time">
-                {({ sortDirection: direction }) => (
-                  <Table.SortableColumnHeader sortDirection={direction}>
-                    Time
-                  </Table.SortableColumnHeader>
-                )}
-              </Table.Column>
-            </Table.Header>
-            <Table.Body
-              renderEmptyState={() => (
+      <ActivityTableBase label="Recent activity" minWidth="min-w-[1080px]">
+        <ActivityTableHead>
+          <th className="w-[16%] px-4 py-3 font-normal">Tx ID</th>
+          <th className="w-[15%] px-3 py-3 font-normal">Tx type</th>
+          <th className="w-[9%] px-3 py-3 text-right font-normal">Tick</th>
+          <th className="w-[14%] px-4 py-3 text-right font-normal">Timestamp</th>
+          <th className="w-[15%] px-3 py-3 font-normal">Source</th>
+          <th className="w-[15%] px-3 py-3 font-normal">Destination</th>
+          <th className="w-[16%] px-3 py-3 text-right font-normal">Amount</th>
+        </ActivityTableHead>
+        <tbody>
+          {rows.length === 0 ? (
+            <tr>
+              <td colSpan={7}>
                 <ActivityEmpty filtered={hasFilters} onClear={clearFilters} />
-              )}
-            >
-              {rows.map(({ group, meta }, index) => {
-                const { transaction } = group;
-                const rowId = transaction.hash ?? `activity-${transaction.tick ?? "row"}-${index}`;
+              </td>
+            </tr>
+          ) : (
+            rows.map((group, index) => {
+              const { transaction } = group;
+              const kind = activityKind(group, identity);
+              const key = transaction.hash ?? `activity-${transaction.tick ?? "row"}-${index}`;
+              const failed = transaction.status && transaction.status !== "success";
+              const hasAmount = transaction.amount !== undefined && transaction.amount !== null;
+              const isTransfer = kind === "incoming" || kind === "outgoing";
 
-                return (
-                  <Table.Row id={rowId} key={rowId}>
-                    <Table.Cell className={cellClass("transaction")}>
-                      <TransactionLink hash={transaction.hash ?? ""} />
-                    </Table.Cell>
-                    <Table.Cell className={cellClass("activity")}>
-                      <ActivityCell events={group.events} kind={meta.kind} />
-                    </Table.Cell>
-                    <Table.Cell className={cellClass("inputType")}>
-                      <InputType transaction={transaction} />
-                    </Table.Cell>
-                    <Table.Cell className={cellClass("source")}>
-                      <PartyCell identity={transaction.source} />
-                    </Table.Cell>
-                    <Table.Cell className={cellClass("destination")}>
-                      <PartyCell identity={transaction.destination} />
-                    </Table.Cell>
-                    <Table.Cell className={classNames(cellClass("amount"), "text-right")}>
-                      <span className="tabular text-xs">{formatQu(transaction.amount)}</span>
-                    </Table.Cell>
-                    <Table.Cell
-                      className={classNames(cellClass("tick"), hiddenColumnClass("tick"))}
-                    >
-                      <TickLink tick={transaction.tick} />
-                    </Table.Cell>
-                    <Table.Cell className={cellClass("time")}>
-                      <TimeCell timestamp={transaction.timestamp} />
-                    </Table.Cell>
-                  </Table.Row>
-                );
-              })}
-            </Table.Body>
-          </Table.Content>
-        </Table.ScrollContainer>
-      </Table>
+              return (
+                <ActivityTableRow interactive={false} key={key}>
+                  <td className="px-4 py-3">
+                    <div className="flex min-w-0 items-center gap-1.5">
+                      <TransactionLink className="min-w-0 truncate" hash={transaction.hash ?? ""} />
+                      {failed ? (
+                        <span className="shrink-0 text-[10px] text-danger">
+                          {transaction.status}
+                        </span>
+                      ) : null}
+                    </div>
+                  </td>
+                  <td className="px-3 py-3">
+                    <InputType transaction={transaction} />
+                  </td>
+                  <td className="px-3 py-3 text-right">
+                    <TickLink className="whitespace-nowrap text-[10px]" tick={transaction.tick} />
+                  </td>
+                  <td className="px-4 py-3 text-right">
+                    <TimeCell timestamp={transaction.timestamp} />
+                  </td>
+                  <td className="px-3 py-3">
+                    <ActorLabel identity={transaction.source} />
+                  </td>
+                  <td className="px-3 py-3">
+                    <ActorLabel identity={transaction.destination} />
+                  </td>
+                  <td className="px-3 py-3 text-right">
+                    {hasAmount ? (
+                      <span
+                        className={`whitespace-nowrap text-xs tabular-nums ${
+                          isTransfer ? "font-medium text-foreground" : "text-muted"
+                        }`}
+                      >
+                        {formatQu(transaction.amount)}
+                      </span>
+                    ) : (
+                      <span className="text-muted text-xs">—</span>
+                    )}
+                  </td>
+                </ActivityTableRow>
+              );
+            })
+          )}
+        </tbody>
+      </ActivityTableBase>
     </div>
   );
 }

@@ -1,174 +1,104 @@
 "use client";
 
-import { Button } from "@heroui/react";
-import { AsciiSkeleton } from "ascii-reveal";
+import type { Route } from "next";
+import Link from "next/link";
 import { type ReactNode, useCallback, useState } from "react";
+import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { PenIcon } from "@solar-icons/react/linear/pen";
+
+import { ActionTooltip } from "@/components/explorer/action-tooltip";
+import { BoxLabel } from "@/components/explorer/box-label";
 import { ContractMark } from "@/components/explorer/contract-mark";
 import { useContract } from "@/components/explorer/contract-provider";
 import { IdentityActions } from "@/components/explorer/identity-actions";
 import { IdentityAvatar } from "@/components/explorer/identity-avatar";
-import { TickLink } from "@/components/explorer/links";
+import { CopyableId } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
+import { SectionHeading } from "@/components/explorer/page-header";
 import { ErrorState } from "@/components/explorer/state";
-import { ExchangeLogoAvatar } from "@/features/exchanges/exchange-logo";
+import { ExchangeListingNotice } from "@/features/exchanges/exchange-logo";
 import { isProfileUnavailable } from "@/features/profiles/api";
 import { ProfileDialog } from "@/features/profiles/profile-dialog";
-import { ProfileHeader, ProfileMeta } from "@/features/profiles/profile-header";
+import { ProfileVerificationBadge } from "@/features/profiles/profile-badge";
+import { ProfileSocialLinks } from "@/features/profiles/profile-header";
 import { useProfile } from "@/features/profiles/use-profile";
 import {
   pageRows,
   useIdentity,
-  useIdentityActivity,
+  useIdentityTransactions,
   useLiveIdentity,
   useMarket,
 } from "@/lib/api/hooks";
-import { exchangeBrand } from "@/lib/exchanges/brands";
-import { classNames, formatInteger, formatQu, formatUsdValue, shorten } from "@/lib/format";
+import { isExchangeDelisted } from "@/lib/exchanges/brands";
+import { formatInteger, formatUsdValue } from "@/lib/format";
+import type { PublicProfile } from "@/lib/profiles/types";
 import { isZeroIdentity } from "@/lib/transactions/special-hash";
 
-import { groupActivity } from "./activity-feed";
+import { groupTransactionEvents } from "./activity-feed";
 import { ActivityTable } from "./activity-table";
 
-function MetricChip({ children, label }: { children: ReactNode; label: string }) {
-  return (
-    <span className="inline-flex items-baseline gap-1.5 rounded-full bg-surface-secondary px-3 py-1.5 text-xs">
-      <span className="text-muted">{label}</span>
-      <span className="tabular font-medium text-foreground">{children}</span>
-    </span>
-  );
-}
+const actionClass =
+  "inline-flex h-9 max-sm:h-10 items-center gap-1.5 rounded-lg bg-surface px-3 font-medium text-foreground text-xs transition-colors hover:text-accent";
+const iconActionClass =
+  "inline-flex size-9 max-sm:size-10 items-center justify-center rounded-lg bg-surface text-foreground transition-colors hover:text-accent";
 
-function AccountStats({
-  balance,
-  centered = false,
-  firstSeenTick,
-  incoming,
-  lastSeenLabel,
-  lastSeenTick,
+function Stat({
+  detail,
+  label,
   loading,
-  netFlow,
-  outgoing,
-  transferCount,
-  usdBalance,
+  value,
 }: {
-  balance?: number;
-  centered?: boolean;
-  firstSeenTick?: number;
-  incoming?: number;
-  lastSeenLabel: string;
-  lastSeenTick?: number;
+  detail?: string;
+  label: string;
   loading: boolean;
-  netFlow?: number;
-  outgoing?: number;
-  transferCount?: number;
-  usdBalance?: number;
+  value?: ReactNode;
 }) {
   return (
-    <div className={centered ? "text-center" : undefined}>
-      <div className="font-semibold text-[clamp(1.75rem,8vw,3rem)] tabular-nums tracking-tight sm:text-5xl">
+    <div>
+      <dt>
+        <BoxLabel>{label}</BoxLabel>
+      </dt>
+      <dd className="rounded-lg bg-surface px-3 py-2">
         {loading ? (
-          <AsciiSkeleton
-            className="text-[clamp(1.75rem,8vw,3rem)] sm:text-5xl"
-            lines={1}
-            widths={["16ch"]}
-          />
+          <span className="block h-6 w-24 animate-pulse rounded bg-surface-secondary" />
         ) : (
-          formatQu(balance)
+          <span className="block font-semibold text-[13px] leading-5 tracking-tight sm:text-lg sm:leading-6">
+            {value}
+          </span>
         )}
-      </div>
-      <p className="tabular mt-1 text-muted text-xs">
-        {usdBalance === undefined ? "—" : `≈ ${formatUsdValue(usdBalance)}`}
-      </p>
-      <div className={classNames("mt-5 flex flex-wrap gap-2", centered && "justify-center")}>
-        <MetricChip label="incoming">{formatQu(incoming)}</MetricChip>
-        <MetricChip label="outgoing">{formatQu(outgoing)}</MetricChip>
-        <MetricChip label="net">
-          {netFlow !== undefined && netFlow > 0 ? "+" : ""}
-          {formatQu(netFlow)}
-        </MetricChip>
-        <MetricChip label="transfers">{formatInteger(transferCount)}</MetricChip>
-        {firstSeenTick === undefined ? null : (
-          <MetricChip label="first seen">
-            <TickLink tick={firstSeenTick} />
-          </MetricChip>
-        )}
-        {lastSeenTick === undefined ? null : (
-          <MetricChip label={lastSeenLabel}>
-            <TickLink tick={lastSeenTick} />
-          </MetricChip>
-        )}
-      </div>
+        {detail ? <span className="mt-0.5 block text-[10px] text-muted">{detail}</span> : null}
+      </dd>
     </div>
   );
 }
 
-function PublicKeyLine({
-  centered = false,
-  publicKey,
-}: {
-  centered?: boolean;
-  publicKey?: string;
-}) {
+function QuStatValue({ value }: { value: number }) {
   return (
-    <span className={classNames("flex items-baseline gap-2 text-xs", centered && "justify-center")}>
-      <span className="text-muted">Public key</span>
-      <span className="font-mono text-foreground">{shorten(publicKey, 14, 10)}</span>
+    <span className="flex flex-wrap items-baseline gap-x-1.5">
+      <span className="whitespace-nowrap tabular-nums">{formatInteger(value)}</span>
+      <span className="font-medium text-[0.6em] text-muted tracking-wide">QUBIC</span>
     </span>
   );
 }
 
-function ProfileLoading({
+export function AccountDetail({
   identity,
-  publicKey,
-  ...stats
+  initialProfile,
 }: {
   identity: string;
-  publicKey?: string;
-} & Parameters<typeof AccountStats>[0]) {
-  return (
-    <>
-      <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
-        <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
-          <AsciiSkeleton circle height={112} rows={10} width={112} />
-        </span>
-        <div className="mt-4 flex min-w-0 flex-col items-center gap-1.5">
-          <AsciiSkeleton className="text-3xl sm:text-4xl" lines={1} widths={["10rem"]} />
-          <AsciiSkeleton className="text-[10px]" lines={1} widths={["4.5rem"]} />
-        </div>
-        <span
-          className="mt-2 inline-flex max-w-full items-center rounded-full border border-border/80 bg-background/50 px-3 py-1 font-mono text-[11px] text-muted"
-          title={identity}
-        >
-          <span className="hidden sm:inline">{identity}</span>
-          <span className="sm:hidden">{shorten(identity, 10, 8)}</span>
-        </span>
-      </div>
-      <div className="mx-auto mt-8 max-w-3xl">
-        <AccountStats {...stats} centered />
-        <div className="mt-5">
-          <PublicKeyLine centered publicKey={publicKey} />
-        </div>
-        <div className="mt-5 flex justify-center">
-          <AsciiSkeleton className="rounded-full" lines={1} widths={["9rem"]} />
-        </div>
-      </div>
-    </>
-  );
-}
-
-export function AccountDetail({ identity }: { identity: string }) {
+  initialProfile?: PublicProfile | null;
+}) {
   const zeroAddress = isZeroIdentity(identity);
   const contract = useContract(identity);
   const identityQuery = useIdentity(identity);
   const liveIdentity = useLiveIdentity(identity);
-  const profileQuery = useProfile(identity);
+  const profileQuery = useProfile(identity, initialProfile);
   const market = useMarket();
-  const activity = useIdentityActivity(identity, 25);
+  const activity = useIdentityTransactions(identity, 25);
   const [profileDialogOpen, setProfileDialogOpen] = useState(false);
   const data = identityQuery.data?.data;
   const liveData = liveIdentity.data?.data;
   const profile = profileQuery.data ?? null;
-  const profilePending = !zeroAddress && !contract && !profile && profileQuery.isLoading;
   const profileUnavailable = isProfileUnavailable(profileQuery.error);
   const profileReady = profileQuery.isSuccess;
   let profileAction: "claim" | "edit" | null = null;
@@ -179,7 +109,7 @@ export function AccountDetail({ identity }: { identity: string }) {
       profileAction = "edit";
     }
   }
-  const activityGroups = groupActivity(pageRows(activity.data?.pages));
+  const activityGroups = groupTransactionEvents(pageRows(activity.data?.pages), []);
   const hasData = Boolean(data ?? liveData);
   const loading =
     !hasData && (identityQuery.isLoading || liveIdentity.isLoading || profileQuery.isLoading);
@@ -189,8 +119,6 @@ export function AccountDetail({ identity }: { identity: string }) {
     (data?.balance !== undefined && data.balance >= 0 ? data.balance : undefined);
   const incoming = liveData?.incoming_amount ?? data?.incoming_amount;
   const outgoing = liveData?.outgoing_amount ?? data?.outgoing_amount;
-  const netFlow =
-    incoming !== undefined && outgoing !== undefined ? incoming - outgoing : undefined;
   const price = market.data?.data.price_usd;
   const usdBalance = balance !== undefined && price !== undefined ? balance * price : undefined;
   const transferCount =
@@ -198,10 +126,8 @@ export function AccountDetail({ identity }: { identity: string }) {
     (liveData
       ? (liveData.incoming_transfers ?? 0) + (liveData.outgoing_transfers ?? 0)
       : undefined);
-  const latestLiveTick = liveData
-    ? Math.max(liveData.latest_incoming_tick ?? 0, liveData.latest_outgoing_tick ?? 0)
-    : 0;
-  const lastSeenTick = data?.last_seen_tick ?? (latestLiveTick > 0 ? latestLiveTick : undefined);
+  const title =
+    contract?.name ?? profile?.displayName ?? (zeroAddress ? "Protocol zero address" : "Account");
   const fetchNextActivity = useCallback(() => {
     activity.fetchNextPage();
   }, [activity.fetchNextPage]);
@@ -220,174 +146,117 @@ export function AccountDetail({ identity }: { identity: string }) {
     );
   }
 
+  const stats: ReactNode[] = [];
+  if (loading || balance !== undefined) {
+    stats.push(
+      <Stat
+        detail={usdBalance === undefined ? undefined : `≈ ${formatUsdValue(usdBalance)}`}
+        key="balance"
+        label="Balance"
+        loading={loading}
+        value={balance === undefined ? undefined : <QuStatValue value={balance} />}
+      />,
+    );
+  }
+  if (loading || incoming !== undefined) {
+    stats.push(
+      <Stat
+        key="incoming"
+        label="Incoming"
+        loading={loading}
+        value={incoming === undefined ? undefined : <QuStatValue value={incoming} />}
+      />,
+    );
+  }
+  if (loading || outgoing !== undefined) {
+    stats.push(
+      <Stat
+        key="outgoing"
+        label="Outgoing"
+        loading={loading}
+        value={outgoing === undefined ? undefined : <QuStatValue value={outgoing} />}
+      />,
+    );
+  }
+  if (loading || transferCount !== undefined) {
+    stats.push(
+      <Stat
+        key="transfers"
+        label="Transfers"
+        loading={loading}
+        value={formatInteger(transferCount)}
+      />,
+    );
+  }
+
   return (
     <div className="page-width px-4 py-8 lg:px-8">
-      <section className="pb-8 sm:pb-10">
-        {contract ? (
-          <div className="flex min-w-0 flex-col items-start gap-3">
-            <ContractMark name={contract.name} size={56} />
-            <div className="min-w-0">
-              <p className="font-semibold text-xl tracking-tight">{contract.name}</p>
-              <div className="mt-2 flex flex-wrap gap-1.5 text-[10px] text-muted">
-                <span className="rounded-full bg-surface-secondary px-2.5 py-1">
-                  Smart contract
-                </span>
-                <span className="rounded-full bg-surface-secondary px-2.5 py-1">
-                  Index {contract.index}
-                </span>
-                <span className="rounded-full bg-surface-secondary px-2.5 py-1">
-                  {contract.assetName}
-                </span>
-              </div>
-              <p
-                className="mt-2 select-all break-all font-mono text-[11px] text-muted"
-                title={identity}
+      <header className="pb-7">
+        <div className="flex flex-wrap items-start justify-between gap-4">
+          <div className="min-w-0">
+            <h1 className="flex min-w-0 flex-wrap items-center gap-2.5 break-words font-semibold text-2xl text-foreground tracking-tight sm:text-3xl">
+              <span className="flex shrink-0">
+                {contract ? (
+                  <ContractMark name={contract.name} size={32} />
+                ) : (
+                  <IdentityAvatar size={32} value={identity} />
+                )}
+              </span>
+              <span className="min-w-0 break-words">{title}</span>
+              {profile ? <ProfileVerificationBadge profile={profile} /> : null}
+              {profile?.kind === "exchange" && isExchangeDelisted(profile.displayName) ? (
+                <ExchangeListingNotice name={profile.displayName} />
+              ) : null}
+            </h1>
+            <div className="mt-2 min-w-0 text-muted text-xs">
+              <CopyableId value={identity} />
+            </div>
+          </div>
+          <div className="flex shrink-0 flex-wrap items-center gap-2">
+            {contract ? (
+              <Link
+                className={actionClass}
+                href={`/contracts/${contract.name.toLowerCase()}` as Route}
               >
-                {identity}
-              </p>
-              {profile ? <ProfileMeta profile={profile} /> : null}
-            </div>
-          </div>
-        ) : profilePending ? (
-          <ProfileLoading
-            balance={balance}
-            firstSeenTick={data?.first_seen_tick}
-            identity={identity}
-            incoming={incoming}
-            lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
-            lastSeenTick={lastSeenTick}
-            loading={loading}
-            netFlow={netFlow}
-            outgoing={outgoing}
-            publicKey={liveData?.public_key ?? data?.public_key}
-            transferCount={transferCount}
-            usdBalance={usdBalance}
-          />
-        ) : profile ? (
-          <ProfileHeader
-            avatar={
-              profile.kind === "exchange" && exchangeBrand(profile.displayName)?.icon ? (
-                <ExchangeLogoAvatar name={profile.displayName} />
-              ) : undefined
-            }
-            identity={identity}
-            profile={profile}
-          >
-            <AccountStats
-              balance={balance}
-              centered
-              firstSeenTick={data?.first_seen_tick}
-              incoming={incoming}
-              lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
-              lastSeenTick={lastSeenTick}
-              loading={loading}
-              netFlow={netFlow}
-              outgoing={outgoing}
-              transferCount={transferCount}
-              usdBalance={usdBalance}
-            />
-            <div className="mt-5">
-              <PublicKeyLine centered publicKey={liveData?.public_key ?? data?.public_key} />
-            </div>
-            <div className="mt-5 flex justify-center">
-              <div className="flex items-center rounded-full border border-border/70 bg-background/50 p-1">
-                <IdentityActions
-                  identity={identity}
-                  onProfileAction={() => setProfileDialogOpen(true)}
-                  profileAction={profileAction}
-                />
-              </div>
-            </div>
-          </ProfileHeader>
-        ) : (
-          <div className="mx-auto flex max-w-2xl flex-col items-center px-4 pt-2 text-center">
-            <span className="inline-flex rounded-full bg-background p-1.5 ring-1 ring-border">
-              <IdentityAvatar size={112} value={identity} />
-            </span>
-            {zeroAddress ? (
-              <>
-                <p className="mt-4 font-semibold text-lg tracking-tight">Protocol zero address</p>
-                <p className="mt-1 max-w-md text-muted text-xs leading-5">
-                  Qubic uses this identity as NULL_ID for special transactions such as mining
-                  solutions, votes, oracle replies, and system events. A transfer here is not
-                  automatically a burn.
-                </p>
-              </>
+                <CodeSquareIcon aria-hidden className="size-3.5" />
+                Contract
+              </Link>
             ) : null}
-            <p
-              className="mt-4 max-w-full select-all break-all font-mono text-[11px] text-muted tracking-tight sm:text-xs"
-              title={identity}
-            >
-              {identity}
-            </p>
-          </div>
-        )}
-        {contract ? (
-          <>
-            <div className="mt-5">
-              <AccountStats
-                balance={balance}
-                firstSeenTick={data?.first_seen_tick}
-                incoming={incoming}
-                lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
-                lastSeenTick={lastSeenTick}
-                loading={loading}
-                netFlow={netFlow}
-                outgoing={outgoing}
-                transferCount={transferCount}
-                usdBalance={usdBalance}
-              />
-            </div>
-            <div className="mt-6 flex flex-col items-start gap-3">
-              <PublicKeyLine publicKey={liveData?.public_key ?? data?.public_key} />
-              <div className="flex flex-wrap items-center gap-2">
-                <IdentityActions identity={identity} />
-                {profileAction ? (
-                  <Button onPress={() => setProfileDialogOpen(true)} size="sm" variant="outline">
-                    {profileAction === "edit" ? "Edit profile" : "Claim profile"}
-                  </Button>
-                ) : null}
-              </div>
-            </div>
-          </>
-        ) : profile || profilePending ? null : (
-          <div className="mx-auto mt-8 max-w-3xl">
-            <AccountStats
-              balance={balance}
-              centered
-              firstSeenTick={data?.first_seen_tick}
-              incoming={incoming}
-              lastSeenLabel={data?.last_seen_tick === undefined ? "last transfer" : "last seen"}
-              lastSeenTick={lastSeenTick}
-              loading={loading}
-              netFlow={netFlow}
-              outgoing={outgoing}
-              transferCount={transferCount}
-              usdBalance={usdBalance}
-            />
-            <div className="mt-5">
-              <PublicKeyLine centered publicKey={liveData?.public_key ?? data?.public_key} />
-            </div>
-            <div className="mt-5 flex justify-center">
-              <div className="flex items-center rounded-full border border-border/70 bg-background/50 p-1">
-                <IdentityActions
-                  identity={identity}
-                  onProfileAction={() => setProfileDialogOpen(true)}
-                  profileAction={profileAction}
-                />
-              </div>
+            {profileAction ? (
+              <ActionTooltip label={profileAction === "edit" ? "Edit profile" : "Claim profile"}>
+                <button
+                  aria-label={profileAction === "edit" ? "Edit profile" : "Claim profile"}
+                  className={iconActionClass}
+                  onClick={() => setProfileDialogOpen(true)}
+                  type="button"
+                >
+                  <PenIcon aria-hidden className="size-4" />
+                </button>
+              </ActionTooltip>
+            ) : null}
+            <div className="rounded-lg bg-surface p-0.5">
+              <IdentityActions identity={identity} showCopy={false} />
             </div>
           </div>
-        )}
-      </section>
-
-      <section className="pt-4 pb-10">
-        <div className="mb-4">
-          <h2 className="font-medium text-sm">Recent activity</h2>
-          <p className="mt-1 text-muted text-xs">
-            Transfers and contract calls involving this account.
-          </p>
         </div>
+
+        {profile?.bio ? (
+          <p className="mt-4 max-w-2xl whitespace-pre-line break-words text-pretty text-foreground/80 text-sm leading-relaxed">
+            {profile.bio}
+          </p>
+        ) : null}
+
+        {profile ? <ProfileSocialLinks align="start" className="mt-4" profile={profile} /> : null}
+
+        {stats.length === 0 ? null : (
+          <dl className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-[repeat(auto-fit,minmax(10rem,1fr))]">
+            {stats}
+          </dl>
+        )}
+      </header>
+
+      <section className="py-6">
+        <SectionHeading title="Activity" />
         <ActivityTable groups={activityGroups} identity={identity} isLoading={activity.isLoading} />
         {activity.hasNextPage ? (
           <LoadMore

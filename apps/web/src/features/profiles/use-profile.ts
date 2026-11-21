@@ -14,9 +14,10 @@ export const knownProfilesQueryKey = ["profiles", "known"] as const;
  * profile. An unavailable profile service surfaces as a `ProfileRequestError`
  * with code `profile_unavailable` so the page can fail quietly.
  */
-export function useProfile(identity: string) {
+export function useProfile(identity: string, initialProfile?: PublicProfile | null) {
   return useQuery<PublicProfile | null, ProfileRequestError>({
     enabled: Boolean(identity),
+    initialData: initialProfile,
     queryFn: ({ signal }) => fetchProfile(identity, signal),
     queryKey: profileQueryKey(identity),
     retry: (failureCount, error) => {

@@ -2,7 +2,6 @@
 
 import { Button, ListBox, ListBoxItem, Modal, Select } from "@heroui/react";
 import { UndoLeftIcon } from "@solar-icons/react/linear/undo-left";
-import { motion, useDragControls } from "motion/react";
 import { useTheme } from "next-themes";
 import { useEffect, useState, type ReactNode } from "react";
 
@@ -19,6 +18,7 @@ import {
 import { classNames } from "@/lib/format";
 
 import { useAppearance } from "./appearance-provider";
+import { ModalSheet } from "./modal-sheet";
 
 const modeOptions = [
   { id: "system", label: "System" },
@@ -91,7 +91,6 @@ export function SettingsDialog({
     useAppearance();
   const { setTheme, theme } = useTheme();
   const [mounted, setMounted] = useState(false);
-  const dragControls = useDragControls();
 
   useEffect(() => setMounted(true), []);
 
@@ -109,26 +108,7 @@ export function SettingsDialog({
           size="lg"
         >
           <Modal.Dialog className="max-h-[92dvh] w-full max-w-lg rounded-none bg-transparent p-0">
-            <motion.div
-              animate={
-                open ? { opacity: 1, scale: 1, y: 0 } : { opacity: 0.6, scale: 0.985, y: "-100%" }
-              }
-              className="flex max-h-[92dvh] flex-col overflow-hidden rounded-b-3xl bg-overlay px-4 pt-[calc(2rem+env(safe-area-inset-top))] pb-6 sm:px-6"
-              drag="y"
-              dragConstraints={{ bottom: 0, top: -1000 }}
-              dragControls={dragControls}
-              dragElastic={{ bottom: 0, top: 0.9 }}
-              dragListener={false}
-              dragSnapToOrigin
-              initial={{ opacity: 0.6, scale: 0.985, y: "-100%" }}
-              key={open ? "open" : "closed"}
-              onDragEnd={(_, info) => {
-                if (info.offset.y < -120 || info.velocity.y < -700) {
-                  onOpenChange(false);
-                }
-              }}
-              transition={{ damping: 34, mass: 0.9, stiffness: 380, type: "spring" }}
-            >
+            <ModalSheet onOpenChange={onOpenChange} open={open}>
               <Modal.Header className="mb-3">
                 <Modal.Heading>Appearance</Modal.Heading>
                 <p className="mt-1 text-muted text-sm">
@@ -208,13 +188,7 @@ export function SettingsDialog({
                   Reset appearance
                 </Button>
               </Modal.Footer>
-              <div
-                className="-mx-4 -mb-6 flex cursor-grab touch-none justify-center px-4 pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] select-none active:cursor-grabbing sm:-mx-6 sm:px-6"
-                onPointerDown={(event) => dragControls.start(event)}
-              >
-                <div aria-hidden className="h-1 w-10 rounded-full bg-foreground/15" />
-              </div>
-            </motion.div>
+            </ModalSheet>
           </Modal.Dialog>
         </Modal.Container>
       </Modal.Backdrop>
