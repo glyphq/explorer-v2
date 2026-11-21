@@ -8,7 +8,8 @@ import { LoadMore } from "@/components/explorer/load-more";
 import { SectionHeading } from "@/components/explorer/page-header";
 import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
-import { ActivityFeed, groupTransactionEvents } from "@/features/accounts/activity-feed";
+import { groupTransactionEvents } from "@/features/accounts/activity-feed";
+import { TickActivityTable } from "@/features/ticks/tick-activity-table";
 import {
   pageRows,
   useTick,
@@ -61,12 +62,16 @@ function EvidenceValue({ children, mono }: { children: ReactNode; mono?: boolean
 
 function DigestValue({ label, value }: { label: string; value: string | null | undefined }) {
   return (
-    <dd className="flex items-start gap-1.5 rounded-lg bg-surface px-3 py-2">
-      <code className="min-w-0 break-all font-mono text-[11px] text-foreground leading-4">
+    <dd className="relative rounded-lg bg-surface py-2 pr-12 pl-3">
+      <code className="block break-all font-mono text-[11px] text-foreground leading-4">
         {value ?? "—"}
       </code>
       {value ? (
-        <CopyButton className="-my-0.5 -mr-1 shrink-0" label={`Copy ${label}`} value={value} />
+        <CopyButton
+          className="absolute top-1/2 right-1 -translate-y-1/2"
+          label={`Copy ${label}`}
+          value={value}
+        />
       ) : null}
     </dd>
   );
@@ -92,11 +97,12 @@ export function TickDetail({ tick }: { tick: number }) {
     if (!evidenceData?.warnings) {
       return [];
     }
+    const visible = (warning: string) => !/reports log generation still pending/i.test(warning);
     try {
       const parsed = JSON.parse(evidenceData.warnings) as unknown;
-      return Array.isArray(parsed) ? parsed.map(String) : [String(parsed)];
+      return (Array.isArray(parsed) ? parsed.map(String) : [String(parsed)]).filter(visible);
     } catch {
-      return [evidenceData.warnings];
+      return [evidenceData.warnings].filter(visible);
     }
   })();
 
@@ -265,10 +271,9 @@ export function TickDetail({ tick }: { tick: number }) {
                   }}
                 />
               ) : (
-                <ActivityFeed
+                <TickActivityTable
                   groups={groups}
                   isLoading={transactions.isLoading || events.isLoading}
-                  showTick={false}
                 />
               )}
               {hasMore ? (

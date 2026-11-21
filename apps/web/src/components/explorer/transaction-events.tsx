@@ -1,8 +1,7 @@
 "use client";
 
 import { ActorLabel } from "@/components/explorer/actor-label";
-import { parseEventBody } from "@/components/explorer/event-summary";
-import type { Event } from "@/lib/api/generated/types.gen";
+import { type EventLike, parseEventBody } from "@/components/explorer/event-summary";
 import { formatQu } from "@/lib/format";
 import { decodeCustomMessage } from "@/lib/transactions/special";
 
@@ -26,7 +25,7 @@ function numberValue(value: unknown): number | undefined {
   return typeof value === "number" && Number.isFinite(value) ? value : undefined;
 }
 
-function EventLine({ event, source }: { event: Event; source?: string }) {
+function EventLine({ event, source }: { event: EventLike; source?: string }) {
   const body = parseEventBody(event.body);
   const custom = decodeCustomMessage(textValue(body?.raw));
   const status = custom?.status;
@@ -91,14 +90,14 @@ function EventLine({ event, source }: { event: Event; source?: string }) {
   );
 }
 
-export function TransactionEvents({ events, source }: { events: Event[]; source?: string }) {
+export function TransactionEvents({ events, source }: { events: EventLike[]; source?: string }) {
   return (
     <div className="px-4 pb-3">
       <ul className="ml-6 space-y-2">
         {events.map((event, index) => (
           <EventLine
             event={event}
-            key={`${event.log_id ?? event.tx_hash ?? "event"}-${event.tx_index ?? index}`}
+            key={`${event.log_id ?? event.tx_hash ?? event.hash ?? "event"}-${index}`}
             source={source}
           />
         ))}
