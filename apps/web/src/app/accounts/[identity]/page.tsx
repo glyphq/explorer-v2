@@ -6,10 +6,10 @@ import { AccountDetail } from "@/features/accounts/account-detail";
 import { findContractSummary } from "@/lib/contracts/registry";
 import { shorten } from "@/lib/format";
 
-// The identity shell is client-rendered; cache it so detail views do not
-// re-render in the Worker on every request.
+// The identity shell is client-rendered and the page data is fetched live, so
+// only the shell needs caching. Keep it short-lived.
 export const dynamic = "force-static";
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,

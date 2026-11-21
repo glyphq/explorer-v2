@@ -74,7 +74,8 @@ export function useActivity(limit = 24, interval = 3600) {
   return useQuery({
     ...getActivityOptions({ query: { interval, limit } }),
     placeholderData: keepPreviousData,
-    staleTime: HISTORY_STALE_TIME,
+    refetchInterval: 60_000,
+    staleTime: 60_000,
   });
 }
 
@@ -325,6 +326,7 @@ export function useEpoch(epoch: number | undefined) {
   return useQuery({
     ...getEpochOptions({ path: { epoch: epoch ?? 0 } }),
     enabled: Number.isInteger(epoch) && (epoch ?? 0) >= 0,
+    refetchInterval: (query) => (query.state.data?.data?.closed ? false : REFRESH_INTERVAL),
   });
 }
 
@@ -347,6 +349,7 @@ export function useAsset(issuer: string | undefined, name: string | undefined) {
   return useQuery({
     ...getAssetOptions({ path: { issuer: issuer ?? "", name: name ?? "" } }),
     enabled: Boolean(issuer && name),
+    refetchInterval: 60_000,
   });
 }
 

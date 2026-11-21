@@ -2,9 +2,9 @@ import { ClientOnly } from "@/components/explorer/client-only";
 import { DetailSkeleton } from "@/components/explorer/detail-skeleton";
 import { AssetDetail } from "@/features/assets/asset-detail";
 
-// Asset data is fetched client-side; cache the route shell at the edge.
+// Asset data is fetched client-side; keep the route shell cache short-lived.
 export const dynamic = "force-static";
-export const revalidate = 86400;
+export const revalidate = 300;
 
 export default async function AssetPage({
   params,

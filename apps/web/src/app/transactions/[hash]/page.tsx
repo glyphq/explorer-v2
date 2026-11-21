@@ -6,7 +6,8 @@ import { TransactionDetail } from "@/features/transactions/transaction-detail";
 import { shorten } from "@/lib/format";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
-// Transaction data is fetched client-side; cache the route shell at the edge.
+// Transactions are immutable and their data is fetched client-side, so the
+// route shell can stay cached longer than mutable detail pages.
 export const dynamic = "force-static";
 export const revalidate = 86400;
 
