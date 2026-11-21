@@ -2,6 +2,7 @@ import { BrainIcon } from "@solar-icons/react/linear/brain";
 import { BookmarkIcon } from "@solar-icons/react/linear/bookmark";
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
 import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
+import { CpuBoltIcon } from "@solar-icons/react/linear/cpu-bolt";
 import { DollarMinimalisticIcon } from "@solar-icons/react/linear/dollar-minimalistic";
 import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { Home2Icon } from "@solar-icons/react/linear/home-2";
@@ -32,6 +33,12 @@ const epochs = {
   href: "/epochs",
   icon: ClockCircleIcon,
   label: "Epochs",
+} satisfies NavigationItem;
+
+const computors = {
+  href: "/computors",
+  icon: CpuBoltIcon,
+  label: "Computors",
 } satisfies NavigationItem;
 
 const transactions = {
@@ -80,6 +87,7 @@ export const navigation = [
   overview,
   ticks,
   epochs,
+  computors,
   transactions,
   accounts,
   assets,
@@ -91,7 +99,7 @@ export const navigation = [
 
 export const primaryNavigation = [overview, bpp] as const;
 
-export const chainNavigation = [ticks, epochs, transactions, addresses] as const;
+export const chainNavigation = [ticks, epochs, computors, transactions, addresses] as const;
 
 export const buildNavigation = [contracts, proposals] as const;
 

@@ -61,6 +61,15 @@ export function useStatus() {
   });
 }
 
+export function useCurrentEpoch() {
+  return useQuery({
+    ...getStatusOptions(),
+    refetchInterval: REFRESH_INTERVAL,
+    select: (status) => status.data?.head?.epoch ?? status.data?.network?.epoch ?? undefined,
+    staleTime: REFRESH_INTERVAL,
+  });
+}
+
 export function useActivity(limit = 24, interval = 3600) {
   return useQuery({
     ...getActivityOptions({ query: { interval, limit } }),
