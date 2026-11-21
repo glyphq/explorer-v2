@@ -317,7 +317,8 @@ export function useEpoch(epoch: number | undefined) {
   return useQuery({
     ...getEpochOptions({ path: { epoch: epoch ?? 0 } }),
     enabled: Number.isInteger(epoch) && (epoch ?? 0) >= 0,
-    refetchInterval: (query) => (query.state.data?.data?.closed ? false : REFRESH_INTERVAL),
+    refetchInterval: (query) =>
+      query.state.data?.data?.closed === false ? REFRESH_INTERVAL : false,
   });
 }
 
