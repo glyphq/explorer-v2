@@ -15,7 +15,7 @@ import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
 import type { Computor } from "@/lib/api/generated/types.gen";
 import { pageRows, useEpoch, useEpochComputors, useTicks } from "@/lib/api/hooks";
-import { formatInteger, formatTimestamp, formatTimestampCompact } from "@/lib/format";
+import { formatInteger } from "@/lib/format";
 
 const computorHelper = createColumnHelper<typeof tableFeaturesConfig, Computor>();
 const epochComputorColumns = computorHelper.columns([
@@ -182,18 +182,9 @@ export function EpochDetail({ epoch }: { epoch: number }) {
                             href={`/ticks/${tick.tick}` as Route}
                             key={tick.tick}
                           >
-                            <div className="flex items-start justify-between gap-3">
-                              <span className="font-semibold text-foreground text-sm tabular-nums transition-colors group-hover:text-accent">
-                                {formatInteger(tick.tick)}
-                              </span>
-                              <time
-                                className="text-[10px] text-muted tabular-nums"
-                                dateTime={tick.timestamp}
-                                title={formatTimestamp(tick.timestamp)}
-                              >
-                                {formatTimestampCompact(tick.timestamp)}
-                              </time>
-                            </div>
+                            <span className="font-semibold text-foreground text-sm tabular-nums transition-colors group-hover:text-accent">
+                              {formatInteger(tick.tick)}
+                            </span>
                             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1 text-xs">
                               <span className="text-muted">
                                 Transactions{" "}
