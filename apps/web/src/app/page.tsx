@@ -5,26 +5,22 @@ import { PulseIcon } from "@solar-icons/react/linear/pulse";
 import { RadioIcon } from "@solar-icons/react/linear/radio";
 import { TransferHorizontalIcon } from "@solar-icons/react/linear/transfer-horizontal";
 import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
-import { useMemo } from "react";
 
 import { ActivityChart } from "@/components/explorer/activity-chart";
 import { AnimatedNumber } from "@/components/explorer/animated-number";
 import { BentoMetric } from "@/components/explorer/bento-metric";
 import { EventTypeMosaic } from "@/components/explorer/event-type-mosaic";
-import { LatestTransactions } from "@/components/explorer/latest-transactions";
 import { MarketCard } from "@/components/explorer/market-card";
-import { SectionCard, SectionLink } from "@/components/explorer/section-card";
+import { SectionCard } from "@/components/explorer/section-card";
 import { TickPulse } from "@/components/explorer/tick-pulse";
 import type { EventTypeCount } from "@/lib/api/generated/types.gen";
 import {
-  pageRows,
   useActivity,
   useEventTypes,
   useMarket,
   useNetwork,
   usePriceHistory,
   useStatus,
-  useTransactions,
 } from "@/lib/api/hooks";
 import { useLiveStream } from "@/lib/api/live-stream";
 
@@ -35,8 +31,7 @@ export default function HomePage() {
   const market = useMarket();
   const priceHistory = usePriceHistory(24);
   const eventTypes = useEventTypes(8);
-  const transactions = useTransactions({}, 8);
-  const { ticks: liveTicks, transactions: liveTransactions } = useLiveStream();
+  const { ticks: liveTicks } = useLiveStream();
 
   const statusData = status.data?.data;
   const networkData = network.data?.data;
@@ -57,17 +52,6 @@ export default function HomePage() {
   const latestEventTypes = (eventTypes.data?.data ?? []) as Array<
     EventTypeCount & { type_name?: string }
   >;
-  const latestTransactions = pageRows(transactions.data?.pages);
-  const transactionFeed = useMemo(() => {
-    const byHash = new Map<string, (typeof latestTransactions)[number]>();
-    for (const transaction of [...liveTransactions, ...latestTransactions]) {
-      const key = transaction.hash ?? `${transaction.tick}-${transaction.tx_index}`;
-      if (!byHash.has(key)) {
-        byHash.set(key, transaction);
-      }
-    }
-    return [...byHash.values()].slice(0, 6);
-  }, [latestTransactions, liveTransactions]);
   return (
     <div className="pb-8">
       <div className="page-width px-4 lg:px-8">
@@ -149,31 +133,12 @@ export default function HomePage() {
 
         <section className="mt-4 grid gap-4 xl:grid-cols-2">
           <SectionCard
-            action={
-              <SectionLink href="/ticks" label="See all ticks">
-                See all
-              </SectionLink>
-            }
             description="The newest ticks confirmed by the network."
             title="Latest ticks"
           >
             <TickPulse />
           </SectionCard>
 
-          <SectionCard
-            action={
-              <SectionLink href="/transactions" label="See all transactions">
-                See all
-              </SectionLink>
-            }
-            description="Transfers and contract calls, as they are verified."
-            title="Latest transactions"
-          >
-            <LatestTransactions isLoading={transactions.isLoading} transactions={transactionFeed} />
-          </SectionCard>
-        </section>
-
-        <section className="mt-4">
           <SectionCard description="The kinds of events the index has decoded." title="Event types">
             <EventTypeMosaic events={latestEventTypes} isLoading={eventTypes.isLoading} />
           </SectionCard>
