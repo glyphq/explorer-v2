@@ -3,6 +3,15 @@ import type { NextConfig } from "next";
 
 import { withPwa } from "./pwa.config";
 
+function detailCache(seconds: number, staleSeconds = seconds) {
+  return [
+    {
+      key: "Cache-Control",
+      value: `public, max-age=0, s-maxage=${seconds}, stale-while-revalidate=${staleSeconds}`,
+    },
+  ];
+}
+
 const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ["@solar-icons/react", "lucide-react"],
@@ -20,6 +29,34 @@ const nextConfig: NextConfig = {
           },
         ],
         source: "/:path*",
+      },
+      {
+        headers: detailCache(300),
+        source: "/accounts/:identity",
+      },
+      {
+        headers: detailCache(300),
+        source: "/assets/:issuer/:name",
+      },
+      {
+        headers: detailCache(300),
+        source: "/epochs/:epoch",
+      },
+      {
+        headers: detailCache(300),
+        source: "/ticks/:tick",
+      },
+      {
+        headers: detailCache(86_400, 3600),
+        source: "/transactions/:hash",
+      },
+      {
+        headers: detailCache(300),
+        source: "/proposals",
+      },
+      {
+        headers: detailCache(300),
+        source: "/proposals/view",
       },
     ];
   },
