@@ -540,6 +540,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                     key={pathname}
                     origin={pathname.startsWith("/accounts/") ? "center" : "top-left"}
                     preset="dither"
+                    revealOnHydrate
                   >
                     {children}
                   </AsciiReveal>
