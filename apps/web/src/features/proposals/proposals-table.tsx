@@ -60,7 +60,7 @@ function VoteBar({ votes }: { votes: VoteCounts }) {
       className="ml-auto w-full max-w-[190px]"
       title={`${formatInteger(votes.total)} votes: ${formatInteger(votes.yes)} yes, ${formatInteger(votes.no)} no`}
     >
-      <div className="flex items-baseline justify-between gap-2 text-[10px] leading-none tabular-nums">
+      <div className="flex items-baseline justify-between gap-2 text-xs leading-none tabular-nums">
         <span className="text-muted">{formatInteger(votes.yes)} yes</span>
         <span className="text-right text-muted">{formatInteger(votes.no)} no</span>
       </div>
@@ -83,7 +83,7 @@ function ProposalRow({ proposal }: { proposal: Proposal }) {
     <ActivityTableRow>
       <td className="px-3 py-3">
         <Link
-          className="block font-medium text-foreground text-sm transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-accent"
+          className="block font-medium text-foreground text-xs transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-accent"
           href={proposalHref(proposal)}
           prefetch={false}
           title={proposal.title}

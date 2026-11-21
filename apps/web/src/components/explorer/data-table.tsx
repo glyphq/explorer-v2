@@ -108,7 +108,7 @@ export function DataTable<TData extends RowData>({
       </div>
 
       <div className="hidden overflow-x-auto md:block">
-        <table className="w-full border-collapse text-left text-sm">
+        <table className="w-full border-collapse text-left text-xs">
           <thead>
             {table.getHeaderGroups().map((group) => (
               <tr key={group.id}>

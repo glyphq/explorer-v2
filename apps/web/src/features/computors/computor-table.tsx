@@ -34,10 +34,7 @@ function ComputorRow({ computor }: { computor: Computor }) {
         </Link>
       </td>
       <td className="px-4 py-3">
-        <span
-          className="block truncate font-mono text-[11px] text-muted"
-          title={computor.public_key}
-        >
+        <span className="block truncate font-mono text-muted text-xs" title={computor.public_key}>
           {computor.public_key}
         </span>
       </td>

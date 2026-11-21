@@ -28,7 +28,7 @@ function ContractRow({ contract }: { contract: ContractSummary }) {
         </div>
       </td>
       <td className="px-3 py-3">
-        <span className="block truncate font-mono text-[10px] text-muted" title={contract.address}>
+        <span className="block truncate font-mono text-muted text-xs" title={contract.address}>
           {contract.address}
         </span>
       </td>

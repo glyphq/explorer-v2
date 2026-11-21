@@ -242,9 +242,7 @@ function ActivityRow({ entry }: { entry: ActivityEntry }) {
           {status && status.tone !== "success" ? (
             <span
               className={
-                status.tone === "danger"
-                  ? "font-medium text-[10px] text-danger"
-                  : "text-[10px] text-muted"
+                status.tone === "danger" ? "font-medium text-danger text-xs" : "text-muted text-xs"
               }
             >
               {status.label}
@@ -252,7 +250,7 @@ function ActivityRow({ entry }: { entry: ActivityEntry }) {
           ) : null}
         </div>
         {custom?.fields.length ? (
-          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted">
+          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-muted text-xs">
             {custom.fields.slice(0, 4).map((field) => (
               <span key={field.label}>
                 {field.label}{" "}
@@ -288,7 +286,7 @@ function ActivityRow({ entry }: { entry: ActivityEntry }) {
           <span className="text-muted text-xs">—</span>
         )}
       </td>
-      <td className="px-4 py-3 text-right font-mono text-[10px] text-muted">
+      <td className="px-4 py-3 text-right font-mono text-muted text-xs">
         {logId === undefined || logId === null ? "—" : formatInteger(logId)}
       </td>
     </ActivityTableRow>

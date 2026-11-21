@@ -47,7 +47,7 @@ export function TickTable({ ticks }: { ticks: Tick[] }) {
           <ActivityTableRow key={`${tick.tick}-${tick.timestamp}`}>
             <td className="px-4 py-3">
               <Link
-                className="font-semibold text-foreground text-sm tabular-nums transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-accent"
+                className="font-semibold text-foreground text-xs tabular-nums transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-accent"
                 href={tickHref(tick)}
               >
                 {formatInteger(tick.tick)}
@@ -95,7 +95,7 @@ export function TickTable({ ticks }: { ticks: Tick[] }) {
             <td className="px-3 py-3 text-right text-muted text-xs tabular-nums">
               {formatInteger(tick.computor_index)}
             </td>
-            <td className="px-4 py-3 text-right text-[10px] text-muted">
+            <td className="px-4 py-3 text-right text-foreground text-xs tabular-nums">
               <time dateTime={tick.timestamp} title={formatTimestamp(tick.timestamp)}>
                 {formatTimestampCompact(tick.timestamp)}
               </time>

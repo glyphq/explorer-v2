@@ -47,7 +47,7 @@ export const tickColumns = tickHelper.columns([
   }),
   tickHelper.accessor("timestamp", {
     cell: ({ getValue }) => (
-      <span className="text-muted text-xs" title={formatTimestamp(getValue())}>
+      <span className="text-foreground tabular-nums" title={formatTimestamp(getValue())}>
         {formatRelativeTime(getValue())}
       </span>
     ),
@@ -103,7 +103,7 @@ export const transferColumns = transferHelper.columns([
   }),
   transferHelper.accessor("timestamp", {
     cell: ({ getValue }) => (
-      <span className="text-muted text-xs" title={formatTimestamp(getValue())}>
+      <span className="text-foreground tabular-nums" title={formatTimestamp(getValue())}>
         {formatRelativeTime(getValue())}
       </span>
     ),

@@ -69,7 +69,7 @@ function EventLine({ event, source }: { event: Event; source?: string }) {
           <>
             <span className="font-medium text-foreground">{label}</span>
             {status && status.tone !== "success" ? (
-              <span className={`font-medium text-[9px] ${statusTone}`}> ({status.label})</span>
+              <span className={`font-medium text-xs ${statusTone}`}> ({status.label})</span>
             ) : null}
             {amountLabel ? <> · {amountLabel}</> : null}
             {from ? (

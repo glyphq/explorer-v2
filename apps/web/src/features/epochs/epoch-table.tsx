@@ -55,7 +55,7 @@ function EpochTable({ epochs }: { epochs: Epoch[] }) {
             <ActivityTableRow className={epoch.closed ? "" : "glyph-epoch-pulse"} key={epoch.epoch}>
               <td className="px-4 py-3">
                 <Link
-                  className="font-semibold text-foreground text-sm tabular-nums transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-accent"
+                  className="font-semibold text-foreground text-xs tabular-nums transition-colors after:absolute after:inset-0 after:content-[''] group-hover:text-accent"
                   href={epochHref(epoch)}
                 >
                   {formatInteger(epoch.epoch)}
@@ -125,7 +125,7 @@ function EpochTable({ epochs }: { epochs: Epoch[] }) {
                   </span>
                 </div>
               </td>
-              <td className="px-4 py-3 text-right text-[10px] text-muted">
+              <td className="px-4 py-3 text-right text-foreground text-xs tabular-nums">
                 <time dateTime={epoch.last_timestamp} title={formatTimestamp(epoch.last_timestamp)}>
                   {formatTimestampCompact(epoch.last_timestamp)}
                 </time>

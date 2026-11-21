@@ -35,25 +35,25 @@ function RecentRow({ hour }: { hour: BppHour }) {
 
   return (
     <tr>
-      <td className="whitespace-nowrap py-3 pr-4 align-top text-muted text-xs tabular-nums">
+      <td className="whitespace-nowrap py-3 pr-4 align-top text-foreground text-xs tabular-nums">
         {formatDayClock(hour.at)}
       </td>
       <td className="py-3 pr-4 align-top">
-        <span className="flex items-center gap-1.5 font-medium text-foreground text-sm">
+        <span className="flex items-center gap-1.5 font-medium text-foreground text-xs">
           <CallIcon direction={hour.said} />
           {callLabel(hour.said)}
         </span>
       </td>
-      <td className="hidden py-3 pr-4 text-right align-top text-sm tabular-nums sm:table-cell">
+      <td className="hidden py-3 pr-4 text-right align-top text-xs tabular-nums sm:table-cell">
         {formatInteger(hour.up)}
       </td>
-      <td className="hidden py-3 pr-4 text-right align-top text-sm tabular-nums sm:table-cell">
+      <td className="hidden py-3 pr-4 text-right align-top text-xs tabular-nums sm:table-cell">
         {formatInteger(hour.down)}
       </td>
-      <td className="hidden py-3 pr-4 text-right align-top text-muted text-sm tabular-nums sm:table-cell">
+      <td className="hidden py-3 pr-4 text-right align-top text-muted text-xs tabular-nums sm:table-cell">
         {share.toFixed(0)}%
       </td>
-      <td className="py-3 pr-4 align-top text-sm">{directionLabel(hour.went).toLowerCase()}</td>
+      <td className="py-3 pr-4 align-top text-xs">{directionLabel(hour.went).toLowerCase()}</td>
       <td
         className={classNames(
           "whitespace-nowrap py-3 text-right align-top font-medium text-xs",

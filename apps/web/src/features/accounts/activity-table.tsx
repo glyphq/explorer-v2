@@ -168,7 +168,7 @@ function InputType({ transaction }: { transaction: ActivityGroup["transaction"] 
 
   return (
     <span
-      className="block max-w-full truncate text-muted text-xs"
+      className="block max-w-full truncate text-foreground text-xs"
       title={
         special
           ? `${special.label} · ${special.hash}`
@@ -191,7 +191,7 @@ function TimeCell({ timestamp }: { timestamp: string | null | undefined }) {
 
   return (
     <time
-      className="whitespace-nowrap text-[10px] text-muted"
+      className="whitespace-nowrap text-foreground text-xs tabular-nums"
       dateTime={timestamp}
       title={formatTimestamp(timestamp)}
     >
@@ -358,9 +358,7 @@ export function ActivityTable({
                     <div className="flex min-w-0 items-center gap-1.5">
                       <TransactionLink className="min-w-0 truncate" hash={transaction.hash ?? ""} />
                       {failed ? (
-                        <span className="shrink-0 text-[10px] text-danger">
-                          {transaction.status}
-                        </span>
+                        <span className="shrink-0 text-danger text-xs">{transaction.status}</span>
                       ) : null}
                     </div>
                   </td>
@@ -368,7 +366,7 @@ export function ActivityTable({
                     <InputType transaction={transaction} />
                   </td>
                   <td className="px-3 py-3 text-right">
-                    <TickLink className="whitespace-nowrap text-[10px]" tick={transaction.tick} />
+                    <TickLink className="whitespace-nowrap" tick={transaction.tick} />
                   </td>
                   <td className="px-4 py-3 text-right">
                     <TimeCell timestamp={transaction.timestamp} />

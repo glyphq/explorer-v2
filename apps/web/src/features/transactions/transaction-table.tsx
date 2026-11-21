@@ -80,14 +80,14 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
               <span className="text-muted text-xs">—</span>
             )}
             {failed ? (
-              <span className="shrink-0 text-[10px] text-danger">{transaction.status}</span>
+              <span className="shrink-0 text-danger text-xs">{transaction.status}</span>
             ) : null}
           </div>
         </td>
         <td className="px-3 py-3">
           <span
-            className={`block max-w-48 truncate text-xs ${
-              isTransfer ? "text-muted" : "font-medium text-foreground"
+            className={`block max-w-48 truncate text-foreground text-xs ${
+              isTransfer ? "" : "font-medium"
             }`}
             title={typeLabel}
           >
@@ -113,10 +113,10 @@ function TransactionRow({ events, transaction }: { events: Event[]; transaction:
             <span className="text-muted">—</span>
           )}
         </td>
-        <td className="px-3 py-3 text-right text-muted text-xs tabular-nums">
+        <td className="px-3 py-3 text-right text-foreground text-xs tabular-nums">
           {formatInteger(transaction.tick)}
         </td>
-        <td className="px-4 py-3 text-right text-[10px] text-muted">
+        <td className="px-4 py-3 text-right text-foreground text-xs tabular-nums">
           <time dateTime={transaction.timestamp} title={formatTimestamp(transaction.timestamp)}>
             {formatTimestampCompact(transaction.timestamp)}
           </time>

@@ -260,7 +260,7 @@ export function AlignmentModal({
                 ) : (
                   <>
                     <div className="hidden overflow-x-auto sm:block">
-                      <table className="w-full border-collapse text-left text-sm">
+                      <table className="w-full border-collapse text-left text-xs">
                         <thead>
                           <tr>
                             {table.getHeaderGroups()[0]?.headers.map((header) => (

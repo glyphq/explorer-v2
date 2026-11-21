@@ -1,5 +1,8 @@
 "use client";
 
+import type { Route } from "next";
+import Link from "next/link";
+
 import { shorten } from "@/lib/format";
 
 import { ContractMark } from "./contract-mark";
@@ -16,12 +19,17 @@ export function ActorLabel({
   const contract = useContract(identity);
 
   if (!identity) {
-    return <span className="text-muted">—</span>;
+    return <span className="text-muted text-xs">—</span>;
   }
 
+  const href = contract
+    ? (`/contracts/${contract.name.toLowerCase()}` as Route)
+    : (`/accounts/${identity}` as Route);
+
   return (
-    <span
-      className="inline-flex min-w-0 max-w-full items-center gap-1.5"
+    <Link
+      className="group/actor relative z-10 inline-flex min-w-0 max-w-full items-center gap-1.5"
+      href={href}
       title={contract ? `${contract.name} · ${identity}` : identity}
     >
       {showAvatar ? (
@@ -32,14 +40,12 @@ export function ActorLabel({
         )
       ) : null}
       <span
-        className={
-          contract
-            ? "min-w-0 truncate font-medium font-mono text-foreground text-xs"
-            : "min-w-0 truncate font-mono text-muted text-xs"
-        }
+        className={`min-w-0 truncate font-mono text-xs transition-colors group-hover/actor:text-accent ${
+          contract ? "font-medium text-foreground" : "text-foreground"
+        }`}
       >
         {contract ? contract.name : shorten(identity, 6, 4)}
       </span>
-    </span>
+    </Link>
   );
 }

@@ -46,7 +46,7 @@ function AccountRow({ account }: { account: IdentityRow }) {
         {formatInteger(account.transfer_count)}
       </td>
       <td className="px-4 py-3 text-right">
-        <TickLink className="whitespace-nowrap text-[10px]" tick={account.last_seen_tick} />
+        <TickLink className="whitespace-nowrap" tick={account.last_seen_tick} />
       </td>
     </ActivityTableRow>
   );
