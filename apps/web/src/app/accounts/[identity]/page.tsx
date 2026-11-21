@@ -3,7 +3,11 @@ import type { Metadata } from "next";
 import { AccountDetail } from "@/features/accounts/account-detail";
 import { findContractSummary } from "@/lib/contracts/registry";
 import { shorten } from "@/lib/format";
-import { getPublicProfile } from "@/lib/profiles/server";
+
+// The identity shell is client-rendered; cache it so detail views do not
+// re-render in the Worker on every request.
+export const dynamic = "force-static";
+export const revalidate = 86400;
 
 export async function generateMetadata({
   params,
@@ -12,20 +16,12 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { identity } = await params;
   const contract = findContractSummary(identity);
-  const profile = contract ? null : await getPublicProfile(identity).catch(() => null);
   const title = contract
     ? `${contract.name} smart contract`
-    : profile
-      ? `${profile.displayName} (${shorten(identity, 4, 4)})`
-      : `Identity ${shorten(identity, 4, 4)}`;
+    : `Identity ${shorten(identity, 4, 4)}`;
   const description = contract
     ? `${contract.name} contract address, balance and activity on Qubic.`
-    : profile
-      ? profile.bio ||
-        (profile.verification === "wallet"
-          ? `${profile.displayName} is a wallet-verified Qubic identity. View balance and activity on Glyph Explorer.`
-          : `${profile.displayName} is a curated exchange identity on Qubic. View balance and activity on Glyph Explorer.`)
-      : "Identity balance, activity, sources and destinations.";
+    : "Identity balance, activity, sources and destinations.";
   return {
     description,
     openGraph: {
@@ -46,9 +42,5 @@ export async function generateMetadata({
 
 export default async function AccountPage({ params }: { params: Promise<{ identity: string }> }) {
   const { identity } = await params;
-  const contract = findContractSummary(identity);
-  const initialProfile = contract
-    ? undefined
-    : await getPublicProfile(identity).catch(() => undefined);
-  return <AccountDetail identity={identity} initialProfile={initialProfile} />;
+  return <AccountDetail identity={identity} />;
 }

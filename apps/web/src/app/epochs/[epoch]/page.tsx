@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 
 import { EpochDetail } from "@/features/epochs/epoch-detail";
 
+// Epoch data is fetched client-side; cache the route shell at the edge.
+export const dynamic = "force-static";
+export const revalidate = 86400;
+
 export async function generateMetadata({
   params,
 }: {
