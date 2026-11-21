@@ -19,7 +19,7 @@ export function AccountLeaderboard({
   }
 
   if (accounts.length === 0) {
-    return <p className="py-12 text-center text-muted text-sm">No accounts yet.</p>;
+    return <p className="py-12 text-center text-muted text-sm">No identities yet.</p>;
   }
 
   const maxTransfers = Math.max(1, ...accounts.map((account) => account.transfer_count ?? 0));

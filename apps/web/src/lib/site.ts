@@ -3,4 +3,4 @@ export const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? "https://explorer.gl
 export const SITE_NAME = "Glyph Explorer";
 
 export const SITE_DESCRIPTION =
-  "Trace Qubic ticks, transactions, epochs, accounts, contracts, proposals, and events from Glyph's direct-peer index.";
+  "Trace Qubic ticks, transactions, epochs, identities, contracts, proposals, and events from Glyph's direct-peer index.";

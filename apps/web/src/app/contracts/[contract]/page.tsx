@@ -248,7 +248,7 @@ export default async function ContractPage({ params }: { params: Promise<{ contr
           </div>
           <div className="flex shrink-0 flex-wrap gap-2">
             <Link className={actionClass} href={`/accounts/${contract.contractAddress}` as Route}>
-              Account
+              Identity
             </Link>
             <a className={actionClass} href={contractSource} rel="noreferrer" target="_blank">
               Source

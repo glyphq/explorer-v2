@@ -17,7 +17,7 @@ export async function generateMetadata({
     ? `${contract.name} smart contract`
     : profile
       ? `${profile.displayName} (${shorten(identity, 6, 4)})`
-      : `Account ${shorten(identity, 10, 8)}`;
+      : `Identity ${shorten(identity, 10, 8)}`;
   const description = contract
     ? `${contract.name} contract address, balance and activity on Qubic.`
     : profile
@@ -25,7 +25,7 @@ export async function generateMetadata({
         (profile.verification === "wallet"
           ? `${profile.displayName} is a wallet-verified Qubic identity. View balance and activity on Glyph Explorer.`
           : `${profile.displayName} is a curated exchange identity on Qubic. View balance and activity on Glyph Explorer.`)
-      : "Account balance, activity, sources and destinations.";
+      : "Identity balance, activity, sources and destinations.";
   return {
     description,
     openGraph: {

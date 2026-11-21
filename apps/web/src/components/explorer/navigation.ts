@@ -50,7 +50,7 @@ const transactions = {
 const accounts = {
   href: "/accounts",
   icon: UsersGroupRoundedIcon,
-  label: "Accounts",
+  label: "Identities",
 } satisfies NavigationItem;
 
 const assets = {

@@ -120,7 +120,7 @@ export default function HomePage() {
           />
           <BentoMetric
             icon={UsersGroupRoundedIcon}
-            label="Accounts"
+            label="Identities"
             loading={network.isLoading}
             value={
               <AnimatedNumber

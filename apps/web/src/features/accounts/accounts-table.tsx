@@ -54,9 +54,9 @@ function AccountRow({ account }: { account: IdentityRow }) {
 
 export function AccountsTable({ accounts }: { accounts: IdentityRow[] }) {
   return (
-    <ActivityTable label="Accounts" minWidth="min-w-[960px]">
+    <ActivityTable label="Identities" minWidth="min-w-[960px]">
       <ActivityTableHead>
-        <th className="w-[26%] px-4 py-3 font-normal">Account</th>
+        <th className="w-[26%] px-4 py-3 font-normal">Identity</th>
         <th className="w-[20%] px-3 py-3 font-normal">Balance</th>
         <th className="w-[18%] px-3 py-3 font-normal">Incoming</th>
         <th className="w-[18%] px-3 py-3 font-normal">Outgoing</th>
@@ -76,7 +76,7 @@ export function AccountsTable({ accounts }: { accounts: IdentityRow[] }) {
 }
 
 const SKELETON_COLUMNS: ActivityTableSkeletonColumn[] = [
-  { barClassName: "w-36", header: "Account", width: "w-[26%]" },
+  { barClassName: "w-36", header: "Identity", width: "w-[26%]" },
   { barClassName: "w-24", header: "Balance", width: "w-[20%]" },
   { barClassName: "w-20", header: "Incoming", width: "w-[18%]" },
   { barClassName: "w-20", header: "Outgoing", width: "w-[18%]" },
@@ -88,7 +88,7 @@ export function AccountsTableSkeleton({ rows = 10 }: { rows?: number }) {
   return (
     <ActivityTableSkeleton
       columns={SKELETON_COLUMNS}
-      label="Loading accounts"
+      label="Loading identities"
       minWidth="min-w-[960px]"
       rows={rows}
     />

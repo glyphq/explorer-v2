@@ -31,7 +31,7 @@ import {
   useMarket,
 } from "@/lib/api/hooks";
 import { isExchangeDelisted } from "@/lib/exchanges/brands";
-import { formatInteger, formatUsdValue } from "@/lib/format";
+import { formatInteger, formatUsdValue, shorten } from "@/lib/format";
 import type { PublicProfile } from "@/lib/profiles/types";
 import { isZeroIdentity } from "@/lib/transactions/special-hash";
 
@@ -129,7 +129,9 @@ export function AccountDetail({
       ? (liveData.incoming_transfers ?? 0) + (liveData.outgoing_transfers ?? 0)
       : undefined);
   const title =
-    contract?.name ?? profile?.displayName ?? (zeroAddress ? "Protocol zero address" : "Account");
+    contract?.name ??
+    profile?.displayName ??
+    (zeroAddress ? "Protocol zero address" : shorten(identity, 10, 8));
   const fetchNextActivity = useCallback(() => {
     activity.fetchNextPage();
   }, [activity.fetchNextPage]);
@@ -138,7 +140,7 @@ export function AccountDetail({
     return (
       <div className="page-width px-4 py-8 lg:px-8">
         <ErrorState
-          message="We couldn't reach a peer for this account. Try again in a moment."
+          message="We couldn't reach a peer for this identity. Try again in a moment."
           onRetry={() => {
             identityQuery.refetch();
             liveIdentity.refetch();

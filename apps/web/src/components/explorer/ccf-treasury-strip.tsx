@@ -28,7 +28,7 @@ export function CcfTreasuryStrip({ treasury }: { treasury: CcfTreasury }) {
         className="text-muted transition-colors hover:text-foreground"
         href={`/accounts/${treasury.identity}`}
       >
-        Treasury account
+        Treasury identity
       </Link>
     </div>
   );

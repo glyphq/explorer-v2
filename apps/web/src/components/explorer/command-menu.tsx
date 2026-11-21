@@ -25,7 +25,7 @@ const TRANSACTION_PATTERN = /^[a-z]{60}$/;
 const typeLabels: Record<string, string> = {
   asset: "Asset",
   epoch: "Epoch",
-  identity: "Account",
+  identity: "Identity",
   tick: "Tick",
   transaction: "Transaction",
 };
@@ -104,7 +104,7 @@ function labelForPath(path: string): string {
     case "transactions":
       return `Transaction ${shorten(segment ?? "")}`;
     case "accounts":
-      return `Account ${shorten(segment ?? "")}`;
+      return `Identity ${shorten(segment ?? "")}`;
     case "epochs":
       return `Epoch ${segment ?? ""}`;
     case "assets":
@@ -344,7 +344,7 @@ export function CommandMenu({
                     autoFocus
                     className="h-8 w-full bg-transparent text-foreground text-sm outline-none placeholder:text-muted"
                     onValueChange={setQuery}
-                    placeholder="Search ticks, transactions, accounts, or jump to a page"
+                    placeholder="Search ticks, transactions, identities, or jump to a page"
                     value={query}
                   />
                   <kbd className="shrink-0 rounded-[4px] bg-surface-secondary px-1.5 py-0.5 font-mono text-[9px] text-muted">
@@ -390,7 +390,7 @@ export function CommandMenu({
                       className="mb-1"
                       heading={
                         <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">
-                          Open account
+                          Open identity
                         </span>
                       }
                     >
@@ -403,7 +403,7 @@ export function CommandMenu({
                               : (`/accounts/${account}` as Route),
                           )
                         }
-                        value={`${directContract ? "contract" : "account"} ${directContract?.name ?? account} ${query}`}
+                        value={`${directContract ? "contract" : "identity"} ${directContract?.name ?? account} ${query}`}
                       >
                         {directContract ? (
                           <ContractMark name={directContract.name} size={18} />
@@ -421,7 +421,7 @@ export function CommandMenu({
                           {directContract?.name ?? account}
                         </span>
                         <span className="shrink-0 text-[9px] text-muted uppercase tracking-[0.14em]">
-                          {directContract ? "Contract" : "Account"}
+                          {directContract ? "Contract" : "Identity"}
                         </span>
                       </Command.Item>
                     </Command.Group>

@@ -89,7 +89,7 @@ export function IdentityActions({
             <Modal.Dialog className="max-h-[92dvh] w-full max-w-md rounded-none bg-transparent p-0">
               <ModalSheet onOpenChange={setQrOpen} open={qrOpen}>
                 <Modal.Header>
-                  <Modal.Heading>Account QR</Modal.Heading>
+                  <Modal.Heading>Identity QR</Modal.Heading>
                 </Modal.Header>
                 <Modal.Body className="flex flex-col items-center gap-5 py-2">
                   <div className="rounded-2xl bg-foreground p-4 text-background">
@@ -99,7 +99,7 @@ export function IdentityActions({
                       level="M"
                       marginSize={1}
                       size={208}
-                      title="Account identity QR code"
+                      title="Identity QR code"
                       value={identity}
                     />
                   </div>
