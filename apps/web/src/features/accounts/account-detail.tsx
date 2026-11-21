@@ -31,7 +31,7 @@ import {
   useMarket,
 } from "@/lib/api/hooks";
 import { isExchangeDelisted } from "@/lib/exchanges/brands";
-import { formatInteger, formatUsdValue, shorten } from "@/lib/format";
+import { classNames, formatInteger, formatUsdValue, shorten } from "@/lib/format";
 import type { PublicProfile } from "@/lib/profiles/types";
 import { isZeroIdentity } from "@/lib/transactions/special-hash";
 
@@ -199,19 +199,42 @@ export function AccountDetail({
       <header className="pb-7">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
-            <h1 className="flex min-w-0 flex-wrap items-center gap-2.5 break-words font-semibold text-2xl text-foreground tracking-tight sm:text-3xl">
+            <h1
+              className={classNames(
+                "flex min-w-0 items-center gap-2.5 break-words font-semibold text-2xl text-foreground tracking-tight sm:text-3xl",
+                plainIdentity ? "flex-nowrap" : "flex-wrap",
+              )}
+            >
               <span className="flex shrink-0">
                 {contract ? (
-                  <ContractMark name={contract.name} size={32} />
+                  <ContractMark name={contract.name} size={48} />
                 ) : (
-                  <IdentityAvatar size={32} value={identity} />
+                  <IdentityAvatar size={48} value={identity} />
                 )}
               </span>
-              <span className="min-w-0 break-words">{title}</span>
-              {profile ? <ProfileVerificationBadge profile={profile} /> : null}
-              {profile?.kind === "exchange" && isExchangeDelisted(profile.displayName) ? (
-                <ExchangeListingNotice name={profile.displayName} />
-              ) : null}
+              {plainIdentity ? (
+                <span className="flex h-12 min-w-0 flex-col justify-center gap-1">
+                  <span className="truncate font-mono font-semibold text-[21px] text-foreground leading-6">
+                    {shorten(identity, 4, 4)}
+                  </span>
+                  <span
+                    className="truncate font-mono font-normal text-[8px] text-muted leading-3 sm:text-[10px] sm:leading-4 md:text-[13.5px] md:leading-5"
+                    title={identity}
+                  >
+                    {identity.slice(0, 4)}
+                    <span className="text-muted/60">{identity.slice(4, -4)}</span>
+                    {identity.slice(-4)}
+                  </span>
+                </span>
+              ) : (
+                <>
+                  <span className="min-w-0 break-words">{title}</span>
+                  {profile ? <ProfileVerificationBadge profile={profile} /> : null}
+                  {profile?.kind === "exchange" && isExchangeDelisted(profile.displayName) ? (
+                    <ExchangeListingNotice name={profile.displayName} />
+                  ) : null}
+                </>
+              )}
             </h1>
             {plainIdentity ? null : (
               <div className="mt-2 min-w-0 text-muted text-xs">
