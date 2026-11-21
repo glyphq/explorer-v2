@@ -89,36 +89,13 @@ export function EpochDetail({ epoch }: { epoch: number }) {
                 <Skeleton className="h-5 w-12 rounded-full" />
               ) : data ? (
                 <Chip color={data.closed ? "default" : "success"} size="sm" variant="soft">
-                  {data.closed ? "closed" : "open"}
+                  {data.closed ? "Closed" : "In Progress"}
                 </Chip>
               ) : null}
             </h1>
 
-            {epochQuery.isLoading ? (
-              <span className="mt-2 block h-3 w-64 animate-pulse rounded bg-surface-secondary" />
-            ) : data ? (
-              <div className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-muted leading-4">
-                <span>
-                  Opened{" "}
-                  <time
-                    dateTime={data.first_timestamp}
-                    title={formatTimestamp(data.first_timestamp)}
-                  >
-                    {formatTimestamp(data.first_timestamp)}
-                  </time>
-                </span>
-                <span className="text-muted/60">→</span>
-                <span>
-                  Latest{" "}
-                  <time dateTime={data.last_timestamp} title={formatTimestamp(data.last_timestamp)}>
-                    {formatTimestamp(data.last_timestamp)}
-                  </time>
-                </span>
-              </div>
-            ) : null}
-
             {data ? (
-              <div className="mt-4 flex flex-wrap items-center gap-x-5 gap-y-3">
+              <div className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-3">
                 <MetaItem label="First tick">
                   <TickLink tick={data.first_tick} />
                 </MetaItem>
