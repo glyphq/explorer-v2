@@ -3,14 +3,40 @@ import type { NextConfig } from "next";
 
 import { withPwa } from "./pwa.config";
 
-function detailCache(seconds: number, staleSeconds = seconds) {
+// HTML references build-specific JS and CSS chunks. Keep it out of the browser
+// cache and only at the edge briefly so a deploy cannot leave visitors on a
+// document whose assets no longer exist.
+function htmlCache(seconds = 60) {
   return [
     {
       key: "Cache-Control",
-      value: `public, max-age=0, s-maxage=${seconds}, stale-while-revalidate=${staleSeconds}`,
+      value: `public, max-age=0, s-maxage=${seconds}, stale-while-revalidate=${seconds}`,
     },
   ];
 }
+
+const htmlRoutes = [
+  "/",
+  "/accounts",
+  "/accounts/:identity",
+  "/addresses",
+  "/assets",
+  "/assets/:issuer/:name",
+  "/bpp9000",
+  "/computors",
+  "/contracts",
+  "/contracts/:contract",
+  "/epochs",
+  "/epochs/:epoch",
+  "/events",
+  "/exchanges",
+  "/proposals",
+  "/proposals/view",
+  "/ticks",
+  "/ticks/:tick",
+  "/transactions",
+  "/transactions/:hash",
+];
 
 const nextConfig: NextConfig = {
   experimental: {
@@ -30,34 +56,7 @@ const nextConfig: NextConfig = {
         ],
         source: "/:path*",
       },
-      {
-        headers: detailCache(300),
-        source: "/accounts/:identity",
-      },
-      {
-        headers: detailCache(300),
-        source: "/assets/:issuer/:name",
-      },
-      {
-        headers: detailCache(300),
-        source: "/epochs/:epoch",
-      },
-      {
-        headers: detailCache(300),
-        source: "/ticks/:tick",
-      },
-      {
-        headers: detailCache(86_400, 3600),
-        source: "/transactions/:hash",
-      },
-      {
-        headers: detailCache(300),
-        source: "/proposals",
-      },
-      {
-        headers: detailCache(300),
-        source: "/proposals/view",
-      },
+      ...htmlRoutes.map((source) => ({ headers: htmlCache(), source })),
     ];
   },
   poweredByHeader: false,
