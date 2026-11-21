@@ -1,57 +1,83 @@
 import type { Route } from "next";
+import type { ComponentType } from "react";
 
+import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
+import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
+import { CloseCircleIcon } from "@solar-icons/react/linear/close-circle";
+import { DocumentAddIcon } from "@solar-icons/react/linear/document-add";
+import { MinusCircleIcon } from "@solar-icons/react/linear/minus-circle";
+import { QuestionCircleIcon } from "@solar-icons/react/linear/question-circle";
+import { ShieldCrossIcon } from "@solar-icons/react/linear/shield-cross";
+import { UploadSquareIcon } from "@solar-icons/react/linear/upload-square";
+import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { formatInteger } from "@/lib/format";
 import type { Proposal } from "@/lib/proposals";
 
-const STATUS_META: Record<number, { barClassName: string; chipClassName: string; label: string }> =
-  {
-    0: {
-      barClassName: "bg-foreground/20",
-      chipClassName: "bg-surface-secondary text-muted",
-      label: "Draft",
-    },
-    1: {
-      barClassName: "bg-foreground/20",
-      chipClassName: "bg-surface-secondary text-muted",
-      label: "Publishing",
-    },
-    2: {
-      barClassName: "bg-foreground/20",
-      chipClassName: "bg-accent/12 text-accent",
-      label: "Voting",
-    },
-    3: {
-      barClassName: "bg-success",
-      chipClassName: "bg-success/12 text-success",
-      label: "Passed",
-    },
-    4: {
-      barClassName: "bg-danger",
-      chipClassName: "bg-danger/12 text-danger",
-      label: "Failed",
-    },
-    5: {
-      barClassName: "bg-foreground/20",
-      chipClassName: "bg-surface-secondary text-muted",
-      label: "Cancelled",
-    },
-    6: {
-      barClassName: "bg-danger",
-      chipClassName: "bg-danger/12 text-danger",
-      label: "Rejected",
-    },
-    7: {
-      barClassName: "bg-foreground/20",
-      chipClassName: "bg-surface-secondary text-muted",
-      label: "No quorum",
-    },
-  };
+type StatusIcon = ComponentType<{ className?: string }>;
+type StatusMeta = {
+  barClassName: string;
+  chipClassName: string;
+  Icon: StatusIcon;
+  label: string;
+};
+
+const STATUS_META: Record<number, StatusMeta> = {
+  0: {
+    barClassName: "bg-foreground/20",
+    chipClassName: "bg-surface-secondary text-muted",
+    Icon: DocumentAddIcon,
+    label: "Draft",
+  },
+  1: {
+    barClassName: "bg-foreground/20",
+    chipClassName: "bg-surface-secondary text-muted",
+    Icon: UploadSquareIcon,
+    label: "Publishing",
+  },
+  2: {
+    barClassName: "bg-foreground/20",
+    chipClassName: "bg-accent/12 text-accent",
+    Icon: ClockCircleIcon,
+    label: "Voting",
+  },
+  3: {
+    barClassName: "bg-success",
+    chipClassName: "bg-success/12 text-success",
+    Icon: CheckCircleIcon,
+    label: "Passed",
+  },
+  4: {
+    barClassName: "bg-danger",
+    chipClassName: "bg-danger/12 text-danger",
+    Icon: CloseCircleIcon,
+    label: "Failed",
+  },
+  5: {
+    barClassName: "bg-foreground/20",
+    chipClassName: "bg-surface-secondary text-muted",
+    Icon: MinusCircleIcon,
+    label: "Cancelled",
+  },
+  6: {
+    barClassName: "bg-danger",
+    chipClassName: "bg-danger/12 text-danger",
+    Icon: ShieldCrossIcon,
+    label: "Rejected",
+  },
+  7: {
+    barClassName: "bg-foreground/20",
+    chipClassName: "bg-surface-secondary text-muted",
+    Icon: UsersGroupRoundedIcon,
+    label: "No quorum",
+  },
+};
 
 export function statusMeta(status: number) {
   return (
     STATUS_META[status] ?? {
       barClassName: "bg-foreground/20",
       chipClassName: "bg-surface-secondary text-muted",
+      Icon: QuestionCircleIcon,
       label: "Unknown",
     }
   );
@@ -75,9 +101,15 @@ export function proposalHref(proposal: Proposal): Route {
 
 export function StatusChip({ status }: { status: number }) {
   const meta = statusMeta(status);
+  const Icon = meta.Icon;
   return (
-    <span className={`rounded-full px-2.5 py-1 font-medium text-[10px] ${meta.chipClassName}`}>
-      {meta.label}
+    <span
+      aria-label={meta.label}
+      className={`inline-flex size-6 items-center justify-center rounded-full ${meta.chipClassName}`}
+      role="img"
+      title={meta.label}
+    >
+      <Icon className="size-3.5 shrink-0" />
     </span>
   );
 }
