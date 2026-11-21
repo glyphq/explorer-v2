@@ -1,5 +1,7 @@
 import type { ContractField } from "@glyph-oss/contracts";
 
+const integerFormatter = new Intl.NumberFormat("en-US");
+
 export function contractFieldType(field: ContractField): string {
   if (field.array) {
     return `${field.array.itemType}[${field.array.length}]`;
@@ -44,7 +46,7 @@ export function formatContractValue(value: unknown): string {
     return "—";
   }
   if (typeof value === "bigint") {
-    return value.toString();
+    return integerFormatter.format(value);
   }
   if (typeof value === "boolean") {
     return value ? "yes" : "no";

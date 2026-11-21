@@ -10,15 +10,13 @@ import { sileo } from "sileo";
 
 import { classNames, shorten } from "@/lib/format";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
-
-import { useContract } from "./contract-provider";
 import { ContractMark } from "./contract-mark";
+import { useContract } from "./contract-provider";
 import { IdentityAvatar } from "./identity-avatar";
 
-const idClass =
-  "font-mono text-xs text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
+const idClass = "font-mono text-xs text-foreground transition-colors hover:text-accent";
 const contractClass =
-  "font-sans text-xs font-medium text-foreground underline-offset-4 transition-colors hover:text-accent hover:underline";
+  "font-sans text-xs font-medium text-foreground transition-colors hover:text-accent";
 export function IdentityLink({
   avatar = false,
   identity,
@@ -61,7 +59,7 @@ export function IdentityLink({
 
   const link = (
     <Link
-      className={classNames(idClass, className)}
+      className={classNames(idClass, full ? "min-w-0 break-all" : undefined, className)}
       href={`/accounts/${identity}` as Route}
       title={identity}
     >
@@ -178,12 +176,23 @@ export function AssetLink({
   );
 }
 
-export function CopyButton({ label = "Copy value", value }: { label?: string; value: string }) {
+export function CopyButton({
+  className,
+  description,
+  label = "Copy value",
+  value,
+}: {
+  className?: string;
+  description?: string;
+  label?: string;
+  value: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   return (
     <Button
       aria-label={copied ? "Copied" : label}
+      className={classNames("shrink-0 text-muted", className)}
       isIconOnly
       onPress={async () => {
         try {
@@ -191,7 +200,7 @@ export function CopyButton({ label = "Copy value", value }: { label?: string; va
           setCopied(true);
           window.setTimeout(() => setCopied(false), 1500);
           sileo.success({
-            description: shorten(value, 16, 8),
+            description: description ?? shorten(value, 16, 8),
             title: "Copied to clipboard",
           });
         } catch {
@@ -212,10 +221,21 @@ export function CopyButton({ label = "Copy value", value }: { label?: string; va
 
 export function CopyableId({ full = true, value }: { full?: boolean; value: string }) {
   return (
-    <span className="flex min-w-0 items-center gap-1">
-      <span className={classNames("truncate font-mono text-xs", full ? "" : "max-w-48")}>
-        {full ? value : shorten(value, 10, 8)}
-      </span>
+    <span className="flex min-w-0 items-center gap-2">
+      {full ? (
+        <>
+          <span className="hidden min-w-0 break-all font-mono text-xs sm:block sm:text-[15px]">
+            {value}
+          </span>
+          <span className="min-w-0 truncate font-mono text-xs sm:hidden" title={value}>
+            {shorten(value, 10, 8)}
+          </span>
+        </>
+      ) : (
+        <span className="min-w-0 max-w-48 truncate font-mono text-xs" title={value}>
+          {shorten(value, 10, 8)}
+        </span>
+      )}
       <CopyButton value={value} />
     </span>
   );

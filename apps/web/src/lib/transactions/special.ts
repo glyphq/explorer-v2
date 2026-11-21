@@ -3,7 +3,9 @@ import { formatInteger, shorten } from "@/lib/format";
 export * from "./special-hash";
 
 export type DecodedField = {
+  format?: "digest" | "tick";
   label: string;
+  tick?: number;
   title?: string;
   value: string;
 };
@@ -85,7 +87,7 @@ function ascii(bytes: Uint8Array): string {
 
 function digestField(label: string, bytes: Uint8Array, offset: number): DecodedField {
   const digest = bytesToHex(bytes.subarray(offset, offset + 32));
-  return { label, title: digest, value: shorten(digest, 12, 10) };
+  return { format: "digest", label, title: digest, value: digest };
 }
 
 function bytesField(label: string, count: number): DecodedField {
@@ -113,13 +115,22 @@ export function decodeSpecialInput(
     const nonce = bytesToHex(bytes.subarray(16, 48));
     return {
       fields: [
-        { label: "Parent tick", value: formatInteger(parentTick) },
+        {
+          format: "tick",
+          label: "Parent tick",
+          tick: parentTick,
+          value: formatInteger(parentTick),
+        },
         { label: "Parent solution", value: formatInteger(parentIndex) },
-        { label: "Anchor tick", value: formatInteger(anchorTick) },
+        {
+          format: "tick",
+          label: "Anchor tick",
+          tick: anchorTick,
+          value: formatInteger(anchorTick),
+        },
         { label: "Claimed score", value: formatInteger(claimedScore) },
-        { label: "Nonce", title: nonce, value: shorten(nonce, 12, 10) },
+        { format: "digest", label: "Nonce", title: nonce, value: nonce },
       ],
-      note: "The attached deposit is returned when the solution is accepted and the claimed score matches the score recomputed by the nodes.",
     };
   }
 
@@ -128,8 +139,8 @@ export function decodeSpecialInput(
     const nonce = bytesToHex(bytes.subarray(32, 64));
     return {
       fields: [
-        { label: "Mining seed", title: miningSeed, value: shorten(miningSeed, 12, 10) },
-        { label: "Nonce", title: nonce, value: shorten(nonce, 12, 10) },
+        { format: "digest", label: "Mining seed", title: miningSeed, value: miningSeed },
+        { format: "digest", label: "Nonce", title: nonce, value: nonce },
         { label: "Claimed score", value: formatInteger(readUint32(bytes, 64)) },
         { label: "Reserved", value: formatInteger(readUint32(bytes, 68)) },
       ],
