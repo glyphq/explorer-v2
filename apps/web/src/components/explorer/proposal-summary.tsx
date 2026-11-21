@@ -3,13 +3,13 @@ import type { ComponentType } from "react";
 
 import { CheckCircleIcon } from "@solar-icons/react/linear/check-circle";
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
+import { CloseIcon } from "@solar-icons/react/linear/close";
 import { CloseCircleIcon } from "@solar-icons/react/linear/close-circle";
 import { DocumentAddIcon } from "@solar-icons/react/linear/document-add";
 import { MinusCircleIcon } from "@solar-icons/react/linear/minus-circle";
 import { QuestionCircleIcon } from "@solar-icons/react/linear/question-circle";
 import { ShieldCrossIcon } from "@solar-icons/react/linear/shield-cross";
 import { UploadSquareIcon } from "@solar-icons/react/linear/upload-square";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import { formatInteger } from "@/lib/format";
 import type { Proposal } from "@/lib/proposals";
 
@@ -67,7 +67,7 @@ const STATUS_META: Record<number, StatusMeta> = {
   7: {
     barClassName: "bg-foreground/20",
     chipClassName: "bg-surface-secondary text-muted",
-    Icon: UsersGroupRoundedIcon,
+    Icon: CloseIcon,
     label: "No quorum",
   },
 };

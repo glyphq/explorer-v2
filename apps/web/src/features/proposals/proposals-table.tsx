@@ -46,6 +46,8 @@ function voteCounts(proposal: Proposal) {
 function ProposalRow({ proposal }: { proposal: Proposal }) {
   const votes = voteCounts(proposal);
   const ticker = contractTicker(proposal);
+  const yesShare = votes.total > 0 ? (votes.yes / votes.total) * 100 : 0;
+  const noShare = votes.total > 0 ? (votes.no / votes.total) * 100 : 0;
 
   return (
     <ActivityTableRow>
@@ -72,14 +74,35 @@ function ProposalRow({ proposal }: { proposal: Proposal }) {
         <EpochLink className="relative z-10" epoch={proposal.epoch} />
       </td>
       <td className="px-3 py-3 text-right">
-        <span className="inline-flex flex-wrap items-baseline justify-end gap-x-2 gap-y-0.5">
-          <span className="text-foreground text-xs tabular-nums">{formatInteger(votes.total)}</span>
+        <div
+          className="ml-auto w-full max-w-[240px]"
+          title={
+            votes.hasBreakdown
+              ? `${formatInteger(votes.total)} votes: ${formatInteger(votes.yes)} yes, ${formatInteger(votes.no)} no`
+              : `${formatInteger(votes.total)} votes`
+          }
+        >
+          <span className="block text-center text-foreground text-xs tabular-nums">
+            {formatInteger(votes.total)}
+          </span>
+          <span
+            aria-hidden
+            className="mt-1.5 flex h-2 w-full overflow-hidden rounded-full bg-surface-secondary"
+          >
+            {votes.hasBreakdown ? (
+              <>
+                <span className="h-full bg-success" style={{ width: `${yesShare}%` }} />
+                <span className="h-full bg-danger" style={{ width: `${noShare}%` }} />
+              </>
+            ) : null}
+          </span>
           {votes.hasBreakdown ? (
-            <span className="whitespace-nowrap text-[10px] text-muted tabular-nums">
-              {formatInteger(votes.yes)} yes · {formatInteger(votes.no)} no
+            <span className="mt-1 flex items-baseline justify-between text-[10px] text-muted tabular-nums">
+              <span>{formatInteger(votes.yes)} yes</span>
+              <span>{formatInteger(votes.no)} no</span>
             </span>
           ) : null}
-        </span>
+        </div>
       </td>
       <td className="px-4 py-3 text-right">
         <StatusChip status={proposal.status} />
