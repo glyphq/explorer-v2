@@ -60,11 +60,8 @@ function VoteBar({ votes }: { votes: VoteCounts }) {
       className="ml-auto w-full max-w-[190px]"
       title={`${formatInteger(votes.total)} votes: ${formatInteger(votes.yes)} yes, ${formatInteger(votes.no)} no`}
     >
-      <div className="grid grid-cols-[1fr_auto_1fr] items-baseline gap-2 text-[10px] leading-none tabular-nums">
+      <div className="flex items-baseline justify-between gap-2 text-[10px] leading-none tabular-nums">
         <span className="text-muted">{formatInteger(votes.yes)} yes</span>
-        <span className="font-medium text-[11px] text-foreground">
-          {formatInteger(votes.total)}
-        </span>
         <span className="text-right text-muted">{formatInteger(votes.no)} no</span>
       </div>
       <span
