@@ -54,8 +54,8 @@ function SettingSelect<T extends string>({
       value={value}
       variant="secondary"
     >
-      <Select.Trigger className="relative h-10 w-full rounded-lg bg-surface-secondary px-9 text-sm transition-colors hover:bg-surface-tertiary">
-        <Select.Value className="flex-1 truncate text-center" />
+      <Select.Trigger className="relative flex h-10 w-full items-center rounded-lg bg-surface-secondary pr-9 pl-3 text-sm transition-colors hover:bg-surface-tertiary">
+        <Select.Value className="flex-1 truncate text-left" />
         <Select.Indicator className="pointer-events-none absolute top-1/2 right-3 -translate-y-1/2" />
       </Select.Trigger>
       <Select.Popover className="bg-surface-tertiary">
