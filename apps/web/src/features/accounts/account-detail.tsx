@@ -194,7 +194,7 @@ export function AccountDetail({
   return (
     <div className="page-width px-4 py-8 lg:px-8">
       <header className="pb-7">
-        <div className="flex flex-wrap items-start justify-between gap-4">
+        <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div className="min-w-0">
             <h1 className="flex min-w-0 flex-wrap items-center gap-2.5 break-words font-semibold text-2xl text-foreground tracking-tight sm:text-3xl">
               <span className="flex shrink-0">
