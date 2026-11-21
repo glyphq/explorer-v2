@@ -1,6 +1,7 @@
 "use client";
 
 import { PageHeader } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import {
@@ -13,6 +14,7 @@ import { useKnownProfiles } from "@/features/profiles/use-profile";
 export default function KnownAddressesPage() {
   const known = useKnownProfiles();
   const addresses = mergeKnownAddresses(known.data ?? []);
+  usePageLoading(known.isLoading);
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">

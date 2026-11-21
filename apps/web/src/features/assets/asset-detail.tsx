@@ -12,6 +12,7 @@ import { DataTable } from "@/components/explorer/data-table";
 import { CopyButton, IdentityLink, TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { PageHeader } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { SectionCard } from "@/components/explorer/section-card";
 import { KeyValue, StatCard } from "@/components/explorer/stat-card";
 import { ErrorState } from "@/components/explorer/state";
@@ -25,6 +26,7 @@ export function AssetDetail({ issuer, name }: { issuer: string; name: string }) 
   const data = asset.data?.data;
   const managingContract = useContractByIndex(data?.managing_contract);
   const transferRows = pageRows(transfers.data?.pages);
+  usePageLoading(asset.isLoading || holders.isLoading || transfers.isLoading);
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">

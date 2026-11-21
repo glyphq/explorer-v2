@@ -6,7 +6,6 @@ import { CloseIcon } from "@solar-icons/react/linear/close";
 import { HamburgerMenuIcon } from "@solar-icons/react/linear/hamburger-menu";
 import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
 import { SettingsIcon } from "@solar-icons/react/linear/settings";
-import { AsciiReveal, type AsciiRevealHandle } from "ascii-reveal";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import type { Route } from "next";
 import Link from "next/link";
@@ -27,6 +26,7 @@ import {
   type NavigationItem,
   primaryNavigation,
 } from "./navigation";
+import { PageReveal } from "./page-reveal";
 import { SettingsDialog } from "./settings-dialog";
 
 const perBillionFormatter = new Intl.NumberFormat("en-US", {
@@ -376,7 +376,7 @@ function MobileMenu({
           type="button"
         >
           <MagnifierIcon className="size-4" />
-          <span>Search ticks, accounts, assets</span>
+          <span>Search ticks, identities, assets</span>
         </button>
 
         <nav aria-label="Mobile" className="mt-6 grid gap-5">
@@ -416,63 +416,10 @@ function MobileMenu({
   );
 }
 
-function PageReveal({
-  children,
-  origin,
-  pathname,
-  revealOnMount,
-}: {
-  children: React.ReactNode;
-  origin: "center" | "top-left";
-  pathname: string;
-  revealOnMount: boolean;
-}) {
-  const reveal = useRef<AsciiRevealHandle>(null);
-  const needsHydrationReveal = useRef(!revealOnMount);
-
-  // ascii-reveal's revealOnHydrate mutates server HTML during React's diff.
-  // Defer the first reveal, then use normal mount reveals for client navigation.
-  useEffect(() => {
-    if (!needsHydrationReveal.current) {
-      return;
-    }
-
-    let canceled = false;
-    const frame = requestAnimationFrame(() => {
-      if (canceled) {
-        return;
-      }
-
-      needsHydrationReveal.current = false;
-      void reveal.current?.reveal();
-    });
-
-    return () => {
-      canceled = true;
-      cancelAnimationFrame(frame);
-    };
-  }, []);
-
-  return (
-    <AsciiReveal
-      as="div"
-      duration="fast"
-      key={pathname}
-      origin={origin}
-      preset="dither"
-      ref={reveal}
-      revealOnMount={revealOnMount}
-    >
-      {children}
-    </AsciiReveal>
-  );
-}
-
 export function AppShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const market = useMarket();
   const [commandOpen, setCommandOpen] = useState(false);
-  const [hydrated, setHydrated] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
@@ -484,10 +431,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   const closeMobile = useCallback(() => setMobileOpen(false), []);
   const openSearch = useCallback(() => setCommandOpen(true), []);
-
-  useEffect(() => {
-    setHydrated(true);
-  }, []);
 
   useEffect(() => {
     try {
@@ -594,7 +537,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   <PageReveal
                     origin={pathname.startsWith("/accounts/") ? "center" : "top-left"}
                     pathname={pathname}
-                    revealOnMount={hydrated}
                   >
                     {children}
                   </PageReveal>

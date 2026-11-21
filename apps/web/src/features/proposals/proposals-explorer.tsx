@@ -5,6 +5,7 @@ import { useCallback, useMemo, useState } from "react";
 
 import { CcfTreasuryStrip } from "@/components/explorer/ccf-treasury-strip";
 import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import { readProposals } from "@/features/proposals/data";
@@ -44,6 +45,7 @@ export function ProposalsExplorer() {
     setVisible((count) => Math.min(count + PAGE_SIZE, proposals.length));
   }, [proposals.length]);
   const treasury = treasuryQuery.data;
+  usePageLoading(proposalsQuery.isPending);
 
   if (proposalsQuery.isPending) {
     return <ProposalsTableSkeleton />;

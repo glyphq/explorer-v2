@@ -6,6 +6,7 @@ import type { ReactNode } from "react";
 import { EpochLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { PageHeader } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { SectionCard } from "@/components/explorer/section-card";
 import { ErrorState } from "@/components/explorer/state";
 import { ActivityFeed, groupTransactionEvents } from "@/features/accounts/activity-feed";
@@ -55,6 +56,10 @@ export function TickDetail({ tick }: { tick: number }) {
   const transactionRows = pageRows(transactions.data?.pages);
   const eventRows = pageRows(events.data?.pages);
   const groups = groupTransactionEvents(transactionRows, eventRows);
+  usePageLoading(
+    valid &&
+      (tickQuery.isLoading || evidence.isLoading || transactions.isLoading || events.isLoading),
+  );
 
   const warnings = (() => {
     if (!evidenceData?.warnings) {

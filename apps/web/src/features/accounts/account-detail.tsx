@@ -15,6 +15,7 @@ import { IdentityAvatar } from "@/components/explorer/identity-avatar";
 import { CopyableId } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { SectionHeading } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
 import { ExchangeListingNotice } from "@/features/exchanges/exchange-logo";
 import { isProfileUnavailable } from "@/features/profiles/api";
@@ -113,6 +114,7 @@ export function AccountDetail({
   const hasData = Boolean(data ?? liveData);
   const loading =
     !hasData && (identityQuery.isLoading || liveIdentity.isLoading || profileQuery.isLoading);
+  usePageLoading(loading || activity.isLoading);
   const failed = !(loading || hasData || profileReady);
   const balance =
     liveData?.balance ??

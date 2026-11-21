@@ -2,6 +2,7 @@
 
 import { LoadMore } from "@/components/explorer/load-more";
 import { PageHeader } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { AssetRow, RecordEmpty, RecordList, RecordSkeleton } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import { pageRows, useAssets } from "@/lib/api/hooks";
@@ -9,6 +10,7 @@ import { pageRows, useAssets } from "@/lib/api/hooks";
 export default function AssetsPage() {
   const assets = useAssets(25);
   const rows = pageRows(assets.data?.pages);
+  usePageLoading(assets.isLoading);
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">

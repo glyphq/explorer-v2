@@ -2,6 +2,7 @@
 
 import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import {
@@ -13,6 +14,7 @@ import { pageRows, useTransactions } from "@/lib/api/hooks";
 export default function TransactionsPage() {
   const transactions = useTransactions({}, 25);
   const rows = pageRows(transactions.data?.pages);
+  usePageLoading(transactions.isLoading);
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">

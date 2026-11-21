@@ -12,6 +12,7 @@ import { DataTable } from "@/components/explorer/data-table";
 import { CopyButton, TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { PageHeader } from "@/components/explorer/page-header";
+import { usePageLoading } from "@/components/explorer/page-reveal";
 import { SectionCard } from "@/components/explorer/section-card";
 import { KeyValue, StatCard } from "@/components/explorer/stat-card";
 import { ErrorState } from "@/components/explorer/state";
@@ -25,6 +26,7 @@ export function EpochDetail({ epoch }: { epoch: number }) {
   const ticks = useTicks(25, valid ? epoch : undefined);
   const data = epochQuery.data?.data;
   const tickRows = pageRows(ticks.data?.pages);
+  usePageLoading(valid && (epochQuery.isLoading || computors.isLoading || ticks.isLoading));
 
   if (!valid) {
     return (
