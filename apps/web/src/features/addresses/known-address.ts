@@ -10,7 +10,7 @@ export type KnownAddress = {
 
 export const GLYPH_DONATIONS: KnownAddress = {
   displayName: "Glyph Donations",
-  identity: "XIKAQZMFGQSALEMMJRATPPRESWTBXQVCOHTHCZWDGFXVBMCAHBCRUICFOQBI",
+  identity: "LOGCQXSJIQFNNFHFBADRFLVNNXGBVKZGJXOPZSHTQDKNRIIFWXXPYVUCUSTD",
   kind: "glyph",
 };
 
