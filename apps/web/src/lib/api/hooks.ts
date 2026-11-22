@@ -5,7 +5,6 @@ import { useMemo } from "react";
 
 import {
   getActivityOptions,
-  getAssetOptions,
   getEpochOptions,
   getIdentityActivityInfiniteOptions,
   getIdentityFlowOptions,
@@ -18,9 +17,6 @@ import {
   getTickQuorumEvidenceOptions,
   getTransactionEffectsOptions,
   getTransactionStatusOptions,
-  listAssetHoldersOptions,
-  listAssetsInfiniteOptions,
-  listAssetTransfersInfiniteOptions,
   listEpochComputorsOptions,
   listEpochsInfiniteOptions,
   listEventsInfiniteOptions,
@@ -34,6 +30,7 @@ import {
   listTickTransactionsInfiniteOptions,
   listTopIdentitiesOptions,
   listTransactionsInfiniteOptions,
+  listWalletAssetsOptions,
   searchOptions,
 } from "./generated/@tanstack/react-query.gen";
 import { listTickEvents } from "./generated/sdk.gen";
@@ -329,44 +326,15 @@ export function useEpochComputors(epoch: number | undefined) {
   });
 }
 
-export function useAssets(limit = 25, issuer?: string) {
-  return useInfiniteQuery({
-    ...listAssetsInfiniteOptions({ query: { issuer, limit } }),
-    getNextPageParam: (lastPage) => lastPage.meta.next_cursor ?? undefined,
-    initialPageParam: FIRST_PAGE,
-  });
-}
-
-export function useAsset(issuer: string | undefined, name: string | undefined) {
-  return useQuery({
-    ...getAssetOptions({ path: { issuer: issuer ?? "", name: name ?? "" } }),
-    enabled: Boolean(issuer && name),
-    refetchInterval: 60_000,
-  });
-}
-
-export function useAssetHolders(issuer: string, name: string, limit = 100) {
-  return useQuery({
-    ...listAssetHoldersOptions({ path: { issuer, name }, query: { limit } }),
-    enabled: Boolean(issuer && name),
-    retry: false,
-  });
-}
-
-export function useAssetTransfers(
-  issuer: string,
-  name: string,
-  kind: "all" | "ownership" | "possession" = "all",
-  limit = 25,
+export function useWalletAssets(
+  identity: string | undefined,
+  kind: "all" | "issued" | "owned" | "possessed" = "all",
 ) {
-  return useInfiniteQuery({
-    ...listAssetTransfersInfiniteOptions({
-      path: { issuer, name },
-      query: { kind, limit },
-    }),
-    enabled: Boolean(issuer && name),
-    getNextPageParam: (lastPage) => lastPage.meta.next_cursor ?? undefined,
-    initialPageParam: FIRST_PAGE,
+  return useQuery({
+    ...listWalletAssetsOptions({ path: { identity: identity ?? "" }, query: { kind } }),
+    enabled: Boolean(identity),
+    refetchInterval: REFRESH_INTERVAL,
+    retry: false,
   });
 }
 

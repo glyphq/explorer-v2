@@ -9,7 +9,6 @@ const routes = [
   { changeFrequency: "daily", path: "/epochs", priority: 0.8 },
   { changeFrequency: "daily", path: "/computors", priority: 0.7 },
   { changeFrequency: "daily", path: "/accounts", priority: 0.8 },
-  { changeFrequency: "daily", path: "/assets", priority: 0.7 },
   { changeFrequency: "daily", path: "/addresses", priority: 0.7 },
   { changeFrequency: "weekly", path: "/contracts", priority: 0.7 },
   { changeFrequency: "daily", path: "/proposals", priority: 0.7 },

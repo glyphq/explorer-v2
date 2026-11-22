@@ -4,13 +4,7 @@ import { Chip } from "@heroui/react";
 import { createColumnHelper } from "@tanstack/react-table";
 import type { tableFeaturesConfig } from "@/components/explorer/data-table";
 import { EpochLink, IdentityLink, TickLink } from "@/components/explorer/links";
-import type {
-  AssetHolder,
-  AssetTransfer,
-  Computor,
-  Identity,
-  Tick,
-} from "@/lib/api/generated/types.gen";
+import type { Computor, Identity, Tick } from "@/lib/api/generated/types.gen";
 import { formatInteger, formatRelativeTime, formatTimestamp, shorten } from "@/lib/format";
 
 export type IdentityRow = Identity & {
@@ -72,53 +66,5 @@ export const computorColumns = computorHelper.columns([
       </span>
     ),
     header: "Public key",
-  }),
-]);
-
-const transferHelper = createColumnHelper<typeof tableFeaturesConfig, AssetTransfer>();
-export const transferColumns = transferHelper.columns([
-  transferHelper.accessor("kind", {
-    cell: ({ getValue }) => (
-      <Chip color="accent" size="sm" variant="soft">
-        {getValue()}
-      </Chip>
-    ),
-    header: "Kind",
-  }),
-  transferHelper.accessor("from", {
-    cell: ({ getValue }) => <IdentityLink identity={getValue()} />,
-    header: "From",
-  }),
-  transferHelper.accessor("to", {
-    cell: ({ getValue }) => <IdentityLink identity={getValue()} />,
-    header: "To",
-  }),
-  transferHelper.accessor("shares", {
-    cell: ({ getValue }) => <span className="tabular">{formatInteger(getValue())}</span>,
-    header: "Shares",
-  }),
-  transferHelper.accessor("tick", {
-    cell: ({ getValue }) => <TickLink tick={getValue()} />,
-    header: "Tick",
-  }),
-  transferHelper.accessor("timestamp", {
-    cell: ({ getValue }) => (
-      <span className="text-foreground tabular-nums" title={formatTimestamp(getValue())}>
-        {formatRelativeTime(getValue())}
-      </span>
-    ),
-    header: "Observed",
-  }),
-]);
-
-const holderHelper = createColumnHelper<typeof tableFeaturesConfig, AssetHolder>();
-export const holderColumns = holderHelper.columns([
-  holderHelper.accessor("identity", {
-    cell: ({ getValue }) => <IdentityLink identity={getValue()} />,
-    header: "Holder",
-  }),
-  holderHelper.accessor("shares", {
-    cell: ({ getValue }) => <span className="tabular">{formatInteger(getValue())}</span>,
-    header: "Shares",
   }),
 ]);

@@ -160,22 +160,6 @@ export function EpochLink({
   );
 }
 
-export function AssetLink({
-  issuer,
-  name,
-  className,
-}: {
-  issuer: string;
-  name: string;
-  className?: string;
-}) {
-  return (
-    <Link className={classNames(idClass, className)} href={`/assets/${issuer}/${name}` as Route}>
-      {name}
-    </Link>
-  );
-}
-
 export function CopyButton({
   className,
   description,

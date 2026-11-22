@@ -376,7 +376,7 @@ function MobileMenu({
           type="button"
         >
           <MagnifierIcon className="size-4" />
-          <span>Search ticks, identities, assets</span>
+          <span>Search ticks, identities, transactions</span>
         </button>
 
         <nav aria-label="Mobile" className="mt-6 grid gap-5">

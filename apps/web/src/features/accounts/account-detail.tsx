@@ -37,6 +37,7 @@ import { isZeroIdentity } from "@/lib/transactions/special-hash";
 
 import { groupTransactionEvents } from "./activity-feed";
 import { ActivityTable } from "./activity-table";
+import { AccountAssets } from "./account-assets";
 
 const actionClass =
   "inline-flex h-9 max-sm:h-10 items-center gap-1.5 rounded-lg bg-surface px-3 font-medium text-foreground text-xs transition-colors hover:text-accent";
@@ -284,6 +285,8 @@ export function AccountDetail({
           </dl>
         )}
       </header>
+
+      {zeroAddress ? null : <AccountAssets identity={identity} />}
 
       <section className="py-6">
         <SectionHeading title="Activity" />

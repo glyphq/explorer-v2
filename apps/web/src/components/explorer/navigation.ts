@@ -3,7 +3,6 @@ import { BookmarkIcon } from "@solar-icons/react/linear/bookmark";
 import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
 import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
 import { CpuBoltIcon } from "@solar-icons/react/linear/cpu-bolt";
-import { DollarMinimalisticIcon } from "@solar-icons/react/linear/dollar-minimalistic";
 import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
 import { Home2Icon } from "@solar-icons/react/linear/home-2";
 import { LayersIcon } from "@solar-icons/react/linear/layers";
@@ -53,12 +52,6 @@ const accounts = {
   label: "Identities",
 } satisfies NavigationItem;
 
-const assets = {
-  href: "/assets",
-  icon: DollarMinimalisticIcon,
-  label: "Assets",
-} satisfies NavigationItem;
-
 const addresses = {
   href: "/addresses",
   icon: BookmarkIcon,
@@ -90,7 +83,6 @@ export const navigation = [
   computors,
   transactions,
   accounts,
-  assets,
   addresses,
   contracts,
   proposals,

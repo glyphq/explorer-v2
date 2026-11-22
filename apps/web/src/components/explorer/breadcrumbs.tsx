@@ -51,8 +51,6 @@ function detailLabel(pathname: string, item: NavigationItem): string | null {
     }
     case "/accounts":
       return first ? shorten(first, 4, 4) : null;
-    case "/assets":
-      return segment.length > 1 ? `Asset ${decodeSegment(segment[1] ?? "")}` : first || null;
     case "/contracts":
       return first ? first.toUpperCase() : null;
     case "/proposals":

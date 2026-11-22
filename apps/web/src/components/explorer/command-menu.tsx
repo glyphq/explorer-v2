@@ -23,7 +23,6 @@ const IDENTITY_PATTERN = /^[A-Z]{60}$/;
 const TRANSACTION_PATTERN = /^[a-z]{60}$/;
 
 const typeLabels: Record<string, string> = {
-  asset: "Asset",
   epoch: "Epoch",
   identity: "Identity",
   tick: "Tick",
@@ -59,13 +58,6 @@ function routeForResult(result: SearchResult): Route | null {
       const identity = value.identity;
       return typeof identity === "string" ? (`/accounts/${identity}` as Route) : null;
     }
-    case "asset": {
-      const issuer = value.issuer;
-      const name = value.name;
-      return typeof issuer === "string" && typeof name === "string"
-        ? (`/assets/${issuer}/${name}` as Route)
-        : null;
-    }
     default:
       return null;
   }
@@ -85,8 +77,6 @@ function labelForResult(result: SearchResult): string {
       return String(value.hash ?? "");
     case "identity":
       return String(value.identity ?? "");
-    case "asset":
-      return `${value.name ?? "Asset"} · ${shorten(String(value.issuer ?? ""))}`;
     default:
       return String(value);
   }
@@ -107,8 +97,6 @@ function labelForPath(path: string): string {
       return `Identity ${shorten(segment ?? "", 4, 4)}`;
     case "epochs":
       return `Epoch ${segment ?? ""}`;
-    case "assets":
-      return `Asset ${segment ?? ""}`;
     case "contracts":
       return segment ? `Contract ${segment.toUpperCase()}` : "Contracts";
     case "proposals":
@@ -215,7 +203,7 @@ export function CommandMenu({
   const [query, setQuery] = useState("");
   const [history, setHistory] = useState<string[]>([]);
   const { data, isFetching } = useSearch(query.trim());
-  const results = data?.data ?? [];
+  const results = (data?.data ?? []).filter((result) => result.type !== "asset");
   const account = directAccount(query);
   const transaction = directTransaction(query);
   const directContract = useContract(account);
@@ -480,7 +468,7 @@ export function CommandMenu({
                     })}
                   </Command.Group>
 
-                  {query.trim().length >= 3 ? (
+                  {query.trim().length >= 3 && (isFetching || results.length > 0) ? (
                     <Command.Group
                       heading={
                         <span className="block px-2 py-1.5 font-medium text-[10px] text-muted uppercase tracking-[0.16em]">

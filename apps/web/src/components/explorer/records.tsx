@@ -2,8 +2,8 @@
 
 import type { ReactNode } from "react";
 
-import type { Asset, Identity } from "@/lib/api/generated/types.gen";
-import { countLabel, formatInteger, formatQu } from "@/lib/format";
+import type { Identity } from "@/lib/api/generated/types.gen";
+import { countLabel, formatQu } from "@/lib/format";
 import { IdentityAvatar } from "./identity-avatar";
 import { IdentityLink, TickLink } from "./links";
 
@@ -68,31 +68,6 @@ export function AccountRow({ identity }: { identity: Identity }) {
             {net > 0 ? "+" : ""}
             {formatQu(net)} net
           </p>
-        </div>
-      </div>
-    </RecordRow>
-  );
-}
-
-export function AssetRow({ asset }: { asset: Asset }) {
-  return (
-    <RecordRow>
-      <div className="flex items-center gap-3">
-        <div className="min-w-0 flex-1">
-          <p className="font-medium text-foreground text-sm">{asset.name ?? "Unnamed asset"}</p>
-          <div className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-[10px] text-muted">
-            <span className="inline-flex items-center gap-1">
-              issuer <IdentityLink identity={asset.issuer ?? ""} />
-            </span>
-            {asset.unit ? <span>{asset.unit}</span> : null}
-            <span>{countLabel(asset.decimals, "decimal")}</span>
-          </div>
-        </div>
-        <div className="shrink-0 text-right">
-          <p className="tabular font-medium text-foreground text-sm">
-            {formatInteger(asset.shares)}
-          </p>
-          <p className="mt-0.5 text-[10px] text-muted">shares</p>
         </div>
       </div>
     </RecordRow>
