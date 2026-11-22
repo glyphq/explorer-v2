@@ -33,7 +33,7 @@ function AssetChip({ asset }: { asset: OwnedAsset }) {
 export function AccountAssets({ identity }: { identity: string }) {
   const walletAssets = useWalletAssets(identity, "owned");
   const owned = [...(walletAssets.data?.data?.owned ?? [])].sort(
-    (left, right) => right.shares - left.shares
+    (left, right) => right.shares - left.shares,
   );
 
   if (owned.length === 0) {
