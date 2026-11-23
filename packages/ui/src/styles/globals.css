@@ -62,41 +62,6 @@
   --font-mono: var(--font-active-sans);
 }
 
-.vt-page-title {
-  view-transition-name: page-title;
-}
-
-.vt-page-description {
-  view-transition-name: page-description;
-}
-
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0s;
-  animation-delay: 0s;
-}
-
-::view-transition-group(page-title),
-::view-transition-group(page-description) {
-  animation-duration: 220ms;
-  animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-::view-transition-old(page-title),
-::view-transition-new(page-title),
-::view-transition-old(page-description),
-::view-transition-new(page-description) {
-  animation-duration: 160ms;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-group(*),
-  ::view-transition-old(*),
-  ::view-transition-new(*) {
-    animation-duration: 0s;
-  }
-}
-
 @layer base {
   * {
     border-color: var(--border);

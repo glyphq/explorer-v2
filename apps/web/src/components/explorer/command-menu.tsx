@@ -3,10 +3,9 @@
 import { Command } from "cmdk";
 import { AnimatePresence, LayoutGroup, motion } from "motion/react";
 import type { Route } from "next";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 
-import { useRouteTransition } from "@/components/route-transition";
 import { UiIcon } from "@/components/ui-icon";
 import type { SearchResult } from "@/lib/api/generated/types.gen";
 import { useSearch } from "@/lib/api/hooks";
@@ -195,7 +194,7 @@ export function CommandMenu({
   open: boolean;
 }) {
   const pathname = usePathname();
-  const { navigate } = useRouteTransition();
+  const router = useRouter();
   const panelRef = useRef<HTMLDivElement>(null);
   const [query, setQuery] = useState("");
   const [history, setHistory] = useState<string[]>([]);
@@ -293,7 +292,7 @@ export function CommandMenu({
   const run = (path: string) => {
     onOpenChange(false);
     setQuery("");
-    navigate(path);
+    router.push(path as Route);
   };
 
   return (

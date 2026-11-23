@@ -4,7 +4,6 @@ import { MotionConfig } from "motion/react";
 
 import { AppToaster } from "./app-toaster";
 import { QueryProvider } from "./query-provider";
-import { RouteTransitionProvider } from "./route-transition";
 import { ThemeProvider } from "./theme-provider";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -16,12 +15,10 @@ export default function Providers({ children }: { children: React.ReactNode }) {
       forcedTheme="dark"
     >
       <MotionConfig reducedMotion="user">
-        <RouteTransitionProvider>
-          <QueryProvider>
-            {children}
-            <AppToaster />
-          </QueryProvider>
-        </RouteTransitionProvider>
+        <QueryProvider>
+          {children}
+          <AppToaster />
+        </QueryProvider>
       </MotionConfig>
     </ThemeProvider>
   );
