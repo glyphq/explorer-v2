@@ -1,11 +1,5 @@
 "use client";
 
-import { LayersIcon } from "@solar-icons/react/linear/layers";
-import { PulseIcon } from "@solar-icons/react/linear/pulse";
-import { RadioIcon } from "@solar-icons/react/linear/radio";
-import { TransferHorizontalIcon } from "@solar-icons/react/linear/transfer-horizontal";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
-
 import { ActivityChart } from "@/components/explorer/activity-chart";
 import { AnimatedNumber } from "@/components/explorer/animated-number";
 import { BentoMetric } from "@/components/explorer/bento-metric";
@@ -16,6 +10,7 @@ import { TickPulse } from "@/components/explorer/tick-pulse";
 import type { EventTypeCount } from "@/lib/api/generated/types.gen";
 import { useActivity, useEventTypes, useMarket, usePriceHistory, useStatus } from "@/lib/api/hooks";
 import { useLiveStream } from "@/lib/api/live-stream";
+import { icons } from "@/lib/icons";
 
 export default function HomePage() {
   const status = useStatus();
@@ -59,7 +54,7 @@ export default function HomePage() {
         <section className="grid grid-cols-2 gap-3 py-8 lg:grid-cols-4">
           <BentoMetric
             className="col-span-2 row-span-2"
-            icon={RadioIcon}
+            icon={icons.server}
             iconClassName="size-52 text-foreground sm:size-64"
             label="Head tick"
             loading={status.isLoading && !liveHead}
@@ -68,14 +63,14 @@ export default function HomePage() {
             valueWidth="6ch"
           />
           <BentoMetric
-            icon={LayersIcon}
+            icon={icons.clock}
             label="Epoch"
             loading={status.isLoading && !liveHead}
             value={<AnimatedNumber format={{ maximumFractionDigits: 0 }} value={liveHead?.epoch} />}
             valueWidth="3ch"
           />
           <BentoMetric
-            icon={TransferHorizontalIcon}
+            icon={icons.exchange}
             label="Transactions"
             loading={status.isLoading && transactionCount == null}
             value={
@@ -87,7 +82,7 @@ export default function HomePage() {
             valueWidth="5ch"
           />
           <BentoMetric
-            icon={PulseIcon}
+            icon={icons.pulse}
             label="Events"
             loading={status.isLoading && eventCount == null}
             value={
@@ -99,7 +94,7 @@ export default function HomePage() {
             valueWidth="5ch"
           />
           <BentoMetric
-            icon={UsersGroupRoundedIcon}
+            icon={icons.users}
             label="Identities"
             loading={status.isLoading}
             value={

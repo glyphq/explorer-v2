@@ -6,7 +6,6 @@ import { BoxLabel } from "@/components/explorer/box-label";
 import { CopyButton, EpochLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { SectionHeading } from "@/components/explorer/page-header";
-import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
 import { groupTransactionEvents } from "@/features/accounts/activity-feed";
 import { TickActivityTable } from "@/features/ticks/tick-activity-table";
@@ -88,10 +87,6 @@ export function TickDetail({ tick }: { tick: number }) {
   const transactionRows = pageRows(transactions.data?.pages);
   const eventRows = pageRows(events.data?.pages);
   const groups = groupTransactionEvents(transactionRows, eventRows);
-  usePageLoading(
-    valid &&
-      (tickQuery.isLoading || evidence.isLoading || transactions.isLoading || events.isLoading),
-  );
 
   const warnings = (() => {
     if (!evidenceData?.warnings) {

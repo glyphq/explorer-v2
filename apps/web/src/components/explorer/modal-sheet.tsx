@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion, useDragControls } from "motion/react";
-import { useContext, type ReactNode } from "react";
+import { type ReactNode, useContext } from "react";
 import { OverlayTriggerStateContext } from "react-aria-components";
 
 import { classNames } from "@/lib/format";
@@ -29,7 +29,7 @@ export function ModalSheet({
         <motion.div
           animate={{ opacity: 1, scale: 1, y: 0 }}
           className={classNames(
-            "flex flex-col overflow-hidden rounded-b-3xl bg-overlay px-4 pt-[calc(2rem+env(safe-area-inset-top))] pb-6 sm:px-6",
+            "corner-frame corner-frame-card flex flex-col rounded-[10px] bg-transparent p-1.5",
             maxHeightClassName,
             className,
           )}
@@ -46,14 +46,21 @@ export function ModalSheet({
               onOpenChange(false);
             }
           }}
-          transition={{ damping: 34, mass: 0.9, stiffness: 380, type: "spring" }}
+          transition={{
+            damping: 34,
+            mass: 0.9,
+            stiffness: 380,
+            type: "spring",
+          }}
         >
-          {children}
-          <div
-            className="-mx-4 -mb-6 flex cursor-grab touch-none justify-center px-4 pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] select-none active:cursor-grabbing sm:-mx-6 sm:px-6"
-            onPointerDown={(event) => dragControls.start(event)}
-          >
-            <div aria-hidden className="h-1 w-10 rounded-full bg-foreground/15" />
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden rounded-[7px] bg-surface px-4 pt-[calc(2rem+env(safe-area-inset-top))] pb-6 shadow-2xl shadow-black/50 sm:px-6">
+            {children}
+            <div
+              className="-mx-4 -mb-6 flex cursor-grab touch-none select-none justify-center px-4 pt-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] active:cursor-grabbing sm:-mx-6 sm:px-6"
+              onPointerDown={(event) => dragControls.start(event)}
+            >
+              <div aria-hidden className="h-1 w-10 rounded-full bg-foreground/15" />
+            </div>
           </div>
         </motion.div>
       ) : null}

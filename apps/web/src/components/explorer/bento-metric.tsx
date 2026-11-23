@@ -1,9 +1,9 @@
-import { AsciiReveal, AsciiSkeleton } from "ascii-reveal";
 import type { ReactNode } from "react";
 
 import { classNames } from "@/lib/format";
 
 import { MaskedIcon } from "./masked-icon";
+import { Skeleton } from "./skeleton";
 
 type IconComponent = React.ComponentType<{ className?: string }>;
 
@@ -31,52 +31,40 @@ export function BentoMetric({
   return (
     <div
       className={classNames(
-        "relative h-full overflow-hidden rounded-xl bg-surface p-4 sm:p-5",
+        "corner-frame corner-frame-card flex flex-col rounded-[6px] p-1.5",
         className,
       )}
     >
-      <MaskedIcon
-        className={classNames(
-          "pointer-events-none absolute -right-4 -bottom-4 size-28 text-foreground",
-          iconClassName,
-        )}
-        icon={icon}
-      />
-      <AsciiReveal
-        className="relative h-full"
-        duration="fast"
-        loading={loading}
-        origin="top-left"
-        preset="dither"
-      >
+      <div className="relative flex-1 overflow-hidden rounded-[4px] bg-surface p-4 sm:p-5">
+        <MaskedIcon
+          className={classNames(
+            "pointer-events-none absolute -right-4 -bottom-4 size-28 text-foreground",
+            iconClassName,
+          )}
+          icon={icon}
+        />
         {loading ? (
           <div className="flex h-full flex-col justify-between gap-8">
-            <AsciiSkeleton
-              className="text-[10px] text-muted"
-              lines={1}
-              variant="dither"
-              widths={["40%"]}
-            />
-            <AsciiSkeleton
+            <Skeleton className="text-[10px]" height="1em" width="40%" />
+            <Skeleton
               className={classNames(
                 "my-1",
-                valueClassName ?? "text-2xl min-[380px]:text-3xl sm:text-5xl",
+                valueClassName ?? "text-2xl sm:text-5xl min-[380px]:text-3xl",
               )}
-              lines={1}
-              variant="dither"
-              widths={[valueWidth]}
+              height="1em"
+              width={valueWidth}
             />
           </div>
         ) : (
           <div className="flex h-full flex-col justify-between gap-8">
-            <span className="font-medium text-[10px] text-muted uppercase tracking-[0.18em]">
+            <span className="font-mono font-medium text-[11px] text-muted uppercase tracking-[0.14em]">
               {label}
             </span>
             <div className="min-w-0">
               <div
                 className={classNames(
                   "font-semibold tabular-nums tracking-tight",
-                  valueClassName ?? "text-2xl min-[380px]:text-3xl sm:text-5xl",
+                  valueClassName ?? "text-2xl sm:text-5xl min-[380px]:text-3xl",
                 )}
               >
                 {value}
@@ -85,7 +73,7 @@ export function BentoMetric({
             </div>
           </div>
         )}
-      </AsciiReveal>
+      </div>
     </div>
   );
 }

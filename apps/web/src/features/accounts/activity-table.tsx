@@ -220,7 +220,12 @@ const SKELETON_COLUMNS: ActivityTableSkeletonColumn[] = [
   { barClassName: "w-28", header: "Tx ID", width: "w-[16%]" },
   { barClassName: "w-20", header: "Tx type", width: "w-[15%]" },
   { align: "right", barClassName: "w-10", header: "Tick", width: "w-[9%]" },
-  { align: "right", barClassName: "w-24", header: "Timestamp", width: "w-[14%]" },
+  {
+    align: "right",
+    barClassName: "w-24",
+    header: "Timestamp",
+    width: "w-[14%]",
+  },
   { barClassName: "w-24", header: "Source", width: "w-[15%]" },
   { barClassName: "w-24", header: "Destination", width: "w-[15%]" },
   { align: "right", barClassName: "w-12", header: "Amount", width: "w-[16%]" },
@@ -279,7 +284,7 @@ export function ActivityTable({
 
   if (groups.length === 0) {
     return (
-      <div className="rounded-2xl bg-surface">
+      <div className="rounded-[4px] bg-surface">
         <ActivityEmpty filtered={false} onClear={clearFilters} />
       </div>
     );

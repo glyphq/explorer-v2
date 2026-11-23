@@ -2,7 +2,6 @@
 
 import { InfiniteScroll } from "@/components/explorer/infinite-scroll";
 import { PageHeader } from "@/components/explorer/page-header";
-import { usePageLoading } from "@/components/explorer/page-reveal";
 import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import { EpochTable, EpochTableSkeleton } from "@/features/epochs/epoch-table";
@@ -11,7 +10,6 @@ import { pageRows, useEpochs } from "@/lib/api/hooks";
 export default function EpochsPage() {
   const epochs = useEpochs(25);
   const rows = pageRows(epochs.data?.pages);
-  usePageLoading(epochs.isLoading);
 
   return (
     <div className="page-width px-4 py-8 lg:px-8">
@@ -29,7 +27,7 @@ export default function EpochsPage() {
           {epochs.isLoading ? (
             <EpochTableSkeleton rows={8} />
           ) : rows.length === 0 ? (
-            <div className="rounded-2xl bg-surface">
+            <div className="rounded-[4px] bg-surface">
               <RecordEmpty>No epochs yet.</RecordEmpty>
             </div>
           ) : (

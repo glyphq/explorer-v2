@@ -1,6 +1,5 @@
 "use client";
 
-import { AsciiSkeleton } from "ascii-reveal";
 import { motion } from "motion/react";
 import { useMemo, useState } from "react";
 
@@ -8,6 +7,7 @@ import type { ActivityBucket } from "@/lib/api/generated/types.gen";
 import { formatCompact, formatHour, formatInteger } from "@/lib/format";
 
 import { AnimatedNumber } from "./animated-number";
+import { Skeleton } from "./skeleton";
 
 const width = 920;
 const height = 300;
@@ -40,7 +40,7 @@ export function ActivityChart({
   const [activeIndex, setActiveIndex] = useState<number | null>(null);
 
   if (isLoading && series.length === 0) {
-    return <AsciiSkeleton as="div" height={260} rows={7} variant="dither" width="100%" />;
+    return <Skeleton height={260} />;
   }
 
   if (series.length === 0) {
@@ -106,60 +106,68 @@ export function ActivityChart({
   return (
     <div>
       <div className="flex flex-wrap items-start justify-between gap-6">
-        <div className="flex flex-wrap gap-x-8 gap-y-4">
-          <div>
-            <p className="text-[10px] text-muted uppercase tracking-[0.16em]">Transactions</p>
-            <p className="mt-1 font-semibold text-2xl tracking-tight">
-              <AnimatedNumber
-                format={{ maximumFractionDigits: 2, notation: "compact" }}
-                value={totalTransactions}
-              />
-            </p>
+        <div className="flex flex-wrap gap-3">
+          <div className="corner-frame w-fit rounded-[4px] p-1">
+            <div className="rounded-[3px] bg-surface-secondary/40 px-4 py-3">
+              <p className="font-mono text-[10px] text-muted uppercase tracking-[0.14em]">
+                Transactions
+              </p>
+              <p className="mt-2 font-semibold text-2xl tracking-tight">
+                <AnimatedNumber
+                  format={{ maximumFractionDigits: 2, notation: "compact" }}
+                  value={totalTransactions}
+                />
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] text-muted uppercase tracking-[0.16em]">Events</p>
-            <p className="mt-1 font-semibold text-2xl tracking-tight">
-              <AnimatedNumber
-                format={{ maximumFractionDigits: 2, notation: "compact" }}
-                value={totalEvents}
-              />
-            </p>
+          <div className="corner-frame w-fit rounded-[4px] p-1">
+            <div className="rounded-[3px] bg-surface-secondary/40 px-4 py-3">
+              <p className="font-mono text-[10px] text-muted uppercase tracking-[0.14em]">Events</p>
+              <p className="mt-2 font-semibold text-2xl tracking-tight">
+                <AnimatedNumber
+                  format={{ maximumFractionDigits: 2, notation: "compact" }}
+                  value={totalEvents}
+                />
+              </p>
+            </div>
           </div>
-          <div>
-            <p className="text-[10px] text-muted uppercase tracking-[0.16em]">Volume</p>
-            <p className="mt-1 font-semibold text-2xl tracking-tight">
-              <AnimatedNumber
-                format={{ maximumFractionDigits: 2, notation: "compact" }}
-                suffix=" QUBIC"
-                value={totalVolume}
-              />
-            </p>
+          <div className="corner-frame w-fit rounded-[4px] p-1">
+            <div className="rounded-[3px] bg-surface-secondary/40 px-4 py-3">
+              <p className="font-mono text-[10px] text-muted uppercase tracking-[0.14em]">Volume</p>
+              <p className="mt-2 whitespace-nowrap font-semibold text-2xl tracking-tight">
+                <AnimatedNumber
+                  format={{ maximumFractionDigits: 2, notation: "compact" }}
+                  suffix=" QUBIC"
+                  value={totalVolume}
+                />
+              </p>
+            </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center gap-4 text-[10px] text-muted uppercase tracking-[0.14em]">
+        <div className="flex flex-wrap items-center gap-4 font-mono text-[10px] text-muted tracking-[0.04em]">
           <span className="flex items-center gap-2">
             <span className="h-2.5 w-1.5 rounded-[2px] bg-accent" />
             Transactions
           </span>
           <span className="flex items-center gap-2">
-            <span className="h-0.5 w-4 rounded-full bg-success" />
+            <span className="h-0.5 w-4 rounded-full bg-muted" />
             Events
           </span>
           <span className="flex items-center gap-2">
-            <span className="h-2 w-4 rounded-[2px] bg-warning/20" />
+            <span className="h-2 w-4 rounded-[2px] bg-foreground/15" />
             Volume
           </span>
         </div>
       </div>
 
-      <div className="relative mt-5">
+      <div className="relative mt-5 isolate overflow-hidden [contain:layout_style] [overflow-anchor:none]">
         {active ? (
           <div
-            className="pointer-events-none absolute top-0 z-10 w-48 -translate-x-1/2 rounded-lg bg-surface-secondary p-3"
-            style={{ left: `${tooltipLeft}%` }}
+            className="pointer-events-none absolute top-0 z-10 w-48 -translate-x-1/2 corner-frame rounded-[4px] bg-surface-secondary p-3"
+            style={{ left: `clamp(6rem, ${tooltipLeft}%, calc(100% - 6rem))` }}
           >
-            <p className="font-mono text-[10px] text-muted uppercase tracking-[0.12em]">
+            <p className="font-mono text-[10px] text-muted tracking-[0.04em]">
               {formatHour(active.bucket)} · {formatInteger(active.ticks)} ticks
             </p>
             <div className="mt-2 space-y-1 text-xs">
@@ -210,7 +218,7 @@ export function ActivityChart({
           <motion.path
             animate={{ opacity: 1 }}
             d={volumeArea}
-            fill="var(--warning)"
+            fill="var(--foreground)"
             fillOpacity={0.12}
             initial={{ opacity: 0 }}
             transition={{ duration: 0.6 }}
@@ -234,7 +242,7 @@ export function ActivityChart({
               fillOpacity={point.index === activeIndex ? 1 : 0.55}
               initial={{ height: 0, y: baseline }}
               key={point.bucket.bucket}
-              rx={3}
+              rx={1}
               transition={{
                 delay: point.index * 0.012,
                 duration: 0.45,
@@ -250,7 +258,7 @@ export function ActivityChart({
             d={smoothPath(eventPoints)}
             fill="none"
             initial={{ opacity: 0, pathLength: 0 }}
-            stroke="var(--success)"
+            stroke="var(--muted)"
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeWidth={1.4}
@@ -264,7 +272,7 @@ export function ActivityChart({
               fill="var(--background)"
               key={series[index]?.bucket}
               r={index === activeIndex ? 3.5 : 2}
-              stroke="var(--success)"
+              stroke="var(--muted)"
               strokeOpacity={index === activeIndex ? 1 : 0.55}
               strokeWidth={1.2}
             />
@@ -275,11 +283,11 @@ export function ActivityChart({
               <circle
                 cx={activePoint.x}
                 cy={activePoint.y}
-                fill="var(--success)"
+                fill="var(--muted)"
                 opacity={0.2}
                 r={9}
               />
-              <circle cx={activePoint.x} cy={activePoint.y} fill="var(--success)" r={3.5} />
+              <circle cx={activePoint.x} cy={activePoint.y} fill="var(--muted)" r={3.5} />
             </g>
           ) : null}
 

@@ -1,10 +1,8 @@
 "use client";
 
-import { useTheme } from "next-themes";
 import { useEffect, useId, useState } from "react";
 
 export function MermaidDiagram({ chart }: { chart: string }) {
-  const { resolvedTheme } = useTheme();
   const reactId = useId().replace(/[^a-zA-Z0-9_-]/g, "");
   const [svg, setSvg] = useState<string>();
   const [failed, setFailed] = useState(false);
@@ -20,7 +18,7 @@ export function MermaidDiagram({ chart }: { chart: string }) {
         mermaid.initialize({
           securityLevel: "strict",
           startOnLoad: false,
-          theme: resolvedTheme === "dark" ? "dark" : "neutral",
+          theme: "dark",
           themeVariables: {
             fontFamily: "inherit",
           },
@@ -41,7 +39,7 @@ export function MermaidDiagram({ chart }: { chart: string }) {
     return () => {
       cancelled = true;
     };
-  }, [chart, reactId, resolvedTheme]);
+  }, [chart, reactId]);
 
   if (failed) {
     return (

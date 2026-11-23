@@ -9,7 +9,6 @@ import { useEffect, useMemo } from "react";
 
 import { ContractMark } from "@/components/explorer/contract-mark";
 import { EpochLink, IdentityLink, TickLink } from "@/components/explorer/links";
-import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ProposalMarkdown } from "@/components/explorer/proposal-markdown";
 import { contractTicker, OptionBars, StatusChip } from "@/components/explorer/proposal-summary";
 import { ErrorState } from "@/components/explorer/state";
@@ -113,9 +112,6 @@ export function ProposalDetail({
   const proposalDocument: ProposalDocument | undefined = proposal?.url
     ? documentQuery.data
     : { reason: "This proposal does not reference an off-chain document." };
-  usePageLoading(
-    (proposalsQuery.isPending && !proposal) || (Boolean(proposal?.url) && documentQuery.isPending),
-  );
   const content =
     proposalDocument && "content" in proposalDocument
       ? proposalDocument.format === "markdown"

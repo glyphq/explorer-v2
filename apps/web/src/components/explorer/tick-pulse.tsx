@@ -71,7 +71,7 @@ export function TickPulse() {
         ))}
       </div>
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 text-[10px] text-muted uppercase tracking-[0.14em]">
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-x-4 gap-y-2 font-mono text-[10px] text-muted tracking-[0.04em]">
         <span>last {formatInteger(ticks.length)} ticks</span>
         <span className="flex items-center gap-1.5">
           fewer

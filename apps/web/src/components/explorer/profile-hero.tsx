@@ -24,7 +24,7 @@ export function ProfileHero({
   return (
     <section
       className={classNames(
-        "relative overflow-hidden rounded-2xl bg-surface p-5 sm:p-7",
+        "corner-frame corner-frame-card relative overflow-hidden rounded-[4px] bg-surface p-5 sm:p-7",
         className,
       )}
     >

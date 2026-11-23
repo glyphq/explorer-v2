@@ -24,7 +24,6 @@ import {
   TickLink,
 } from "@/components/explorer/links";
 import { SectionHeading } from "@/components/explorer/page-header";
-import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
 import type { Event, TransactionEffect } from "@/lib/api/generated/types.gen";
 import { useSpecialEvents, useTick, useTransactionEffects } from "@/lib/api/hooks";
@@ -341,7 +340,6 @@ function TransactionDetailContent({ hash }: { hash: string }) {
   const unavailable = effects.isSuccess && !data;
   const call = useTransactionContract(data);
   const entries = mergeActivity(effectsData?.effects ?? [], effectsData?.events ?? []);
-  usePageLoading(effects.isLoading);
 
   const title = data
     ? call.kind === "transfer"
@@ -478,7 +476,6 @@ function SpecialTransactionDetail({ special }: { special: SpecialTransactionRef 
   const tickData = tick.data?.data;
   const eventRows = events.data ?? [];
   const entries = mergeActivity([], eventRows);
-  usePageLoading(tick.isLoading || events.isLoading);
 
   if (tick.isError || events.isError) {
     return (

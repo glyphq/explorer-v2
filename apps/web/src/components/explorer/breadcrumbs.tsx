@@ -1,12 +1,12 @@
 "use client";
 
-import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
-import { Home2Icon } from "@solar-icons/react/linear/home-2";
 import type { Route } from "next";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import { UiIcon } from "@/components/ui-icon";
 import { formatInteger, shorten } from "@/lib/format";
+import { icons } from "@/lib/icons";
 import { parseSpecialHash } from "@/lib/transactions/special-hash";
 
 import { activeFor, navigation, type NavigationItem } from "./navigation";
@@ -75,7 +75,7 @@ function crumbsFor(pathname: string): Crumb[] {
     crumbs.push({
       current: false,
       href: "/",
-      icon: Home2Icon,
+      icon: icons.home,
       label: "Overview",
     });
   }
@@ -110,21 +110,23 @@ export function Breadcrumbs() {
   return (
     <nav
       aria-label="Breadcrumb"
-      className="max-w-full overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      className="-ml-[6px] max-w-full overflow-x-auto [scrollbar-width:none] xl:-ml-8 [&::-webkit-scrollbar]:hidden"
     >
-      <ol className="flex items-center gap-1.5 whitespace-nowrap text-[11px]">
+      <ol className="flex items-center gap-2 whitespace-nowrap text-xs">
         {crumbs.map((crumb, index) => {
           const Icon = crumb.icon;
           const content = (
             <>
-              <Icon className="size-3.5 shrink-0" />
+              <Icon className="size-4 shrink-0" />
               <span className="max-w-[14rem] truncate">{crumb.label}</span>
             </>
           );
 
           return (
             <li className="flex items-center gap-1.5" key={`${crumb.href}-${index}`}>
-              {index > 0 ? <AltArrowRightIcon className="size-3 shrink-0 text-muted/35" /> : null}
+              {index > 0 ? (
+                <UiIcon className="size-3.5 shrink-0 text-muted/35" name="chevronRight" />
+              ) : null}
               {crumb.current ? (
                 <span
                   aria-current="page"

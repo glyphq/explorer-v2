@@ -11,15 +11,7 @@ export function GlyphMark({
     <span aria-hidden="true" className={`relative inline-block ${className ?? ""}`}>
       <Image
         alt=""
-        className="object-contain dark:hidden"
-        fill
-        priority={priority}
-        sizes="64px"
-        src="/brand/glyph-on-light.png"
-      />
-      <Image
-        alt=""
-        className="hidden object-contain dark:block"
+        className="object-contain"
         fill
         priority={priority}
         sizes="64px"

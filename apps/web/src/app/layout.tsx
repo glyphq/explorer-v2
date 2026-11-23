@@ -1,14 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Space_Grotesk } from "next/font/google";
 
 import "../index.css";
-import { AppearanceProvider } from "@/components/explorer/appearance-provider";
 import { AppShell } from "@/components/explorer/app-shell";
 import { ContractProvider } from "@/components/explorer/contract-provider";
 import Providers from "@/components/providers";
 import PwaRegistration from "@/components/pwa-registration";
-import { DEFAULT_APPEARANCE } from "@/lib/appearance";
-import { APPEARANCE_BOOT_SCRIPT } from "@/lib/appearance-boot-script";
 import { contractSummaries } from "@/lib/contracts/registry";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "@/lib/site";
 
@@ -16,18 +13,6 @@ const spaceGrotesk = Space_Grotesk({
   display: "swap",
   subsets: ["latin"],
   variable: "--font-space-grotesk",
-});
-
-const geistSans = Geist({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-geist-sans",
-});
-
-const geistMono = Geist_Mono({
-  display: "swap",
-  subsets: ["latin"],
-  variable: "--font-geist-mono",
 });
 
 export const metadata: Metadata = {
@@ -93,11 +78,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light dark",
-  themeColor: [
-    { color: "#f4f8ff", media: "(prefers-color-scheme: light)" },
-    { color: "#070b12", media: "(prefers-color-scheme: dark)" },
-  ],
+  colorScheme: "dark",
+  themeColor: "#0d0e0f",
 };
 
 export default function RootLayout({
@@ -107,27 +89,16 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      data-motion={DEFAULT_APPEARANCE.motion}
-      data-palette={DEFAULT_APPEARANCE.palette}
+      className={spaceGrotesk.variable}
       data-scroll-behavior="smooth"
-      data-text-size={DEFAULT_APPEARANCE.textSize}
-      data-typeface={DEFAULT_APPEARANCE.typeface}
       lang="en"
       suppressHydrationWarning
     >
-      <head>
-        {/* Apply device appearance before the first paint to avoid a palette flash. */}
-        <script dangerouslySetInnerHTML={{ __html: APPEARANCE_BOOT_SCRIPT }} />
-      </head>
-      <body
-        className={`${spaceGrotesk.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
+      <body className="antialiased">
         <PwaRegistration />
         <ContractProvider contracts={contractSummaries}>
           <Providers>
-            <AppearanceProvider>
-              <AppShell>{children}</AppShell>
-            </AppearanceProvider>
+            <AppShell>{children}</AppShell>
           </Providers>
         </ContractProvider>
       </body>

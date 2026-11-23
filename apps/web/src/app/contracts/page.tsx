@@ -37,7 +37,7 @@ export default function ContractsPage() {
       />
 
       <div className="mb-6 flex flex-wrap gap-2 text-muted text-xs">
-        <span className="rounded-full bg-surface-secondary px-3 py-1.5">
+        <span className="corner-frame rounded-[3px] bg-surface-secondary px-3 py-1.5 font-mono text-[11px] uppercase tracking-[0.14em]">
           {countLabel(contractSummaries.length, "contract")}
         </span>
       </div>

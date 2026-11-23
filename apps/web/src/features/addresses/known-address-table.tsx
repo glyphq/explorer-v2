@@ -24,8 +24,7 @@ function GlyphMark({ size }: { size: number }) {
       className="inline-flex shrink-0 items-center justify-center overflow-hidden rounded-full bg-surface-secondary"
       style={{ height: size, width: size }}
     >
-      <img alt="" className="h-4/5 w-4/5 dark:hidden" src="/brand/glyph-on-light.png" />
-      <img alt="" className="hidden h-4/5 w-4/5 dark:block" src="/brand/glyph-on-dark.png" />
+      <img alt="" className="h-4/5 w-4/5" src="/brand/glyph-on-dark.png" />
     </span>
   );
 }

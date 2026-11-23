@@ -1,12 +1,11 @@
 import type { ContractCall, ContractDefinition, ContractField } from "@glyph-oss/contracts";
-import { AltArrowDownIcon } from "@solar-icons/react/linear/alt-arrow-down";
-import { ArrowRightUpIcon } from "@solar-icons/react/linear/arrow-right-up";
 import type { Metadata, Route } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { ReactNode } from "react";
 
 import { BoxLabel } from "@/components/explorer/box-label";
+import { UiIcon } from "@/components/ui-icon";
 import { ContractMark } from "@/components/explorer/contract-mark";
 import { CopyableId, EpochLink } from "@/components/explorer/links";
 import { SectionHeading } from "@/components/explorer/page-header";
@@ -150,7 +149,10 @@ function CallDetails({ call }: { call: ContractCall }) {
     <details className="group rounded-lg bg-surface transition-colors hover:bg-surface-secondary/60">
       <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-x-4 gap-y-2 px-3 py-3">
         <span className="flex min-w-0 items-center gap-2">
-          <AltArrowDownIcon className="size-3 shrink-0 text-muted transition-transform group-open:rotate-180" />
+          <UiIcon
+            className="size-3 shrink-0 text-muted transition-transform group-open:rotate-180"
+            name="chevronDown"
+          />
           <span className="break-words font-medium text-foreground text-xs">{call.name}</span>
         </span>
         <span className="shrink-0 rounded bg-surface-secondary px-1.5 py-0.5 font-mono text-[9px] text-muted leading-4">
@@ -252,7 +254,7 @@ export default async function ContractPage({ params }: { params: Promise<{ contr
             </Link>
             <a className={actionClass} href={contractSource} rel="noreferrer" target="_blank">
               Source
-              <ArrowRightUpIcon className="size-3" />
+              <UiIcon className="size-3" name="arrowUpRight" />
             </a>
           </div>
         </div>
@@ -303,7 +305,10 @@ export default async function ContractPage({ params }: { params: Promise<{ contr
               >
                 <summary className="flex cursor-pointer flex-wrap items-center justify-between gap-x-4 gap-y-2 px-3 py-2.5">
                   <span className="flex min-w-0 items-center gap-2">
-                    <AltArrowDownIcon className="size-3 shrink-0 text-muted transition-transform group-open:rotate-180" />
+                    <UiIcon
+                      className="size-3 shrink-0 text-muted transition-transform group-open:rotate-180"
+                      name="chevronDown"
+                    />
                     <span className="break-all font-medium font-mono text-[11px] text-foreground">
                       {entry.name.split("::").at(-1)}
                     </span>

@@ -19,15 +19,24 @@ export function SectionCard({
   title: string;
 }) {
   return (
-    <Card className={classNames("min-w-0 gap-4", className)}>
-      <CardHeader className="flex-row items-start justify-between gap-4">
-        <div className="min-w-0">
-          <CardTitle>{title}</CardTitle>
-          {description ? <CardDescription className="mt-1">{description}</CardDescription> : null}
-        </div>
-        {action ? <div className="shrink-0">{action}</div> : null}
-      </CardHeader>
-      <CardContent className={classNames("min-w-0", contentClassName)}>{children}</CardContent>
-    </Card>
+    <div
+      className={classNames(
+        "corner-frame corner-frame-card min-w-0 rounded-[6px] p-1.5",
+        className,
+      )}
+    >
+      <Card className="h-full min-w-0 gap-4 rounded-[4px] bg-surface ring-0">
+        <CardHeader className="flex-row items-start justify-between gap-4">
+          <div className="min-w-0">
+            <CardTitle className="text-base">{title}</CardTitle>
+            {description ? (
+              <CardDescription className="mt-1 text-sm leading-6">{description}</CardDescription>
+            ) : null}
+          </div>
+          {action ? <div className="shrink-0">{action}</div> : null}
+        </CardHeader>
+        <CardContent className={classNames("min-w-0", contentClassName)}>{children}</CardContent>
+      </Card>
+    </div>
   );
 }

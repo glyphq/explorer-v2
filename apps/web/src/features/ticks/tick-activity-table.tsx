@@ -137,7 +137,12 @@ function TickActivityRow({ group }: { group: ActivityGroup }) {
 const SKELETON_COLUMNS: ActivityTableSkeletonColumn[] = [
   { barClassName: "w-28", header: "Tx ID", width: "w-[20%]" },
   { barClassName: "w-20", header: "Tx type", width: "w-[18%]" },
-  { align: "right", barClassName: "w-24", header: "Timestamp", width: "w-[16%]" },
+  {
+    align: "right",
+    barClassName: "w-24",
+    header: "Timestamp",
+    width: "w-[16%]",
+  },
   { barClassName: "w-24", header: "Source", width: "w-[16%]" },
   { barClassName: "w-24", header: "Destination", width: "w-[16%]" },
   { align: "right", barClassName: "w-12", header: "Amount", width: "w-[14%]" },
@@ -163,7 +168,7 @@ function TickActivityTable({
 
   if (groups.length === 0) {
     return (
-      <div className="rounded-2xl bg-surface py-10 text-center text-muted text-sm">
+      <div className="rounded-[4px] bg-surface py-10 text-center text-muted text-sm">
         No activity in this tick.
       </div>
     );

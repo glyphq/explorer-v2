@@ -16,13 +16,17 @@ export function StatCard({
   value: ReactNode;
 }) {
   return (
-    <div className={classNames("flex flex-col gap-3 rounded-2xl bg-surface p-5", className)}>
-      <div className="flex items-center justify-between gap-3">
-        <p className="font-medium text-muted text-xs">{label}</p>
-        {icon ? <span className="text-muted">{icon}</span> : null}
+    <div className={classNames("corner-frame corner-frame-card rounded-[6px] p-1.5", className)}>
+      <div className="flex h-full flex-col gap-3 rounded-[4px] bg-surface p-5">
+        <div className="flex items-center justify-between gap-3">
+          <p className="font-medium font-mono text-[11px] text-muted uppercase tracking-[0.14em]">
+            {label}
+          </p>
+          {icon ? <span className="text-muted">{icon}</span> : null}
+        </div>
+        <div className="tabular font-semibold text-2xl text-foreground tracking-tight">{value}</div>
+        {hint ? <div className="text-muted text-xs leading-5">{hint}</div> : null}
       </div>
-      <div className="tabular font-semibold text-2xl text-foreground tracking-tight">{value}</div>
-      {hint ? <div className="text-muted text-xs leading-5">{hint}</div> : null}
     </div>
   );
 }

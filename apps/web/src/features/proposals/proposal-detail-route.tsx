@@ -3,8 +3,6 @@
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
-import { usePageLoading } from "@/components/explorer/page-reveal";
-
 import { ProposalDetail } from "@/features/proposals/proposal-detail";
 
 export function ProposalDetailRoute() {
@@ -26,8 +24,6 @@ export function ProposalDetailRoute() {
     window.addEventListener("popstate", update);
     return () => window.removeEventListener("popstate", update);
   }, [pathname]);
-  usePageLoading(!params);
-
   if (!params) {
     return <div className="page-width px-4 py-8 lg:px-8" />;
   }

@@ -1,11 +1,5 @@
 "use client";
 
-import { AltArrowLeftIcon } from "@solar-icons/react/linear/alt-arrow-left";
-import { AltArrowRightIcon } from "@solar-icons/react/linear/alt-arrow-right";
-import { CloseIcon } from "@solar-icons/react/linear/close";
-import { HamburgerMenuIcon } from "@solar-icons/react/linear/hamburger-menu";
-import { MagnifierIcon } from "@solar-icons/react/linear/magnifier";
-import { SettingsIcon } from "@solar-icons/react/linear/settings";
 import { AnimatePresence, LayoutGroup, motion, useReducedMotion } from "motion/react";
 import type { Route } from "next";
 import Link from "next/link";
@@ -13,6 +7,7 @@ import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { GlyphMark } from "@/components/glyph-mark";
+import { UiIcon } from "@/components/ui-icon";
 import { useMarket } from "@/lib/api/hooks";
 import { LiveStreamProvider } from "@/lib/api/live-stream";
 import { classNames } from "@/lib/format";
@@ -26,8 +21,6 @@ import {
   type NavigationItem,
   primaryNavigation,
 } from "./navigation";
-import { PageReveal } from "./page-reveal";
-import { SettingsDialog } from "./settings-dialog";
 
 const perBillionFormatter = new Intl.NumberFormat("en-US", {
   maximumFractionDigits: 2,
@@ -49,7 +42,7 @@ function Brand({ flush = false, onClick }: { flush?: boolean; onClick?: () => vo
       onClick={onClick}
     >
       <GlyphMark className="size-7" priority />
-      <span className="font-semibold text-[15px] text-foreground tracking-tight">
+      <span className="font-display font-semibold text-[15px] text-foreground tracking-tight">
         Glyph <span className="font-normal text-muted">Explorer</span>
       </span>
     </Link>
@@ -79,15 +72,15 @@ function SidebarLink({
               collapsed ? "justify-center" : "flex-1 gap-2.5",
             )}
           >
-            <Icon className="size-4 shrink-0" />
+            <Icon className="size-[18px] shrink-0" />
             {collapsed ? null : <span className="min-w-0 flex-1 truncate">{item.label}</span>}
           </span>
         );
         const itemClass = classNames(
-          "relative flex items-center text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/30",
+          "relative flex items-center font-mono text-[13px] tracking-[0.01em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/30",
           collapsed
-            ? "mx-auto size-10 justify-center rounded-lg"
-            : "-mr-3 h-9 gap-2.5 rounded-l-lg px-2.5",
+            ? "mx-auto size-10 justify-center rounded-[3px]"
+            : "-mr-3 h-9 w-[calc(100%+0.75rem)] gap-2.5 rounded-l-[3px] px-2.5",
           active ? "text-accent" : "text-muted hover:bg-surface-secondary/60 hover:text-foreground",
         );
         const title = collapsed ? item.label : undefined;
@@ -104,10 +97,7 @@ function SidebarLink({
             {active ? (
               <motion.span
                 aria-hidden
-                className={classNames(
-                  "pointer-events-none absolute inset-0 bg-accent/10",
-                  collapsed ? "rounded-lg" : "rounded-l-lg",
-                )}
+                className="pointer-events-none absolute inset-0 rounded-l-[3px] bg-accent/10"
                 layoutId="sidebar-active"
                 transition={
                   reduceMotion
@@ -138,7 +128,7 @@ function SidebarGroup({
   return (
     <section>
       {collapsed ? null : (
-        <p className="px-2 text-[10px] text-muted uppercase tracking-[0.16em]">{title}</p>
+        <p className="px-2 font-mono text-[11px] text-muted uppercase tracking-[0.14em]">{title}</p>
       )}
       <div className={classNames("grid gap-0.5", collapsed ? null : "mt-1.5")}>
         <SidebarLink collapsed={collapsed} items={items} pathname={pathname} />
@@ -210,18 +200,18 @@ function Sidebar({
           aria-expanded={!collapsed}
           aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
           className={classNames(
-            "flex items-center rounded-lg text-muted transition-colors hover:bg-surface-secondary/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
+            "flex items-center rounded-l-[3px] font-mono text-[13px] text-muted transition-colors hover:bg-surface-secondary/60 hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-foreground/20",
             collapsed
               ? "mx-auto size-10 justify-center"
-              : "-mr-3 h-9 w-[calc(100%+0.75rem)] gap-2.5 rounded-l-lg px-2.5 text-[13px]",
+              : "-mr-3 h-9 w-[calc(100%+0.75rem)] gap-2.5 px-2.5",
           )}
           onClick={onToggle}
           type="button"
         >
           {collapsed ? (
-            <AltArrowRightIcon className="size-4" />
+            <UiIcon className="size-[18px]" name="arrowRight" />
           ) : (
-            <AltArrowLeftIcon className="size-4" />
+            <UiIcon className="size-[18px]" name="arrowLeft" />
           )}
           {collapsed ? null : <span>Collapse</span>}
         </button>
@@ -243,20 +233,19 @@ function MobileGroup({
 }) {
   return (
     <section>
-      <p className="px-1 text-[10px] text-muted uppercase tracking-[0.16em]">{title}</p>
+      <p className="px-1 font-mono text-[11px] text-muted uppercase tracking-[0.14em]">{title}</p>
       <div className="mt-2">
         {items.map((item) => {
           const Icon = item.icon;
           const active = activeFor(pathname, item.href);
           const content = (
             <>
-              <Icon className="size-4 shrink-0" />
+              <Icon className="size-[18px] shrink-0" />
               <span className="min-w-0 flex-1 truncate">{item.label}</span>
-              {active ? <span className="size-1.5 shrink-0 rounded-full bg-foreground" /> : null}
             </>
           );
           const itemClass = classNames(
-            "flex h-11 items-center gap-3 text-[15px] transition-colors",
+            "flex h-11 items-center gap-3 font-mono text-[14px] tracking-[0.01em] transition-colors",
             active ? "text-foreground" : "text-muted hover:text-foreground",
           );
 
@@ -274,13 +263,11 @@ function MobileGroup({
 function MobileMenu({
   onClose,
   onSearch,
-  onSettings,
   open,
   pathname,
 }: {
   onClose: () => void;
   onSearch: () => void;
-  onSettings: () => void;
   open: boolean;
   pathname: string;
 }) {
@@ -311,7 +298,7 @@ function MobileMenu({
       ).filter((element) => element.offsetParent !== null);
       const first = focusable[0];
       const last = focusable.at(-1);
-      if (!first || !last) {
+      if (!(first && last)) {
         return;
       }
       if (event.shiftKey && document.activeElement === first) {
@@ -356,26 +343,26 @@ function MobileMenu({
           <Brand onClick={onClose} />
           <button
             aria-label="Close navigation"
-            className="flex size-10 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-secondary hover:text-foreground"
+            className="corner-frame flex size-10 items-center justify-center rounded-[3px] text-muted transition-colors hover:bg-surface-secondary hover:text-foreground"
             onClick={onClose}
             ref={closeButton}
             type="button"
           >
-            <CloseIcon className="size-5" />
+            <UiIcon className="size-5" name="close" />
           </button>
         </div>
       </div>
 
       <div className="flex-1 overflow-y-auto overscroll-contain px-4 py-5 pb-[calc(1.5rem+env(safe-area-inset-bottom))]">
         <button
-          className="flex h-11 w-full items-center gap-2.5 rounded-xl border border-foreground/10 bg-surface-secondary/40 px-3.5 text-muted text-sm transition-colors hover:border-foreground/20 hover:text-foreground"
+          className="corner-frame flex h-11 w-full items-center gap-2.5 rounded-[4px] border border-border bg-surface-secondary/40 px-3.5 font-mono text-[12px] text-muted transition-colors hover:text-foreground"
           onClick={() => {
             onClose();
             onSearch();
           }}
           type="button"
         >
-          <MagnifierIcon className="size-4" />
+          <UiIcon className="size-4" name="search" />
           <span>Search ticks, identities, transactions</span>
         </button>
 
@@ -399,18 +386,6 @@ function MobileMenu({
             title="Build"
           />
         </nav>
-
-        <button
-          className="mt-6 flex h-11 w-full items-center gap-3 text-[15px] text-muted transition-colors hover:text-foreground"
-          onClick={() => {
-            onClose();
-            onSettings();
-          }}
-          type="button"
-        >
-          <SettingsIcon className="size-4" />
-          <span>Settings</span>
-        </button>
       </div>
     </motion.div>
   );
@@ -421,7 +396,6 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const market = useMarket();
   const [commandOpen, setCommandOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [settingsOpen, setSettingsOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
   const showBreadcrumbs = pathname !== "/" && pathname !== "/bpp9000";
@@ -459,7 +433,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <LiveStreamProvider>
-      <div className="flex h-svh overflow-hidden bg-background">
+      <div className="relative flex h-svh overflow-hidden bg-background">
         <a
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[70] focus:rounded-full focus:bg-foreground focus:px-4 focus:py-2 focus:font-medium focus:text-background focus:text-sm"
           href="#main"
@@ -487,33 +461,24 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                       ? "Qubic price per billion unavailable"
                       : `Qubic price per billion ${formatPerBillion(pricePerBillion)}`
                   }
-                  className="min-w-[4.5rem] px-1.5 text-right font-medium text-accent text-xs tabular-nums"
+                  className="min-w-[4.5rem] px-1.5 text-right font-medium font-mono text-accent text-xs tabular-nums"
                   title="Qubic price per billion"
                 >
                   {formatPerBillion(pricePerBillion)}
                 </span>
 
                 <button
-                  aria-label="Open appearance settings"
-                  className="hidden size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-secondary hover:text-foreground md:flex"
-                  onClick={() => setSettingsOpen(true)}
-                  type="button"
-                >
-                  <SettingsIcon className="size-4" />
-                </button>
-
-                <button
                   aria-controls="mobile-navigation"
                   aria-expanded={mobileOpen}
                   aria-label={mobileOpen ? "Close navigation" : "Open navigation"}
-                  className="flex size-9 items-center justify-center rounded-full text-muted transition-colors hover:bg-surface-secondary hover:text-foreground xl:hidden"
+                  className="corner-frame flex size-9 items-center justify-center rounded-[3px] text-muted transition-colors hover:bg-surface-secondary hover:text-foreground xl:hidden"
                   onClick={() => setMobileOpen((value) => !value)}
                   type="button"
                 >
                   {mobileOpen ? (
-                    <CloseIcon className="size-5" />
+                    <UiIcon className="size-5" name="close" />
                   ) : (
-                    <HamburgerMenuIcon className="size-5" />
+                    <UiIcon className="size-5" name="menu" />
                   )}
                 </button>
               </div>
@@ -525,26 +490,17 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             ) : null}
           </header>
 
-          <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface/50 xl:rounded-tl-[28px]">
+          <div className="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface/35 xl:rounded-tl-[8px]">
             <div
               className="flex min-h-0 flex-1 flex-col overflow-y-auto overscroll-contain"
               ref={contentRef}
             >
               <main className="flex-1" id="main" tabIndex={-1}>
-                {pathname === "/" || pathname === "/bpp9000" ? (
-                  children
-                ) : (
-                  <PageReveal
-                    origin={pathname.startsWith("/accounts/") ? "center" : "top-left"}
-                    pathname={pathname}
-                  >
-                    {children}
-                  </PageReveal>
-                )}
+                {children}
               </main>
 
-              <footer className="shrink-0">
-                <div className="page-width flex flex-col gap-3 px-4 py-5 text-[11px] text-muted sm:flex-row sm:items-center sm:justify-between lg:px-8">
+              <footer className="shrink-0 border-border border-t">
+                <div className="page-width flex flex-col gap-3 px-4 py-5 font-mono text-[10px] text-muted tracking-[0.02em] sm:flex-row sm:items-center sm:justify-between lg:px-8">
                   <span>Glyph explorer · direct-peer Qubic index</span>
                   <div className="flex flex-wrap items-center gap-4">
                     <a
@@ -576,16 +532,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             <MobileMenu
               onClose={closeMobile}
               onSearch={openSearch}
-              onSettings={() => setSettingsOpen(true)}
               open={mobileOpen}
               pathname={pathname}
             />
           ) : null}
         </AnimatePresence>
-      </div>
 
-      <CommandMenu onOpenChange={setCommandOpen} open={commandOpen} />
-      <SettingsDialog onOpenChange={setSettingsOpen} open={settingsOpen} />
+        <CommandMenu onOpenChange={setCommandOpen} open={commandOpen} />
+      </div>
     </LiveStreamProvider>
   );
 }

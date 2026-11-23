@@ -88,7 +88,7 @@ export function IdentityActions({
           >
             <Modal.Dialog className="max-h-[92dvh] w-full max-w-md rounded-none bg-transparent p-0">
               <ModalSheet onOpenChange={setQrOpen} open={qrOpen}>
-                <Modal.Header>
+                <Modal.Header className="text-center">
                   <Modal.Heading>Identity QR</Modal.Heading>
                 </Modal.Header>
                 <Modal.Body className="flex flex-col items-center gap-5 py-2">

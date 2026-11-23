@@ -1,14 +1,6 @@
-import { BrainIcon } from "@solar-icons/react/linear/brain";
-import { BookmarkIcon } from "@solar-icons/react/linear/bookmark";
-import { ClockCircleIcon } from "@solar-icons/react/linear/clock-circle";
-import { CodeSquareIcon } from "@solar-icons/react/linear/code-square";
-import { CpuBoltIcon } from "@solar-icons/react/linear/cpu-bolt";
-import { DocumentTextIcon } from "@solar-icons/react/linear/document-text";
-import { Home2Icon } from "@solar-icons/react/linear/home-2";
-import { LayersIcon } from "@solar-icons/react/linear/layers";
-import { TransferHorizontalIcon } from "@solar-icons/react/linear/transfer-horizontal";
-import { UsersGroupRoundedIcon } from "@solar-icons/react/linear/users-group-rounded";
 import type { ComponentType } from "react";
+
+import { icons } from "@/lib/icons";
 
 export interface NavigationItem {
   href: string;
@@ -18,61 +10,61 @@ export interface NavigationItem {
 
 const overview = {
   href: "/",
-  icon: Home2Icon,
+  icon: icons.home,
   label: "Overview",
 } satisfies NavigationItem;
 
 const ticks = {
   href: "/ticks",
-  icon: LayersIcon,
+  icon: icons.layers,
   label: "Ticks",
 } satisfies NavigationItem;
 
 const epochs = {
   href: "/epochs",
-  icon: ClockCircleIcon,
+  icon: icons.clock,
   label: "Epochs",
 } satisfies NavigationItem;
 
 const computors = {
   href: "/computors",
-  icon: CpuBoltIcon,
+  icon: icons.cpu,
   label: "Computors",
 } satisfies NavigationItem;
 
 const transactions = {
   href: "/transactions",
-  icon: TransferHorizontalIcon,
+  icon: icons.exchange,
   label: "Transactions",
 } satisfies NavigationItem;
 
 const accounts = {
   href: "/accounts",
-  icon: UsersGroupRoundedIcon,
+  icon: icons.users,
   label: "Identities",
 } satisfies NavigationItem;
 
 const addresses = {
   href: "/addresses",
-  icon: BookmarkIcon,
+  icon: icons.bookmark,
   label: "Known addresses",
 } satisfies NavigationItem;
 
 const contracts = {
   href: "/contracts",
-  icon: CodeSquareIcon,
+  icon: icons.code,
   label: "Contracts",
 } satisfies NavigationItem;
 
 const proposals = {
   href: "/proposals",
-  icon: DocumentTextIcon,
+  icon: icons.document,
   label: "Proposals",
 } satisfies NavigationItem;
 
 const bpp = {
   href: "/bpp9000",
-  icon: BrainIcon,
+  icon: icons.database,
   label: "BPP-9000",
 } satisfies NavigationItem;
 

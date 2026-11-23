@@ -16,7 +16,7 @@ export function ActivityTable({
   minWidth: string;
 }) {
   return (
-    <div className="overflow-hidden rounded-2xl bg-surface">
+    <div className="overflow-hidden rounded-[4px] bg-surface">
       <div className="overflow-x-auto">
         <table
           aria-label={label}
@@ -35,7 +35,7 @@ export function ActivityTable({
 export function ActivityTableHead({ children }: { children: ReactNode }) {
   return (
     <thead>
-      <tr className="text-[10px] text-muted uppercase tracking-[0.14em]">{children}</tr>
+      <tr className="font-mono text-[10px] text-muted tracking-[0.04em]">{children}</tr>
     </thead>
   );
 }

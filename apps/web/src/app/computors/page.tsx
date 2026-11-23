@@ -2,7 +2,6 @@
 
 import { EpochLink } from "@/components/explorer/links";
 import { PageHeader } from "@/components/explorer/page-header";
-import { usePageLoading } from "@/components/explorer/page-reveal";
 import { RecordEmpty } from "@/components/explorer/records";
 import { ErrorState } from "@/components/explorer/state";
 import { ComputorTable, ComputorTableSkeleton } from "@/features/computors/computor-table";
@@ -15,7 +14,6 @@ export default function ComputorsPage() {
   const computors = useEpochComputors(epoch);
   const rows = computors.data?.data ?? [];
   const isLoading = currentEpoch.isLoading || (epoch !== undefined && computors.isLoading);
-  usePageLoading(isLoading);
   const errorMessage = currentEpoch.isError
     ? "The current epoch could not be loaded."
     : computors.isError
@@ -55,7 +53,7 @@ export default function ComputorsPage() {
       ) : isLoading ? (
         <ComputorTableSkeleton />
       ) : rows.length === 0 ? (
-        <div className="rounded-2xl bg-surface">
+        <div className="rounded-[4px] bg-surface">
           <RecordEmpty>
             {epoch === undefined
               ? "No current epoch is available yet."

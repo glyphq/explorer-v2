@@ -1,11 +1,10 @@
 "use client";
 
-import { AsciiSkeleton } from "ascii-reveal";
-
 import { countLabel, formatQu } from "@/lib/format";
 
 import type { IdentityRow } from "./columns";
 import { IdentityLink, TickLink } from "./links";
+import { Skeleton } from "./skeleton";
 
 export function AccountLeaderboard({
   accounts,
@@ -15,7 +14,7 @@ export function AccountLeaderboard({
   isLoading?: boolean;
 }) {
   if (isLoading && accounts.length === 0) {
-    return <AsciiSkeleton as="div" height={180} rows={5} variant="dither" width="100%" />;
+    return <Skeleton height={180} />;
   }
 
   if (accounts.length === 0) {

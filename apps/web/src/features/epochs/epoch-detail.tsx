@@ -9,7 +9,6 @@ import { BoxLabel } from "@/components/explorer/box-label";
 import { CopyButton, TickLink } from "@/components/explorer/links";
 import { LoadMore } from "@/components/explorer/load-more";
 import { SectionHeading } from "@/components/explorer/page-header";
-import { usePageLoading } from "@/components/explorer/page-reveal";
 import { ErrorState } from "@/components/explorer/state";
 import { ComputorTable, ComputorTableSkeleton } from "@/features/computors/computor-table";
 import { pageRows, useEpoch, useEpochComputors, useTicks } from "@/lib/api/hooks";
@@ -51,7 +50,6 @@ export function EpochDetail({ epoch }: { epoch: number }) {
   const data = epochQuery.data?.data;
   const computorRows = computors.data?.data ?? [];
   const tickRows = pageRows(ticks.data?.pages);
-  usePageLoading(valid && (epochQuery.isLoading || computors.isLoading || ticks.isLoading));
 
   if (!valid) {
     return (
