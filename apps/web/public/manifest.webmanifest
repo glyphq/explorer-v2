@@ -2,6 +2,8 @@
   "name": "Glyph Explorer",
   "short_name": "Glyph",
   "description": "Explore Qubic ticks, transactions, epochs, accounts, events and assets from Glyph's direct-peer index.",
+  "id": "/",
+  "scope": "/",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0d0e0f",

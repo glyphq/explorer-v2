@@ -1,6 +1,7 @@
 import * as Cloudflare from "@alchemy.run/cloudflare";
 import * as Alchemy from "alchemy";
 import * as Effect from "effect/Effect";
+import * as Redacted from "effect/Redacted";
 import "varlock/auto-load";
 
 export default Alchemy.Stack(
@@ -42,6 +43,7 @@ export default Alchemy.Stack(
         NEXT_TAG_CACHE_KV: cache,
         PROPOSALS_KV: cache,
         PROFILES_DB: profilesDb,
+        VAPID_PUBLIC_KEY: process.env.VAPID_PUBLIC_KEY ?? "",
       },
       main: "../../apps/web/.open-next/worker.js",
       // Rebuild shared workspace dependencies until Alchemy has a workspace-aware default memo.
@@ -50,7 +52,27 @@ export default Alchemy.Stack(
       outdir: ".open-next/assets",
     });
 
+    const notifier = yield* Cloudflare.Worker("Notifier", {
+      name: "explorer-v2-notifier",
+      main: "./src/notifier.ts",
+      compatibility: {
+        date: "2026-11-19",
+        flags: ["nodejs_compat"],
+      },
+      crons: ["* * * * *"],
+      env: {
+        DISCORD_WEBHOOK_URL: Redacted.make(process.env.DISCORD_WEBHOOK_URL ?? ""),
+        PROFILES_DB: profilesDb,
+        SITE_URL: "https://explorer.glyphq.org",
+        VAPID_PRIVATE_KEY: Redacted.make(process.env.VAPID_PRIVATE_KEY ?? ""),
+        VAPID_PUBLIC_KEY: process.env.VAPID_PUBLIC_KEY ?? "",
+        VAPID_SUBJECT: process.env.VAPID_SUBJECT ?? "https://explorer.glyphq.org",
+      },
+      workersDev: false,
+    });
+
     return {
+      notifier: notifier.workerName,
       web: webWorker.url,
     };
   }),

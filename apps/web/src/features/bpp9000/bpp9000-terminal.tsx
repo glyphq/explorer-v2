@@ -14,6 +14,7 @@ import { CurrentCall } from "./current-call";
 import { EpochHeatmap } from "./epoch-heatmap";
 import { formatUpdated } from "./format-time";
 import { currentHour } from "./model";
+import { NotifyToggle } from "./notify-toggle";
 import { QaAccordion } from "./qa-accordion";
 import { RecentCalls } from "./recent-decisions";
 import { useBpp9000, useBppRace, useNowSeconds } from "./use-bpp9000";
@@ -34,6 +35,7 @@ function TerminalHeader({
       </h1>
       <div className="flex flex-wrap items-center gap-2">
         <span className="text-muted text-xs tabular-nums">{updated}</span>
+        <NotifyToggle />
         <Chip size="sm" title="Calls refresh every 2 minutes; alignment every 5" variant="soft">
           Calls 2m · board 5m
         </Chip>

@@ -6,9 +6,12 @@
     "check-types": "tsc --noEmit",
     "deploy": "alchemy deploy --yes",
     "destroy": "alchemy destroy",
-    "dev": "alchemy dev"
+    "dev": "alchemy dev",
+    "push:test": "bun --env-file=../../apps/web/.env.local scripts/send-test-push.ts",
+    "vapid:generate": "bun scripts/generate-vapid.ts"
   },
   "dependencies": {
+    "@block65/webcrypto-web-push": "^2.0.0",
     "zod": "catalog:"
   },
   "devDependencies": {
