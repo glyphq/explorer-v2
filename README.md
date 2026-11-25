@@ -65,37 +65,6 @@ Bun's automatic env loading is disabled in `bunfig.toml`; the framework integrat
 
 Run standalone Node/Bun tools that use Varlock from the owning app directory so they load that app's schema and env files. `env:generate` only generates TypeScript files; it does not initialize environment values in a subsequent command.
 
-## BPP-9000 Notifications
-
-Web Push and Discord alerts are sent by `explorer-v2-notifier`, a scheduled
-Worker that polls the ANN overview once a minute. It announces a call when the
-open hour reaches consensus, then announces the scored result once that hour
-closes.
-
-Generate a VAPID pair once:
-
-```bash
-cd packages/infra && bun run vapid:generate
-```
-
-Set `VAPID_PUBLIC_KEY`, `VAPID_PRIVATE_KEY`, `VAPID_SUBJECT`, and optionally
-`DISCORD_WEBHOOK_URL` in the deploy environment (ignored `.env` in
-`packages/infra`). The public key is bound to the web Worker; the private key
-and Discord webhook are bound only to the notifier Worker.
-
-Local test flow:
-
-```bash
-# Apps/web running, notifications enabled in the browser, and local D1 migrated.
-cd packages/infra
-bun run push:test          # current-call notification
-bun run push:test result   # scored-result notification
-```
-
-iOS and iPadOS only deliver Web Push to the app after it is added to the Home
-Screen. The UI shows install instructions instead of a permission prompt when
-the app is opened in a Safari tab.
-
 ## Deployment
 
 ### Alchemy

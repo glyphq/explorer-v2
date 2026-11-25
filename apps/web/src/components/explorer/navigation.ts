@@ -62,12 +62,6 @@ const proposals = {
   label: "Proposals",
 } satisfies NavigationItem;
 
-const bpp = {
-  href: "/bpp9000",
-  icon: icons.database,
-  label: "BPP-9000",
-} satisfies NavigationItem;
-
 export const navigation = [
   overview,
   ticks,
@@ -78,10 +72,9 @@ export const navigation = [
   addresses,
   contracts,
   proposals,
-  bpp,
 ] as const;
 
-export const primaryNavigation = [overview, bpp] as const;
+export const primaryNavigation = [overview] as const;
 
 export const chainNavigation = [ticks, epochs, computors, transactions, addresses] as const;
 

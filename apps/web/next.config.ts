@@ -22,7 +22,6 @@ const htmlRoutes = [
   "/addresses",
   "/assets",
   "/assets/:issuer/:name",
-  "/bpp9000",
   "/computors",
   "/contracts",
   "/contracts/:contract",

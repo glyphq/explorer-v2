@@ -398,7 +398,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-  const showBreadcrumbs = pathname !== "/" && pathname !== "/bpp9000";
+  const showBreadcrumbs = pathname !== "/";
   const price = market.data?.data?.price_usd;
   const pricePerBillion =
     typeof price === "number" && Number.isFinite(price) ? price * 1_000_000_000 : null;

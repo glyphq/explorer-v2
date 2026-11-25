@@ -12,7 +12,6 @@ const routes = [
   { changeFrequency: "daily", path: "/addresses", priority: 0.7 },
   { changeFrequency: "weekly", path: "/contracts", priority: 0.7 },
   { changeFrequency: "daily", path: "/proposals", priority: 0.7 },
-  { changeFrequency: "daily", path: "/bpp9000", priority: 0.6 },
 ] as const;
 
 export default function sitemap(): MetadataRoute.Sitemap {

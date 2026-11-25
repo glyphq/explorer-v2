@@ -63,11 +63,6 @@ const cards = [
     slug: "assets",
     title: "Assets",
   },
-  {
-    description: "The network's hourly Bitcoin call, computor alignment and recent results.",
-    slug: "bpp9000",
-    title: "BPP-9000",
-  },
 ] as const;
 
 await mkdir("public/og", { recursive: true });
