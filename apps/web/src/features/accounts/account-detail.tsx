@@ -115,11 +115,14 @@ export function AccountDetail({
   const loading =
     !hasData && (identityQuery.isLoading || liveIdentity.isLoading || profileQuery.isLoading);
   const failed = !(loading || hasData || profileReady);
-  const balance =
-    liveData?.balance ??
-    (data?.balance !== undefined && data.balance >= 0 ? data.balance : undefined);
-  const incoming = liveData?.incoming_amount ?? data?.incoming_amount;
-  const outgoing = liveData?.outgoing_amount ?? data?.outgoing_amount;
+  // The indexed identity balance is net QU flow for the indexed epoch range,
+  // not the wallet balance. Only the live peer entity reports the actual
+  // balance, so never fall back to the indexed value while live is pending.
+  const liveLoading = liveIdentity.isLoading;
+  const liveUnavailable = liveIdentity.isError;
+  const balance = liveData?.balance;
+  const incoming = liveData?.incoming_amount;
+  const outgoing = liveData?.outgoing_amount;
   const price = market.data?.data.price_usd;
   const usdBalance = balance !== undefined && price !== undefined ? balance * price : undefined;
   const transferCount =
@@ -151,34 +154,64 @@ export function AccountDetail({
   }
 
   const stats: ReactNode[] = [];
-  if (loading || balance !== undefined) {
+  if (liveLoading || liveUnavailable || balance !== undefined) {
     stats.push(
       <Stat
-        detail={usdBalance === undefined ? undefined : `≈ ${formatUsdValue(usdBalance)}`}
+        detail={
+          liveUnavailable
+            ? "Live peer unavailable"
+            : usdBalance === undefined
+              ? undefined
+              : `≈ ${formatUsdValue(usdBalance)}`
+        }
         key="balance"
         label="Balance"
-        loading={loading}
-        value={balance === undefined ? undefined : <QuStatValue value={balance} />}
+        loading={liveLoading}
+        value={
+          balance === undefined ? (
+            liveUnavailable ? (
+              "Unavailable"
+            ) : undefined
+          ) : (
+            <QuStatValue value={balance} />
+          )
+        }
       />,
     );
   }
-  if (loading || incoming !== undefined) {
+  if (liveLoading || liveUnavailable || incoming !== undefined) {
     stats.push(
       <Stat
         key="incoming"
         label="Incoming"
-        loading={loading}
-        value={incoming === undefined ? undefined : <QuStatValue value={incoming} />}
+        loading={liveLoading}
+        value={
+          incoming === undefined ? (
+            liveUnavailable ? (
+              "Unavailable"
+            ) : undefined
+          ) : (
+            <QuStatValue value={incoming} />
+          )
+        }
       />,
     );
   }
-  if (loading || outgoing !== undefined) {
+  if (liveLoading || liveUnavailable || outgoing !== undefined) {
     stats.push(
       <Stat
         key="outgoing"
         label="Outgoing"
-        loading={loading}
-        value={outgoing === undefined ? undefined : <QuStatValue value={outgoing} />}
+        loading={liveLoading}
+        value={
+          outgoing === undefined ? (
+            liveUnavailable ? (
+              "Unavailable"
+            ) : undefined
+          ) : (
+            <QuStatValue value={outgoing} />
+          )
+        }
       />,
     );
   }

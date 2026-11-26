@@ -236,6 +236,8 @@ export function useLiveIdentity(identity: string | undefined) {
   return useQuery({
     ...getLiveIdentityOptions({ path: { identity: identity ?? "" } }),
     enabled: Boolean(identity),
+    // Never paint a previous visit's peer balance while the new read is in flight.
+    gcTime: 0,
     refetchInterval: REFRESH_INTERVAL,
   });
 }
